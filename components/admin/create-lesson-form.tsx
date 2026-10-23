@@ -1,0 +1,210 @@
+"use client";
+
+import { useActionState } from "react";
+import SubmitButton from "@/components/ui/submit-button";
+
+import {
+  initialFormState,
+  type FormState,
+} from "@/lib/form-state";
+
+type TestOption = {
+  id: number;
+  title: string;
+};
+
+type CreateLessonFormProps = {
+  categoryId: number;
+  tests: TestOption[];
+  action: (
+    previousState: FormState,
+    formData: FormData,
+  ) => Promise<FormState>;
+};
+
+function fieldClass(error?: string) {
+  return [
+    "mt-2 w-full rounded-xl bg-white px-4 py-3",
+    "text-slate-900 placeholder:text-slate-400",
+    "outline-none transition",
+    error
+      ? "border border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100"
+      : "border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100",
+  ].join(" ");
+}
+
+function FieldError({
+  message,
+}: {
+  message?: string;
+}) {
+  if (!message) {
+    return null;
+  }
+
+  return (
+    <p
+      role="alert"
+      className="mt-1.5 text-sm font-medium text-red-600"
+    >
+      {message}
+    </p>
+  );
+}
+
+export default function CreateLessonForm({
+  categoryId,
+  tests,
+  action,
+}: CreateLessonFormProps) {
+  const [state, formAction, pending] =
+    useActionState(action, initialFormState);
+
+  return (
+    <form
+      action={formAction}
+      noValidate
+      className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+    >
+      <input
+        type="hidden"
+        name="categoryId"
+        value={categoryId}
+      />
+
+      <h2 className="text-2xl font-bold">
+        Yangi videodars
+      </h2>
+
+      <p className="mt-2 text-sm leading-6 text-slate-500">
+        Dars nomi, video havolasi va nazariy
+        ma’lumotlarni kiriting.
+      </p>
+
+      <label
+        htmlFor="title"
+        className="mt-6 block text-sm font-semibold"
+      >
+        Dars nomi
+      </label>
+
+      <input
+        id="title"
+        name="title"
+        type="text"
+        placeholder="Masalan: Chiziqli tenglamalar"
+        className={fieldClass(
+          state.errors.title,
+        )}
+      />
+
+      <FieldError
+        message={state.errors.title}
+      />
+
+      <label
+        htmlFor="description"
+        className="mt-5 block text-sm font-semibold"
+      >
+        Qisqacha tavsif
+      </label>
+
+      <textarea
+        id="description"
+        name="description"
+        rows={3}
+        placeholder="Dars haqida qisqacha ma’lumot"
+        className={`${fieldClass()} resize-y`}
+      />
+
+      <label
+        htmlFor="videoUrl"
+        className="mt-5 block text-sm font-semibold"
+      >
+        YouTube video havolasi
+      </label>
+
+      <input
+        id="videoUrl"
+        name="videoUrl"
+        type="text"
+        placeholder="https://www.youtube.com/watch?v=..."
+        className={fieldClass(
+          state.errors.videoUrl,
+        )}
+      />
+
+      <FieldError
+        message={state.errors.videoUrl}
+      />
+
+      <label
+        htmlFor="content"
+        className="mt-5 block text-sm font-semibold"
+      >
+        Nazariy matn
+      </label>
+
+      <textarea
+        id="content"
+        name="content"
+        rows={7}
+        placeholder="Darsning nazariy qismi. Matematik formulalarni $...$ shaklida yozishingiz mumkin."
+        className={`${fieldClass()} resize-y`}
+      />
+
+      <p className="mt-5 text-sm font-semibold">
+        Darsga biriktiriladigan testlar
+      </p>
+
+      <p className="mt-1 text-xs leading-5 text-slate-500">
+        Bir nechtasini belgilash mumkin. Keyingi dars ularning
+        o‘rtacha natijasi 90% ga yetganda ochiladi.
+      </p>
+
+      <div className="mt-2 max-h-56 space-y-1 overflow-y-auto rounded-xl border border-slate-300 p-2">
+        {tests.length === 0 ? (
+          <p className="px-2 py-1 text-sm text-slate-500">
+            Test topilmadi.
+          </p>
+        ) : (
+          tests.map((test) => (
+            <label
+              key={test.id}
+              className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-sm hover:bg-slate-50"
+            >
+              <input
+                type="checkbox"
+                name="testIds"
+                value={test.id}
+                className="h-4 w-4 accent-blue-600"
+              />
+              {test.title}
+            </label>
+          ))
+        )}
+      </div>
+
+      {state.status === "error" &&
+        state.message && (
+          <div
+            role="alert"
+            aria-live="polite"
+            className="mt-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+          >
+            {state.message}
+          </div>
+        )}
+
+      <SubmitButton
+
+        disabled={pending}
+        className="mt-6 w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {pending
+          ? "Dars saqlanmoqda..."
+          : "Videodarsni qo‘shish"}
+      </SubmitButton>
+    </form>
+  );
+}

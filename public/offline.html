@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Internet aloqasi yo‘q — Vepa Ustoz</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --page: #f4f7fb;
+        --card: #ffffff;
+        --line: #e6eaf0;
+        --ink: #151a23;
+        --muted: #7c8798;
+        --brand: #1b72f2;
+        --brand-dark: #155fcc;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --page: #0b1220;
+          --card: #141d2e;
+          --line: #253247;
+          --ink: #eef2f7;
+          --muted: #94a3b8;
+          --brand: #4d93f7;
+          --brand-dark: #7fb0fa;
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background: var(--page);
+        color: var(--ink);
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 380px;
+        padding: 28px 24px;
+        text-align: center;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        box-shadow: 0 8px 24px rgb(16 24 40 / 8%);
+      }
+
+      img {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+      }
+
+      h1 {
+        margin: 20px 0 0;
+        font-size: 20px;
+        line-height: 1.35;
+      }
+
+      p {
+        margin: 10px 0 0;
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--muted);
+      }
+
+      button {
+        margin-top: 22px;
+        width: 100%;
+        min-height: 48px;
+        padding: 0 20px;
+        font: inherit;
+        font-size: 15px;
+        font-weight: 700;
+        color: #fff;
+        background: var(--brand);
+        border: 0;
+        border-radius: 14px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: var(--brand-dark);
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="card">
+      <img src="/icon-192.png" alt="Vepa Ustoz" width="64" height="64" />
+
+      <h1>Internet aloqasi yo‘q</h1>
+
+      <p>
+        Sahifani ochib bo‘lmadi. Wi-Fi yoki mobil internetni tekshirib,
+        qaytadan urinib ko‘ring.
+      </p>
+
+      <button type="button" onclick="location.reload()">
+        Qayta urinish
+      </button>
+    </main>
+
+    <script>
+      // Aloqa tiklanishi bilan sahifani o'zi qayta yuklaydi
+      window.addEventListener("online", function () {
+        location.reload();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,405 @@
+import Link from "next/link";
+import {
+  notFound,
+  redirect,
+} from "next/navigation";
+
+import { CheckCircle2, Send } from "lucide-react";
+
+import {
+  TELEGRAM_ADMIN_USERNAME,
+  cleanUsername,
+} from "@/lib/contacts";
+import { createClient } from "@/lib/supabase/server";
+
+export const dynamic =
+  "force-dynamic";
+
+export const metadata = {
+  title: "To‘lov kutilmoqda",
+  description:
+    "Buyurtmangiz tekshirilmoqda.",
+};
+
+type PageProps = {
+  searchParams: Promise<{
+    orderId?: string | string[];
+  }>;
+};
+
+type PlanRelation = {
+  name: string;
+  code: string;
+  duration_months: number;
+};
+
+type OrderRow = {
+  id: string;
+  order_number: number | string;
+  status: string;
+  original_amount_uzs: number | string;
+  discount_amount_uzs: number | string;
+  final_amount_uzs: number | string;
+  promo_code_snapshot: string | null;
+  created_at: string;
+  expires_at: string;
+  paid_at: string | null;
+  payment_plans:
+    | PlanRelation
+    | PlanRelation[]
+    | null;
+};
+
+function single(
+  value:
+    | string
+    | string[]
+    | undefined,
+) {
+  return Array.isArray(value)
+    ? value[0]
+    : value;
+}
+
+function formatMoney(
+  value: unknown,
+) {
+  return new Intl.NumberFormat(
+    "uz-UZ",
+  ).format(Number(value) || 0);
+}
+
+function formatDate(
+  value: string | null,
+) {
+  if (!value) {
+    return "—";
+  }
+
+  return new Intl.DateTimeFormat(
+    "uz-UZ",
+    {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone:
+        "Asia/Tashkent",
+    },
+  ).format(new Date(value));
+}
+
+export default async function PaymentPendingPage({
+  searchParams,
+}: PageProps) {
+  const params =
+    await searchParams;
+
+  const orderId =
+    single(params.orderId) ?? "";
+
+  if (!orderId) {
+    notFound();
+  }
+
+  const supabase =
+    await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/auth/login");
+  }
+
+  const {
+    data,
+    error,
+  } = await (
+    // Bu jadval Supabase tiplarida yo'q — tekshiruvni chetlab o'tamiz
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    supabase as any
+  )
+    .from("payment_orders")
+    .select(`
+      id,
+      order_number,
+      status,
+      original_amount_uzs,
+      discount_amount_uzs,
+      final_amount_uzs,
+      promo_code_snapshot,
+      created_at,
+      expires_at,
+      paid_at,
+      payment_plans (
+        name,
+        code,
+        duration_months
+      )
+    `)
+    .eq("id", orderId)
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (error || !data) {
+    notFound();
+  }
+
+  const order =
+    data as OrderRow;
+
+  const plan =
+    Array.isArray(
+      order.payment_plans,
+    )
+      ? order.payment_plans[0]
+      : order.payment_plans;
+
+  /* Admin username — lib/contacts.ts dagi yagona manba */
+  const username = cleanUsername(TELEGRAM_ADMIN_USERNAME);
+
+  const fullName =
+    String(
+      user.user_metadata
+        ?.full_name ??
+      user.user_metadata?.name ??
+      user.email?.split("@")[0] ??
+      "Foydalanuvchi",
+    ).trim();
+
+  const telegramMessage = [
+    "Assalomu alaykum!",
+    "",
+    "Vepa Ustoz Premium sotib olmoqchiman.",
+    "",
+    `Buyurtma: #${order.order_number}`,
+    `Foydalanuvchi: ${fullName}`,
+    `Email: ${user.email ?? "koʼrsatilmagan"}`,
+    `Tarif: ${plan?.name ?? "Premium tarif"}`,
+    `Muddat: ${plan?.duration_months ?? "—"} oy`,
+    `Asl narx: ${formatMoney(
+      order.original_amount_uzs,
+    )} soʼm`,
+    order.promo_code_snapshot
+      ? `Promo-kod: ${order.promo_code_snapshot}`
+      : "Promo-kod: yoʼq",
+    `Toʼlov summasi: ${formatMoney(
+      order.final_amount_uzs,
+    )} soʼm`,
+    "",
+    "Toʼlov tartibini yuboring. Toʼlov chekini shu chatga joʼnataman.",
+  ].join("\n");
+
+  const telegramHref =
+    username
+      ? `https://t.me/${username}?text=${encodeURIComponent(
+          telegramMessage,
+        )}`
+      : null;
+
+  const isPaid =
+    order.status === "paid";
+
+  return (
+    <main className="min-h-screen bg-slate-50 text-slate-900">
+      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
+        <div className="mx-auto flex max-w-2xl items-center justify-between gap-3 px-4 py-2 sm:px-6 sm:py-3">
+          <div className="flex min-w-0 items-baseline gap-2">
+            <Link
+              href="/pricing"
+              className="inline-flex min-h-8 shrink-0 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
+            >
+              ←
+            </Link>
+
+            <p className="truncate text-lg font-bold">
+              Buyurtma #{order.order_number}
+            </p>
+          </div>
+
+          <span
+            className={
+              isPaid
+                ? "shrink-0 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700"
+                : "shrink-0 rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-bold text-amber-700"
+            }
+          >
+            {isPaid ? "To‘langan" : "Kutilmoqda"}
+          </span>
+        </div>
+      </header>
+
+      {/*
+        Bu sahifada bitta ish bor: Telegramga o'tish. Shu sababli
+        summa va tugma eng tepada, tafsilotlar esa pastda —
+        telefonda ham pastga tushirmasdan bosiladi.
+      */}
+      <section className="mx-auto max-w-2xl px-3 pb-8 pt-3 sm:px-6 sm:pt-5">
+        <div
+          className={
+            isPaid
+              ? "relative overflow-hidden rounded-3xl bg-emerald-600 p-5 text-white shadow-lg sm:p-6"
+              : "relative overflow-hidden rounded-3xl bg-mb-brand p-5 text-white shadow-lg sm:p-6"
+          }
+        >
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-10 -top-14 h-44 w-44 rounded-full bg-white/10"
+          />
+
+          <div className="relative">
+            <p className="text-sm font-semibold text-white/85">
+              {plan?.name ?? "Premium tarif"}
+              {plan?.duration_months
+                ? ` · ${plan.duration_months} oy`
+                : ""}
+            </p>
+
+            <p className="mt-1 text-4xl font-bold leading-none sm:text-5xl">
+              {formatMoney(order.final_amount_uzs)}
+              <span className="ml-1.5 text-base font-bold text-white/85">
+                so‘m
+              </span>
+            </p>
+
+            {Number(order.discount_amount_uzs) > 0 && (
+              <p className="mt-1.5 text-sm text-white/85">
+                <span className="line-through">
+                  {formatMoney(order.original_amount_uzs)}
+                </span>{" "}
+                · chegirma {formatMoney(order.discount_amount_uzs)} so‘m
+              </p>
+            )}
+
+            {isPaid ? (
+              <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-sm font-bold ring-1 ring-white/20">
+                <CheckCircle2
+                  className="h-4 w-4"
+                  strokeWidth={2.4}
+                  aria-hidden="true"
+                />
+                Premium yoqildi
+              </p>
+            ) : (
+              <a
+                href={telegramHref ?? "#"}
+                className="mt-4 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-white px-5 text-base font-bold text-blue-700 shadow-sm transition hover:bg-blue-50"
+              >
+                <Send
+                  className="h-5 w-5"
+                  strokeWidth={2.2}
+                  aria-hidden="true"
+                />
+                Telegramda to‘lash
+              </a>
+            )}
+
+            {!isPaid && (
+              <p className="mt-2 text-center text-xs text-white/80">
+                Tugma admin bilan chatni tayyor xabar bilan ochadi ·
+                @{username}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {!isPaid && (
+          <div className="mt-3 rounded-2xl border border-mb-line bg-white p-4 shadow-sm">
+            <p className="text-sm font-bold text-mb-ink">
+              Keyingi qadamlar
+            </p>
+
+            <div className="mt-2.5 grid gap-2">
+              {[
+                "Tugmani bosing — chat tayyor xabar bilan ochiladi",
+                "Admin yuborgan rekvizit orqali to‘laysiz",
+                "Chek rasmini o‘sha chatga tashlaysiz",
+                "Admin tasdiqlaydi, Premium darrov yoqiladi",
+              ].map((step, index) => (
+                <p
+                  key={step}
+                  className="flex items-start gap-2.5 text-sm leading-6 text-mb-muted"
+                >
+                  <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-mb-tintSoft text-xs font-bold text-mb-brand">
+                    {index + 1}
+                  </span>
+                  {step}
+                </p>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Tafsilotlar */}
+        <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+          {[
+            {
+              label: "Tarif",
+              value: plan?.name ?? "Premium tarif",
+            },
+            {
+              label: "Muddat",
+              value: plan?.duration_months
+                ? `${plan.duration_months} oy`
+                : "—",
+            },
+            ...(order.promo_code_snapshot
+              ? [
+                  {
+                    label: "Promo-kod",
+                    value: order.promo_code_snapshot,
+                  },
+                ]
+              : []),
+            {
+              label: "Yaratilgan",
+              value: formatDate(order.created_at),
+            },
+            ...(isPaid
+              ? [
+                  {
+                    label: "Tasdiqlangan",
+                    value: formatDate(order.paid_at),
+                  },
+                ]
+              : []),
+          ].map((row, index) => (
+            <div
+              key={row.label}
+              className={
+                index > 0
+                  ? "flex items-center justify-between gap-3 border-t border-mb-line px-4 py-2.5"
+                  : "flex items-center justify-between gap-3 px-4 py-2.5"
+              }
+            >
+              <span className="text-sm text-mb-muted">{row.label}</span>
+
+              <span className="text-sm font-semibold text-mb-ink">
+                {row.value}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <Link
+            href="/profile/payments"
+            className="inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50"
+          >
+            To‘lovlarim
+          </Link>
+
+          <Link
+            href="/profile"
+            className="inline-flex min-h-11 items-center justify-center rounded-xl bg-mb-brand text-sm font-semibold text-white hover:bg-mb-brandDark"
+          >
+            Profilim
+          </Link>
+        </div>
+      </section>
+    </main>
+  );
+}

@@ -1,0 +1,74 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*.local
+.env
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+.vercel
+.env*
+
+# Zaxira nusxalari — o'quvchilar ma'lumotlari bor, ochiq joyga tushmasin
+/backups/
+/tests-data/
+
+# Claude tayyorlagan qoralama testlar (faqat shu kompyuterda)
+/qoralama
+
+# ---------------------------------------------------------------
+# Git uchun qo'shimcha (2026-10-23)
+#
+# Quyidagilar ATAYLAB repoga tushmaydi. Sabablari yozib qo'yilgan,
+# chunki keyinchalik "nega bu yo'q?" degan savol chiqadi.
+# ---------------------------------------------------------------
+
+# Claude Code / Codex yordamchi dasturlarining o'z kodi.
+# Bizning kodimiz emas, har yangilanishda o'zgaradi.
+/.claude/
+/.agents/
+/.codex/
+/.impeccable/
+
+# Chatdan tushgan chiqishlar (rasm, hisobot) — manba emas.
+/Claude outputs/
+
+# Savol va javob manbalari: hajmi katta, o'zgarmaydi va
+# saytning ishlashiga kerak emas. Alohida saqlang.
+/Matematika-savollar-tex-1-89/
+/Matematika-javoblar-1-89/

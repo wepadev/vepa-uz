@@ -1,0 +1,49 @@
+﻿# Har `git push` da kodni tekshirish.
+#
+# Nega kerak: `npm run check` ni qo'lda eslab qolish kerak edi va
+# bir marta esdan chiqib, buzuq kod deploy bo'lib ketdi. Endi
+# GitHub buni o'zi tekshiradi: xato bo'lsa qizil belgi chiqadi va
+# pochtaga xabar keladi.
+#
+# Hech narsa sozlash shart emas -- bu fayl repoda bo'lsa yetarli.
+# Maxfiy kalit ham kerak emas: tekshiruv bazaga ulanmaydi.
+
+name: Tekshiruv
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  tekshir:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      # `npm ci` package-lock.json ga qat'iy amal qiladi --
+      # kompyuteringizdagi bilan aynan bir xil paketlar o'rnatiladi.
+      - name: Paketlarni o'rnatish
+        run: npm ci
+
+      # tsc + eslint + testlar. package.json dagi "check" bilan
+      # bir xil, ya'ni GitHub siz ko'rgan narsani ko'radi.
+      - name: Tekshirish
+        run: npm run check
+
+# Build bu yerda ataylab QILINMAYDI.
+#
+# Build paytida Supabase manzili va kaliti kerak bo'ladi. GitHub'da
+# ular yo'q -- soxta qiymat bersak, sahifalarni oldindan tayyorlash
+# bosqichida yiqilishi mumkin va "xato" degan qizil belgi
+# aslida xato bo'lmagan joyda chiqadi.
+#
+# Haqiqiy build'ni Vercel har push da o'zi qiladi, haqiqiy kalitlar
+# bilan. Ya'ni build baribir tekshiriladi, ikki marta emas.

@@ -1,0 +1,23 @@
+# Qator oxiri belgisini bir xil saqlash.
+#
+# Windows qator oxirini CRLF, Linux esa LF qiladi. Ikkisi
+# aralashsa, hech narsa o'zgarmagan faylda ham "butun fayl
+# o'zgardi" deb ko'rsatadi va git har safar ogohlantiradi.
+#
+# Qoida: repo ichida HAR DOIM LF saqlanadi, Windows'da esa fayl
+# odatdagidek CRLF bo'lib chiqadi. Vercel ham Linux'da quriladi,
+# ya'ni repodagi ko'rinish serverdagi bilan bir xil bo'ladi.
+* text=auto eol=lf
+
+# PowerShell skriptlari Windows'da ishlaydi -- CRLF qolsin.
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Ikkilik fayllar: tegilmasin.
+*.png binary
+*.jpg binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
