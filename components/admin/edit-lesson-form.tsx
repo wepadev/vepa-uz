@@ -20,6 +20,8 @@ type EditLessonFormProps = {
   description: string;
   videoUrl: string;
   content: string;
+  orderNumber: number;
+  isFree: boolean;
   testIds: number[];
   tests: TestOption[];
   action: (
@@ -65,6 +67,8 @@ export default function EditLessonForm({
   description,
   videoUrl,
   content,
+  orderNumber,
+  isFree,
   testIds,
   tests,
   action,
@@ -109,6 +113,34 @@ export default function EditLessonForm({
 
       <FieldError
         message={state.errors.title}
+      />
+
+      <label
+        htmlFor="orderNumber"
+        className="mt-5 block text-sm font-semibold"
+      >
+        Tartib raqami
+      </label>
+
+      <input
+        id="orderNumber"
+        name="orderNumber"
+        type="number"
+        min={1}
+        step={1}
+        inputMode="numeric"
+        defaultValue={orderNumber}
+        className={fieldClass(
+          state.errors.orderNumber,
+        )}
+      />
+
+      <p className="mt-1 text-xs leading-5 text-slate-500">
+        Raqam o‘zgartirilsa, boshqa darslar o‘z-o‘zidan suriladi.
+      </p>
+
+      <FieldError
+        message={state.errors.orderNumber}
       />
 
       <label
@@ -162,6 +194,25 @@ export default function EditLessonForm({
         placeholder="Formulalarni $...$ shaklida yozing."
         className={`${fieldClass()} resize-y`}
       />
+
+      <label className="mt-5 flex cursor-pointer items-start gap-3 rounded-xl border border-slate-300 px-4 py-3">
+        <input
+          type="checkbox"
+          name="isFree"
+          defaultChecked={isFree}
+          className="mt-0.5 h-4 w-4 accent-emerald-600"
+        />
+
+        <span>
+          <span className="block text-sm font-semibold">
+            Bepul dars
+          </span>
+
+          <span className="block text-xs leading-5 text-slate-500">
+            Belgilanmasa dars Premium bo‘ladi.
+          </span>
+        </span>
+      </label>
 
       <p className="mt-5 text-sm font-semibold">
         Biriktirilgan testlar

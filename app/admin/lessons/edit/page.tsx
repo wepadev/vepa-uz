@@ -8,6 +8,8 @@ import {
 import { createClient } from "@/lib/supabase/server";
 import type { FormState } from "@/lib/form-state";
 import EditLessonForm from "@/components/admin/edit-lesson-form";
+import { parseOrderNumber } from "@/lib/lesson-order";
+import { moveLessonTo } from "@/lib/lesson-order-db";
 
 type PageProps = {
   searchParams: Promise<{
@@ -98,6 +100,12 @@ async function updateLesson(
     formData.get("content") ?? "",
   ).trim();
 
+  const orderNumber = parseOrderNumber(
+    formData.get("orderNumber"),
+  );
+
+  const isFree = formData.get("isFree") === "on";
+
   const testIds = formData
     .getAll("testIds")
     .map((value) => Number(value))
@@ -137,6 +145,10 @@ async function updateLesson(
       "Video havolasini to‘liq kiriting.";
   }
 
+  if (orderNumber === undefined) {
+    errors.orderNumber =
+      "Tartib raqami 1 yoki undan katta butun son bo‘lsin.";
+  }
 
   if (Object.keys(errors).length > 0) {
     return {
@@ -152,7 +164,7 @@ async function updateLesson(
     error: existingLessonError,
   } = await supabase
     .from("lessons")
-    .select("id")
+    .select("id, order_number")
     .eq("id", lessonId)
     .eq("category_id", categoryId)
     .maybeSingle();
@@ -202,6 +214,7 @@ async function updateLesson(
           description || null,
         video_url: videoUrl,
         content: content || null,
+        is_free: isFree,
       })
       .eq("id", lessonId)
       .eq("category_id", categoryId);
@@ -213,6 +226,26 @@ async function updateLesson(
         "Videodarsni yangilab bo‘lmadi.",
       errors: {},
     };
+  }
+
+  if (
+    orderNumber &&
+    orderNumber !== existingLesson.order_number
+  ) {
+    const moveError = await moveLessonTo(
+      supabase,
+      categoryId,
+      lessonId,
+      orderNumber,
+    );
+
+    if (moveError) {
+      return {
+        status: "error",
+        message: `Tartib raqami o‘zgarmadi: ${moveError}`,
+        errors: {},
+      };
+    }
   }
 
   /*
@@ -311,7 +344,8 @@ export default async function EditLessonPage({
         description,
         video_url,
         content,
-        order_number
+        order_number,
+        is_free
       `)
       .eq("id", lessonId)
       .eq("category_id", categoryId)
@@ -401,6 +435,8 @@ export default async function EditLessonPage({
           content={
             lesson.content ?? ""
           }
+          orderNumber={lesson.order_number}
+          isFree={lesson.is_free === true}
           testIds={attachedTestIds}
           tests={tests}
           action={updateLesson}

@@ -28,6 +28,8 @@ Tekshiriladigan joylar:
 - **Dars progressi** — bir nechta testning o'rtachasi, ishlanmagan
   testning nolga tenglashishi, testsiz darsning keyingisini
   to'smasligi
+- **Videodars tartibi** — berilgan raqamga qo'yilishi, qolganlarining
+  surilishi, ikki dars bir raqamga tushmasligi
 
 ## Baza qoidalari
 
