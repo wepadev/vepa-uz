@@ -363,7 +363,7 @@ export default function UserAccessCard({
                     ? `${formatDate(
                         premiumUntil,
                       )} gacha — ${daysRemaining} kun qoldi`
-                    : "Faqat dastlabki 3 ta dars va 3 ta test ochiq."}
+                    : "Faqat bepul belgisi bor dars va testlar ochiq."}
                 </p>
               </div>
 

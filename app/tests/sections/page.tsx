@@ -104,9 +104,8 @@ export default async function TestSectionsPage({ searchParams }: PageProps) {
         .not("section_id", "is", null),
 
       supabase
-        .from("lessons")
-        .select("test_id")
-        .not("test_id", "is", null),
+        .from("lesson_tests")
+        .select("test_id"),
     ]);
 
   if (sectionsResult.error) {

@@ -228,12 +228,6 @@ export default async function TestsPage() {
                       <span className="text-[17px] font-bold leading-6 text-mb-ink">
                         {examType.title}
                       </span>
-
-                      {!empty && (
-                        <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-bold text-emerald-700">
-                          3 ta bepul
-                        </span>
-                      )}
                     </span>
 
                     {examType.description && (

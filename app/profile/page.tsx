@@ -667,7 +667,7 @@ const latestPlan =
                 ? "Barcha materiallar ochiq"
                 : hasPremium
                   ? latestPlan?.name ?? "Premium tarif"
-                  : "3 ta dars va 3 ta test bepul"}
+                  : "Bepul dars va testlar ochiq"}
             </p>
 
             <p className="mt-0.5 text-sm text-mb-muted">

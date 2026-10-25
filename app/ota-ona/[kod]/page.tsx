@@ -41,6 +41,15 @@ const ATTENDANCE: Record<DailyRow["attendance"], { label: string; tone: string }
   kelmadi: { label: "Kelmadi", tone: "bg-red-50 text-red-700" },
 };
 
+/*
+ * "Jami berilgan" maydoni olib tashlangan (admin/crm/actions.ts),
+ * shuning uchun yangi darslarda jami 0 bo'ladi — u holda faqat
+ * ishlangan masalalar soni ko'rsatiladi.
+ */
+function formatHomework(done: number, total: number) {
+  return total > 0 ? `${done}/${total}` : String(done);
+}
+
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("uz-UZ", {
     day: "2-digit",
@@ -166,7 +175,7 @@ export default async function ParentReportPage({ params }: PageProps) {
     {
       icon: ClipboardList,
       label: "Uy vazifasi",
-      value: homeworkTotal ? `${homeworkDone}/${homeworkTotal}` : "—",
+      value: days.length ? formatHomework(homeworkDone, homeworkTotal) : "—",
       hint: "ishlangan masalalar",
     },
     {
@@ -289,8 +298,8 @@ export default async function ParentReportPage({ params }: PageProps) {
                       )}
                     </p>
                     <p className="text-xs text-mb-muted">
-                      {row.homework_total > 0 &&
-                        `Vazifa ${row.homework_done}/${row.homework_total} · `}
+                      {(row.homework_done > 0 || row.homework_total > 0) &&
+                        `Vazifa ${formatHomework(row.homework_done, row.homework_total)} · `}
                       {row.behavior !== null && `Xulq ${row.behavior}/5 · `}
                       {row.points} ball
                     </p>

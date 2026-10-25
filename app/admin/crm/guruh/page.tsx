@@ -521,8 +521,8 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
 
                       <p className="mt-0.5 text-xs text-mb-muted">
                         {row.lessons_count} dars · davomat{" "}
-                        {attendanceRate}% · vazifa {row.homework_done}/
-                        {row.homework_total}
+                        {attendanceRate}% · vazifa {row.homework_done}
+                        {row.homework_total > 0 && <>/{row.homework_total}</>}
                         {row.avg_behavior !== null && (
                           <> · xulq {row.avg_behavior}</>
                         )}

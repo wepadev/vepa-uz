@@ -443,14 +443,19 @@ export default async function TakeTestPage({
     null;
 
   if (lessonId !== null) {
+    /*
+     * Dars va test bog'lami `lesson_tests` jadvalida (db/28).
+     * Eski `lessons.test_id` ustuni endi bo'sh — unga qarab
+     * tekshirilsa, har bir dars testi "topilmadi" bo'lib qoladi.
+     */
     const {
       data: lessonContext,
       error: lessonContextError,
     } = await supabase
       .from("lessons")
-      .select("id")
+      .select("id, lesson_tests!inner(test_id)")
       .eq("id", lessonId)
-      .eq("test_id", testId)
+      .eq("lesson_tests.test_id", testId)
       .eq("is_published", true)
       .maybeSingle();
 
