@@ -322,8 +322,6 @@ function toLatex(items: Item[], base: number): string {
 /* Kasr, ildiz, qavs                                                   */
 /* ------------------------------------------------------------------ */
 
-const centre = (item: Item) => item.x + item.w / 2;
-
 /**
  * Chiziq tagidagi matn uni deyarli to'liq egallaydimi.
  *
