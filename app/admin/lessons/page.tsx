@@ -20,6 +20,7 @@ type CategoryRow = {
 
 type LessonRow = {
   category_id: number;
+  is_free: boolean;
 };
 
 async function requireAdmin() {
@@ -241,7 +242,7 @@ export default async function AdminLessonsPage() {
 
     supabase
       .from("lessons")
-      .select("category_id"),
+      .select("category_id, is_free"),
   ]);
 
   if (categoriesResult.error) {
@@ -267,6 +268,10 @@ export default async function AdminLessonsPage() {
   const lessonCountMap =
     new Map<number, number>();
 
+  /* Qo'lda bepul qilingan darslar soni */
+  const freeCountMap =
+    new Map<number, number>();
+
   for (const lesson of lessons) {
     const currentCount =
       lessonCountMap.get(
@@ -277,6 +282,15 @@ export default async function AdminLessonsPage() {
       lesson.category_id,
       currentCount + 1,
     );
+
+    if (lesson.is_free) {
+      freeCountMap.set(
+        lesson.category_id,
+        (freeCountMap.get(
+          lesson.category_id,
+        ) ?? 0) + 1,
+      );
+    }
   }
 
   const publishedCount =
@@ -364,6 +378,11 @@ export default async function AdminLessonsPage() {
                       category.id,
                     ) ?? 0;
 
+                  const freeCount =
+                    freeCountMap.get(
+                      category.id,
+                    ) ?? 0;
+
                   return (
                     <article
                       key={category.id}
@@ -407,6 +426,21 @@ export default async function AdminLessonsPage() {
                             Darslar:{" "}
                             <strong className="text-slate-800">
                               {lessonCount} ta
+                            </strong>
+
+                            <span className="mx-2 text-slate-300">
+                              |
+                            </span>
+
+                            Bepul:{" "}
+                            <strong
+                              className={
+                                freeCount > 0
+                                  ? "text-teal-700"
+                                  : "text-slate-800"
+                              }
+                            >
+                              {freeCount} ta
                             </strong>
                           </p>
                         </div>

@@ -77,3 +77,66 @@ export function buildLessonTestMap(
 
   return result;
 }
+
+/**
+ * DARS OCHIQMI — bitta joyda yoziladigan qoida.
+ *
+ * Ikki xil to'siq bor va ular bir-biridan mustaqil:
+ *
+ *   1. TARIF. Dars Premium obunachiga va adminga ochiq. Obunasi
+ *      yo'q o'quvchiga esa faqat qo'lda bepul qilingan dars ochiq
+ *      (`lessons.is_free`).
+ *
+ *   2. NAVBAT. Keyingi dars oldingisining testi 90% ga yetganda
+ *      ochiladi. Qo'lda bepul qilingan dars bu navbatdan TASHQARIDA
+ *      turadi — unga yetib borish uchun oldingi darslarni o'tish
+ *      shart emas, aks holda bepulligining ma'nosi qolmaydi.
+ *
+ * Bepul darsni ochish navbatni surmaydi: undan keyingi pullik dars
+ * baribir o'zidan oldingilari bajarilgandagina ochiladi. Ya'ni
+ * bepul dars — navbatga qo'shilgan eshik emas, yon eshik.
+ *
+ * Darslar ro'yxati EKRANDAGI TARTIBDA berilishi kerak
+ * (order_number bo'yicha), chunki navbat shu tartibda hisoblanadi.
+ */
+export type LessonGateInput = {
+  /** `lessons.is_free` — qo'lda bepul qilingan */
+  isFree: boolean;
+  /** Dars testlarining o'rtachasi 90% ga yetganmi */
+  isCompleted: boolean;
+};
+
+export type LessonGate = {
+  /** Tarif bo'yicha ruxsat bor */
+  hasContentAccess: boolean;
+  /** Navbat bo'yicha ochiq */
+  isSequenceUnlocked: boolean;
+  /** Dars haqiqatan ochiq (ikkala shart ham bajarilgan) */
+  isOpen: boolean;
+};
+
+export function buildLessonGates(
+  lessons: LessonGateInput[],
+  hasPremiumAccess: boolean,
+): LessonGate[] {
+  /* Shu paytgacha hamma dars bajarilganmi */
+  let chainUnlocked = true;
+
+  return lessons.map((lesson) => {
+    const hasContentAccess =
+      hasPremiumAccess || lesson.isFree;
+
+    const isSequenceUnlocked =
+      chainUnlocked || lesson.isFree;
+
+    chainUnlocked =
+      chainUnlocked && lesson.isCompleted;
+
+    return {
+      hasContentAccess,
+      isSequenceUnlocked,
+      isOpen:
+        hasContentAccess && isSequenceUnlocked,
+    };
+  });
+}

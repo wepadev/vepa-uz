@@ -19,7 +19,16 @@ export type ReviewQuestion = {
   questionText: string;
   stimulusText: string | null;
   imageUrl: string | null;
-  options: Array<{ letter: string; text: string }>;
+  /*
+   * `letter` — asl harf, javob shu ko'rinishda yuboriladi.
+   * `displayLetter` — o'quvchi ekranda ko'radigan harf
+   * (variantlar aralashtirilgani uchun ular farq qiladi).
+   */
+  options: Array<{
+    letter: string;
+    text: string;
+    displayLetter?: string;
+  }>;
   isWritten: boolean;
   testTitle: string | null;
   /** Necha marta xato qilingan — savol qanchalik qiyin ekani */
@@ -276,7 +285,9 @@ export default function ReviewSession({
                   />
 
                   <span className="min-w-0 text-[15px] leading-7">
-                    <b className="mr-1.5">{option.letter})</b>
+                    <b className="mr-1.5">
+                      {option.displayLetter ?? option.letter})
+                    </b>
                     <MathValue value={option.text} />
                   </span>
                 </label>

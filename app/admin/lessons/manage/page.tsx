@@ -383,7 +383,19 @@ async function changeLessonState(
   );
 }
 
-async function changeLessonFree(
+/*
+ * Videodarsni qo'lda bepul qilish.
+ *
+ * Qoida test tomonidagi `tests.is_free` bilan bir xil: avtomatik
+ * hech narsa bepul bo'lmaydi, faqat shu tugma bosilgan dars ochiq
+ * bo'ladi. Premium obunasi borlar baribir hamma darsni ko'radi,
+ * shuning uchun bu belgi faqat obunasi yo'qlar uchun ishlaydi.
+ *
+ * Bepul dars KETMA-KETLIKDAN TASHQARIDA ochiladi: unga yetib
+ * borish uchun oldingi darslarni 90% ga yopish shart emas.
+ * Keyingi pullik dars esa eski qoida bo'yicha qoladi.
+ */
+async function changeLessonFreeState(
   formData: FormData,
 ) {
   "use server";
@@ -410,13 +422,19 @@ async function changeLessonFree(
     redirect("/admin/lessons");
   }
 
-  await supabase
+  const { error } = await supabase
     .from("lessons")
     .update({
       is_free: nextState,
     })
     .eq("id", lessonId)
     .eq("category_id", categoryId);
+
+  if (error) {
+    redirect(
+      `/admin/lessons/manage?categoryId=${categoryId}`,
+    );
+  }
 
   revalidatePath(
     "/admin/lessons/manage",
@@ -425,6 +443,7 @@ async function changeLessonFree(
   revalidatePath("/admin/lessons");
   revalidatePath("/lessons");
   revalidatePath("/lessons/category");
+  revalidatePath("/lessons/view");
 
   redirect(
     `/admin/lessons/manage?categoryId=${categoryId}`,
@@ -693,7 +712,7 @@ export default async function ManageLessonsPage({
               </strong>
             </div>
 
-            <div className="rounded-xl bg-amber-50 px-4 py-2 text-sm text-amber-800">
+            <div className="rounded-xl bg-teal-50 px-4 py-2 text-sm text-teal-800">
               Bepul:{" "}
               <strong>
                 {freeLessons}
@@ -778,7 +797,7 @@ export default async function ManageLessonsPage({
                             <span
                               className={
                                 lesson.is_free
-                                  ? "rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700"
+                                  ? "rounded-full bg-teal-100 px-3 py-1 text-xs font-semibold text-teal-700"
                                   : "rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700"
                               }
                             >
@@ -844,7 +863,7 @@ export default async function ManageLessonsPage({
 
                         <form
                           action={
-                            changeLessonFree
+                            changeLessonFreeState
                           }
                         >
                           <input
@@ -868,7 +887,11 @@ export default async function ManageLessonsPage({
                           />
 
                           <SubmitButton
-                            className="rounded-xl bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-200"
+                            className={
+                              lesson.is_free
+                                ? "rounded-xl bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-200"
+                                : "rounded-xl bg-teal-100 px-4 py-2 text-sm font-semibold text-teal-700 hover:bg-teal-200"
+                            }
                           >
                             {lesson.is_free
                               ? "Premium qilish"

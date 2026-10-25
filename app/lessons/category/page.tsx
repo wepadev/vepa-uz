@@ -7,6 +7,7 @@ import {
 
 import {
   buildBestScoreMap,
+  buildLessonGates,
   buildLessonTestMap,
   isLessonPassed,
   lessonAverageScore,
@@ -193,38 +194,48 @@ export default async function LessonCategoryPage({
       ).getTime() > Date.now()
     );
 
-  let nextLessonIsUnlocked = true;
-
-  const lessonStates = lessons.map((lesson) => {
-    const isSequenceUnlocked = nextLessonIsUnlocked;
-
-    const hasContentAccess =
-      hasPremiumAccess || lesson.is_free === true;
-
-    const lessonTests = testsByLesson.get(lesson.id) ?? [];
-
-    const averageScore = lessonAverageScore(
-      lessonTests,
-      bestScoreMap,
-    );
-
-    const isCompleted = isLessonPassed(
-      lessonTests,
-      bestScoreMap,
-    );
-
-    nextLessonIsUnlocked =
-      nextLessonIsUnlocked && isCompleted;
+  /*
+   * Qaysi dars ochiq — qoida `lib/lesson-progress.ts` da,
+   * `/lessons/view` bilan bitta joydan o'qiladi.
+   */
+  const lessonFacts = lessons.map((lesson) => {
+    const lessonTests =
+      testsByLesson.get(lesson.id) ?? [];
 
     return {
       lesson,
-      isSequenceUnlocked,
-      hasContentAccess,
-      isCompleted,
-      averageScore,
-      testCount: lessonTests.length,
+      lessonTests,
+      averageScore: lessonAverageScore(
+        lessonTests,
+        bestScoreMap,
+      ),
+      isCompleted: isLessonPassed(
+        lessonTests,
+        bestScoreMap,
+      ),
     };
   });
+
+  const gates = buildLessonGates(
+    lessonFacts.map((fact) => ({
+      isFree: fact.lesson.is_free === true,
+      isCompleted: fact.isCompleted,
+    })),
+    hasPremiumAccess,
+  );
+
+  const lessonStates = lessonFacts.map(
+    (fact, index) => ({
+      lesson: fact.lesson,
+      isSequenceUnlocked:
+        gates[index].isSequenceUnlocked,
+      hasContentAccess:
+        gates[index].hasContentAccess,
+      isCompleted: fact.isCompleted,
+      averageScore: fact.averageScore,
+      testCount: fact.lessonTests.length,
+    }),
+  );
 
   const completedCount =
     lessonStates.filter(

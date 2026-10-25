@@ -795,6 +795,7 @@ for (const file of [
   "29-dokon-guruh-uchun.sql",
   "30-tozalash.sql",
   "32-tanga-hisobi.sql",
+  "36-videodars-bepul.sql",
 ]) {
   try {
     await db.exec(readFileSync(join(DB_DIR, file), "utf8"));
@@ -802,6 +803,49 @@ for (const file of [
   } catch (error) {
     bad(`${file}: ${error.message}`);
   }
+}
+
+/*
+ * Videodars bepulligi: yangi dars o'z-o'zidan bepul bo'lmasligi va
+ * belgini qo'lda qo'yish mumkinligi tekshiriladi.
+ */
+try {
+  const created = await db.query(
+    "insert into public.lessons default values returning id, is_free",
+  );
+
+  const lessonId = created.rows[0].id;
+
+  if (created.rows[0].is_free === false) {
+    ok("yangi videodars standart holatda Premium");
+  } else {
+    bad(
+      `yangi videodars bepul chiqdi: ${created.rows[0].is_free}`,
+    );
+  }
+
+  await db.query(
+    "update public.lessons set is_free = true where id = $1",
+    [lessonId],
+  );
+
+  const after = await db.query(
+    "select is_free from public.lessons where id = $1",
+    [lessonId],
+  );
+
+  if (after.rows[0].is_free === true) {
+    ok("videodarsni qo'lda bepul qilish ishlaydi");
+  } else {
+    bad("videodars bepul qilinmadi");
+  }
+
+  await db.query(
+    "delete from public.lessons where id = $1",
+    [lessonId],
+  );
+} catch (error) {
+  bad(`videodars bepulligi: ${error.message}`);
 }
 
 {
