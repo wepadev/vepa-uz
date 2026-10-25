@@ -81,6 +81,12 @@ const tekshiruvlar = [
     ish: () => ustun("test_topics", "is_free"),
   },
   {
+    nom: "lessons.is_free ustuni",
+    migratsiya: "db/36-videodars-bepul.sql",
+    nega: "videodarsni qo'lda bepul qilish",
+    ish: () => ustun("lessons", "is_free"),
+  },
+  {
     nom: "topic_examples jadvali",
     migratsiya: "db/33-misol-videolari.sql",
     nega: "TOP kitoblardagi misollar va ularning videolari",
@@ -107,23 +113,19 @@ for (const t of tekshiruvlar) {
 }
 
 /*
- * Funksiyani tekshirish: mavjud bo'lmagan funksiyaga murojaat
- * 404 qaytaradi, mavjudi esa argument noto'g'ri bo'lsa 400.
+ * FUNKSIYANI BU YERDAN TEKSHIRIB BO'LMAYDI.
+ *
+ * Avval shunday qilingan edi: mavjud bo'lmagan funksiyaga
+ * murojaat 404 qaytaradi, demak 404 = funksiya yo'q. BU XATO
+ * XULOSA ekan. PostgREST funksiyani NOMI VA ARGUMENTLARI bo'yicha
+ * qidiradi: funksiya bor bo'lsa ham, argumentlari boshqacha bo'lsa
+ * baribir 404 qaytaradi. Natijada 2026-10-23 da bu tekshiruv
+ * aslida joyida turgan funksiyani "yo'q" deb ko'rsatdi.
+ *
+ * Shuning uchun olib tashlandi. db/35 ishga tushganini
+ * `test_topics.is_free` ustuni bo'yicha bilamiz — o'sha
+ * migratsiya ikkalasini birga qo'shadi.
  */
-const rpc = await fetch(`${BASE}/rest/v1/rpc/math_booster_is_test_free`, {
-  method: "POST",
-  headers: { ...headers, "Content-Type": "application/json" },
-  body: "{}",
-});
-
-if (rpc.status === 404) {
-  yetishmaydi += 1;
-  console.log(`  YO'Q    math_booster_is_test_free() funksiyasi`);
-  console.log(`          bepul/premium qoidasi shu yerda hal bo'ladi`);
-  console.log(`          ishga tushiring: db/35-mavzu-bepul.sql`);
-} else {
-  console.log(`  BOR     math_booster_is_test_free() funksiyasi`);
-}
 
 console.log(
   yetishmaydi === 0

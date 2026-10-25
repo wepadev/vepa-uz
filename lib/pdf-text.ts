@@ -365,6 +365,74 @@ function isCovered(below: Item[], rule: Rule): boolean {
  * shunda ichma-ich kasr ham to'g'ri yig'iladi — ichkisi avval
  * bitta bo'lakka aylanadi, tashqisi uni tayyor holda ko'radi.
  */
+/**
+ * Chiziq chetida BO'LINIB KETGAN bo'lakni ajratish.
+ *
+ * Muammo: PDF bitta shriftdagi matnni bitta bo'lak qilib yozadi.
+ * "3a45 + 6a18" da "45 + 6" bitta bo'lak bo'lib qoladi, ustki
+ * chiziq esa uning o'rtasidan o'tadi. Butun bo'lakni ichkariga
+ * olsak ham, tashqarida qoldirsak ham natija noto'g'ri.
+ *
+ * Yechim: bo'lakni chiziq cheti to'g'ri kelgan joydan kesamiz.
+ * Belgi kengliklari aniq emas, shuning uchun bo'lak kengligini
+ * belgilar soniga teng bo'lamiz — raqamli matnda bu yetarli
+ * aniq, chunki raqamlar bir xil enda bo'ladi.
+ */
+function splitAtRules(items: Item[], rules: Rule[], base: number): Item[] {
+  const out: Item[] = [];
+
+  for (const item of items) {
+    /* Uzun jumlani kesmaymiz — chiziq unga tegishli bo'lolmaydi */
+    if (item.w <= 0 || item.text.length > 24) {
+      out.push(item);
+      continue;
+    }
+
+    const edges = new Set<number>();
+
+    for (const rule of rules) {
+      /* Faqat shu bo'lakning ustidagi yoki tagidagi chiziq */
+      const dy = rule.y - item.y;
+      if (dy > base * 1.4 || dy < -base * 1.4) continue;
+
+      for (const edge of [rule.x0, rule.x1]) {
+        if (edge > item.x + 1 && edge < item.x + item.w - 1) edges.add(edge);
+      }
+    }
+
+    if (edges.size === 0) {
+      out.push(item);
+      continue;
+    }
+
+    const perChar = item.w / item.text.length;
+    const cuts = [...edges]
+      .map((edge) => Math.round((edge - item.x) / perChar))
+      .filter((cut) => cut > 0 && cut < item.text.length)
+      .sort((a, b) => a - b);
+
+    let from = 0;
+
+    for (const cut of [...new Set(cuts), item.text.length]) {
+      const piece = item.text.slice(from, cut);
+
+      if (piece.trim()) {
+        out.push({
+          text: piece,
+          x: item.x + from * perChar,
+          w: piece.length * perChar,
+          y: item.y,
+          h: item.h,
+        });
+      }
+
+      from = cut;
+    }
+  }
+
+  return out;
+}
+
 function buildFractions(
   items: Item[],
   rules: Rule[],
@@ -1119,7 +1187,8 @@ export async function extractLines(buffer: Buffer): Promise<ExtractResult> {
      */
     const found = await pageRules(page);
     const braced = buildBraces(items, found, base);
-    const withMath = buildFractions(braced.items, braced.rules, base, width);
+    const cut = splitAtRules(braced.items, braced.rules, base);
+    const withMath = buildFractions(cut, braced.rules, base, width);
 
     for (const line of groupLines(withMath, base)) {
       const text = lineToText(line, base);
