@@ -95,7 +95,6 @@ export default function LessonCard({
     >
       <div className="relative aspect-video overflow-hidden rounded-xl bg-mb-tint">
         {thumbnail ? (
-          // eslint-disable-next-line @next/next/no-img-element
           <img
             src={thumbnail}
             alt=""

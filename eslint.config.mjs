@@ -48,6 +48,18 @@ const eslintConfig = [
        *
        * Bunday nomlarga ogohlantirish bermaymiz.
        */
+      /*
+       * `next/image` o'rniga oddiy <img> ataylab ishlatiladi.
+       *
+       * Rasmlar (savol rasmlari, muqovalar) Supabase Storage'dan
+       * vaqtinchalik imzoli havola bilan keladi. `next/image` ularni
+       * Vercel orqali qayta ishlaydi: Hobby tarifida bu oylik limitga
+       * tushadi va har yangi imzoli havola yangi rasm hisoblanadi.
+       * O'rniga <img> larga `loading="lazy"` qo'yilgan — ekranga
+       * kelmaguncha yuklanmaydi.
+       */
+      "@next/next/no-img-element": "off",
+
       "@typescript-eslint/no-unused-vars": [
         "error",
         {

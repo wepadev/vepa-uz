@@ -838,6 +838,8 @@ export default function TestRunner({
               {currentItem.imageUrl && (
                 <div className="scroll-x mb-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-2 sm:mb-6 sm:p-4">
                   <img
+                    loading="lazy"
+                    decoding="async"
                     src={
                       currentItem.imageUrl
                     }

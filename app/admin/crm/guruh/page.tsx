@@ -17,6 +17,8 @@ import {
 
 import AppAlert from "@/components/ui/app-alert";
 import SubmitButton from "@/components/ui/submit-button";
+import { remainingLabel } from "@/lib/due-label";
+import { parentReportUrl } from "@/lib/parent-link";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 
@@ -178,7 +180,13 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
 
   if (!group) notFound();
 
-  const [rankingResult, balanceResult, studentsResult, rulesResult] =
+  const [
+    rankingResult,
+    balanceResult,
+    studentsResult,
+    rulesResult,
+    assignmentsResult,
+  ] =
     await Promise.all([
       supabase.rpc("crm_group_ranking", { p_group_id: groupId }),
 
@@ -196,6 +204,20 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
         .select("*")
         .eq("group_id", groupId)
         .maybeSingle(),
+
+      /*
+       * Uy vazifalari ham shu sahifada ko'rinsin: ilgari ular faqat
+       * alohida sahifada edi va guruh ikki joyga bo'linib qolgandi.
+       */
+      group.study_group_id
+        ? supabase
+            .from("assignments")
+            .select("id, due_at, is_active, tests(title)")
+            .eq("group_id", group.study_group_id)
+            .eq("is_active", true)
+            .order("due_at", { ascending: false })
+            .limit(6)
+        : Promise.resolve({ data: [], error: null }),
     ]);
 
   const ranking = (rankingResult.data ?? []) as RankingRow[];
@@ -214,6 +236,19 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
   );
 
   const today = todayInTashkent();
+
+  const assignments = (assignmentsResult.data ?? []) as unknown as {
+    id: number;
+    due_at: string;
+    tests: { title: string } | null;
+  }[];
+
+  const parentLinks = new Map(
+    students.map((student) => [
+      student.id,
+      parentReportUrl(student.id),
+    ] as const),
+  );
 
   const totalPoints = ranking.reduce(
     (sum, row) => sum + row.total_points,
@@ -296,10 +331,10 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
 
               <span>
                 <span className="block font-bold text-blue-900">
-                  Uy vazifalari
+                  Vazifa berish
                 </span>
                 <span className="mt-0.5 block text-sm text-blue-700">
-                  Saytdagi testlarni berish
+                  Saytdagi testni uy vazifasiga berish
                 </span>
               </span>
             </Link>
@@ -367,6 +402,67 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
             </Link>
           )}
         </div>
+
+        {/* Uy vazifalari */}
+        {group.study_group_id && (
+          <>
+            <div className="mt-8 flex items-center justify-between gap-3">
+              <h2 className="inline-flex items-center gap-2 text-lg font-bold">
+                <ClipboardList
+                  className="h-5 w-5 text-mb-muted"
+                  strokeWidth={2}
+                  aria-hidden="true"
+                />
+                Uy vazifalari
+              </h2>
+
+              <Link
+                href={`/admin/groups/view?groupId=${group.study_group_id}`}
+                className="inline-flex min-h-10 items-center rounded-xl bg-mb-brand px-4 text-sm font-semibold text-white transition hover:bg-mb-brandDark"
+              >
+                Vazifa berish
+              </Link>
+            </div>
+
+            {assignments.length === 0 ? (
+              <p className="mt-3 rounded-2xl border border-dashed border-mb-line bg-white px-4 py-3 text-sm text-mb-muted">
+                Faol vazifa yo‘q.
+              </p>
+            ) : (
+              <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+                {assignments.map((item, index) => {
+                  const overdue = new Date(item.due_at).getTime() < Date.now();
+
+                  return (
+                    <Link
+                      key={item.id}
+                      href={`/admin/assignments/view?id=${item.id}`}
+                      className={cn(
+                        "flex items-center justify-between gap-3 px-4 py-3 transition hover:bg-slate-50",
+                        index > 0 && "border-t border-mb-line",
+                      )}
+                    >
+                      <span className="min-w-0 truncate text-[15px] font-semibold text-mb-ink">
+                        {item.tests?.title ?? "Test"}
+                      </span>
+
+                      <span
+                        className={cn(
+                          "shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold",
+                          overdue
+                            ? "bg-slate-100 text-slate-500"
+                            : "bg-amber-50 text-amber-700",
+                        )}
+                      >
+                        {overdue ? "Tugagan" : remainingLabel(item.due_at)}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </>
+        )}
 
         {/* Reyting */}
         <h2 className="mt-8 inline-flex items-center gap-2 text-lg font-bold">
@@ -599,6 +695,36 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                       </SubmitButton>
                     </div>
                   </form>
+
+                  <div className="mt-4 rounded-xl bg-slate-50 p-3">
+                    <label
+                      htmlFor={`ota-ona-${student.id}`}
+                      className="block text-xs font-semibold text-slate-600"
+                    >
+                      Ota-onaga hisobot havolasi
+                    </label>
+
+                    <input
+                      id={`ota-ona-${student.id}`}
+                      readOnly
+                      value={parentLinks.get(student.id) ?? ""}
+                      className="mt-1 min-h-10 w-full rounded-lg border border-slate-300 bg-white px-3 font-mono text-xs text-slate-700"
+                    />
+
+                    <p className="mt-1 text-[11px] leading-4 text-mb-muted">
+                      Nusxalab Telegram&apos;da yuboring. Ota-ona kirishsiz
+                      davomat, ball va uy vazifasi natijalarini ko‘radi.
+                    </p>
+
+                    <a
+                      href={parentLinks.get(student.id)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-1.5 inline-flex min-h-8 items-center text-xs font-semibold text-mb-brand hover:text-mb-brandDark"
+                    >
+                      Hisobotni ochish ›
+                    </a>
+                  </div>
 
                   <form action={removeCrmStudent} className="mt-3">
                     <input type="hidden" name="groupId" value={groupId} />

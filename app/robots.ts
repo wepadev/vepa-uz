@@ -29,6 +29,7 @@ export default function robots(): MetadataRoute.Robots {
         "/tests/take",
         "/access-denied",
         "/access-required",
+        "/ota-ona",
       ],
     },
     sitemap: `${siteUrl}/sitemap.xml`,

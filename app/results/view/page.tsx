@@ -7,6 +7,7 @@ import {
 import MathText from "@/components/math-text";
 import YouTubeEmbed from "@/components/youtube-embed";
 import { createClient } from "@/lib/supabase/server";
+import type { RankingTestRpcRow } from "@/lib/stats-types";
 
 export const dynamic = "force-dynamic";
 
@@ -43,13 +44,6 @@ type RankingAttemptRow = {
 type BestAttempt = RankingAttemptRow & {
   percentageNumber: number;
   durationSeconds: number;
-};
-
-type RankingTestRpcRow = {
-  test_id: number | string;
-  title: string;
-  created_at: string;
-  participants: number | string;
 };
 
 type UserTestStatisticsRpcRow = {
@@ -1594,6 +1588,8 @@ const differenceLabel =
                   {imageUrl && (
                     <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-3">
                       <img
+                        loading="lazy"
+                        decoding="async"
                         src={imageUrl}
                         alt={`${question.order_number}-savol chizmasi`}
                         className="mx-auto max-h-[520px] w-auto max-w-full rounded-xl object-contain"
@@ -1759,6 +1755,8 @@ const differenceLabel =
                 {imageUrl && (
                   <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-3">
                     <img
+                      loading="lazy"
+                      decoding="async"
                       src={imageUrl}
                       alt="Umumiy savol chizmasi"
                       className="mx-auto max-h-[560px] w-auto max-w-full rounded-xl object-contain"

@@ -29,4 +29,10 @@ npm run test:sql   # baza funksiyalari testlari (PGlite, internet kerak emas)
 | `db/` | Supabase'da qo'lda ishga tushiriladigan SQL fayllar ([db/README.md](db/README.md)) |
 | `scripts/` | Test import qilish va baza xizmati ([scripts/README.md](scripts/README.md)) |
 | `tests/` | Avtomatik testlar |
-| `docs/dizayn.md` | Dizayn qoidalari |
+| `docs/` | Dizayn qoidalari (`dizayn.md`), uy vazifasi tizimi rejasi |
+
+## Ochiq sahifalar
+
+Tizimga kirmasdan faqat bular ochiladi (`lib/supabase/proxy.ts`):
+bosh sahifa, `/pricing`, `/auth/*` va ota-ona hisoboti `/ota-ona/<kod>`.
+Hisobot havolasi admin paneldagi guruh sahifasida, o'quvchi kartasida.

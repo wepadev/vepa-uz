@@ -3,6 +3,7 @@ import { Check, Crown } from "lucide-react";
 
 import { createPaymentOrderAction } from "@/app/pricing/actions";
 import PaymentSubmitButton from "@/components/payment-submit-button";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { asRpcClient } from "@/lib/supabase/rpc";
 
@@ -107,11 +108,20 @@ export default async function PricingPage({
 
   const rpcClient = asRpcClient(supabase);
 
+  /*
+   * Tariflar sahifasi mehmonga ham ochiq. Mehmonning bazada
+   * funksiya chaqirish huquqi bo'lmasligi mumkin, shuning uchun
+   * tariflar ro'yxati (ochiq ma'lumot) admin mijozi orqali olinadi.
+   */
+  const plansClient = user
+    ? rpcClient
+    : asRpcClient(createAdminClient());
+
   const [
     plansResult,
     premiumResult,
   ] = await Promise.all([
-    rpcClient.rpc(
+    plansClient.rpc(
       "get_active_payment_plans",
     ),
 
@@ -342,7 +352,7 @@ export default async function PricingPage({
                   <PaymentSubmitButton highlighted={isBest} compact />
                 ) : (
                   <Link
-                    href="/auth/login"
+                    href={`/auth/login?mode=signup&next=${encodeURIComponent(`/pricing?plan=${plan.code}`)}`}
                     className="inline-flex min-h-11 shrink-0 items-center rounded-xl bg-mb-brand px-4 text-sm font-bold text-white hover:bg-mb-brandDark"
                   >
                     Olish

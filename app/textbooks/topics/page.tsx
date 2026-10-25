@@ -210,6 +210,8 @@ export default async function TextbookTopicsPage({
           <span className="flex h-28 w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-100 p-1">
             {textbook.cover_url ? (
               <img
+                loading="lazy"
+                decoding="async"
                 src={textbook.cover_url}
                 alt=""
                 aria-hidden="true"

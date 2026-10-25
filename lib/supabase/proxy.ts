@@ -20,6 +20,20 @@ const PUBLIC_FILES = new Set([
   "/sitemap.xml",
 ]);
 
+/*
+ * Tizimga kirmasdan ochiladigan sahifalar.
+ *
+ *   /pricing  — tariflar: mehmon narxni ko'rib, keyin ro'yxatdan o'tadi
+ *   /ota-ona  — ota-onaga yuborilgan hisobot (imzoli havola bilan)
+ */
+const PUBLIC_PREFIXES = ["/pricing", "/ota-ona"];
+
+function isPublicPage(pathname: string) {
+  return PUBLIC_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+}
+
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
@@ -69,6 +83,7 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname !== "/" &&
     !user &&
     !PUBLIC_FILES.has(request.nextUrl.pathname) &&
+    !isPublicPage(request.nextUrl.pathname) &&
     !request.nextUrl.pathname.startsWith("/login") &&
     !request.nextUrl.pathname.startsWith("/auth")
   ) {

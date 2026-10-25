@@ -160,6 +160,8 @@ export default async function TextbookSectionPage() {
                              * bo'lishi mumkin.
                              */
                             <img
+                              loading="lazy"
+                              decoding="async"
                               src={textbook.cover_url}
                               alt=""
                               aria-hidden="true"

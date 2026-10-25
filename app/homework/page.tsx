@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import AppAlert from "@/components/ui/app-alert";
+import { formatDue, remainingLabel } from "@/lib/due-label";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 
@@ -53,37 +54,6 @@ type AssignmentRow = {
 
 function single(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
-}
-
-function formatDue(value: string) {
-  return new Intl.DateTimeFormat("uz-UZ", {
-    day: "2-digit",
-    month: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZone: "Asia/Tashkent",
-  }).format(new Date(value));
-}
-
-/** "3 kun qoldi" / "5 soat qoldi" */
-function remainingLabel(dueAt: string) {
-  const ms = new Date(dueAt).getTime() - Date.now();
-
-  if (ms <= 0) {
-    return "Muddat tugadi";
-  }
-
-  const hours = Math.floor(ms / 3_600_000);
-
-  if (hours >= 48) {
-    return `${Math.floor(hours / 24)} kun qoldi`;
-  }
-
-  if (hours >= 1) {
-    return `${hours} soat qoldi`;
-  }
-
-  return `${Math.max(1, Math.floor(ms / 60_000))} daqiqa qoldi`;
 }
 
 export default async function HomeworkPage({

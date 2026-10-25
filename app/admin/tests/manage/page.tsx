@@ -845,6 +845,8 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                       {imageUrl && (
                         <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-3">
                           <img
+                            loading="lazy"
+                            decoding="async"
                             src={imageUrl}
                             alt={`${question.order_number}-savol chizmasi`}
                             className="mx-auto max-h-[460px] w-auto max-w-full rounded-xl object-contain"
@@ -1089,6 +1091,8 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                     {imageUrl && (
                       <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-3">
                         <img
+                          loading="lazy"
+                          decoding="async"
                           src={imageUrl}
                           alt="Umumiy savol chizmasi"
                           className="mx-auto max-h-[520px] w-auto max-w-full rounded-xl object-contain"

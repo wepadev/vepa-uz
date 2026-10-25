@@ -630,6 +630,8 @@ function TextbookCard({
       {textbook.cover_url ? (
         <div className="flex aspect-[16/9] items-center justify-center bg-slate-100">
           <img
+            loading="lazy"
+            decoding="async"
             src={textbook.cover_url}
             alt={`${textbook.title} muqovasi`}
             className="h-full w-full object-contain p-2"
