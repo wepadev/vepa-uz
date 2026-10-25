@@ -13,6 +13,8 @@ import CreateLessonForm from "@/components/admin/create-lesson-form";
 import MathText from "@/components/math-text";
 import YouTubeEmbed from "@/components/youtube-embed";
 import SubmitButton from "@/components/ui/submit-button";
+import { parseOrderNumber } from "@/lib/lesson-order";
+import { moveLessonTo } from "@/lib/lesson-order-db";
 
 type PageProps = {
   searchParams: Promise<{
@@ -29,6 +31,7 @@ type LessonRow = {
   content: string | null;
   order_number: number;
   is_published: boolean;
+  is_free: boolean;
   created_at: string;
 };
 
@@ -120,6 +123,14 @@ async function createLesson(
     formData.get("content") ?? "",
   ).trim();
 
+  /* Bo'sh qoldirilsa dars oxiriga qo'yiladi */
+  const orderNumber = parseOrderNumber(
+    formData.get("orderNumber"),
+  );
+
+  /* Har bir dars sukut bo'yicha Premium; bepullik faqat qo'lda */
+  const isFree = formData.get("isFree") === "on";
+
   /* Bir darsga bir nechta test biriktirilishi mumkin */
   const testIds = formData
     .getAll("testIds")
@@ -156,6 +167,11 @@ async function createLesson(
   } else if (!isValidVideoUrl(videoUrl)) {
     errors.videoUrl =
       "Video havolasini to‘liq kiriting.";
+  }
+
+  if (orderNumber === undefined) {
+    errors.orderNumber =
+      "Tartib raqami 1 yoki undan katta butun son bo‘lsin.";
   }
 
   if (Object.keys(errors).length > 0) {
@@ -248,6 +264,7 @@ async function createLesson(
       content: content || null,
       order_number: nextOrderNumber,
       is_published: false,
+      is_free: isFree,
     })
     .select("id")
     .single();
@@ -259,6 +276,26 @@ async function createLesson(
         "Videodarsni saqlab bo‘lmadi.",
       errors: {},
     };
+  }
+
+  if (
+    orderNumber &&
+    orderNumber < nextOrderNumber
+  ) {
+    const moveError = await moveLessonTo(
+      supabase,
+      categoryId,
+      createdLesson.id,
+      orderNumber,
+    );
+
+    if (moveError) {
+      return {
+        status: "error",
+        message: `Dars saqlandi, lekin tartib raqami qo‘yilmadi: ${moveError}`,
+        errors: {},
+      };
+    }
   }
 
   if (testIds.length > 0) {
@@ -340,6 +377,54 @@ async function changeLessonState(
 
   revalidatePath("/admin/lessons");
   revalidatePath("/lessons");
+
+  redirect(
+    `/admin/lessons/manage?categoryId=${categoryId}`,
+  );
+}
+
+async function changeLessonFree(
+  formData: FormData,
+) {
+  "use server";
+
+  const supabase = await requireAdmin();
+
+  const categoryId = Number(
+    formData.get("categoryId"),
+  );
+
+  const lessonId = Number(
+    formData.get("lessonId"),
+  );
+
+  const nextState =
+    formData.get("nextState") === "true";
+
+  if (
+    !Number.isInteger(categoryId) ||
+    !Number.isInteger(lessonId) ||
+    categoryId <= 0 ||
+    lessonId <= 0
+  ) {
+    redirect("/admin/lessons");
+  }
+
+  await supabase
+    .from("lessons")
+    .update({
+      is_free: nextState,
+    })
+    .eq("id", lessonId)
+    .eq("category_id", categoryId);
+
+  revalidatePath(
+    "/admin/lessons/manage",
+  );
+
+  revalidatePath("/admin/lessons");
+  revalidatePath("/lessons");
+  revalidatePath("/lessons/category");
 
   redirect(
     `/admin/lessons/manage?categoryId=${categoryId}`,
@@ -479,6 +564,7 @@ export default async function ManageLessonsPage({
         content,
         order_number,
         is_published,
+        is_free,
         created_at
       `)
       .eq("category_id", categoryId)
@@ -564,6 +650,11 @@ export default async function ManageLessonsPage({
         lesson.is_published,
     ).length;
 
+  const freeLessons =
+    lessons.filter(
+      (lesson) => lesson.is_free,
+    ).length;
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
@@ -601,6 +692,13 @@ export default async function ManageLessonsPage({
                 {publishedLessons}
               </strong>
             </div>
+
+            <div className="rounded-xl bg-amber-50 px-4 py-2 text-sm text-amber-800">
+              Bepul:{" "}
+              <strong>
+                {freeLessons}
+              </strong>
+            </div>
           </div>
         </div>
       </header>
@@ -609,6 +707,7 @@ export default async function ManageLessonsPage({
         <div>
           <CreateLessonForm
             categoryId={categoryId}
+            nextOrderNumber={lessons.length + 1}
             tests={tests}
             action={createLesson}
           />
@@ -675,6 +774,18 @@ export default async function ManageLessonsPage({
                                 ? "Nashr qilingan"
                                 : "Yopiq"}
                             </span>
+
+                            <span
+                              className={
+                                lesson.is_free
+                                  ? "rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700"
+                                  : "rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700"
+                              }
+                            >
+                              {lesson.is_free
+                                ? "Bepul"
+                                : "Premium"}
+                            </span>
                           </div>
 
                           {lesson.description && (
@@ -728,6 +839,40 @@ export default async function ManageLessonsPage({
                             {lesson.is_published
                               ? "Yopish"
                               : "Nashr qilish"}
+                          </SubmitButton>
+                        </form>
+
+                        <form
+                          action={
+                            changeLessonFree
+                          }
+                        >
+                          <input
+                            type="hidden"
+                            name="categoryId"
+                            value={categoryId}
+                          />
+
+                          <input
+                            type="hidden"
+                            name="lessonId"
+                            value={lesson.id}
+                          />
+
+                          <input
+                            type="hidden"
+                            name="nextState"
+                            value={String(
+                              !lesson.is_free,
+                            )}
+                          />
+
+                          <SubmitButton
+                            className="rounded-xl bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-200"
+                          >
+                            {lesson.is_free
+                              ? "Premium qilish"
+                              : "Bepul qilish"}
                           </SubmitButton>
                         </form>
 

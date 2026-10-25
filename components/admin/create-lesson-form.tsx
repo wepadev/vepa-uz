@@ -15,6 +15,7 @@ type TestOption = {
 
 type CreateLessonFormProps = {
   categoryId: number;
+  nextOrderNumber: number;
   tests: TestOption[];
   action: (
     previousState: FormState,
@@ -54,6 +55,7 @@ function FieldError({
 
 export default function CreateLessonForm({
   categoryId,
+  nextOrderNumber,
   tests,
   action,
 }: CreateLessonFormProps) {
@@ -100,6 +102,35 @@ export default function CreateLessonForm({
 
       <FieldError
         message={state.errors.title}
+      />
+
+      <label
+        htmlFor="orderNumber"
+        className="mt-5 block text-sm font-semibold"
+      >
+        Tartib raqami
+      </label>
+
+      <input
+        id="orderNumber"
+        name="orderNumber"
+        type="number"
+        min={1}
+        step={1}
+        inputMode="numeric"
+        defaultValue={nextOrderNumber}
+        className={fieldClass(
+          state.errors.orderNumber,
+        )}
+      />
+
+      <p className="mt-1 text-xs leading-5 text-slate-500">
+        Shu raqamdagi va undan keyingi darslar bir pog‘ona
+        suriladi. Bo‘sh qoldirilsa dars oxiriga qo‘yiladi.
+      </p>
+
+      <FieldError
+        message={state.errors.orderNumber}
       />
 
       <label
@@ -152,6 +183,24 @@ export default function CreateLessonForm({
         placeholder="Darsning nazariy qismi. Matematik formulalarni $...$ shaklida yozishingiz mumkin."
         className={`${fieldClass()} resize-y`}
       />
+
+      <label className="mt-5 flex cursor-pointer items-start gap-3 rounded-xl border border-slate-300 px-4 py-3">
+        <input
+          type="checkbox"
+          name="isFree"
+          className="mt-0.5 h-4 w-4 accent-emerald-600"
+        />
+
+        <span>
+          <span className="block text-sm font-semibold">
+            Bepul dars
+          </span>
+
+          <span className="block text-xs leading-5 text-slate-500">
+            Belgilanmasa dars Premium bo‘ladi.
+          </span>
+        </span>
+      </label>
 
       <p className="mt-5 text-sm font-semibold">
         Darsga biriktiriladigan testlar

@@ -199,8 +199,6 @@ function splitItems(block: string): string[] {
   return out;
 }
 
-const LETTERS = ["a", "b", "c", "d"] as const;
-
 function readTest(body: string, number: number, title: string): TexTest {
   const questions: TexQuestion[] = [];
 
