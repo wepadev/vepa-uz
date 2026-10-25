@@ -125,7 +125,7 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
         .eq("is_published", true)
         .not("topic_id", "is", null),
 
-      supabase.from("lessons").select("test_id").not("test_id", "is", null),
+      supabase.from("lesson_tests").select("test_id"),
     ]);
 
   if (topicsResult.error) {

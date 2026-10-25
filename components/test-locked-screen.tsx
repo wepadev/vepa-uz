@@ -38,8 +38,8 @@ export default function TestLockedScreen({
 
           <p className="mt-2 text-sm leading-6 text-mb-muted">
             “{title}” testini ochish uchun Premium tarif kerak.
-            Har bir yo‘nalishning birinchi bo‘limidagi dastlabki
-            3 ta test bepul — ularni hoziroq ishlashingiz mumkin.
+            “Bepul” belgisi bor testlarni esa hoziroq ishlashingiz
+            mumkin.
           </p>
 
           <div className="mt-6 grid gap-2 sm:grid-cols-2">

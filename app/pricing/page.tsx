@@ -253,7 +253,7 @@ export default async function PricingPage({
             <p className="mt-1.5 text-sm leading-5 text-blue-100">
               {hasPremium
                 ? `${formatDate(premiumStatus?.premium_until ?? null)} gacha amal qiladi.`
-                : "3 ta dars va 3 ta test bepul. Qolganini Premium ochadi."}
+                : "Bepul belgisi bor dars va testlar ochiq. Qolganini Premium ochadi."}
             </p>
 
             <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1">

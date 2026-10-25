@@ -254,9 +254,8 @@ export default async function TestListPage({ searchParams }: PageProps) {
         .order("created_at", { ascending: true })
         .order("id", { ascending: true }),
       supabase
-        .from("lessons")
-        .select("test_id")
-        .not("test_id", "is", null),
+        .from("lesson_tests")
+        .select("test_id"),
       supabase.rpc("get_user_test_statistics", {
         p_user_id: null,
         p_test_id: null,
