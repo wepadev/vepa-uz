@@ -52,7 +52,7 @@ Terminology in the UI (Uzbek): Testlar, Videodarslar, Darslik yechimlari, Uy vaz
 
 Stack is answered by the codebase: Next.js (App Router), React 19, Supabase, Tailwind CSS, shadcn/ui, deployed on Vercel.
 
-**Undecided (from `REJA-uy-vazifasi.md`):**
+**Undecided (from `docs/reja-uy-vazifasi.md`):**
 
 - How many attempts a student gets per homework assignment.
 - What happens after the due date (closed, or late submission marked as late).

@@ -7,32 +7,39 @@ import { usePathname } from "next/navigation";
 import {
   BookOpen,
   ClipboardCheck,
+  ClipboardList,
   House,
   Menu,
   MonitorPlay,
+  type LucideIcon,
 } from "lucide-react";
 
 import InstallAppButton from "@/components/install-app-button";
+import {
+  isActivePath,
+  isNavHidden,
+  menuSections,
+  primaryLinks,
+  type NavSection,
+  type NavUser,
+} from "@/components/nav-links";
 import ThemeToggle from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
-type MobileTabBarProps = {
-  isAuthenticated: boolean;
-  isAdmin: boolean;
-  /** Guruhga qo'shilganmi — do'kon shunga qarab ko'rinadi */
-  isInGroup: boolean;
+type MobileTabBarProps = NavUser & {
   fullName: string;
   signOut: () => Promise<void>;
 };
 
-// Tab bar bu yo'llarda ko'rinmaydi
-const HIDDEN_PREFIXES = [
-  "/auth",
-  "/admin",
-  "/tests/take",
-  "/access-denied",
-  "/access-required",
-];
+const ICONS: Record<string, LucideIcon> = {
+  "/homework": ClipboardList,
+  "/tests": ClipboardCheck,
+  "/lessons": MonitorPlay,
+  "/textbooks": BookOpen,
+};
+
+/* Pastki qatorga Bosh va Menyudan tashqari nechta bo'lim sig'adi */
+const TAB_SLOTS = 3;
 
 export default function MobileTabBar({
   isAuthenticated,
@@ -44,9 +51,7 @@ export default function MobileTabBar({
   const pathname = usePathname() ?? "/";
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const hidden = HIDDEN_PREFIXES.some(
-    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
-  );
+  const hidden = isNavHidden(pathname);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -65,77 +70,38 @@ export default function MobileTabBar({
 
   if (hidden) return null;
 
-  const authHref = (href: string) => (isAuthenticated ? href : "/auth/login");
+  const user = { isAuthenticated, isAdmin, isInGroup };
+
+  /*
+   * Guruh o'quvchisida birinchi tab — "Vazifalar" (asosiy
+   * foydalanuvchi shular). Sig'magan bo'lim (odatda Yechimlar)
+   * menyuning boshiga o'tadi.
+   */
+  const primary = primaryLinks(user);
 
   const tabs = [
-    {
-      key: "home",
-      label: "Bosh",
-      href: "/",
-      icon: House,
-    },
-    {
-      key: "tests",
-      label: "Testlar",
-      href: authHref("/tests"),
-      match: "/tests",
-      icon: ClipboardCheck,
-    },
-    {
-      key: "lessons",
-      label: "Darslar",
-      href: authHref("/lessons"),
-      match: "/lessons",
-      icon: MonitorPlay,
-    },
-    {
-      key: "books",
-      label: "Yechimlar",
-      href: authHref("/textbooks"),
-      match: "/textbooks",
-      icon: BookOpen,
-    },
+    { key: "/", label: "Bosh", href: "/", match: "/", icon: House },
+    ...primary.slice(0, TAB_SLOTS).map((link) => {
+      const match = link.match ?? link.href;
+
+      return {
+        key: match,
+        label: link.label,
+        href: link.href,
+        match,
+        icon: ICONS[match] ?? ClipboardCheck,
+      };
+    }),
   ];
 
-  const isActive = (match?: string) => {
-    if (!match) return pathname === "/";
-    return pathname === match || pathname.startsWith(`${match}/`);
-  };
+  const overflow = primary.slice(TAB_SLOTS);
 
-  const menuLinks = isAuthenticated
-    ? [
-        {
-          href: "/guruhim",
-          label: "Guruhim",
-          hint: "Vazifalar, ballar, tangalar va reyting",
-        },
-        {
-          href: "/takrorlash",
-          label: "Haftalik takrorlash",
-          hint: "Hafta davomidagi xatolar",
-        },
-        ...(isInGroup
-          ? [
-              {
-                href: "/dokon",
-                label: "Do‘kon",
-                hint: "Tangani sovg‘aga almashtirish",
-              },
-            ]
-          : []),
-        { href: "/profile", label: "Profilim", hint: "Shaxsiy ma’lumotlar" },
-        { href: "/results", label: "Natijalarim", hint: "Ishlangan testlar tahlili" },
-        { href: "/leaderboard", label: "Reyting", hint: "Eng faol o‘quvchilar" },
-        { href: "/pricing", label: "Premium", hint: "Tarif va to‘lovlar" },
-        ...(isAdmin
-          ? [{ href: "/admin", label: "Admin panel", hint: "Platformani boshqarish" }]
-          : []),
-      ]
-    : [
-        { href: "/auth/login", label: "Kirish", hint: "Email yoki Google orqali" },
-        { href: "/auth/sign-up", label: "Ro‘yxatdan o‘tish", hint: "Yangi hisob yaratish" },
-        { href: "/pricing", label: "Premium", hint: "Tarif va narxlar" },
-      ];
+  const sections: NavSection[] = [
+    ...(overflow.length > 0
+      ? [{ title: "Bo‘limlar", links: overflow }]
+      : []),
+    ...menuSections(user),
+  ];
 
   return (
     <>
@@ -171,24 +137,32 @@ export default function MobileTabBar({
             </div>
 
             <nav className="grid gap-1.5 px-4 pt-2">
-              {menuLinks.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="flex min-h-[56px] items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 active:bg-slate-50"
-                >
-                  <span className="min-w-0">
-                    <span className="block truncate text-[15px] font-semibold text-slate-900">
-                      {item.label}
-                    </span>
-                    <span className="block truncate text-xs text-slate-500">
-                      {item.hint}
-                    </span>
-                  </span>
-                  <span aria-hidden="true" className="shrink-0 text-slate-400">
-                    ›
-                  </span>
-                </Link>
+              {sections.map((section) => (
+                <div key={section.title} className="grid gap-1.5">
+                  <p className="px-1 pt-2 text-[11px] font-bold uppercase tracking-wide text-slate-400">
+                    {section.title}
+                  </p>
+
+                  {section.links.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="flex min-h-[56px] items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 active:bg-slate-50"
+                    >
+                      <span className="min-w-0">
+                        <span className="block truncate text-[15px] font-semibold text-slate-900">
+                          {item.label}
+                        </span>
+                        <span className="block truncate text-xs text-slate-500">
+                          {item.hint}
+                        </span>
+                      </span>
+                      <span aria-hidden="true" className="shrink-0 text-slate-400">
+                        ›
+                      </span>
+                    </Link>
+                  ))}
+                </div>
               ))}
 
               {/* Faqat Chrome o'rnatishga ruxsat berganda ko'rinadi */}
@@ -233,7 +207,7 @@ export default function MobileTabBar({
       >
         <div className="grid grid-cols-5">
           {tabs.map((tab) => {
-            const active = isActive(tab.match);
+            const active = isActivePath(pathname, tab.match);
             const Icon = tab.icon;
 
             return (

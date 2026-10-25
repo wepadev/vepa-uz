@@ -154,6 +154,8 @@ export default async function TextbookSectionPage() {
                     <span className="flex aspect-[3/4] items-center justify-center p-2">
                       {textbook.cover_url ? (
                         <img
+                          loading="lazy"
+                          decoding="async"
                           src={textbook.cover_url}
                           alt=""
                           aria-hidden="true"

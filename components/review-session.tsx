@@ -213,8 +213,9 @@ export default function ReviewSession({
         </div>
 
         {question.imageUrl && (
-          /* eslint-disable-next-line @next/next/no-img-element */
           <img
+            loading="lazy"
+            decoding="async"
             src={question.imageUrl}
             alt="Savol rasmi"
             className="mt-4 w-full rounded-2xl border border-mb-line"

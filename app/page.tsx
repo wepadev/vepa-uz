@@ -1,23 +1,29 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
+import { signOutAction } from "@/app/actions/sign-out";
 import GoogleSignInButton from "@/components/google-sign-in-button";
 import {
   ArrowRight,
   BookOpen,
   BrainCircuit,
+  CalendarClock,
   ClipboardCheck,
   Coins,
   Crown,
+  ListChecks,
   MonitorPlay,
   Play,
+  Send,
   Trophy,
   Users,
 } from "lucide-react";
 
 import BrandMark from "@/components/ui/brand-mark";
 import { accents } from "@/components/ui/section-visual";
+import { TELEGRAM_CHANNEL_USERNAME } from "@/lib/contacts";
+import { formatDue, remainingLabel } from "@/lib/due-label";
 import { isGroupStudent } from "@/lib/group-membership";
+import { getPublicCatalog } from "@/lib/public-catalog";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -28,15 +34,15 @@ type Profile = {
   is_active: boolean;
 };
 
-async function signOut() {
-  "use server";
-
-  const supabase = await createClient();
-
-  await supabase.auth.signOut();
-
-  redirect("/");
-}
+type AssignmentRow = {
+  assignment_id: number;
+  test_id: number;
+  test_title: string;
+  question_count: number;
+  due_at: string;
+  is_overdue: boolean;
+  completed_at: string | null;
+};
 
 export default async function HomePage() {
   const supabase = await createClient();
@@ -105,6 +111,13 @@ export default async function HomePage() {
   /* Do'kon faqat guruh o'quvchisiga ko'rinadi */
   let isInGroup = false;
 
+  /*
+   * Guruh o'quvchisi uchun navbatdagi uy vazifasi — bosh sahifadagi
+   * eng muhim narsa: ochdi, ko'rdi, boshladi.
+   */
+  let nextAssignment: AssignmentRow | null = null;
+  let pendingCount = 0;
+
   if (isAuthenticated && user) {
     const [reviewResult, inGroup] = await Promise.all([
       supabase.rpc("due_review_count"),
@@ -113,7 +126,21 @@ export default async function HomePage() {
 
     dueReviewCount = Number(reviewResult.data) || 0;
     isInGroup = inGroup;
+
+    if (isInGroup) {
+      const { data } = await supabase.rpc("my_assignments");
+
+      const open = ((data ?? []) as AssignmentRow[])
+        .filter((item) => !item.completed_at && !item.is_overdue)
+        .sort((a, b) => a.due_at.localeCompare(b.due_at));
+
+      nextAssignment = open[0] ?? null;
+      pendingCount = open.length;
+    }
   }
+
+  /* Mehmon uchun: platformada nima borligi (xato bo'lsa — null) */
+  const catalog = isAuthenticated ? null : await getPublicCatalog();
 
   /* Tezkor havolalar — kirgan o'quvchi uchun keyingi qadamlar */
   /* Tezkor havolalar — bitta qatorda, telefonda ham */
@@ -155,7 +182,7 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
+      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur md:hidden">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6 sm:py-3">
           <Link href="/" className="flex min-w-0 items-center gap-2.5">
             <BrandMark size={40} className="h-9 w-9 sm:h-10 sm:w-10" />
@@ -181,7 +208,7 @@ export default async function HomePage() {
                 {fullName}
               </Link>
 
-              <form action={signOut} className="hidden sm:block">
+              <form action={signOutAction} className="hidden sm:block">
                 <button
                   type="submit"
                   className="inline-flex min-h-10 items-center rounded-xl px-3 text-sm font-semibold text-slate-500 hover:text-slate-800"
@@ -220,35 +247,77 @@ export default async function HomePage() {
                   Salom, {fullName}
                 </p>
 
-                <h1 className="mt-1.5 text-2xl font-bold leading-tight sm:text-4xl">
-                  Bugun nimadan boshlaymiz?
-                </h1>
+                {nextAssignment ? (
+                  <>
+                    <h1 className="mt-1.5 text-2xl font-bold leading-tight sm:text-4xl">
+                      {nextAssignment.test_title}
+                    </h1>
 
-                <p className="mt-2 max-w-lg text-sm leading-6 text-blue-100">
-                  Test ishlang, videodars ko‘ring yoki darslikdagi
-                  masalaning yechimini toping.
-                </p>
+                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm font-medium text-blue-100">
+                      <span className="inline-flex items-center gap-1.5">
+                        <CalendarClock className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
+                        {remainingLabel(nextAssignment.due_at)} · {formatDue(nextAssignment.due_at)}
+                      </span>
 
-                <div className="mt-5 flex flex-wrap gap-2.5">
-                  <Link
-                    href="/tests"
-                    className="inline-flex min-h-12 items-center gap-2 rounded-2xl bg-white px-5 font-bold text-blue-700 shadow-sm transition hover:bg-blue-50"
-                  >
-                    <Play
-                      className="h-4 w-4"
-                      strokeWidth={2.6}
-                      aria-hidden="true"
-                    />
-                    Test ishlash
-                  </Link>
+                      <span className="inline-flex items-center gap-1.5">
+                        <ListChecks className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
+                        {nextAssignment.question_count} ta savol
+                      </span>
+                    </div>
 
-                  <Link
-                    href="/lessons"
-                    className="inline-flex min-h-12 items-center gap-2 rounded-2xl bg-white/15 px-5 font-bold text-white ring-1 ring-white/25 transition hover:bg-white/25"
-                  >
-                    Videodarslar
-                  </Link>
-                </div>
+                    <div className="mt-5 flex flex-wrap items-center gap-2.5">
+                      <Link
+                        href={`/tests/take?testId=${nextAssignment.test_id}&assignmentId=${nextAssignment.assignment_id}`}
+                        className="inline-flex min-h-12 items-center gap-2 rounded-2xl bg-white px-5 font-bold text-blue-700 shadow-sm transition hover:bg-blue-50"
+                      >
+                        <Play className="h-4 w-4" strokeWidth={2.6} aria-hidden="true" />
+                        Vazifani boshlash
+                      </Link>
+
+                      <Link
+                        href="/homework"
+                        className="inline-flex min-h-12 items-center rounded-2xl bg-white/15 px-5 font-bold text-white ring-1 ring-white/25 transition hover:bg-white/25"
+                      >
+                        {pendingCount > 1
+                          ? `Barcha vazifalar (${pendingCount})`
+                          : "Vazifalarim"}
+                      </Link>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <h1 className="mt-1.5 text-2xl font-bold leading-tight sm:text-4xl">
+                      {isInGroup
+                        ? "Hozircha uy vazifasi yo‘q"
+                        : "Bugun nimadan boshlaymiz?"}
+                    </h1>
+
+                    <p className="mt-2 max-w-lg text-sm leading-6 text-blue-100">
+                      {isInGroup
+                        ? "Yangi vazifa berilsa shu yerda chiqadi. Bo‘sh vaqtda test ishlab, mashq qiling."
+                        : "Test ishlang yoki ustozingiz bergan kod bilan guruhga qo‘shiling."}
+                    </p>
+
+                    <div className="mt-5 flex flex-wrap gap-2.5">
+                      <Link
+                        href="/tests"
+                        className="inline-flex min-h-12 items-center gap-2 rounded-2xl bg-white px-5 font-bold text-blue-700 shadow-sm transition hover:bg-blue-50"
+                      >
+                        <Play className="h-4 w-4" strokeWidth={2.6} aria-hidden="true" />
+                        Test ishlash
+                      </Link>
+
+                      {!isInGroup && (
+                        <Link
+                          href="/guruhim"
+                          className="inline-flex min-h-12 items-center rounded-2xl bg-white/15 px-5 font-bold text-white ring-1 ring-white/25 transition hover:bg-white/25"
+                        >
+                          Guruhga qo‘shilish
+                        </Link>
+                      )}
+                    </div>
+                  </>
+                )}
               </>
             ) : (
               <>
@@ -426,6 +495,91 @@ export default async function HomePage() {
           ))}
         </div>
 
+        {/*
+          Mehmon uchun: kimning platformasi va ichida nima bor.
+
+          O'quvchi ustoz uchun keladi, shuning uchun avval ustoz,
+          keyin raqamlar va bo'lim nomlari. Bo'lim nomlari Google
+          uchun ham foydali: sahifada haqiqiy matn paydo bo'ladi.
+        */}
+        {!isAuthenticated && (
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl border border-mb-line bg-white p-4 shadow-sm sm:p-5">
+              <div className="flex items-center gap-3">
+                <BrandMark size={48} priority={false} className="h-12 w-12" />
+
+                <div className="min-w-0">
+                  <h2 className="text-[17px] font-bold text-mb-ink">
+                    Vepa Kurbanklichev
+                  </h2>
+                  <p className="text-sm text-mb-muted">Matematika ustozi</p>
+                </div>
+              </div>
+
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                Platformadagi har bir videodars, test va yechimni ustozning
+                o‘zi tayyorlaydi. Guruh o‘quvchilari shu yerda uy vazifasini
+                bajaradi, xatolarini ko‘radi va reytingda bellashadi.
+              </p>
+
+              <a
+                href={`https://t.me/${TELEGRAM_CHANNEL_USERNAME}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-4 text-sm font-semibold text-blue-700 transition hover:bg-blue-100"
+              >
+                <Send className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
+                Telegram kanal: @{TELEGRAM_CHANNEL_USERNAME}
+              </a>
+            </div>
+
+            {catalog && (
+              <div className="rounded-2xl border border-mb-line bg-white p-4 shadow-sm sm:p-5">
+                <h2 className="text-[17px] font-bold text-mb-ink">
+                  Platformada nima bor
+                </h2>
+
+                <dl className="mt-3 grid grid-cols-3 gap-2 text-center">
+                  {[
+                    [catalog.testCount, "test"],
+                    [catalog.lessonCount, "videodars"],
+                    [catalog.textbookCount, "darslik"],
+                  ].map(([value, label]) => (
+                    <div key={label} className="rounded-xl bg-slate-50 px-2 py-3">
+                      <dt className="sr-only">{label}</dt>
+                      <dd className="text-xl font-bold text-mb-brand">{value}</dd>
+                      <dd className="text-xs font-semibold text-mb-muted">{label}</dd>
+                    </div>
+                  ))}
+                </dl>
+
+                {catalog.examTypes.length > 0 && (
+                  <p className="mt-3 text-sm leading-6 text-slate-600">
+                    <b className="text-mb-ink">Testlar:</b>{" "}
+                    {catalog.examTypes.join(", ")}.
+                  </p>
+                )}
+
+                {catalog.lessonCategories.length > 0 && (
+                  <p className="mt-1 text-sm leading-6 text-slate-600">
+                    <b className="text-mb-ink">Videodarslar:</b>{" "}
+                    {catalog.lessonCategories.slice(0, 8).join(", ")}
+                    {catalog.lessonCategories.length > 8 ? " va boshqalar" : ""}.
+                  </p>
+                )}
+
+                <Link
+                  href="/pricing"
+                  className="mt-3 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
+                >
+                  Tariflar va narxlar
+                  <ArrowRight className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
+
         {isAdmin && (
           <Link
             href="/admin"
@@ -452,7 +606,7 @@ export default async function HomePage() {
 
       <footer className="border-t border-slate-200 bg-white">
         <div className="mx-auto flex max-w-5xl flex-col gap-1 px-4 py-5 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <p>© 2026 Vepa Ustoz</p>
+          <p>© {new Date().getFullYear()} Vepa Ustoz</p>
           <p>Matematika ta’lim platformasi</p>
         </div>
       </footer>

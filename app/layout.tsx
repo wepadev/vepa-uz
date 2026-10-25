@@ -2,7 +2,7 @@ import "katex/dist/katex.min.css";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 
-import MobileNav from "@/components/mobile-nav";
+import SiteNav from "@/components/site-nav";
 import SiteJsonLd from "@/components/site-json-ld";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
@@ -134,8 +134,7 @@ export default function RootLayout({
         <SiteJsonLd siteUrl={defaultUrl} />
 
         <ThemeProvider>
-          {children}
-          <MobileNav />
+          <SiteNav>{children}</SiteNav>
         </ThemeProvider>
       </body>
     </html>

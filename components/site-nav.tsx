@@ -1,11 +1,19 @@
+import type { ReactNode } from "react";
+
 import { signOutAction } from "@/app/actions/sign-out";
+import DesktopNav from "@/components/desktop-nav";
 import MobileTabBar from "@/components/mobile-tab-bar";
 import ServiceWorkerRegister from "@/components/service-worker-register";
 import ThemeFloatingToggle from "@/components/theme-floating-toggle";
 import { isGroupStudent } from "@/lib/group-membership";
 import { createClient } from "@/lib/supabase/server";
 
-export default async function MobileNav() {
+/**
+ * Sayt navigatsiyasi: kompyuterda tepadagi menyu, telefonda pastki
+ * tab bar. Foydalanuvchi ma'lumoti bir marta o'qiladi va ikkalasiga
+ * beriladi.
+ */
+export default async function SiteNav({ children }: { children: ReactNode }) {
   const supabase = await createClient();
 
   let isAuthenticated = false;
@@ -43,17 +51,23 @@ export default async function MobileNav() {
     // Navigatsiya profil xatosi tufayli sahifani buzmasligi kerak
   }
 
+  const navProps = {
+    isAuthenticated,
+    isAdmin,
+    isInGroup,
+    fullName,
+    signOut: signOutAction,
+  };
+
   return (
     <>
+      <DesktopNav {...navProps} />
+
+      {children}
+
       <ServiceWorkerRegister />
 
-      <MobileTabBar
-        isAuthenticated={isAuthenticated}
-        isAdmin={isAdmin}
-        isInGroup={isInGroup}
-        fullName={fullName}
-        signOut={signOutAction}
-      />
+      <MobileTabBar {...navProps} />
 
       <ThemeFloatingToggle />
     </>
