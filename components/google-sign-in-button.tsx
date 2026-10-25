@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import AppAlert from "@/components/ui/app-alert";
 import { Spinner } from "@/components/ui/spinner";
+import { authCallbackUrl } from "@/lib/safe-next";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
@@ -12,6 +13,8 @@ type GoogleSignInButtonProps = {
   fullWidth?: boolean;
   label?: string;
   className?: string;
+  /** Kirgandan keyin qaytiladigan sahifa */
+  next?: string;
 };
 
 export default function GoogleSignInButton({
@@ -19,6 +22,7 @@ export default function GoogleSignInButton({
   fullWidth = false,
   label = "Google orqali kirish",
   className,
+  next = "/",
 }: GoogleSignInButtonProps) {
   const [isLoading, setIsLoading] =
     useState(false);
@@ -37,7 +41,7 @@ export default function GoogleSignInButton({
         provider: "google",
         options: {
           redirectTo:
-            `${window.location.origin}/auth/callback`,
+            authCallbackUrl(next),
           queryParams: {
             prompt: "select_account",
           },

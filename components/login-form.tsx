@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import GoogleSignInButton from "@/components/google-sign-in-button";
+import { authCallbackUrl } from "@/lib/safe-next";
 import AppAlert from "@/components/ui/app-alert";
 import { LoadingLabel } from "@/components/ui/spinner";
 import { createClient } from "@/lib/supabase/client";
@@ -44,9 +45,12 @@ function translateAuthError(message: string) {
 export function LoginForm({
   className,
   initialMode = "login",
+  next = "/",
   ...props
 }: React.ComponentPropsWithoutRef<"div"> & {
   initialMode?: AuthMode;
+  /** Kirgandan keyin qaytiladigan sahifa (allaqachon tekshirilgan) */
+  next?: string;
 }) {
   const router = useRouter();
 
@@ -126,7 +130,7 @@ export function LoginForm({
           throw loginError;
         }
 
-        router.push("/");
+        router.push(next);
         router.refresh();
         return;
       }
@@ -141,7 +145,7 @@ export function LoginForm({
               name: fullName.trim(),
             },
             emailRedirectTo:
-              `${window.location.origin}/auth/callback`,
+              authCallbackUrl(next),
           },
         });
 
@@ -150,7 +154,7 @@ export function LoginForm({
       }
 
       if (data.session) {
-        router.push("/");
+        router.push(next);
         router.refresh();
         return;
       }
@@ -400,6 +404,7 @@ export function LoginForm({
       </div>
 
       <GoogleSignInButton
+        next={next}
         fullWidth
         label="Google orqali davom etish"
       />

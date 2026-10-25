@@ -75,6 +75,16 @@ export async function updateSession(request: NextRequest) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
+    /*
+     * Qayerga kirmoqchi bo'lgani eslab qolinadi: Telegram'dan uy
+     * vazifasi havolasini ochgan o'quvchi kirgandan keyin bosh
+     * sahifaga emas, aynan o'sha vazifaga qaytadi.
+     */
+    url.search = "";
+    url.searchParams.set(
+      "next",
+      `${request.nextUrl.pathname}${request.nextUrl.search}`,
+    );
     return NextResponse.redirect(url);
   }
 
