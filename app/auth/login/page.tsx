@@ -3,10 +3,12 @@ import Link from "next/link";
 
 import { LoginForm } from "@/components/login-form";
 import BrandMark from "@/components/ui/brand-mark";
+import { getSafeNext } from "@/lib/safe-next";
 
 type PageProps = {
   searchParams: Promise<{
     mode?: string | string[];
+    next?: string | string[];
   }>;
 };
 
@@ -21,6 +23,10 @@ export default async function Page({
 
   const initialMode =
     rawMode === "signup" ? "signup" : "login";
+
+  const next = getSafeNext(
+    Array.isArray(params.next) ? params.next[0] : params.next,
+  );
 
   return (
     <main className="relative min-h-svh overflow-hidden bg-slate-50 text-slate-900">
@@ -88,7 +94,7 @@ export default async function Page({
               Vepa Ustoz
             </Link>
 
-            <LoginForm initialMode={initialMode} />
+            <LoginForm initialMode={initialMode} next={next} />
           </div>
         </section>
       </div>

@@ -3,20 +3,9 @@ import {
   NextResponse,
 } from "next/server";
 
+import { getSafeNext } from "@/lib/safe-next";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
-
-function getSafeNext(value: string | null) {
-  if (
-    !value ||
-    !value.startsWith("/") ||
-    value.startsWith("//")
-  ) {
-    return "/";
-  }
-
-  return value;
-}
 
 function getFullName(user: {
   email?: string;
