@@ -11,6 +11,7 @@ import ReviewSession, {
   type ReviewQuestion,
 } from "@/components/review-session";
 import PageHeader from "@/components/ui/page-header";
+import { shuffleOptions } from "@/lib/shuffle";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -125,17 +126,35 @@ export default async function ReviewPage() {
     imageUrl: row.image_path
       ? imageUrls.get(row.image_path) ?? null
       : null,
-    options: [
-      { letter: "A", text: row.option_a },
-      { letter: "B", text: row.option_b },
-      { letter: "C", text: row.option_c },
-      { letter: "D", text: row.option_d },
-    ]
-      .filter((option) => Boolean(option.text?.trim()))
-      .map((option) => ({
-        letter: option.letter,
-        text: option.text as string,
-      })),
+    /*
+     * Variantlar ARALASHTIRILADI.
+     *
+     * Nega: takrorlashda bitta savol bir necha marta chiqadi.
+     * Tartib doim bir xil bo'lsa, o'quvchi javobni emas, uning
+     * O'RNINI eslab qoladi ("uchinchisi to'g'ri") va takrorlash
+     * ma'nosini yo'qotadi.
+     *
+     * Kalitga xato soni qo'shilgan: o'quvchi yana xato qilsa,
+     * keyingi safar tartib boshqacha bo'ladi. Bitta seans ichida
+     * esa o'zgarmaydi -- sahifa yangilansa ham joyidan qo'zg'almaydi.
+     *
+     * Javob ASL harfi bilan yuboriladi, ekranda esa `displayLetter`
+     * ko'rinadi -- test ishlash oynasidagi bilan bir xil mantiq.
+     */
+    options: shuffleOptions(
+      [
+        { letter: "A", text: row.option_a },
+        { letter: "B", text: row.option_b },
+        { letter: "C", text: row.option_c },
+        { letter: "D", text: row.option_d },
+      ]
+        .filter((option) => Boolean(option.text?.trim()))
+        .map((option) => ({
+          letter: option.letter,
+          text: option.text as string,
+        })),
+      `${user.id}:${toNumber(row.question_id)}:${toNumber(row.wrong_count)}`,
+    ),
     isWritten: row.question_type === "written",
     testTitle: row.test_title,
     wrongCount: toNumber(row.wrong_count),

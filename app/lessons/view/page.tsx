@@ -8,6 +8,7 @@ import MathText from "@/components/math-text";
 import YouTubeEmbed from "@/components/youtube-embed";
 import {
   buildBestScoreMap,
+  buildLessonGates,
   buildLessonTestMap,
   isLessonPassed,
   lessonAverageScore,
@@ -125,6 +126,10 @@ export default async function LessonViewPage({
       ).getTime() > Date.now()
     );
 
+  /*
+   * Tarif to'sig'i. Navbat to'sig'i pastroqda, darslar ro'yxati
+   * yuklangandan keyin tekshiriladi.
+   */
   const hasCurrentLessonAccess =
     hasPremiumAccess ||
     currentLesson.is_free === true;
@@ -260,9 +265,21 @@ export default async function LessonViewPage({
     );
   }
 
-  const isUnlocked = lessons
-    .slice(0, currentIndex)
-    .every(isLessonCompleted);
+  /*
+   * Navbat to'sig'i — qoida `lib/lesson-progress.ts` da,
+   * `/lessons/category` bilan bitta joydan o'qiladi.
+   */
+  const gates = buildLessonGates(
+    lessons.map((lesson) => ({
+      isFree: lesson.is_free === true,
+      isCompleted:
+        isLessonCompleted(lesson),
+    })),
+    hasPremiumAccess,
+  );
+
+  const isUnlocked =
+    gates[currentIndex].isSequenceUnlocked;
 
   if (!isUnlocked) {
     redirect(
@@ -286,15 +303,14 @@ export default async function LessonViewPage({
   const nextLessonHasAccess =
     Boolean(
       !nextLesson ||
-      hasPremiumAccess ||
-      nextLesson.is_free === true,
+      gates[currentIndex + 1]
+        .hasContentAccess,
     );
 
   const nextLessonUnlocked =
     Boolean(
       nextLesson &&
-      currentCompleted &&
-      nextLessonHasAccess,
+      gates[currentIndex + 1].isOpen,
     );
 
   const currentTestIds =

@@ -44,6 +44,7 @@ Tartib bilan yuring — keyingi fayl oldingisiga tayanishi mumkin.
 | `33-misol-videolari.sql` | TOP kitobda har bir misolning o'z videoyechimi |
 | `34-test-mavzulari.sql` | Katalogga mavzu qatlami: yo'nalish → bo'lim → mavzu → test. Bepul qoidasi: birinchi bo'limning birinchi mavzusi |
 | `35-mavzu-bepul.sql` | Mavzuni qo'lda bepul qilish. Bepullik har doim test darajasida hal bo'ladi — Premium bo'lim ichidagi bepul mavzu ham ochiq |
+| `36-videodars-bepul.sql` | Videodarsni qo'lda bepul qilish (`lessons.is_free`). Admin panelda "Bepul qilish" tugmasi paydo bo'ldi |
 
 ## Alohida: tozalash
 
