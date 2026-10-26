@@ -12,8 +12,8 @@ import {
   Highlighter,
   Loader2,
   Minus,
-  Pen,
   PenLine,
+  Plus,
   Redo2,
   Trash2,
   Undo2,
@@ -34,11 +34,13 @@ import {
   type InkPage,
   type Matrix,
   type PageBackground,
+  type PenKind,
   type Stroke,
 } from "@/lib/pdf-ink";
 import { cn } from "@/lib/utils";
 
 import InkPageView, { type EditorTool, type PageHandlers } from "./ink-page";
+import PenPanel, { PEN_KINDS, PEN_SIZES } from "./pen-panel";
 
 /**
  * "PDF yozuv" — Nebo kabi PDF ustida qo'lda yozish.
@@ -51,9 +53,17 @@ import InkPageView, { type EditorTool, type PageHandlers } from "./ink-page";
  * planshetda kaft ekranga tegsa chiziq tushmaydi.
  */
 
-const PEN_COLORS = ["#151A23", "#1B72F2", "#E11D48", "#16A34A", "#9333EA", "#EA580C"];
+const PEN_COLORS = [
+  "#151A23",
+  "#6B7280",
+  "#D1D5DB",
+  "#FFFFFF",
+  "#1B72F2",
+  "#E11D48",
+  "#16A34A",
+  "#FACC15",
+];
 const MARKER_COLORS = ["#FACC15", "#4ADE80", "#F472B6", "#60A5FA"];
-const PEN_WIDTHS = [1.2, 2, 3.5];
 const MARKER_WIDTHS = [8, 14, 22];
 
 const MIN_ZOOM = 0.4;
@@ -168,9 +178,12 @@ export default function PdfInkEditor() {
   const historyRef = useRef<History>({ past: [], future: [] });
   const [, setHistoryTick] = useState(0);
   const [tool, setTool] = useState<EditorTool>("pen");
-  const [penColor, setPenColor] = useState(PEN_COLORS[1]);
+  const [penColor, setPenColor] = useState(PEN_COLORS[0]);
+  const [customColor, setCustomColor] = useState<string | null>(null);
+  const [penKind, setPenKind] = useState<PenKind>("fountain");
+  const [penPanel, setPenPanel] = useState(false);
   const [markerColor, setMarkerColor] = useState(MARKER_COLORS[0]);
-  const [penWidth, setPenWidth] = useState(PEN_WIDTHS[1]);
+  const [penWidth, setPenWidth] = useState(PEN_SIZES[2]);
   const [markerWidth, setMarkerWidth] = useState(MARKER_WIDTHS[1]);
   const [zoom, setZoom] = useState(1);
   const [penOnly, setPenOnly] = useState(false);
@@ -613,16 +626,29 @@ export default function PdfInkEditor() {
     );
   }
 
-  const colors = isMarker ? MARKER_COLORS : PEN_COLORS;
-  const widths = isMarker ? MARKER_WIDTHS : PEN_WIDTHS;
+  const colors = isMarker
+    ? MARKER_COLORS
+    : customColor
+      ? [...PEN_COLORS, customColor]
+      : PEN_COLORS;
   const showStyle = tool === "pen" || tool === "marker" || tool === "line";
+  const PenIcon = PEN_KINDS.find((item) => item.kind === penKind)?.icon ?? PenLine;
+
+  /* Qalam (yoki chiziq) tanlangan bo'lsa, qayta bosish oynani ochadi */
+  function pickPenLike(next: "pen" | "line") {
+    if (tool === next) setPenPanel((open) => !open);
+    else {
+      setTool(next);
+      setPenPanel(false);
+    }
+  }
 
   return (
     <div className="flex h-[calc(100dvh-3.5rem)] flex-col" {...dropProps}>
       {fileInput}
 
       {/* Asboblar qatori */}
-      <div className="border-b border-mb-line bg-white">
+      <div className="relative border-b border-mb-line bg-white">
         <div className="flex items-center gap-1 pr-2 sm:pr-3">
           <div className="scroll-x flex min-w-0 flex-1 items-center gap-1 overflow-x-auto py-1.5 pl-2 sm:pl-3">
             <ToolButton
@@ -640,7 +666,12 @@ export default function PdfInkEditor() {
 
             <Divider />
 
-            <ToolButton icon={Pen} label="Qalam (P)" active={tool === "pen"} onClick={() => setTool("pen")} />
+            <ToolButton
+              icon={PenIcon}
+              label="Qalam (P) — qayta bosing: qalam turi va o‘lchami"
+              active={tool === "pen"}
+              onClick={() => pickPenLike("pen")}
+            />
             <ToolButton
               icon={Highlighter}
               label="Marker (M)"
@@ -651,7 +682,7 @@ export default function PdfInkEditor() {
               icon={Minus}
               label="To‘g‘ri chiziq (L)"
               active={tool === "line"}
-              onClick={() => setTool("line")}
+              onClick={() => pickPenLike("line")}
             />
             <ToolButton
               icon={Eraser}
@@ -684,15 +715,41 @@ export default function PdfInkEditor() {
                   </button>
                 ))}
 
+                {!isMarker && (
+                  <label
+                    title="Boshqa rang"
+                    className="relative grid h-10 w-8 shrink-0 cursor-pointer place-items-center"
+                  >
+                    <span className="grid h-6 w-6 place-items-center rounded-full border border-dashed border-slate-400 text-slate-600">
+                      <Plus className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                    <input
+                      type="color"
+                      aria-label="Boshqa rang"
+                      value={penColor}
+                      onChange={(event) => {
+                        const value = event.target.value.toUpperCase();
+                        if (!PEN_COLORS.includes(value)) setCustomColor(value);
+                        setPenColor(value);
+                      }}
+                      className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                    />
+                  </label>
+                )}
+              </>
+            )}
+
+            {isMarker && (
+              <>
                 <Divider />
-                {widths.map((w, i) => (
+                {MARKER_WIDTHS.map((w, i) => (
                   <button
                     key={w}
                     type="button"
                     title={["Ingichka", "O‘rtacha", "Qalin"][i]}
                     aria-label={["Ingichka", "O‘rtacha", "Qalin"][i]}
                     aria-pressed={w === width}
-                    onClick={() => (isMarker ? setMarkerWidth(w) : setPenWidth(w))}
+                    onClick={() => setMarkerWidth(w)}
                     className={cn(
                       "grid h-10 w-9 shrink-0 place-items-center rounded-xl transition",
                       w === width ? "bg-mb-tint" : "hover:bg-slate-100",
@@ -704,7 +761,7 @@ export default function PdfInkEditor() {
                         width: 4 + i * 5,
                         height: 4 + i * 5,
                         backgroundColor: color,
-                        opacity: isMarker ? 0.6 : 1,
+                        opacity: 0.6,
                       }}
                     />
                   </button>
@@ -771,7 +828,7 @@ export default function PdfInkEditor() {
               )}
             >
               <PenLine className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-              <span className="hidden xl:inline">Faqat qalam</span>
+              <span className="hidden 2xl:inline">Faqat qalam</span>
             </button>
           </div>
 
@@ -796,6 +853,35 @@ export default function PdfInkEditor() {
           </button>
         </div>
 
+        {/*
+          Xabar sahifalar ustida suzib turadi. Uni oqimga qo'ysak,
+          paydo bo'lganda sahifalar pastga suriladi — qalam birinchi
+          tekkanda ("Qalam aniqlandi") yozilayotgan chizgi sakrardi.
+        */}
+        {(error || notice) && (
+          <div className="pointer-events-none absolute inset-x-0 top-full z-20 flex justify-center px-3 pt-2">
+            <div className="pointer-events-auto w-full max-w-xl">
+              <AppAlert variant={error ? "error" : "success"} compact>
+                {error || notice}
+              </AppAlert>
+            </div>
+          </div>
+        )}
+
+        {penPanel && (tool === "pen" || tool === "line") && (
+          <PenPanel
+            pen={penKind}
+            size={penWidth}
+            color={penColor}
+            onPen={(kind) => {
+              setPenKind(kind);
+              setTool("pen");
+            }}
+            onSize={setPenWidth}
+            onClose={() => setPenPanel(false)}
+          />
+        )}
+
         {blankMenu && (
           <div className="flex flex-wrap items-center gap-2 border-t border-mb-line px-3 py-2 text-sm">
             <span className="text-mb-muted">{currentPage + 1}-sahifadan keyin qo‘shish:</span>
@@ -819,14 +905,6 @@ export default function PdfInkEditor() {
         )}
       </div>
 
-      {(error || notice) && (
-        <div className="px-3 pt-2">
-          <AppAlert variant={error ? "error" : "success"} compact>
-            {error || notice}
-          </AppAlert>
-        </div>
-      )}
-
       {/* Sahifalar */}
       <div
         ref={scrollRef}
@@ -846,6 +924,7 @@ export default function PdfInkEditor() {
               tool={tool}
               color={color}
               width={width}
+              pen={penKind}
               penOnly={penOnly}
               scrollRef={scrollRef}
               handlers={handlers}

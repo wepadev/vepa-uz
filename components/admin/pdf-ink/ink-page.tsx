@@ -6,10 +6,14 @@ import type { PDFDocumentProxy, RenderTask } from "pdfjs-dist";
 import {
   GRID_STEP,
   MARKER_OPACITY,
-  simplifyPoints,
+  outlinePath,
+  penOutline,
+  simplifyStroke,
   strokePath,
   type InkPage,
   type InkTool,
+  type PathSegment,
+  type PenKind,
   type Stroke,
 } from "@/lib/pdf-ink";
 
@@ -34,6 +38,7 @@ type InkPageViewProps = {
   tool: EditorTool;
   color: string;
   width: number;
+  pen: PenKind;
   /** Barmoq chizmaydi, sahifani suradi */
   penOnly: boolean;
   scrollRef: RefObject<HTMLDivElement | null>;
@@ -45,28 +50,49 @@ function pixelRatio() {
   return Math.min(window.devicePixelRatio || 1, 2);
 }
 
+function tracePath(ctx: CanvasRenderingContext2D, segments: PathSegment[]) {
+  ctx.beginPath();
+  for (const segment of segments) {
+    if (segment.kind === "move") ctx.moveTo(segment.x, segment.y);
+    else if (segment.kind === "line") ctx.lineTo(segment.x, segment.y);
+    else ctx.quadraticCurveTo(segment.cx, segment.cy, segment.x, segment.y);
+  }
+}
+
+/** `complete: false` — chizgi hali yozilmoqda (jonli qatlam) */
 export function paintStroke(
   ctx: CanvasRenderingContext2D,
   stroke: Stroke,
   scale: number,
+  complete = true,
 ) {
   ctx.save();
   ctx.scale(scale, scale);
+
+  const outline = penOutline(stroke, complete);
+  if (outline) {
+    ctx.fillStyle = stroke.color;
+    tracePath(ctx, outlinePath(outline));
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+    return;
+  }
+
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
   ctx.strokeStyle = stroke.color;
   ctx.lineWidth = stroke.width;
   ctx.globalAlpha = stroke.tool === "marker" ? MARKER_OPACITY : 1;
-  ctx.beginPath();
-
-  for (const segment of strokePath(stroke.points)) {
-    if (segment.kind === "move") ctx.moveTo(segment.x, segment.y);
-    else if (segment.kind === "line") ctx.lineTo(segment.x, segment.y);
-    else ctx.quadraticCurveTo(segment.cx, segment.cy, segment.x, segment.y);
-  }
-
+  tracePath(ctx, strokePath(stroke.points));
   ctx.stroke();
   ctx.restore();
+}
+
+/** Stilus bosimi; ba'zi qurilmalar birinchi nuqtada 0 beradi */
+function pressureOf(event: { pressure: number }) {
+  const value = event.pressure > 0 ? event.pressure : 0.5;
+  return Math.round(value * 100) / 100;
 }
 
 function sizeCanvas(canvas: HTMLCanvasElement, width: number, height: number) {
@@ -84,7 +110,14 @@ function releaseCanvas(canvas: HTMLCanvasElement | null) {
 }
 
 type Gesture =
-  | { kind: "draw"; pointerId: number; tool: InkTool; points: number[] }
+  | {
+      kind: "draw";
+      pointerId: number;
+      tool: InkTool;
+      points: number[];
+      /** Faqat stilusda */
+      pressures: number[] | null;
+    }
   | { kind: "erase"; pointerId: number }
   | {
       kind: "pan";
@@ -113,6 +146,7 @@ function InkPageView({
   tool,
   color,
   width,
+  pen,
   penOnly,
   scrollRef,
   handlers,
@@ -233,11 +267,21 @@ function InkPageView({
     const ctx = live.getContext("2d");
     if (!ctx) return;
     ctx.clearRect(0, 0, live.width, live.height);
-    paintStroke(
-      ctx,
-      { tool: gesture.tool, color, width, points: gesture.points },
-      zoom * pixelRatio(),
-    );
+    paintStroke(ctx, buildStroke(gesture), zoom * pixelRatio(), false);
+  }
+
+  function buildStroke(gesture: Extract<Gesture, { kind: "draw" }>): Stroke {
+    const stroke: Stroke = {
+      tool: gesture.tool,
+      color,
+      width,
+      points: gesture.points,
+    };
+    if (gesture.tool === "pen") {
+      stroke.pen = pen;
+      if (gesture.pressures) stroke.pressures = gesture.pressures;
+    }
+    return stroke;
   }
 
   function scheduleLive() {
@@ -288,6 +332,7 @@ function InkPageView({
       pointerId: event.pointerId,
       tool,
       points: [x, y],
+      pressures: isPen ? [pressureOf(event)] : null,
     };
     scheduleLive();
   }
@@ -323,6 +368,7 @@ function InkPageView({
       for (const sample of samples) {
         const [x, y] = pointFrom(sample);
         gesture.points.push(x, y);
+        gesture.pressures?.push(pressureOf(sample));
       }
     }
 
@@ -344,22 +390,20 @@ function InkPageView({
     cancelAnimationFrame(frameRef.current);
     frameRef.current = 0;
 
-    const points =
-      gesture.tool === "line" ? gesture.points : simplifyPoints(gesture.points);
-
-    if (gesture.tool === "line" && points.length < 4) {
+    if (gesture.tool === "line" && gesture.points.length < 4) {
       liveCanvasRef.current
         ?.getContext("2d")
         ?.clearRect(0, 0, liveCanvasRef.current.width, liveCanvasRef.current.height);
       return;
     }
 
-    handlers.current.onStroke(page.id, {
-      tool: gesture.tool,
-      color,
-      width,
-      points,
-    });
+    if (gesture.tool !== "line") {
+      const simple = simplifyStroke(gesture.points, gesture.pressures ?? undefined, 0.3);
+      gesture.points = simple.points;
+      gesture.pressures = simple.pressures ?? null;
+    }
+
+    handlers.current.onStroke(page.id, buildStroke(gesture));
   }
 
   const cursor =

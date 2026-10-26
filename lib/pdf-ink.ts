@@ -19,6 +19,7 @@
  * Bu fayl React'ga ham, brauzerga ham bog'liq emas — testlar
  * Node'da ishlatadi.
  */
+import { getStroke, type StrokeOptions } from "perfect-freehand";
 import {
   LineCapStyle,
   LineJoinStyle,
@@ -46,6 +47,16 @@ import {
 
 export type InkTool = "pen" | "marker" | "line";
 
+/**
+ * Qalam turi — Nebo'dagi kabi.
+ *
+ *   felt     — flomaster: qalinligi bir xil
+ *   fountain — pero: bosim va tezlikka qarab ingichkalashadi,
+ *              uchlari nozik — qo'l yozuvi eng chiroyli chiqadi
+ *   brush    — mo'yqalam: bosimga juda sezgir, uchlari o'tkir
+ */
+export type PenKind = "felt" | "fountain" | "brush";
+
 export type Stroke = {
   tool: InkTool;
   /** "#RRGGBB" */
@@ -54,6 +65,14 @@ export type Stroke = {
   width: number;
   /** Nuqtalar ketma-ket: [x0, y0, x1, y1, ...] */
   points: number[];
+  /** Faqat qalam uchun. Yo'q bo'lsa — eski oddiy chiziq */
+  pen?: PenKind;
+  /**
+   * Har nuqtadagi qalam bosimi (0..1). Faqat haqiqiy stilusda
+   * yoziladi; sichqoncha va barmoqda bosim yo'q — u holda bosim
+   * tezlikdan taxmin qilinadi.
+   */
+  pressures?: number[];
 };
 
 /** [a, b, c, d, e, f] — PDF'dagi kabi affin matritsa */
@@ -218,21 +237,40 @@ export function strokePath(points: number[]): PathSegment[] {
  * shishiradi, ko'rinishga esa ta'sir qilmaydi.
  */
 export function simplifyPoints(points: number[], minDistance = 0.4) {
-  if (points.length <= 4) return points.slice();
+  return simplifyStroke(points, undefined, minDistance).points;
+}
 
-  const result = [points[0], points[1]];
+/** `simplifyPoints` — bosim qiymatlari ham nuqtalari bilan birga qoladi */
+export function simplifyStroke(
+  points: number[],
+  pressures: number[] | undefined,
+  minDistance = 0.4,
+) {
+  if (points.length <= 4) {
+    return { points: points.slice(), pressures: pressures?.slice() };
+  }
+
+  const kept = [0];
   const minSq = minDistance * minDistance;
+  let lastX = points[0];
+  let lastY = points[1];
 
-  for (let i = 2; i < points.length - 2; i += 2) {
-    const dx = points[i] - result[result.length - 2];
-    const dy = points[i + 1] - result[result.length - 1];
+  for (let i = 1; i < points.length / 2 - 1; i += 1) {
+    const dx = points[i * 2] - lastX;
+    const dy = points[i * 2 + 1] - lastY;
     if (dx * dx + dy * dy >= minSq) {
-      result.push(points[i], points[i + 1]);
+      kept.push(i);
+      lastX = points[i * 2];
+      lastY = points[i * 2 + 1];
     }
   }
 
-  result.push(points[points.length - 2], points[points.length - 1]);
-  return result;
+  kept.push(points.length / 2 - 1);
+
+  return {
+    points: kept.flatMap((i) => [points[i * 2], points[i * 2 + 1]]),
+    pressures: pressures && kept.map((i) => pressures[i] ?? 0.5),
+  };
 }
 
 export function hexToRgb(hex: string): [number, number, number] {
@@ -243,6 +281,93 @@ export function hexToRgb(hex: string): [number, number, number] {
 }
 
 /* ------------------------------------------------------------------ */
+/* Qalam konturi                                                       */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Qalam chizgisi chiziq (stroke) emas, to'ldirilgan shakl (fill):
+ * har nuqtada qalinlik boshqacha bo'lishi uchun chizgining ikki
+ * cheti hisoblanib, ichi bo'yaladi. Hisobni `perfect-freehand`
+ * qiladi — tldraw va Excalidraw ham shuni ishlatadi.
+ *
+ * Shakl ekranda ham, PDF'da ham aynan bir xil nuqtalardan quriladi,
+ * shuning uchun saqlangan PDF ekrandagidek chiqadi va vektor
+ * bo'lgani uchun har qancha kattalashtirilsa ham tiniq qoladi.
+ */
+const PEN_OPTIONS: Record<PenKind, (size: number) => StrokeOptions> = {
+  felt: () => ({
+    thinning: 0,
+    smoothing: 0.6,
+    streamline: 0.45,
+    simulatePressure: false,
+  }),
+  fountain: (size) => ({
+    thinning: 0.6,
+    smoothing: 0.65,
+    streamline: 0.5,
+    /* Yumshoq egri: yengil bosimda ham chiziq uzilmasin */
+    easing: (t) => Math.sin((t * Math.PI) / 2),
+    start: { taper: size * 2.5, cap: true },
+    end: { taper: size * 3, cap: true },
+  }),
+  brush: (size) => ({
+    thinning: 0.85,
+    smoothing: 0.7,
+    streamline: 0.5,
+    easing: (t) => t * t * (3 - 2 * t),
+    start: { taper: size * 6, cap: true },
+    end: { taper: size * 8, cap: true },
+  }),
+};
+
+/**
+ * Qalam chizgisining konturi: [[x, y], ...]. Oddiy chiziq bilan
+ * chiziladigan chizgi (marker, to'g'ri chiziq, eski chizgilar)
+ * uchun `null`.
+ *
+ * `complete` — chizgi tugaganmi. Yozish paytida oxiri ochiq
+ * hisoblanadi, aks holda uchi har kadrda "sakrab" turardi.
+ */
+export function penOutline(stroke: Stroke, complete = true): number[][] | null {
+  if (stroke.tool !== "pen" || !stroke.pen) return null;
+
+  const { points, pressures } = stroke;
+  const input: number[][] = [];
+  for (let i = 0; i + 1 < points.length; i += 2) {
+    input.push(
+      pressures ? [points[i], points[i + 1], pressures[i / 2] ?? 0.5] : [points[i], points[i + 1]],
+    );
+  }
+  if (input.length === 0) return [];
+
+  const base = PEN_OPTIONS[stroke.pen](stroke.width);
+  return getStroke(input, {
+    size: stroke.width,
+    ...base,
+    simulatePressure: base.simulatePressure ?? !pressures,
+    last: complete,
+  });
+}
+
+/** Yopiq silliq kontur: har ikki nuqta o'rtasidan o'tuvchi kvadrat egrilar */
+export function outlinePath(outline: number[][]): PathSegment[] {
+  const n = outline.length;
+  if (n < 3) return [];
+
+  const mid = (a: number[], b: number[]) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+  const [sx, sy] = mid(outline[0], outline[1]);
+  const segments: PathSegment[] = [{ kind: "move", x: sx, y: sy }];
+
+  for (let i = 1; i <= n; i += 1) {
+    const p = outline[i % n];
+    const [x, y] = mid(p, outline[(i + 1) % n]);
+    segments.push({ kind: "quad", cx: p[0], cy: p[1], x, y });
+  }
+
+  return segments;
+}
+
+/* ------------------------------------------------------------------ */
 /* PDF'ga eksport                                                      */
 /* ------------------------------------------------------------------ */
 
@@ -250,12 +375,12 @@ function round(value: number) {
   return Math.round(value * 100) / 100;
 }
 
-function pathOperators(points: number[]): PDFOperator[] {
+function pathOperators(segments: PathSegment[]): PDFOperator[] {
   const ops: PDFOperator[] = [];
   let lastX = 0;
   let lastY = 0;
 
-  for (const segment of strokePath(points)) {
+  for (const segment of segments) {
     if (segment.kind === "move") {
       ops.push(moveTo(round(segment.x), round(segment.y)));
     } else if (segment.kind === "line") {
@@ -330,13 +455,25 @@ function drawStrokes(doc: PDFDocument, page: PDFPage, item: InkPage) {
     const [r, g, b] = hexToRgb(s.color);
     ops.push(pushGraphicsState());
 
+    const outline = penOutline(s);
+    if (outline) {
+      ops.push(
+        setFillingRgbColor(r, g, b),
+        ...pathOperators(outlinePath(outline)),
+        closePath(),
+        fill(),
+        popGraphicsState(),
+      );
+      continue;
+    }
+
     if (s.tool === "marker") {
       marker ??= markerState(doc, page);
       ops.push(setGraphicsState(marker));
     }
 
     ops.push(setStrokingRgbColor(r, g, b), setLineWidth(round(s.width)));
-    ops.push(...pathOperators(s.points), stroke(), popGraphicsState());
+    ops.push(...pathOperators(strokePath(s.points)), stroke(), popGraphicsState());
   }
 
   ops.push(popGraphicsState());
