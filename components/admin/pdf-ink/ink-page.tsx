@@ -29,6 +29,8 @@ export type PageHandlers = {
   onEraseEnd: () => void;
   /** Qalam birinchi marta sezilganda */
   onPenDetected: () => void;
+  /** Ikki barmoq bilan kattalashtirilmoqda — chizilmaydi */
+  isPinching: () => boolean;
 };
 
 type InkPageViewProps = {
@@ -424,7 +426,25 @@ function InkPageView({
     }
   }
 
+  /**
+   * Boshlangan ishni izsiz to'xtatish: ikkinchi barmoq tekkanda
+   * birinchisi chizayotgan chiziq qolmasin.
+   */
+  function abort() {
+    const gesture = gestureRef.current;
+    gestureRef.current = null;
+    cancelAnimationFrame(frameRef.current);
+    frameRef.current = 0;
+    if (gesture?.kind === "draw") clearLive();
+    /* O'chirilgani qaytmaydi, lekin "orqaga" bilan qaytarish mumkin bo'lsin */
+    if (gesture?.kind === "erase") handlers.current.onEraseEnd();
+  }
+
   function onPointerDown(event: React.PointerEvent<HTMLCanvasElement>) {
+    if (handlers.current.isPinching()) {
+      abort();
+      return;
+    }
     if (gestureRef.current) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
 
@@ -474,6 +494,10 @@ function InkPageView({
   function onPointerMove(event: React.PointerEvent<HTMLCanvasElement>) {
     const gesture = gestureRef.current;
     if (!gesture || gesture.pointerId !== event.pointerId) return;
+    if (handlers.current.isPinching()) {
+      abort();
+      return;
+    }
 
     if (gesture.kind === "pan") {
       scrollRef.current?.scrollTo({
@@ -512,6 +536,10 @@ function InkPageView({
   function finish(event: React.PointerEvent<HTMLCanvasElement>) {
     const gesture = gestureRef.current;
     if (!gesture || gesture.pointerId !== event.pointerId) return;
+    if (handlers.current.isPinching()) {
+      abort();
+      return;
+    }
     gestureRef.current = null;
 
     if (gesture.kind === "erase") {

@@ -18,8 +18,6 @@ import {
   Trash2,
   Undo2,
   X,
-  ZoomIn,
-  ZoomOut,
   type LucideIcon,
 } from "lucide-react";
 
@@ -140,6 +138,22 @@ async function prepareOffline() {
   } catch {
     /* Kesh ishlamasa ham muharrir onlayn ishlayveradi */
   }
+}
+
+/** Betning (u, v) nuqtasini oynaning (vx, vy) joyiga keltirish */
+function scrollToAnchor(
+  scroller: HTMLElement,
+  anchor: { pageId: string; u: number; v: number; vx: number; vy: number },
+  zoom: number,
+) {
+  const node = scroller.querySelector<HTMLElement>(`[data-page-id="${anchor.pageId}"]`);
+  if (!node) return;
+  const box = node.getBoundingClientRect();
+  const frame = scroller.getBoundingClientRect();
+  scroller.scrollTo({
+    left: scroller.scrollLeft + (box.left - frame.left) + anchor.u * zoom - anchor.vx,
+    top: scroller.scrollTop + (box.top - frame.top) + anchor.v * zoom - anchor.vy,
+  });
 }
 
 /** Faylni kompyuterga saqlash: imkon bo'lsa "Saqlash" oynasi, bo'lmasa yuklab olish */
@@ -263,6 +277,42 @@ export default function PdfInkEditor() {
   const erasedRef = useRef(false);
   const penSeenRef = useRef(false);
   const zoomAnchorRef = useRef<number | null>(null);
+  /*
+   * Barmoq/g'ildirak bilan kattalashtirgandan keyin: qaysi betning
+   * qaysi nuqtasi (bet birligida) oynaning qayeriga tushishi kerak.
+   * Betga bog'lanamiz, chunki betlar orasidagi bo'shliq va chetlar
+   * kattalik bilan birga o'zgarmaydi — oddiy proporsiya adashardi.
+   */
+  const pendingScrollRef = useRef<{
+    pageId: string;
+    u: number;
+    v: number;
+    vx: number;
+    vy: number;
+  } | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const previewRef = useRef<{
+    zoom0: number;
+    scale: number;
+    /* Barmoqlar ostidagi nuqta, kontent koordinatasida (boshlanishdagi kattalikda) */
+    ox: number;
+    oy: number;
+    /* Barmoqlar o'rtasi, oyna ichida: boshida va hozir */
+    vx0: number;
+    vy0: number;
+    vx: number;
+    vy: number;
+    /* Barmoqlar ostidagi bet va undagi nuqta (bet birligida) */
+    pageId: string | null;
+    u: number;
+    v: number;
+  } | null>(null);
+  const touchesRef = useRef(new Map<number, { x: number; y: number }>());
+  const pinchRef = useRef<{ distance: number } | null>(null);
+  /* Ikkinchi barmoq tekkandan oxirgisi ko'tarilguncha — sahifalar chizmaydi */
+  const pinchingRef = useRef(false);
+  const wheelTimerRef = useRef(0);
+  const [previewZoom, setPreviewZoom] = useState<number | null>(null);
 
   pagesRef.current = pages;
 
@@ -319,6 +369,7 @@ export default function PdfInkEditor() {
     onErase: () => {},
     onEraseEnd: () => {},
     onPenDetected: () => {},
+    isPinching: () => false,
   });
 
   handlers.current = {
@@ -366,6 +417,9 @@ export default function PdfInkEditor() {
       if (base && erasedRef.current) {
         commit(pagesRef.current, base);
       }
+    },
+    isPinching() {
+      return pinchingRef.current;
     },
     onPenDetected() {
       if (penSeenRef.current) return;
@@ -536,8 +590,17 @@ export default function PdfInkEditor() {
   /* Kattalashtirganda ko'rib turgan joy qochib ketmasin */
   useLayoutEffect(() => {
     const scroller = scrollRef.current;
+    if (!scroller) return;
+
+    const target = pendingScrollRef.current;
+    if (target) {
+      pendingScrollRef.current = null;
+      scrollToAnchor(scroller, target, zoom);
+      return;
+    }
+
     const anchor = zoomAnchorRef.current;
-    if (!scroller || anchor === null) return;
+    if (anchor === null) return;
     zoomAnchorRef.current = null;
     scroller.scrollTop = anchor * scroller.scrollHeight - scroller.clientHeight / 2;
   }, [zoom]);
@@ -547,20 +610,201 @@ export default function PdfInkEditor() {
   /* Bo'sh holatda sahifalar oynasi yo'q — u paydo bo'lganda ulanamiz */
   const hasPages = pages.length > 0;
 
-  /* Ctrl + g'ildirak — kattalashtirish */
+  /*
+   * Ikki barmoq (yoki sensor panel / Ctrl + g'ildirak) bilan kattalashtirish.
+   *
+   * Harakat davomida sahifalar faqat CSS bilan cho'ziladi — bu tez.
+   * Har kadrda haqiqiy kattalikni o'zgartirsak, hamma kanvas qayta
+   * chizilib, ekran qotib qolardi. Barmoqlar ko'tarilganda haqiqiy
+   * kattalik o'rnatiladi va sahifalar tiniq qilib qayta chiziladi;
+   * barmoqlar ostidagi joy o'z o'rnida qoladi.
+   */
+  const beginPreview = useCallback((clientX: number, clientY: number) => {
+    const scroller = scrollRef.current;
+    if (!scroller) return;
+    const rect = scroller.getBoundingClientRect();
+    const vx = clientX - rect.left;
+    const vy = clientY - rect.top;
+    const zoom0 = zoomRef.current;
+
+    /* Barmoqlarga eng yaqin bet */
+    let pageId: string | null = null;
+    let u = 0;
+    let v = 0;
+    let best = Infinity;
+    scroller.querySelectorAll<HTMLElement>("[data-page-id]").forEach((node) => {
+      const box = node.getBoundingClientRect();
+      const dy = clientY < box.top ? box.top - clientY : Math.max(0, clientY - box.bottom);
+      if (dy < best) {
+        best = dy;
+        pageId = node.dataset.pageId ?? null;
+        u = (clientX - box.left) / zoom0;
+        v = (clientY - box.top) / zoom0;
+      }
+    });
+
+    previewRef.current = {
+      zoom0,
+      scale: 1,
+      ox: scroller.scrollLeft + vx,
+      oy: scroller.scrollTop + vy,
+      vx0: vx,
+      vy0: vy,
+      vx,
+      vy,
+      pageId,
+      u,
+      v,
+    };
+  }, []);
+
+  const updatePreview = useCallback((factor: number, clientX: number, clientY: number) => {
+    const preview = previewRef.current;
+    const scroller = scrollRef.current;
+    const content = contentRef.current;
+    if (!preview || !scroller || !content) return;
+
+    const rect = scroller.getBoundingClientRect();
+    const target = clampZoom(preview.zoom0 * factor);
+    preview.scale = target / preview.zoom0;
+    preview.vx = clientX - rect.left;
+    preview.vy = clientY - rect.top;
+
+    content.style.transformOrigin = `${preview.ox}px ${preview.oy}px`;
+    content.style.transform = `translate(${preview.vx - preview.vx0}px, ${preview.vy - preview.vy0}px) scale(${preview.scale})`;
+    setPreviewZoom(target);
+  }, []);
+
+  const endPreview = useCallback(() => {
+    const preview = previewRef.current;
+    const scroller = scrollRef.current;
+    previewRef.current = null;
+    if (contentRef.current) contentRef.current.style.transform = "";
+    setPreviewZoom(null);
+    if (!preview || !scroller) return;
+
+    const next = clampZoom(preview.zoom0 * preview.scale);
+    if (!preview.pageId) {
+      setZoom(next);
+      return;
+    }
+
+    const target = {
+      pageId: preview.pageId,
+      u: preview.u,
+      v: preview.v,
+      vx: preview.vx,
+      vy: preview.vy,
+    };
+
+    if (next === zoomRef.current) {
+      scrollToAnchor(scroller, target, next);
+    } else {
+      pendingScrollRef.current = target;
+      setZoom(next);
+    }
+  }, []);
+
+  /* Ctrl + g'ildirak; sensor paneldagi ikki barmoq ham shunday keladi */
   useEffect(() => {
     const scroller = scrollRef.current;
     if (!scroller) return;
+    let factor = 1;
 
     function onWheel(event: WheelEvent) {
       if (!event.ctrlKey) return;
       event.preventDefault();
-      changeZoom(zoomRef.current * (event.deltaY < 0 ? 1.1 : 1 / 1.1));
+      if (pinchRef.current) return;
+
+      if (!previewRef.current) {
+        factor = 1;
+        beginPreview(event.clientX, event.clientY);
+      }
+      /* Sichqoncha bir "chiqillashda" ~100 beradi, sensor panel — kichik qiymatlar */
+      const delta = Math.max(-50, Math.min(50, event.deltaY));
+      factor *= Math.exp(-delta * 0.006);
+      updatePreview(factor, event.clientX, event.clientY);
+
+      window.clearTimeout(wheelTimerRef.current);
+      wheelTimerRef.current = window.setTimeout(endPreview, 180);
     }
 
     scroller.addEventListener("wheel", onWheel, { passive: false });
-    return () => scroller.removeEventListener("wheel", onWheel);
-  }, [changeZoom, hasPages]);
+    return () => {
+      scroller.removeEventListener("wheel", onWheel);
+      window.clearTimeout(wheelTimerRef.current);
+    };
+  }, [hasPages, beginPreview, updatePreview, endPreview]);
+
+  /* Ekranda ikki barmoq */
+  useEffect(() => {
+    const scroller = scrollRef.current;
+    if (!scroller) return;
+    const touches = touchesRef.current;
+
+    function spread() {
+      const [a, b] = [...touches.values()];
+      return {
+        distance: Math.hypot(a.x - b.x, a.y - b.y) || 1,
+        x: (a.x + b.x) / 2,
+        y: (a.y + b.y) / 2,
+      };
+    }
+
+    function onDown(event: PointerEvent) {
+      if (event.pointerType !== "touch") return;
+      touches.set(event.pointerId, { x: event.clientX, y: event.clientY });
+      if (touches.size === 2 && !pinchRef.current) {
+        /* Birinchi barmoq boshlagan chizgi bekor bo'ladi (ink-page.tsx) */
+        pinchingRef.current = true;
+        window.clearTimeout(wheelTimerRef.current);
+        if (previewRef.current) endPreview();
+        const { distance, x, y } = spread();
+        pinchRef.current = { distance };
+        beginPreview(x, y);
+      }
+    }
+
+    function onMove(event: PointerEvent) {
+      if (!touches.has(event.pointerId)) return;
+      touches.set(event.pointerId, { x: event.clientX, y: event.clientY });
+      const pinch = pinchRef.current;
+      if (!pinch || touches.size < 2) return;
+      event.preventDefault();
+      const { distance, x, y } = spread();
+      updatePreview(distance / pinch.distance, x, y);
+    }
+
+    function onUp(event: PointerEvent) {
+      if (!touches.delete(event.pointerId)) return;
+      if (pinchRef.current && touches.size < 2) {
+        pinchRef.current = null;
+        endPreview();
+      }
+      if (touches.size === 0 && pinchingRef.current) {
+        /*
+         * Bu tinglovchi sahifadagidan oldin ishlaydi. Belgini darhol
+         * olsak, oxirgi barmoq ko'tarilganda sahifa uning chizgisini
+         * saqlab qo'yardi — shuning uchun hodisadan keyin olamiz.
+         */
+        window.setTimeout(() => {
+          if (touches.size === 0) pinchingRef.current = false;
+        }, 0);
+      }
+    }
+
+    scroller.addEventListener("pointerdown", onDown, true);
+    scroller.addEventListener("pointermove", onMove, true);
+    scroller.addEventListener("pointerup", onUp, true);
+    scroller.addEventListener("pointercancel", onUp, true);
+    return () => {
+      scroller.removeEventListener("pointerdown", onDown, true);
+      scroller.removeEventListener("pointermove", onMove, true);
+      scroller.removeEventListener("pointerup", onUp, true);
+      scroller.removeEventListener("pointercancel", onUp, true);
+      touches.clear();
+    };
+  }, [hasPages, beginPreview, updatePreview, endPreview]);
 
   /* Hozirgi sahifa — ekran o'rtasidagisi */
   function onScroll() {
@@ -710,7 +954,7 @@ export default function PdfInkEditor() {
         <ul className="mt-6 space-y-1.5 text-sm text-mb-muted">
           <li>Qalam (P), Marker (M), To‘g‘ri chiziq (L), O‘chirg‘ich (E), Surish (H).</li>
           <li>Ctrl+Z — orqaga, Ctrl+Y — oldinga, Ctrl+S — PDF saqlash.</li>
-          <li>Ctrl + sichqoncha g‘ildiragi — kattalashtirish.</li>
+          <li>Kattalashtirish — ekranda ikki barmoq bilan yoki Ctrl + sichqoncha g‘ildiragi.</li>
         </ul>
       </div>
     );
@@ -866,10 +1110,10 @@ export default function PdfInkEditor() {
 
             <Divider />
 
-            <ToolButton icon={ZoomOut} label="Kichiklashtirish" onClick={() => changeZoom(zoom / 1.2)} />
+            {/* Kattalik ikki barmoq / Ctrl + g'ildirak bilan; bu yerda faqat foiz */}
             <button
               type="button"
-              title="Sahifa kengligiga moslash"
+              title="Ikki barmoq bilan kattalashtiring. Bosilsa — sahifa kengligiga moslanadi"
               onClick={() => {
                 const box = scrollRef.current?.clientWidth ?? window.innerWidth;
                 const widest = Math.max(...pages.map((page) => page.width), 1);
@@ -877,9 +1121,8 @@ export default function PdfInkEditor() {
               }}
               className="h-10 w-14 shrink-0 rounded-xl text-sm font-semibold tabular-nums text-slate-700 hover:bg-slate-100"
             >
-              {Math.round(zoom * 100)}%
+              {Math.round((previewZoom ?? zoom) * 100)}%
             </button>
-            <ToolButton icon={ZoomIn} label="Kattalashtirish" onClick={() => changeZoom(zoom * 1.2)} />
 
             <Divider />
 
@@ -1010,12 +1253,18 @@ export default function PdfInkEditor() {
       <div
         ref={scrollRef}
         onScroll={onScroll}
+        /* Oraliqlarda brauzer butun sahifani kattalashtirmasin — o'zimiz qilamiz */
+        style={{ touchAction: "pan-x pan-y" }}
         className={cn(
           "relative flex-1 overflow-auto bg-slate-200/70 dark:bg-slate-900",
           dragOver && "outline outline-2 -outline-offset-4 outline-mb-brand",
         )}
       >
-        <div className="flex w-max min-w-full flex-col items-center gap-4 px-4 py-4">
+        <div
+          ref={contentRef}
+          className="flex w-max min-w-full flex-col items-center gap-4 px-4 py-4"
+          style={{ willChange: previewZoom === null ? undefined : "transform" }}
+        >
           {pages.map((page) => (
             <InkPageView
               key={page.id}
