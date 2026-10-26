@@ -2,19 +2,21 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
   BarChart3,
-  BookOpen,
+  CalendarDays,
   ClipboardCheck,
+  Clock,
   Database,
+  Gift,
   ListChecks,
   MonitorPlay,
   Timer,
-  TrendingUp,
   Users,
   UsersRound,
   type LucideIcon,
 } from "lucide-react";
 
 import { accents, type Accent } from "@/components/ui/section-visual";
+import { remainingLabel } from "@/lib/due-label";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
@@ -23,29 +25,51 @@ export const dynamic = "force-dynamic";
 /**
  * Boshqaruv paneli — admin panelining yagona kirish nuqtasi.
  *
- * Yuqoridagi menyu olib tashlangani uchun barcha bo'limlar aynan
- * shu kartalar orqali ochiladi. Shuning uchun ro'yxat to'liq va
- * tartibi barqaror: har safar bir xil joyda turadi.
+ * Uch qavat:
+ *   1. "Bugun" — har kuni kerak bo'ladigan narsa: faol guruhlarning
+ *      dars varaqasi, muddati yaqin vazifalar, kutayotgan sovg'alar.
+ *   2. To'rtta asosiy bo'lim — Guruhlar, Testlar, Darslar, Natijalar.
+ *   3. "Boshqa" — kamdan kam ochiladigan asboblar, kichik havola.
  *
- * Kartalar ma'nosiga qarab guruhlangan, har guruhning o'z ohangi
- * bor (components/ui/section-visual.ts). Rang faqat ikonka
- * plitkasida — tugma va havola doim brend ko'kida qoladi.
+ * Ilgari beshta guruhda o'nta bir xil kattalikdagi karta turardi va
+ * qaysi biri muhimligi ko'rinmasdi.
  */
-type DashboardCard = {
+type MainCard = {
   title: string;
   description: string;
   href: string;
-  /* null — bu bo'limda sanaladigan narsa yo'q (taymer, analitika) */
   count: number | null;
+  icon: LucideIcon;
+  tone: Accent;
+};
+
+type ToolLink = {
+  title: string;
+  href: string;
   icon: LucideIcon;
 };
 
-type DashboardGroup = {
+type OverviewRow = {
+  crm_group_id: number;
   title: string;
-  hint: string;
-  tone: Accent;
-  cards: DashboardCard[];
+  is_active: boolean;
+  student_count: number;
 };
+
+type DueRow = {
+  id: number;
+  due_at: string;
+  group_id: number;
+  tests: { title: string } | null;
+  study_groups: { title: string } | null;
+};
+
+/** Bugungi sana — Toshkent vaqti bo'yicha, YYYY-MM-DD */
+function todayInTashkent() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Tashkent",
+  }).format(new Date());
+}
 
 async function getAdminName() {
   const supabase = await createClient();
@@ -78,36 +102,34 @@ async function getAdminName() {
   );
 }
 
-function AdminCard({ card, tone }: { card: DashboardCard; tone: Accent }) {
+function MainCardView({ card }: { card: MainCard }) {
   const Icon = card.icon;
 
   return (
     <Link
       href={card.href}
-      className="group flex h-full flex-col rounded-2xl border border-mb-line bg-white p-5 shadow-sm transition hover:border-mb-brand hover:shadow-md"
+      className="group flex h-full items-start gap-4 rounded-2xl border border-mb-line bg-white p-5 shadow-sm transition hover:border-mb-brand hover:shadow-md"
     >
-      <div className="flex items-start justify-between gap-3">
-        <span
-          className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl ${accents[tone].tile}`}
-        >
-          <Icon className="h-6 w-6" strokeWidth={1.9} aria-hidden="true" />
+      <span
+        className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl ${accents[card.tone].tile}`}
+      >
+        <Icon className="h-6 w-6" strokeWidth={1.9} aria-hidden="true" />
+      </span>
+
+      <span className="min-w-0 flex-1">
+        <span className="flex items-center justify-between gap-2">
+          <span className="text-lg font-bold text-mb-ink">{card.title}</span>
+
+          {card.count !== null && (
+            <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
+              {card.count} ta
+            </span>
+          )}
         </span>
 
-        {card.count !== null && (
-          <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
-            {card.count} ta
-          </span>
-        )}
-      </div>
-
-      <h3 className="mt-4 text-lg font-bold text-mb-ink">{card.title}</h3>
-
-      <p className="mt-1.5 flex-1 text-sm leading-6 text-mb-muted">
-        {card.description}
-      </p>
-
-      <span className="mt-4 text-sm font-semibold text-mb-brand">
-        Boshqarish →
+        <span className="mt-1 block text-sm leading-6 text-mb-muted">
+          {card.description}
+        </span>
       </span>
     </Link>
   );
@@ -115,217 +137,229 @@ function AdminCard({ card, tone }: { card: DashboardCard; tone: Accent }) {
 
 export default async function AdminPage() {
   const fullName = await getAdminName();
+  const supabase = await createClient();
   const adminClient = createAdminClient();
+
+  const now = new Date();
+  const soon = new Date(now.getTime() + 48 * 3600 * 1000);
 
   const [
     testsResult,
-    profilesResult,
-    textbooksResult,
     lessonsResult,
-    groupsResult,
+    textbooksResult,
     attemptsResult,
-    crmGroupsResult,
+    overviewResult,
+    pendingResult,
+    dueResult,
   ] = await Promise.all([
     adminClient.from("tests").select("*", { count: "exact", head: true }),
 
-    adminClient.from("profiles").select("*", { count: "exact", head: true }),
+    adminClient.from("lessons").select("*", { count: "exact", head: true }),
 
     adminClient.from("textbooks").select("*", { count: "exact", head: true }),
 
-    adminClient.from("lessons").select("*", { count: "exact", head: true }),
-
-    adminClient
-      .from("study_groups")
-      .select("*", { count: "exact", head: true }),
-
     adminClient.from("attempts").select("*", { count: "exact", head: true }),
 
-    /*
-     * db/17 hali ishga tushirilmagan bo'lsa xato qaytadi — sahifa
-     * baribir ochiladi, karta shunchaki 0 ko'rsatadi.
-     */
-    adminClient.from("crm_groups").select("*", { count: "exact", head: true }),
+    /* db/17 hali ishga tushirilmagan bo'lsa bo'sh ro'yxat */
+    supabase.rpc("group_overview"),
+
+    supabase.rpc("pending_redemption_count"),
+
+    /* Muddati 48 soat ichida tugaydigan faol vazifalar */
+    adminClient
+      .from("assignments")
+      .select("id, due_at, group_id, tests(title), study_groups(title)")
+      .eq("is_active", true)
+      .gte("due_at", now.toISOString())
+      .lte("due_at", soon.toISOString())
+      .order("due_at", { ascending: true })
+      .limit(5),
   ]);
 
-  const loadError =
-    testsResult.error ||
-    profilesResult.error ||
-    textbooksResult.error ||
-    lessonsResult.error ||
-    groupsResult.error ||
-    attemptsResult.error;
+  const activeGroups = ((overviewResult.data ?? []) as OverviewRow[]).filter(
+    (group) => group.is_active,
+  );
+  const pendingCount = Number(pendingResult.data) || 0;
+  const dueSoon = (dueResult.data ?? []) as unknown as DueRow[];
+  const today = todayInTashkent();
 
-  /*
-   * Guruhlar tartibi ataylab qat'iy: kundalik ish yuqorida, kamdan
-   * kam ochiladigan xizmat bo'limlari pastda.
-   */
-  const groups: DashboardGroup[] = [
+  const mainCards: MainCard[] = [
     {
-      title: "O‘quvchilar va guruhlar",
-      hint: "Kundalik ish: davomat, ball, akkauntlar",
+      title: "Guruhlar",
+      description: "Davomat, ball, o‘quvchilar va uy vazifalari.",
+      href: "/admin/crm",
+      count: activeGroups.length,
+      icon: UsersRound,
       tone: "people",
-      cards: [
-        {
-          title: "Guruhlar",
-          description:
-            "Uy vazifasi, davomat, ball va sovg‘a do‘koni — har bir guruh bitta joyda.",
-          href: "/admin/crm",
-          count: crmGroupsResult.count ?? groupsResult.count ?? 0,
-          icon: UsersRound,
-        },
-        {
-          title: "Foydalanuvchilar",
-          description:
-            "O‘quvchilar, akkaunt holati va bo‘limlarga kirish ruxsatlari.",
-          href: "/admin/users",
-          count: profilesResult.count ?? 0,
-          icon: Users,
-        },
-      ],
     },
     {
-      title: "Testlar va imtihon",
-      hint: "Test yaratish, tekshirish va imtihon o‘tkazish",
+      title: "Testlar",
+      description: "Test yaratish va savollarni kiritish.",
+      href: "/admin/tests",
+      count: testsResult.count ?? null,
+      icon: ClipboardCheck,
       tone: "tests",
-      cards: [
-        {
-          title: "Test tekshirish",
-          description:
-            "Mavzu va testni tanlab, belgilangan javoblarni ketma-ket tekshirish.",
-          href: "/admin/test-tekshirish",
-          count: null,
-          icon: ListChecks,
-        },
-        {
-          title: "Imtihon taymeri",
-          description:
-            "Elektron doska uchun katta countdown taymer — sekundigacha.",
-          href: "/admin/taymer",
-          count: null,
-          icon: Timer,
-        },
-        {
-          title: "Testlar",
-          description:
-            "Yo‘nalish, bo‘lim, mavzu va test yaratish; savollarni kiritish.",
-          href: "/admin/tests",
-          count: testsResult.count ?? 0,
-          icon: ClipboardCheck,
-        },
-      ],
     },
     {
-      title: "O‘quv materiallari",
-      hint: "O‘quvchi o‘qiydigan va ko‘radigan hamma narsa",
+      title: "Darslar",
+      description: "Videodarslar va darslik yechimlari.",
+      href: "/admin/lessons",
+      count:
+        lessonsResult.count !== null || textbooksResult.count !== null
+          ? (lessonsResult.count ?? 0) + (textbooksResult.count ?? 0)
+          : null,
+      icon: MonitorPlay,
       tone: "content",
-      cards: [
-        {
-          title: "Darslik yechimlari",
-          description:
-            "Darsliklar, mavzular, misollar va ularning videoyechimlari.",
-          href: "/admin/textbooks",
-          count: textbooksResult.count ?? 0,
-          icon: BookOpen,
-        },
-        {
-          title: "Videodarslar",
-          description:
-            "Dars bo‘limlari, videolar va ularga biriktirilgan testlar.",
-          href: "/admin/lessons",
-          count: lessonsResult.count ?? 0,
-          icon: MonitorPlay,
-        },
-      ],
     },
     {
-      title: "Natija va tahlil",
-      hint: "Nima ishladi, nima ishlamadi",
+      title: "Natijalar",
+      description: "Test natijalari va qaysi mavzu qiyinligi.",
+      href: "/admin/results",
+      count: attemptsResult.count ?? null,
+      icon: BarChart3,
       tone: "insight",
-      cards: [
-        {
-          title: "Natijalar",
-          description:
-            "O‘quvchilarning test natijalari, javoblari va urinishlari.",
-          href: "/admin/results",
-          count: attemptsResult.count ?? 0,
-          icon: BarChart3,
-        },
-        {
-          title: "Analitika",
-          description:
-            "Qaysi mavzu qiyin, qaysi savol ko‘p xato qilinadi — raqamlarda.",
-          href: "/admin/analytics",
-          count: null,
-          icon: TrendingUp,
-        },
-      ],
-    },
-    {
-      title: "Tizim",
-      hint: "Kamdan kam kerak bo‘ladi",
-      tone: "system",
-      cards: [
-        {
-          title: "Texnik xizmat",
-          description:
-            "Bazani chiqindidan tozalash va jadvallar hajmini ko‘rish.",
-          href: "/admin/xizmat",
-          count: null,
-          icon: Database,
-        },
-      ],
     },
   ];
 
+  const tools: ToolLink[] = [
+    { title: "Foydalanuvchilar", href: "/admin/users", icon: Users },
+    { title: "Test tekshirish", href: "/admin/test-tekshirish", icon: ListChecks },
+    { title: "Imtihon taymeri", href: "/admin/taymer", icon: Timer },
+    { title: "Texnik xizmat", href: "/admin/xizmat", icon: Database },
+  ];
+
+  const nothingToday =
+    activeGroups.length === 0 && dueSoon.length === 0 && pendingCount === 0;
+
   return (
     <main className="min-h-screen bg-mb-page text-mb-ink">
-      <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-9">
-        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <div>
-            <h1 className="text-2xl font-bold sm:text-3xl">
-              Salom, {fullName}
-            </h1>
-
-            <p className="mt-1.5 text-sm text-mb-muted">
-              Qaysi bo‘limdan boshlaymiz?
-            </p>
-          </div>
+      <section className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-9">
+        <div className="flex items-end justify-between gap-4">
+          <h1 className="text-2xl font-bold sm:text-3xl">Salom, {fullName}</h1>
 
           <Link
             href="/profile"
-            className="inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+            className="inline-flex min-h-10 items-center justify-center rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
           >
             Profil
           </Link>
         </div>
 
-        {loadError && (
-          <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-800">
-            Ayrim sonlar yuklanmadi. Boshqaruv bo‘limlari ishlashda davom
-            etadi.
-          </div>
-        )}
+        {/* 1. Bugun */}
+        <h2 className="mt-7 text-[13px] font-bold uppercase tracking-wide text-mb-muted">
+          Bugun
+        </h2>
 
-        <div className="mt-7 space-y-8">
-          {groups.map((group) => (
-            <section key={group.title}>
-              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <h2
-                  className={`rounded-lg px-2 py-0.5 text-[13px] font-bold uppercase tracking-wide ${accents[group.tone].softBox}`}
+        <div className="mt-3 space-y-3">
+          {pendingCount > 0 && (
+            <Link
+              href="/admin/crm"
+              className="flex items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900 transition hover:bg-amber-100"
+            >
+              <Gift className="h-5 w-5 shrink-0" strokeWidth={2} aria-hidden="true" />
+              {pendingCount} ta sovg‘a so‘rovi tasdiqlashni kutmoqda
+            </Link>
+          )}
+
+          {activeGroups.length > 0 && (
+            <div className="overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+              {activeGroups.map((group, index) => (
+                <div
+                  key={group.crm_group_id}
+                  className={`flex items-center justify-between gap-3 px-4 py-3 ${index > 0 ? "border-t border-mb-line" : ""}`}
                 >
-                  {group.title}
-                </h2>
+                  <Link
+                    href={`/admin/crm/guruh?id=${group.crm_group_id}`}
+                    className="min-w-0 hover:text-mb-brand"
+                  >
+                    <span className="block truncate text-[15px] font-semibold">
+                      {group.title}
+                    </span>
+                    <span className="block text-xs text-mb-muted">
+                      {group.student_count} ta o‘quvchi
+                    </span>
+                  </Link>
 
-                <p className="text-sm text-mb-muted">{group.hint}</p>
-              </div>
+                  <Link
+                    href={`/admin/crm/dars?guruh=${group.crm_group_id}&sana=${today}`}
+                    className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-xl bg-mb-brand px-3 text-sm font-semibold text-white transition hover:bg-mb-brandDark"
+                  >
+                    <CalendarDays className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
+                    Dars varaqasi
+                  </Link>
+                </div>
+              ))}
+            </div>
+          )}
 
-              <div className="mt-3 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {group.cards.map((card) => (
-                  <AdminCard key={card.href} card={card} tone={group.tone} />
+          {dueSoon.length > 0 && (
+            <div className="rounded-2xl border border-mb-line bg-white px-4 py-3 shadow-sm">
+              <p className="inline-flex items-center gap-2 text-sm font-semibold">
+                <Clock className="h-4 w-4 text-amber-600" strokeWidth={2} aria-hidden="true" />
+                Muddati yaqin vazifalar
+              </p>
+
+              <ul className="mt-2 space-y-1.5">
+                {dueSoon.map((item) => (
+                  <li key={item.id}>
+                    <Link
+                      href={`/admin/assignments/view?id=${item.id}`}
+                      className="flex items-center justify-between gap-3 text-sm hover:text-mb-brand"
+                    >
+                      <span className="min-w-0 truncate">
+                        {item.tests?.title ?? "Test"}
+                        {item.study_groups?.title && (
+                          <span className="text-mb-muted"> · {item.study_groups.title}</span>
+                        )}
+                      </span>
+                      <span className="shrink-0 text-xs font-semibold text-amber-700">
+                        {remainingLabel(item.due_at)}
+                      </span>
+                    </Link>
+                  </li>
                 ))}
-              </div>
-            </section>
+              </ul>
+            </div>
+          )}
+
+          {nothingToday && (
+            <p className="rounded-2xl border border-dashed border-mb-line bg-white px-4 py-3 text-sm text-mb-muted">
+              Bugun uchun shoshilinch ish yo‘q.
+            </p>
+          )}
+        </div>
+
+        {/* 2. Asosiy bo'limlar */}
+        <h2 className="mt-8 text-[13px] font-bold uppercase tracking-wide text-mb-muted">
+          Bo‘limlar
+        </h2>
+
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          {mainCards.map((card) => (
+            <MainCardView key={card.href} card={card} />
           ))}
+        </div>
+
+        {/* 3. Boshqa asboblar */}
+        <h2 className="mt-8 text-[13px] font-bold uppercase tracking-wide text-mb-muted">
+          Boshqa
+        </h2>
+
+        <div className="mt-3 flex flex-wrap gap-2">
+          {tools.map((tool) => {
+            const Icon = tool.icon;
+
+            return (
+              <Link
+                key={tool.href}
+                href={tool.href}
+                className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-mb-line bg-white px-3 text-sm font-semibold text-slate-700 transition hover:border-mb-brand hover:text-mb-brand"
+              >
+                <Icon className="h-4 w-4 text-mb-muted" strokeWidth={2} aria-hidden="true" />
+                {tool.title}
+              </Link>
+            );
+          })}
         </div>
       </section>
     </main>
