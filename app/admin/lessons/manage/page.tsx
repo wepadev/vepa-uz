@@ -10,8 +10,9 @@ import {
 import { createClient } from "@/lib/supabase/server";
 import type { FormState } from "@/lib/form-state";
 import CreateLessonForm from "@/components/admin/create-lesson-form";
-import MathText from "@/components/math-text";
-import YouTubeEmbed from "@/components/youtube-embed";
+import CreatePanel from "@/components/admin/create-panel";
+import RowMenu, { rowMenuDanger, rowMenuItem } from "@/components/admin/row-menu";
+import { getYouTubeThumbnail } from "@/lib/youtube";
 import SubmitButton from "@/components/ui/submit-button";
 import { parseOrderNumber } from "@/lib/lesson-order";
 import { moveLessonTo } from "@/lib/lesson-order-db";
@@ -697,283 +698,167 @@ export default async function ManageLessonsPage({
             )}
           </div>
 
-          <div className="flex flex-wrap gap-3">
-            <div className="rounded-xl bg-blue-50 px-4 py-2 text-sm text-blue-800">
-              Darslar:{" "}
-              <strong>
-                {lessons.length}
-              </strong>
-            </div>
-
-            <div className="rounded-xl bg-emerald-50 px-4 py-2 text-sm text-emerald-800">
-              Nashr qilingan:{" "}
-              <strong>
-                {publishedLessons}
-              </strong>
-            </div>
-
-            <div className="rounded-xl bg-teal-50 px-4 py-2 text-sm text-teal-800">
-              Bepul:{" "}
-              <strong>
-                {freeLessons}
-              </strong>
-            </div>
-          </div>
+          <p className="text-sm text-slate-500">
+            {lessons.length} dars · {publishedLessons} nashrda · {freeLessons}{" "}
+            bepul
+          </p>
         </div>
       </header>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-6 py-10 lg:grid-cols-[400px_1fr]">
-        <div>
+      <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-8">
+        <CreatePanel
+          label="Yangi videodars"
+          defaultOpen={lessons.length === 0}
+        >
           <CreateLessonForm
             categoryId={categoryId}
             nextOrderNumber={lessons.length + 1}
             tests={tests}
             action={createLesson}
           />
-        </div>
+        </CreatePanel>
 
-        <div>
-          <div className="mb-5">
-            <h2 className="text-2xl font-bold">
-              Videodarslar
-            </h2>
+        {lessons.length > 0 && (
+          <div className="mt-5 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+            {lessons.map((lesson, index) => {
+              const attachedTests = (testIdsByLesson.get(lesson.id) ?? [])
+                .map((id) => testMap.get(id))
+                .filter((test): test is TestRow => Boolean(test));
 
-            <p className="mt-1 text-sm text-slate-500">
-              Jami: {lessons.length} ta
-            </p>
-          </div>
+              const thumbnail = getYouTubeThumbnail(lesson.video_url);
 
-          {lessons.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
-              <h3 className="text-lg font-bold">
-                Hozircha videodars yo‘q
-              </h3>
+              return (
+                <article
+                  key={lesson.id}
+                  className={`flex items-start gap-3 px-3 py-3 sm:px-4 ${index > 0 ? "border-t border-mb-line" : ""}`}
+                >
+                  <span className="mt-1 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-blue-50 text-sm font-bold text-blue-700">
+                    {lesson.order_number}
+                  </span>
 
-              <p className="mt-2 text-sm text-slate-500">
-                Chap tomondagi forma orqali
-                birinchi darsni qo‘shing.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-6">
-              {lessons.map((lesson) => {
-                const attachedTests = (
-                  testIdsByLesson.get(lesson.id) ?? []
-                )
-                  .map((id) => testMap.get(id))
-                  .filter(
-                    (test): test is TestRow => Boolean(test),
-                  );
+                  {thumbnail ? (
+                    <a
+                      href={lesson.video_url ?? undefined}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Videoni YouTube'da ochish"
+                      className="hidden shrink-0 overflow-hidden rounded-lg sm:block"
+                    >
+                      <img
+                        src={thumbnail}
+                        alt=""
+                        loading="lazy"
+                        className="h-[54px] w-24 object-cover"
+                      />
+                    </a>
+                  ) : (
+                    <span className="hidden h-[54px] w-24 shrink-0 place-items-center rounded-lg bg-slate-100 text-[11px] text-slate-400 sm:grid">
+                      video yo‘q
+                    </span>
+                  )}
 
-                return (
-                  <article
-                    key={lesson.id}
-                    className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
-                  >
-                    <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
-                      <div className="flex min-w-0 items-start gap-3">
-                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">
-                          {lesson.order_number}
+                  <div className="min-w-0 flex-1">
+                    <Link
+                      href={`/admin/lessons/edit?categoryId=${categoryId}&lessonId=${lesson.id}`}
+                      className="block truncate text-[15px] font-semibold text-mb-ink hover:text-mb-brand"
+                    >
+                      {lesson.title}
+                    </Link>
+
+                    <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-mb-muted">
+                      {!lesson.is_published && (
+                        <span className="rounded-full bg-slate-100 px-2 py-0.5 font-semibold text-slate-600">
+                          Yopiq
                         </span>
-
-                        <div className="min-w-0">
-                          <div className="flex flex-wrap items-center gap-3">
-                            <h3 className="text-xl font-bold">
-                              {lesson.title}
-                            </h3>
-
-                            <span
-                              className={
-                                lesson.is_published
-                                  ? "rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700"
-                                  : "rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600"
-                              }
-                            >
-                              {lesson.is_published
-                                ? "Nashr qilingan"
-                                : "Yopiq"}
-                            </span>
-
-                            <span
-                              className={
-                                lesson.is_free
-                                  ? "rounded-full bg-teal-100 px-3 py-1 text-xs font-semibold text-teal-700"
-                                  : "rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700"
-                              }
-                            >
-                              {lesson.is_free
-                                ? "Bepul"
-                                : "Premium"}
-                            </span>
-                          </div>
-
-                          {lesson.description && (
-                            <p className="mt-2 leading-7 text-slate-600">
-                              {lesson.description}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="flex shrink-0 flex-wrap gap-3">
-                        <Link
-                          href={`/admin/lessons/edit?categoryId=${categoryId}&lessonId=${lesson.id}`}
-                          className="rounded-xl bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-100"
-                        >
-                          Tahrirlash
-                        </Link>
-                        <form
-                          action={
-                            changeLessonState
-                          }
-                        >
-                          <input
-                            type="hidden"
-                            name="categoryId"
-                            value={categoryId}
-                          />
-
-                          <input
-                            type="hidden"
-                            name="lessonId"
-                            value={lesson.id}
-                          />
-
-                          <input
-                            type="hidden"
-                            name="nextState"
-                            value={String(
-                              !lesson.is_published,
-                            )}
-                          />
-
-                          <SubmitButton
-
-                            className={
-                              lesson.is_published
-                                ? "rounded-xl bg-amber-100 px-4 py-2 text-sm font-semibold text-amber-700 hover:bg-amber-200"
-                                : "rounded-xl bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-200"
-                            }
-                          >
-                            {lesson.is_published
-                              ? "Yopish"
-                              : "Nashr qilish"}
-                          </SubmitButton>
-                        </form>
-
-                        <form
-                          action={
-                            changeLessonFreeState
-                          }
-                        >
-                          <input
-                            type="hidden"
-                            name="categoryId"
-                            value={categoryId}
-                          />
-
-                          <input
-                            type="hidden"
-                            name="lessonId"
-                            value={lesson.id}
-                          />
-
-                          <input
-                            type="hidden"
-                            name="nextState"
-                            value={String(
-                              !lesson.is_free,
-                            )}
-                          />
-
-                          <SubmitButton
-                            className={
-                              lesson.is_free
-                                ? "rounded-xl bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-200"
-                                : "rounded-xl bg-teal-100 px-4 py-2 text-sm font-semibold text-teal-700 hover:bg-teal-200"
-                            }
-                          >
-                            {lesson.is_free
-                              ? "Premium qilish"
-                              : "Bepul qilish"}
-                          </SubmitButton>
-                        </form>
-
-                        <form action={deleteLesson}>
-                          <input
-                            type="hidden"
-                            name="categoryId"
-                            value={categoryId}
-                          />
-
-                          <input
-                            type="hidden"
-                            name="lessonId"
-                            value={lesson.id}
-                          />
-
-                          <SubmitButton
-
-                            className="rounded-xl bg-red-50 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-100"
-                          >
-                            O‘chirish
-                          </SubmitButton>
-                        </form>
-                      </div>
-                    </div>
-
-                    {lesson.video_url && (
-                      <div className="mt-5 overflow-hidden rounded-2xl">
-                        <YouTubeEmbed
-                          url={lesson.video_url}
-                        />
-                      </div>
-                    )}
-
-                    {lesson.content && (
-                      <div className="mt-5 rounded-xl border border-blue-100 bg-blue-50 p-5 leading-8 text-blue-950">
-                        <p className="mb-3 text-sm font-bold">
-                          Nazariy qism
-                        </p>
-
-                        <MathText
-                          content={
-                            lesson.content
-                          }
-                        />
-                      </div>
-                    )}
-
-                    <div className="mt-5 border-t border-slate-100 pt-4">
-                      {attachedTests.length > 0 ? (
-                        <div className="flex flex-wrap items-center gap-2 text-sm">
-                          <span className="text-slate-500">
-                            Testlar:
-                          </span>
-
-                          {attachedTests.map((test) => (
-                            <Link
-                              key={test.id}
-                              href={`/admin/tests/manage?testId=${test.id}`}
-                              className="font-semibold text-blue-600 hover:text-blue-700"
-                            >
-                              {test.title}
-                              {!test.is_published && " (yopiq)"}
-                            </Link>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-sm text-slate-500">
-                          Test biriktirilmagan.
-                        </p>
                       )}
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          )}
-        </div>
+                      <span
+                        className={
+                          lesson.is_free
+                            ? "rounded-full bg-teal-50 px-2 py-0.5 font-semibold text-teal-700"
+                            : "rounded-full bg-amber-50 px-2 py-0.5 font-semibold text-amber-700"
+                        }
+                      >
+                        {lesson.is_free ? "Bepul" : "Premium"}
+                      </span>
+                      {lesson.content && <span>nazariy qism bor</span>}
+                      {attachedTests.length > 0 ? (
+                        <span>
+                          test:{" "}
+                          {attachedTests.map((test, testIndex) => (
+                            <span key={test.id}>
+                              {testIndex > 0 && ", "}
+                              <Link
+                                href={`/admin/tests/manage?testId=${test.id}`}
+                                className="font-semibold text-mb-brand hover:text-mb-brandDark"
+                              >
+                                {test.title}
+                              </Link>
+                              {!test.is_published && " (yopiq)"}
+                            </span>
+                          ))}
+                        </span>
+                      ) : (
+                        <span>test yo‘q</span>
+                      )}
+                    </p>
+                  </div>
+
+                  <div className="flex shrink-0 items-center gap-2">
+                    <Link
+                      href={`/admin/lessons/edit?categoryId=${categoryId}&lessonId=${lesson.id}`}
+                      className="hidden min-h-10 items-center rounded-xl bg-blue-50 px-3 text-sm font-semibold text-blue-700 hover:bg-blue-100 sm:inline-flex"
+                    >
+                      Tahrirlash
+                    </Link>
+
+                    <RowMenu>
+                      <Link
+                        href={`/admin/lessons/edit?categoryId=${categoryId}&lessonId=${lesson.id}`}
+                        className={`${rowMenuItem} sm:hidden`}
+                      >
+                        Tahrirlash
+                      </Link>
+
+                      <form action={changeLessonState}>
+                        <input type="hidden" name="categoryId" value={categoryId} />
+                        <input type="hidden" name="lessonId" value={lesson.id} />
+                        <input
+                          type="hidden"
+                          name="nextState"
+                          value={String(!lesson.is_published)}
+                        />
+                        <SubmitButton className={rowMenuItem}>
+                          {lesson.is_published ? "Yopish" : "Nashr qilish"}
+                        </SubmitButton>
+                      </form>
+
+                      <form action={changeLessonFreeState}>
+                        <input type="hidden" name="categoryId" value={categoryId} />
+                        <input type="hidden" name="lessonId" value={lesson.id} />
+                        <input
+                          type="hidden"
+                          name="nextState"
+                          value={String(!lesson.is_free)}
+                        />
+                        <SubmitButton className={rowMenuItem}>
+                          {lesson.is_free ? "Premium qilish" : "Bepul qilish"}
+                        </SubmitButton>
+                      </form>
+
+                      <form action={deleteLesson}>
+                        <input type="hidden" name="categoryId" value={categoryId} />
+                        <input type="hidden" name="lessonId" value={lesson.id} />
+                        <SubmitButton className={rowMenuDanger}>
+                          O‘chirish
+                        </SubmitButton>
+                      </form>
+                    </RowMenu>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
       </section>
     </main>
   );
