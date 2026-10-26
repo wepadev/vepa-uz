@@ -14,6 +14,8 @@ import {
   looksLikePdf,
   outlinePath,
   penOutline,
+  clampSmooth,
+  DEFAULT_SMOOTH,
   simplifyPoints,
   simplifyStroke,
   strokeHit,
@@ -172,4 +174,21 @@ test("yozish paytida chiziq uchi qalamdan orqada qolmaydi", () => {
     /* Oxirgi nuqta x = 90; uchi unga qalam yarim eni ichida yetadi */
     assert.ok(reach >= 90 - 0.5, `${kind}: ${reach}`);
   }
+});
+
+test("stabilizatsiya: ko'p bo'lsa chiziq silliqroq, 0 da titrash saqlanadi", () => {
+  /* Titrayotgan qo'l: har nuqtada yuqoriga-pastga 1 punkt */
+  const points: number[] = [];
+  for (let i = 0; i <= 60; i += 1) points.push(i * 2, i % 2 === 0 ? 1 : -1);
+
+  const wobble = (smooth: number) => {
+    const outline = penOutline({ ...pen(points, 2), pen: "felt", smooth })!;
+    const ys = outline.map((p) => p[1]);
+    return Math.max(...ys) - Math.min(...ys);
+  };
+
+  assert.ok(wobble(0) > wobble(1) + 0.5, `${wobble(0)} vs ${wobble(1)}`);
+  assert.equal(clampSmooth(2), 1);
+  assert.equal(clampSmooth(-1), 0);
+  assert.equal(clampSmooth(Number.NaN), DEFAULT_SMOOTH);
 });

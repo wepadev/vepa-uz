@@ -23,6 +23,9 @@ type PenPanelProps = {
   color: string;
   onPen: (pen: PenKind) => void;
   onSize: (size: number) => void;
+  /** Stabilizatsiya, 0..1 — har qalamda alohida */
+  smooth: number;
+  onSmooth: (smooth: number) => void;
   onClose: () => void;
 };
 
@@ -35,7 +38,16 @@ const PREVIEW_SCALE = 1.6;
  * Sinov maydonidagi yozuv hujjatga tushmaydi — faqat tanlangan
  * qalam qanday yozishini ko'rish uchun.
  */
-export default function PenPanel({ pen, size, color, onPen, onSize, onClose }: PenPanelProps) {
+export default function PenPanel({
+  pen,
+  size,
+  color,
+  onPen,
+  onSize,
+  smooth,
+  onSmooth,
+  onClose,
+}: PenPanelProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const drawingRef = useRef<{ id: number; points: number[]; pressures: number[] | null } | null>(
     null,
@@ -56,6 +68,7 @@ export default function PenPanel({ pen, size, color, onPen, onSize, onClose }: P
       pen,
       color: color.toUpperCase() === "#FFFFFF" ? "#151A23" : color,
       width: size,
+      smooth,
       points,
       ...(pressures ? { pressures } : {}),
     };
@@ -75,12 +88,12 @@ export default function PenPanel({ pen, size, color, onPen, onSize, onClose }: P
     if (!ctx) return;
     ctx.clearRect(0, 0, w, h);
     for (const stroke of strokes) {
-      paintStroke(ctx, { ...stroke, pen, width: size }, PREVIEW_SCALE * ratio);
+      paintStroke(ctx, { ...stroke, pen, width: size, smooth }, PREVIEW_SCALE * ratio);
     }
     if (extra) paintStroke(ctx, extra, PREVIEW_SCALE * ratio, complete);
   }
 
-  /* Qalam turi yoki o'lchami o'zgarsa, sinov yozuvi ham yangi qalamda ko'rinadi */
+  /* Qalam turi, o'lchami yoki stabilizatsiyasi o'zgarsa, sinov yozuvi ham yangi qalamda ko'rinadi */
   useEffect(redraw);
 
   function point(event: { clientX: number; clientY: number }) {
@@ -143,6 +156,29 @@ export default function PenPanel({ pen, size, color, onPen, onSize, onClose }: P
               />
             </button>
           ))}
+        </div>
+
+        <div className="mt-3 px-1">
+          <div className="flex items-center justify-between text-sm">
+            <label htmlFor="pen-smooth" className="font-semibold text-mb-ink">
+              Stabilizatsiya
+            </label>
+            <span className="tabular-nums text-mb-muted">{Math.round(smooth * 100)}%</span>
+          </div>
+          <input
+            id="pen-smooth"
+            type="range"
+            min={0}
+            max={100}
+            step={5}
+            value={Math.round(smooth * 100)}
+            onChange={(event) => onSmooth(Number(event.target.value) / 100)}
+            className="mt-1 w-full accent-mb-brand"
+          />
+          <div className="flex justify-between text-xs text-mb-muted">
+            <span>Tez, aynan qo‘ldek</span>
+            <span>Silliq</span>
+          </div>
         </div>
 
         <div className="relative mt-3 overflow-hidden rounded-xl border-2 border-mb-line" style={{ backgroundColor: "#ffffff" }}>
