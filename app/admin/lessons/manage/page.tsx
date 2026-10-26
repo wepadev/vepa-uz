@@ -720,7 +720,7 @@ export default async function ManageLessonsPage({
         </CreatePanel>
 
         {lessons.length > 0 && (
-          <div className="mt-5 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+          <div className="mt-5 rounded-2xl border border-mb-line bg-white shadow-sm">
             {lessons.map((lesson, index) => {
               const attachedTests = (testIdsByLesson.get(lesson.id) ?? [])
                 .map((id) => testMap.get(id))
