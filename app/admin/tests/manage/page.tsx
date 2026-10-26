@@ -7,6 +7,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import ConfirmSubmitButton from "@/components/admin/confirm-submit-button";
+import CreatePanel from "@/components/admin/create-panel";
+import RowMenu, { rowMenuDanger, rowMenuItem } from "@/components/admin/row-menu";
 import MathText from "@/components/math-text";
 import SubmitButton from "@/components/ui/submit-button";
 
@@ -246,7 +249,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-5 px-4 py-3 sm:flex-row sm:items-center">
+        <div className="mx-auto flex max-w-4xl flex-col justify-between gap-3 px-3 py-3 sm:flex-row sm:items-center sm:px-6">
           <div>
             <Link
               href="/admin/tests"
@@ -257,17 +260,15 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
 
             <h1 className="text-xl font-bold sm:text-2xl">{test.title}</h1>
 
-            <div className="mt-2 flex flex-wrap gap-2 text-sm text-slate-500">
-              <span>{displayQuestionCount} ta savol</span>
-
-              <span>•</span>
-
-              <span>{test.time_limit_minutes} daqiqa</span>
-
-              <span>•</span>
-
-              <span>Maksimal ball: {maximumScore}</span>
-            </div>
+            <p className="mt-1 text-sm text-slate-500">
+              {!test.is_published && (
+                <span className="mr-2 rounded-full bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-700">
+                  Qoralama
+                </span>
+              )}
+              {displayQuestionCount} savol · {test.time_limit_minutes} daqiqa
+              · {maximumScore} ball
+            </p>
 
             {test.description && (
               <div className="mt-2 text-sm text-slate-500">
@@ -276,17 +277,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
             )}
           </div>
 
-          <div className="flex flex-wrap gap-3">
-            <form action={renumberQuestionNumbers}>
-              <input type="hidden" name="testId" value={test.id} />
-
-              <SubmitButton
-                className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:border-blue-300 hover:text-blue-700"
-              >
-                Raqamlarni tartiblash
-              </SubmitButton>
-            </form>
-
+          <div className="flex items-center gap-2">
             <form action={changePublishedState}>
               <input type="hidden" name="testId" value={test.id} />
 
@@ -299,28 +290,35 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
               <SubmitButton
                 className={
                   test.is_published
-                    ? "rounded-xl bg-amber-100 px-5 py-3 text-sm font-semibold text-amber-700 hover:bg-amber-200"
-                    : "rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white hover:bg-emerald-700"
+                    ? "min-h-10 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                    : "min-h-10 rounded-xl bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700"
                 }
               >
-                {test.is_published
-                  ? "Testni yopish"
-                  : "Testni faollashtirish"}
+                {test.is_published ? "Testni yopish" : "Nashr qilish"}
               </SubmitButton>
             </form>
+
+            <RowMenu>
+              <form action={renumberQuestionNumbers}>
+                <input type="hidden" name="testId" value={test.id} />
+                <SubmitButton className={rowMenuItem}>
+                  Raqamlarni tartiblash
+                </SubmitButton>
+              </form>
+            </RowMenu>
           </div>
         </div>
       </header>
 
-      <section className="mx-auto max-w-7xl px-6 py-10">
-        <details className="mb-8 rounded-2xl border border-mb-line bg-white shadow-sm">
-          <summary className="cursor-pointer px-6 py-5 text-xl font-bold">
-            Test nomi, tavsifi va vaqtini tahrirlash
+      <section className="mx-auto max-w-4xl px-3 py-5 sm:px-6 sm:py-6">
+        <details className="group/edit mb-4 rounded-2xl open:border open:border-mb-line open:bg-white open:shadow-sm">
+          <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand group-open/edit:px-4">
+            Test nomi, vaqti va tavsifini tahrirlash
           </summary>
 
           <form
             action={updateTestDetails}
-            className="border-t border-slate-200 p-6"
+            className="border-t border-slate-200 p-4 sm:p-5"
           >
             <input type="hidden" name="testId" value={test.id} />
 
@@ -377,15 +375,9 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
           </form>
         </details>
 
-        <div className="grid gap-8 lg:grid-cols-[430px_minmax(0,1fr)] lg:items-start xl:grid-cols-[460px_minmax(0,1fr)]">
-          {/*
-            top-20 = admin menyusi balandligi (64px) + bo'shliq.
-            top-6 bo'lganda panel menyu ostiga kirib ketardi.
-            max-h + overflow-y — panel o'zi ichida scroll bo'ladi,
-            aks holda uzun kontentning pastiga yetib bo'lmaydi.
-          */}
+        <div>
           {usedByStudents && (
-            <div className="lg:col-span-2 rounded-2xl border border-amber-300 bg-amber-50 p-4 sm:p-5">
+            <div className="mb-4 rounded-2xl border border-amber-300 bg-amber-50 p-4 sm:p-5">
               <p className="font-bold text-amber-900">
                 Diqqat: bu testni {attemptCount} ta o‘quvchi ishlagan
               </p>
@@ -404,11 +396,12 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
             </div>
           )}
 
-          <aside className="min-w-0 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:overscroll-contain lg:pb-4 lg:pr-1">
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-2xl font-bold">Savol qo‘shish</h2>
-
-          <div className="mt-4 grid grid-cols-3 gap-1 rounded-2xl bg-slate-100 p-1">
+          <CreatePanel
+            label="Savol qo‘shish"
+            defaultOpen={displayItems.length === 0 || Boolean(turValue)}
+          >
+            <div className="p-4 sm:p-5">
+          <div className="grid grid-cols-3 gap-1 rounded-2xl bg-slate-100 p-1">
             {QUESTION_TYPES.map((item) => (
               <Link
                 key={item.value}
@@ -427,10 +420,9 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
 
           <p className="mt-3 text-sm text-slate-500">
             {QUESTION_TYPES.find((item) => item.value === questionType)?.hint}.
-            Formula uchun \( ... \) yoki \[ ... \] yozing.
           </p>
 
-          <div className="mt-6 space-y-4">
+          <div className="mt-4 space-y-4">
             {questionType === "oddiy" && (
               <div className="overflow-hidden rounded-2xl border border-mb-line">
 
@@ -798,27 +790,11 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
             )}
           </div>
             </div>
-          </aside>
+          </CreatePanel>
 
-          <div className="min-w-0">
-          <div className="mb-5">
-            <h2 className="text-2xl font-bold">Test savollari</h2>
-
-            <p className="mt-1 text-sm text-slate-500">
-              Jami: {displayQuestionCount} ta savol
-            </p>
-          </div>
-
-          {displayItems.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-14 text-center">
-              <p className="font-semibold">Hozircha savol yo‘q</p>
-
-              <p className="mt-2 text-sm text-slate-500">
-                “Savol qo‘shish” bo‘limida turini tanlab, birinchi savolni kiriting.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-6">
+          <div className="mt-5 min-w-0">
+          {displayItems.length > 0 && (
+            <div className="space-y-3">
               {displayItems.map((item) => {
                 if (item.kind === "question") {
                   const question = item.question;
@@ -836,59 +812,57 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                   return (
                     <article
                       key={`question-${question.id}`}
-                      className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+                      className="rounded-2xl border border-mb-line bg-white p-4 shadow-sm"
                     >
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
-                            Oddiy A–D savol
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex min-w-0 items-start gap-2 font-semibold">
+                          <span className="shrink-0 text-mb-brand">
+                            {question.order_number}.
                           </span>
-
-                          <div className="mt-3 flex items-start gap-2 text-lg font-bold">
-                            <span className="shrink-0">{question.order_number}.</span>
-                            <div className="min-w-0">
-                              <MathValue value={question.question_text} />
-                            </div>
+                          <div className="min-w-0">
+                            <MathValue value={question.question_text} />
                           </div>
                         </div>
 
-                        <form action={deleteStandaloneQuestion}>
-                          <input type="hidden" name="testId" value={test.id} />
-
-                          <input
-                            type="hidden"
-                            name="questionId"
-                            value={question.id}
-                          />
-
-                          <SubmitButton
-                            className="text-sm font-semibold text-red-600 hover:text-red-700"
-                          >
-                            O‘chirish
-                          </SubmitButton>
-                        </form>
+                        <RowMenu>
+                          <form action={deleteStandaloneQuestion}>
+                            <input type="hidden" name="testId" value={test.id} />
+                            <input
+                              type="hidden"
+                              name="questionId"
+                              value={question.id}
+                            />
+                            <ConfirmSubmitButton
+                              className={rowMenuDanger}
+                              title="Savol o‘chirilsinmi?"
+                              description={`${question.order_number}-savol butunlay o‘chiriladi.`}
+                            >
+                              O‘chirish
+                            </ConfirmSubmitButton>
+                          </form>
+                        </RowMenu>
                       </div>
 
                       {imageUrl && (
-                        <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-3">
+                        <div className="mt-3 overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-2">
                           <img
                             loading="lazy"
                             decoding="async"
                             src={imageUrl}
                             alt={`${question.order_number}-savol chizmasi`}
-                            className="mx-auto max-h-[460px] w-auto max-w-full rounded-xl object-contain"
+                            className="mx-auto max-h-[260px] w-auto max-w-full rounded-lg object-contain"
                           />
                         </div>
                       )}
 
-                      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                      <div className="mt-3 grid gap-1.5 text-sm sm:grid-cols-2">
                         {options.map(([letter, option]) => (
                           <div
                             key={letter}
                             className={
                               answer?.correct_answer === letter
-                                ? "flex items-start gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-emerald-800"
-                                : "flex items-start gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
+                                ? "flex items-start gap-2 rounded-lg bg-emerald-50 px-3 py-1.5 font-semibold text-emerald-800 ring-1 ring-emerald-300"
+                                : "flex items-start gap-2 rounded-lg px-3 py-1.5 text-slate-700"
                             }
                           >
                             <span className="font-bold">{letter})</span>
@@ -921,10 +895,10 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
 
                       <details
                         id={`edit-question-${question.id}`}
-                        className="mt-6 rounded-2xl border border-blue-200 bg-blue-50/40"
+                        className="group/edit mt-2 rounded-xl open:border open:border-blue-200 open:bg-blue-50/40"
                       >
-                        <summary className="cursor-pointer px-5 py-4 font-bold text-blue-700">
-                          Savolni tahrirlash
+                        <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand group-open/edit:px-4">
+                          Tahrirlash
                         </summary>
 
                         <form
@@ -1073,66 +1047,59 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                 return (
                   <article
                     key={`block-${block.id}`}
-                    className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+                    className="rounded-2xl border border-mb-line bg-white p-4 shadow-sm"
                   >
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <span
-                          className={
-                            isWritten
-                              ? "rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700"
-                              : "rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700"
-                          }
-                        >
+                    <div className="flex items-start justify-between gap-3">
+                      <p className="font-semibold">
+                        <span className="text-mb-brand">
                           {isWritten
-                            ? "a)–b) yozma savol"
-                            : "Umumiy A–F variantli blok"}
+                            ? `${block.order_number}.`
+                            : `${block.order_number}–${block.order_number + 2}.`}
+                        </span>{" "}
+                        <span className="text-xs font-semibold text-mb-muted">
+                          {isWritten ? "a)–b) yozma" : "A–F blok"}
                         </span>
+                      </p>
 
-                        <h3 className="mt-3 text-lg font-bold">
-                          {isWritten
-                            ? `${block.order_number}-savol`
-                            : `${block.order_number}–${block.order_number + 2}-savollar`}
-                        </h3>
-                      </div>
-
-                      <form action={deleteQuestionBlock}>
-                        <input type="hidden" name="testId" value={test.id} />
-
-                        <input type="hidden" name="blockId" value={block.id} />
-
-                        <SubmitButton
-                          className="text-sm font-semibold text-red-600 hover:text-red-700"
-                        >
-                          Blokni o‘chirish
-                        </SubmitButton>
-                      </form>
+                      <RowMenu>
+                        <form action={deleteQuestionBlock}>
+                          <input type="hidden" name="testId" value={test.id} />
+                          <input type="hidden" name="blockId" value={block.id} />
+                          <ConfirmSubmitButton
+                            className={rowMenuDanger}
+                            title="Blok o‘chirilsinmi?"
+                            description="Blok va uning ichidagi barcha savollar butunlay o‘chiriladi."
+                          >
+                            Blokni o‘chirish
+                          </ConfirmSubmitButton>
+                        </form>
+                      </RowMenu>
                     </div>
 
                     {block.stimulus_text && (
-                      <div className="mt-5 whitespace-pre-wrap leading-7">
+                      <div className="mt-2 whitespace-pre-wrap text-sm leading-6">
                         <MathValue value={block.stimulus_text} />
                       </div>
                     )}
 
                     {imageUrl && (
-                      <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-3">
+                      <div className="mt-3 overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-2">
                         <img
                           loading="lazy"
                           decoding="async"
                           src={imageUrl}
                           alt="Umumiy savol chizmasi"
-                          className="mx-auto max-h-[520px] w-auto max-w-full rounded-xl object-contain"
+                          className="mx-auto max-h-[260px] w-auto max-w-full rounded-lg object-contain"
                         />
                       </div>
                     )}
 
                     {!isWritten && (
-                      <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                      <div className="mt-3 grid gap-1.5 text-sm sm:grid-cols-3">
                         {sharedOptions.map(([letter, option]) => (
                           <div
                             key={letter}
-                            className="flex items-start gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
+                            className="flex items-start gap-2 rounded-lg px-3 py-1.5 text-slate-700"
                           >
                             <span className="font-bold">{letter})</span>
                             <div className="min-w-0 flex-1">
@@ -1143,7 +1110,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                       </div>
                     )}
 
-                    <div className="mt-6 space-y-4">
+                    <div className="mt-3 space-y-2">
                       {blockQuestions.map((question, index) => {
                         const answer = answerMap.get(question.id);
 
@@ -1156,7 +1123,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                         return (
                           <div
                             key={question.id}
-                            className="rounded-2xl border border-slate-200 p-5"
+                            className="rounded-xl border border-slate-200 px-3 py-2 text-sm"
                           >
                             <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                               <div className="flex min-w-0 items-start gap-2 font-semibold">
@@ -1211,11 +1178,9 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                       })}
                     </div>
 
-                    <details className="mt-6 rounded-2xl border border-slate-200 bg-slate-50">
-                      <summary className="cursor-pointer px-5 py-4 font-bold text-blue-700">
-                        {isWritten
-                          ? "a)–b) savolni tahrirlash"
-                          : "Uch savolli A–F blokni tahrirlash"}
+                    <details className="group/edit mt-2 rounded-xl open:border open:border-slate-200 open:bg-slate-50">
+                      <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand group-open/edit:px-4">
+                        Tahrirlash
                       </summary>
 
                       <form
