@@ -1,5 +1,8 @@
 import Link from "next/link";
 
+import CreatePanel from "@/components/admin/create-panel";
+import RowMenu, { rowMenuItem } from "@/components/admin/row-menu";
+
 import AdminTabs from "@/components/admin/admin-tabs";
 import {
   revalidatePath,
@@ -343,163 +346,66 @@ export default async function AdminLessonsPage() {
         </div>
       </header>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-6 py-10 lg:grid-cols-[380px_1fr]">
-        <div>
-          <CreateLessonCategoryForm
-            action={createCategory}
-          />
-        </div>
+      <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-8">
+        <CreatePanel
+          label="Yangi dars bo‘limi"
+          defaultOpen={categories.length === 0}
+        >
+          <CreateLessonCategoryForm action={createCategory} />
+        </CreatePanel>
 
-        <div>
-          <div className="mb-5">
-            <h2 className="text-2xl font-bold">
-              Dars bo‘limlari
-            </h2>
+        {categories.length > 0 && (
+          <div className="mt-5 rounded-2xl border border-mb-line bg-white shadow-sm">
+            {categories.map((category, index) => {
+              const lessonCount = lessonCountMap.get(category.id) ?? 0;
+              const freeCount = freeCountMap.get(category.id) ?? 0;
 
-            <p className="mt-1 text-sm text-slate-500">
-              Jami: {categories.length} ta
-              bo‘lim
-            </p>
+              return (
+                <article
+                  key={category.id}
+                  className={`flex items-center gap-3 px-3 py-3 sm:px-4 ${index > 0 ? "border-t border-mb-line" : ""}`}
+                >
+                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-blue-50 text-sm font-bold text-blue-700">
+                    {category.order_number}
+                  </span>
+
+                  <Link
+                    href={`/admin/lessons/manage?categoryId=${category.id}`}
+                    className="min-w-0 flex-1"
+                  >
+                    <span className="block truncate text-[15px] font-semibold text-mb-ink hover:text-mb-brand">
+                      {category.title}
+                    </span>
+
+                    <span className="mt-0.5 flex flex-wrap items-center gap-x-2 text-xs text-mb-muted">
+                      {!category.is_published && (
+                        <span className="rounded-full bg-slate-100 px-2 py-0.5 font-semibold text-slate-600">
+                          Yopiq
+                        </span>
+                      )}
+                      {lessonCount} dars
+                      {freeCount > 0 && <> · {freeCount} bepul</>}
+                    </span>
+                  </Link>
+
+                  <RowMenu>
+                    <form action={changeCategoryState}>
+                      <input type="hidden" name="categoryId" value={category.id} />
+                      <input
+                        type="hidden"
+                        name="nextState"
+                        value={String(!category.is_published)}
+                      />
+                      <SubmitButton className={rowMenuItem}>
+                        {category.is_published ? "Bo‘limni yopish" : "Nashr qilish"}
+                      </SubmitButton>
+                    </form>
+                  </RowMenu>
+                </article>
+              );
+            })}
           </div>
-
-          {categories.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
-              <h3 className="text-lg font-bold">
-                Hozircha dars bo‘limi yo‘q
-              </h3>
-
-              <p className="mt-2 text-sm text-slate-500">
-                Chap tomondagi forma orqali
-                birinchi bo‘limni yarating.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {categories.map(
-                (category) => {
-                  const lessonCount =
-                    lessonCountMap.get(
-                      category.id,
-                    ) ?? 0;
-
-                  const freeCount =
-                    freeCountMap.get(
-                      category.id,
-                    ) ?? 0;
-
-                  return (
-                    <article
-                      key={category.id}
-                      className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
-                    >
-                      <div className="flex flex-col justify-between gap-5 md:flex-row md:items-center">
-                        <div className="min-w-0">
-                          <div className="flex flex-wrap items-center gap-3">
-                            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">
-                              {
-                                category.order_number
-                              }
-                            </span>
-
-                            <h3 className="text-xl font-bold">
-                              {category.title}
-                            </h3>
-
-                            <span
-                              className={
-                                category.is_published
-                                  ? "rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700"
-                                  : "rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600"
-                              }
-                            >
-                              {category.is_published
-                                ? "Nashr qilingan"
-                                : "Yopiq"}
-                            </span>
-                          </div>
-
-                          {category.description && (
-                            <p className="mt-3 leading-7 text-slate-600">
-                              {
-                                category.description
-                              }
-                            </p>
-                          )}
-
-                          <p className="mt-3 text-sm font-medium text-slate-500">
-                            Darslar:{" "}
-                            <strong className="text-slate-800">
-                              {lessonCount} ta
-                            </strong>
-
-                            <span className="mx-2 text-slate-300">
-                              |
-                            </span>
-
-                            Bepul:{" "}
-                            <strong
-                              className={
-                                freeCount > 0
-                                  ? "text-teal-700"
-                                  : "text-slate-800"
-                              }
-                            >
-                              {freeCount} ta
-                            </strong>
-                          </p>
-                        </div>
-
-                        <div className="flex shrink-0 flex-wrap gap-3">
-                          <Link
-                            href={`/admin/lessons/manage?categoryId=${category.id}`}
-                            className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
-                          >
-                            Darslarni boshqarish
-                          </Link>
-
-                          <form
-                            action={
-                              changeCategoryState
-                            }
-                          >
-                            <input
-                              type="hidden"
-                              name="categoryId"
-                              value={
-                                category.id
-                              }
-                            />
-
-                            <input
-                              type="hidden"
-                              name="nextState"
-                              value={String(
-                                !category.is_published,
-                              )}
-                            />
-
-                            <SubmitButton
-
-                              className={
-                                category.is_published
-                                  ? "rounded-xl bg-amber-100 px-5 py-3 text-sm font-semibold text-amber-700 transition hover:bg-amber-200"
-                                  : "rounded-xl bg-emerald-100 px-5 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-200"
-                              }
-                            >
-                              {category.is_published
-                                ? "Bo‘limni yopish"
-                                : "Nashr qilish"}
-                            </SubmitButton>
-                          </form>
-                        </div>
-                      </div>
-                    </article>
-                  );
-                },
-              )}
-            </div>
-          )}
-        </div>
+        )}
       </section>
     </main>
   );

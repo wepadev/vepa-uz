@@ -290,8 +290,8 @@ export default function TopicExamplesEditor({
   ).length;
 
   return (
-    <details className="mt-5 border-t border-slate-100 pt-4">
-      <summary className="cursor-pointer text-sm font-semibold text-mb-brand hover:text-mb-brandDark">
+    <details className="mt-1">
+      <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand hover:text-mb-brandDark">
         Misollar — {examples.length} ta
         {examples.length > 0 ? `, ${withVideo} tasida video bor` : ""}
       </summary>

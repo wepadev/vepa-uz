@@ -1,4 +1,8 @@
 import Link from "next/link";
+
+import ConfirmSubmitButton from "@/components/admin/confirm-submit-button";
+import CreatePanel from "@/components/admin/create-panel";
+import RowMenu, { rowMenuDanger, rowMenuItem } from "@/components/admin/row-menu";
 import { revalidatePath } from "next/cache";
 import { notFound, redirect } from "next/navigation";
 
@@ -823,8 +827,8 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
         </div>
       </header>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[390px_1fr] lg:py-12">
-        <div>
+      <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-8">
+        <CreatePanel label="Yangi test" defaultOpen={tests.length === 0}>
           <form
             action={createTest}
             className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
@@ -916,23 +920,11 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
               Testni yaratish
             </SubmitButton>
           </form>
-        </div>
+        </CreatePanel>
 
-        <div>
-          <div className="mb-5">
-            <h2 className="text-2xl font-bold">Testlar</h2>
-            <p className="mt-1 text-sm text-slate-500">Jami: {tests.length} ta</p>
-          </div>
-
-          {!tests.length ? (
-            <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
-              <p className="font-bold text-slate-700">Hozircha test yaratilmagan</p>
-              <p className="mt-2 text-sm text-slate-500">
-                Chap tomondagi forma orqali birinchi testni yarating.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-4">
+        <div className="mt-5">
+          {tests.length > 0 && (
+            <div className="space-y-2">
               {tests.map((test) => {
                 const isAutomaticFree = isFreeTopic;
                 const isEffectivelyFree = test.is_free || isAutomaticFree;
@@ -941,73 +933,44 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
                 return (
                   <article
                     key={test.id}
-                    className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+                    className="rounded-2xl border border-mb-line bg-white px-3 py-3 shadow-sm sm:px-4"
                   >
-                    <div className="flex flex-col justify-between gap-5 md:flex-row md:items-start">
-                      <div className="min-w-0">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="grid h-9 w-9 place-items-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">
-                            {test.order_number}
-                          </span>
-                          <h3 className="text-xl font-bold">{test.title}</h3>
-                          <span
-                            className={
-                              test.is_published
-                                ? "rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700"
-                                : "rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-700"
-                            }
-                          >
-                            {test.is_published ? "Faol" : "Qoralama"}
-                          </span>
-                          <span
-                            className={
-                              isEffectivelyFree
-                                ? "rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700"
-                                : "rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700"
-                            }
-                          >
-                            {!isEffectivelyFree
-                              ? "Premium"
-                              : isAutoFreeTopic
-                                ? "Avtomatik bepul"
-                                : topic.is_free
-                                  ? "Mavzu bepul"
-                                  : "Bepul"}
-                          </span>
-                          {isLessonTest && (
-                            <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-700">
-                              Darsga biriktirilgan
+                    <div className="flex items-center gap-3">
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-blue-50 text-sm font-bold text-blue-700">
+                        {test.order_number}
+                      </span>
+
+                      <Link
+                        href={`/admin/tests/manage?testId=${test.id}`}
+                        className="min-w-0 flex-1"
+                      >
+                        <span className="block truncate text-[15px] font-semibold text-mb-ink hover:text-mb-brand">
+                          {test.title}
+                        </span>
+
+                        <span className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-mb-muted">
+                          {!test.is_published && (
+                            <span className="rounded-full bg-amber-50 px-2 py-0.5 font-semibold text-amber-700">
+                              Qoralama
                             </span>
                           )}
-                        </div>
+                          {examType.code !== GROUP_EXAM_CODE && (
+                            <span
+                              className={
+                                isEffectivelyFree
+                                  ? "rounded-full bg-emerald-50 px-2 py-0.5 font-semibold text-emerald-700"
+                                  : "rounded-full bg-slate-100 px-2 py-0.5 font-semibold text-slate-600"
+                              }
+                            >
+                              {isEffectivelyFree ? "Bepul" : "Premium"}
+                            </span>
+                          )}
+                          {isLessonTest && <span>darsga biriktirilgan</span>}
+                          <span>{test.time_limit_minutes} daqiqa</span>
+                        </span>
+                      </Link>
 
-                        <p className="mt-3 text-sm font-bold text-blue-700">
-                          Vaqt: {test.time_limit_minutes} daqiqa
-                        </p>
-                        {test.description && (
-                          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
-                            {test.description}
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="flex shrink-0 flex-wrap gap-2">
-                        <Link
-                          href={`/admin/tests/manage?testId=${test.id}`}
-                          className="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white hover:bg-slate-700"
-                        >
-                          Savollarni boshqarish
-                        </Link>
-
-                        <form action={duplicateTest}>
-                          <input type="hidden" name="testId" value={test.id} />
-                          <SubmitButton
-                            className="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 hover:bg-slate-50"
-                          >
-                            Nusxa olish
-                          </SubmitButton>
-                        </form>
-
+                      <RowMenu>
                         <form action={changeTestState}>
                           <input type="hidden" name="testId" value={test.id} />
                           <input
@@ -1015,55 +978,55 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
                             name="nextState"
                             value={String(!test.is_published)}
                           />
-                          <SubmitButton
-                            className={
-                              test.is_published
-                                ? "rounded-xl bg-amber-100 px-4 py-2.5 text-sm font-bold text-amber-700 hover:bg-amber-200"
-                                : "rounded-xl bg-emerald-100 px-4 py-2.5 text-sm font-bold text-emerald-700 hover:bg-emerald-200"
-                            }
-                          >
+                          <SubmitButton className={rowMenuItem}>
                             {test.is_published ? "Testni yopish" : "Nashr qilish"}
                           </SubmitButton>
                         </form>
 
                         {/*
                           Qo'lda bepul qilish. Mavzuning o'zi bepul
-                          bo'lsa tugma kerak emas — test allaqachon
-                          ochiq, bosish hech narsani o'zgartirmasdi.
+                          bo'lsa kerak emas — test allaqachon ochiq.
                           Guruh testlari ham doim bepul (db/10).
                         */}
-                        {!isAutomaticFree &&
-                          examType.code !== GROUP_EXAM_CODE && (
-                            <form action={toggleTestFree}>
-                              <input
-                                type="hidden"
-                                name="testId"
-                                value={test.id}
-                              />
-                              <input
-                                type="hidden"
-                                name="nextState"
-                                value={String(!test.is_free)}
-                              />
-                              <SubmitButton
-                                className={
-                                  test.is_free
-                                    ? "rounded-xl bg-blue-100 px-4 py-2.5 text-sm font-bold text-blue-700 hover:bg-blue-200"
-                                    : "rounded-xl bg-emerald-100 px-4 py-2.5 text-sm font-bold text-emerald-700 hover:bg-emerald-200"
-                                }
-                              >
-                                {test.is_free
-                                  ? "Premium qilish"
-                                  : "Bepul qilish"}
-                              </SubmitButton>
-                            </form>
-                          )}
-                      </div>
+                        {!isAutomaticFree && examType.code !== GROUP_EXAM_CODE && (
+                          <form action={toggleTestFree}>
+                            <input type="hidden" name="testId" value={test.id} />
+                            <input
+                              type="hidden"
+                              name="nextState"
+                              value={String(!test.is_free)}
+                            />
+                            <SubmitButton className={rowMenuItem}>
+                              {test.is_free ? "Premium qilish" : "Bepul qilish"}
+                            </SubmitButton>
+                          </form>
+                        )}
+
+                        <form action={duplicateTest}>
+                          <input type="hidden" name="testId" value={test.id} />
+                          <SubmitButton className={rowMenuItem}>
+                            Nusxa olish
+                          </SubmitButton>
+                        </form>
+
+                        <form action={deleteTest}>
+                          <input type="hidden" name="testId" value={test.id} />
+                          <input type="hidden" name="confirm" value="1" />
+                          <ConfirmSubmitButton
+                            className={rowMenuDanger}
+                            title="Test natijalari bilan o‘chirilsinmi?"
+                            description={`“${test.title}” testi butunlay o‘chiriladi: savollari, o‘quvchilar natijalari, reytingdagi va uy vazifasidagi ball va tangasi ham. Natijalar kerak bo‘lsa o‘chirmang — “Testni yopish”ni tanlang.`}
+                          >
+                            O‘chirish
+                          </ConfirmSubmitButton>
+                        </form>
+                      </RowMenu>
                     </div>
 
+                    <div className="ml-11 mt-1 flex flex-wrap gap-x-4">
                     {moveGroups.length > 0 && (
-                      <details className="mt-5 rounded-2xl border border-slate-200 bg-slate-50">
-                        <summary className="cursor-pointer px-5 py-4 text-sm font-bold text-blue-700">
+                      <details className="group/move rounded-xl open:basis-full open:border open:border-slate-200 open:bg-slate-50">
+                        <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand group-open/move:px-3">
                           Boshqa mavzuga ko‘chirish
                         </summary>
 
@@ -1127,52 +1090,9 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
                       </details>
                     )}
 
-                    <details className="mt-5 rounded-2xl border border-red-200 bg-red-50/50">
-                      <summary className="cursor-pointer px-5 py-4 text-sm font-bold text-red-700">
-                        Testni o‘chirish
-                      </summary>
-
-                      <div className="px-5 pb-5">
-                        <p className="text-sm leading-6 text-red-900">
-                          “{test.title}” testi butunlay o‘chiriladi.
-                          Savollari, o‘quvchilar ishlagan natijalari,
-                          reytingdagi balli, uy vazifasi sifatida
-                          berilgan bo‘lsa o‘shandan olingan ball va
-                          tangasi, takrorlash ro‘yxatidagi savollari —
-                          hammasi birga ketadi va qaytarib bo‘lmaydi.
-                        </p>
-
-                        <p className="mt-2 text-sm leading-6 text-red-900">
-                          Natijalar saqlanib qolishi kerak bo‘lsa
-                          o‘chirmang — “Testni yopish” tugmasini
-                          bosing, test o‘quvchilarga ko‘rinmay qoladi.
-                        </p>
-
-                        <form action={deleteTest} className="mt-4">
-                          <input type="hidden" name="testId" value={test.id} />
-
-                          <label className="flex items-center gap-2 text-sm font-bold text-red-700">
-                            <input
-                              type="checkbox"
-                              name="confirm"
-                              value="1"
-                              className="h-4 w-4 accent-red-600"
-                            />
-                            Natijalari bilan birga o‘chirilishiga roziman
-                          </label>
-
-                          <SubmitButton
-                            className="mt-3 min-h-11 rounded-xl bg-red-600 px-5 text-sm font-bold text-white hover:bg-red-700"
-                          >
-                            Ha, o‘chirilsin
-                          </SubmitButton>
-                        </form>
-                      </div>
-                    </details>
-
-                    <details className="mt-5 rounded-2xl border border-slate-200 bg-slate-50">
-                      <summary className="cursor-pointer px-5 py-4 text-sm font-bold text-blue-700">
-                        Test ma’lumotlarini tahrirlash
+                    <details className="group/edit order-first rounded-xl open:basis-full open:border open:border-slate-200 open:bg-slate-50">
+                      <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand group-open/edit:px-3">
+                        Tahrirlash
                       </summary>
                       <form
                         action={updateTest}
@@ -1238,6 +1158,7 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
                         </SubmitButton>
                       </form>
                     </details>
+                    </div>
                   </article>
                 );
               })}

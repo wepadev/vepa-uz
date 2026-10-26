@@ -1,4 +1,8 @@
 import Link from "next/link";
+
+import ConfirmSubmitButton from "@/components/admin/confirm-submit-button";
+import CreatePanel from "@/components/admin/create-panel";
+import RowMenu, { rowMenuDanger } from "@/components/admin/row-menu";
 import { revalidatePath } from "next/cache";
 import {
   notFound,
@@ -17,7 +21,6 @@ import EditTopicForm from "@/components/admin/edit-topic-form";
 import TopicExamplesEditor, {
   type AdminExample,
 } from "@/components/admin/topic-examples-editor";
-import SubmitButton from "@/components/ui/submit-button";
 
 type PageProps = {
   searchParams: Promise<{
@@ -835,138 +838,84 @@ export default async function ManageTextbookPage({
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-3">
-            <span
-              className={
-                textbook.is_published
-                  ? "rounded-xl bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-700"
-                  : "rounded-xl bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-600"
-              }
-            >
-              {textbook.is_published
-                ? "Nashr qilingan"
-                : "Yopiq"}
-            </span>
-
-            <span className="rounded-xl bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700">
-              Mavzular: {topics.length}
-            </span>
-
-            {isPopular && (
-              <span className="rounded-xl bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700">
-                Misollar: {totalExamples}
-              </span>
-            )}
-          </div>
+          <p className="text-sm text-slate-500">
+            {!textbook.is_published && "Yopiq · "}
+            {topics.length} mavzu
+            {isPopular && <> · {totalExamples} misol</>}
+          </p>
         </div>
       </header>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-6 py-10 lg:grid-cols-[380px_1fr]">
-        <div>
+      <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-8">
+        <CreatePanel label="Yangi mavzu" defaultOpen={topics.length === 0}>
           <CreateTopicForm
             textbookId={textbookId}
             showVideo={!isPopular}
             action={createTopic}
           />
-        </div>
+        </CreatePanel>
 
-        <div>
-          <div className="mb-5">
-            <h2 className="text-2xl font-bold">
-              Darslik mavzulari
-            </h2>
+        {topics.length > 0 && (
+          <div className="mt-5 rounded-2xl border border-mb-line bg-white shadow-sm">
+            {topics.map((topic, index) => {
+              const hasVideo = Boolean(topic.video_url);
+              const examples = examplesByTopic.get(topic.id) ?? [];
 
-            <p className="mt-1 text-sm text-slate-500">
-              Jami: {topics.length} ta mavzu
-            </p>
-          </div>
+              return (
+                <article
+                  key={topic.id}
+                  className={`px-3 py-3 sm:px-4 ${index > 0 ? "border-t border-mb-line" : ""}`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-blue-50 text-sm font-bold text-blue-700">
+                      {topic.order_number}
+                    </span>
 
-          {topics.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
-              <h3 className="text-lg font-bold">
-                Hozircha mavzu yo‘q
-              </h3>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-[15px] font-semibold text-mb-ink">
+                        {topic.title}
+                      </p>
 
-              <p className="mt-2 text-sm text-slate-500">
-                Chap tomondagi forma orqali
-                birinchi mavzuni qo‘shing.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {topics.map((topic) => {
-                const hasVideo = Boolean(topic.video_url);
-                const examples =
-                  examplesByTopic.get(topic.id) ?? [];
-
-                return (
-                  <article
-                    key={topic.id}
-                    className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
-                  >
-                    <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-start">
-                      <div className="flex min-w-0 items-start gap-4">
-                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-100 font-bold text-blue-700">
-                          {topic.order_number}
-                        </span>
-
-                        <div className="min-w-0">
-                          <h3 className="text-xl font-bold">
-                            {topic.title}
-                          </h3>
-
-                          <p className="mt-2 flex flex-wrap gap-2 text-sm">
-                            {isPopular ? (
-                              examples.length > 0 ? (
-                                <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-bold text-blue-700">
-                                  {examples.length} ta misol
-                                </span>
-                              ) : (
-                                <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700">
-                                  Misol hali qo‘shilmagan
-                                </span>
-                              )
-                            ) : hasVideo ? (
-                              <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-bold text-blue-700">
-                                Videoyechim qo‘shilgan
-                              </span>
-                            ) : (
-                              <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700">
-                                Video hali yo‘q
-                              </span>
-                            )}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex shrink-0 flex-wrap gap-3">
-                        <form action={deleteTopic}>
-                            <input
-                              type="hidden"
-                              name="textbookId"
-                              value={textbookId}
-                            />
-
-                            <input
-                              type="hidden"
-                              name="topicId"
-                              value={topic.id}
-                            />
-
-                            <SubmitButton
-                              className="rounded-xl bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-100"
-                            >
-                            O‘chirish
-                          </SubmitButton>
-                        </form>
-                      </div>
+                      <p className="mt-0.5 text-xs">
+                        {isPopular ? (
+                          examples.length > 0 ? (
+                            <span className="text-mb-muted">
+                              {examples.length} ta misol
+                            </span>
+                          ) : (
+                            <span className="font-semibold text-amber-700">
+                              Misol hali yo‘q
+                            </span>
+                          )
+                        ) : hasVideo ? (
+                          <span className="text-mb-muted">video bor</span>
+                        ) : (
+                          <span className="font-semibold text-amber-700">
+                            Video hali yo‘q
+                          </span>
+                        )}
+                      </p>
                     </div>
 
-                    <details className="mt-5 border-t border-slate-100 pt-4">
-                      <summary className="cursor-pointer text-sm font-semibold text-mb-brand hover:text-mb-brandDark">
-                        {isPopular
-                          ? "Mavzu nomini tahrirlash"
-                          : "Mavzu nomi va videosini tahrirlash"}
+                    <RowMenu>
+                      <form action={deleteTopic}>
+                        <input type="hidden" name="textbookId" value={textbookId} />
+                        <input type="hidden" name="topicId" value={topic.id} />
+                        <ConfirmSubmitButton
+                          className={rowMenuDanger}
+                          title="Mavzu o‘chirilsinmi?"
+                          description={`“${topic.title}” butunlay o‘chiriladi.`}
+                        >
+                          O‘chirish
+                        </ConfirmSubmitButton>
+                      </form>
+                    </RowMenu>
+                  </div>
+
+                  <div className="pl-11">
+                    <details className="mt-1">
+                      <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand hover:text-mb-brandDark">
+                        {isPopular ? "Nomini tahrirlash" : "Nomi va videosini tahrirlash"}
                       </summary>
 
                       <EditTopicForm
@@ -990,12 +939,12 @@ export default async function ManageTextbookPage({
                         deleteAction={deleteTopicExample}
                       />
                     )}
-                  </article>
-                );
-              })}
-            </div>
-          )}
-        </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
       </section>
     </main>
   );

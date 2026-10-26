@@ -1,5 +1,9 @@
 import Link from "next/link";
 
+import ConfirmSubmitButton from "@/components/admin/confirm-submit-button";
+import CreatePanel from "@/components/admin/create-panel";
+import RowMenu, { rowMenuDanger, rowMenuItem } from "@/components/admin/row-menu";
+
 import AdminTabs from "@/components/admin/admin-tabs";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -628,146 +632,74 @@ function TextbookCard({
     textbook.book_type === "school";
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
-      {textbook.cover_url ? (
-        <div className="flex aspect-[16/9] items-center justify-center bg-slate-100">
+    <article className="rounded-2xl border border-mb-line bg-white px-3 py-3 shadow-sm sm:px-4">
+      <div className="flex items-center gap-3">
+        {textbook.cover_url ? (
           <img
             loading="lazy"
             decoding="async"
             src={textbook.cover_url}
-            alt={`${textbook.title} muqovasi`}
-            className="h-full w-full object-contain p-2"
+            alt=""
+            className="h-14 w-11 shrink-0 rounded-md bg-slate-100 object-contain"
           />
-        </div>
-      ) : (
-        <div
-          className={
-            isSchool
-              ? "flex aspect-[16/9] items-center justify-center bg-slate-100"
-              : "flex aspect-[16/9] items-center justify-center bg-slate-100"
-          }
-        >
-          <div className="text-center">
-            <p
-              className={
-                isSchool
-                  ? "text-4xl font-bold text-blue-300"
-                  : "text-4xl font-bold text-blue-300"
-              }
-            >
-              {isSchool
-                ? textbook.grade
-                : "M"}
-            </p>
-
-            <p className="mt-1 text-sm font-semibold text-slate-500">
-              {isSchool
-                ? "Maktab darsligi"
-                : "Mashhur darslik"}
-            </p>
-          </div>
-        </div>
-      )}
-
-      <div className="p-5 sm:p-6">
-        <div className="flex flex-wrap items-center gap-2">
-          <h3 className="text-xl font-bold text-slate-950">
-            {textbook.title}
-          </h3>
-
-          <span
-            className={
-              textbook.is_published
-                ? "rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700"
-                : "rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600"
-            }
-          >
-            {textbook.is_published
-              ? "Nashr qilingan"
-              : "Yopiq"}
+        ) : (
+          <span className="grid h-14 w-11 shrink-0 place-items-center rounded-md bg-slate-100 text-lg font-bold text-blue-300">
+            {isSchool ? textbook.grade : "M"}
           </span>
-        </div>
-
-        <div className="mt-4 flex flex-wrap gap-2 text-xs font-bold">
-          <span
-            className={
-              isSchool
-                ? "rounded-full bg-blue-100 px-3 py-1.5 text-blue-700"
-                : "rounded-full bg-blue-100 px-3 py-1.5 text-blue-700"
-            }
-          >
-            {isSchool
-              ? `${textbook.grade}-sinf`
-              : "Mashhur darslik"}
-          </span>
-
-          <span className="rounded-full bg-slate-100 px-3 py-1.5 text-slate-600">
-            {topicCount} ta mavzu
-          </span>
-        </div>
-
-        {textbook.author_name && (
-          <p className="mt-3 text-sm text-slate-600">
-            Muallif: {textbook.author_name}
-          </p>
         )}
 
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Link
-            href={`/admin/textbooks/manage?textbookId=${textbook.id}`}
-            className="rounded-xl bg-mb-brand px-4 py-2.5 text-sm font-bold text-white hover:bg-mb-brandDark"
-          >
-            Mavzularni boshqarish
-          </Link>
+        <Link
+          href={`/admin/textbooks/manage?textbookId=${textbook.id}`}
+          className="min-w-0 flex-1"
+        >
+          <span className="block truncate text-[15px] font-semibold text-mb-ink hover:text-mb-brand">
+            {textbook.title}
+          </span>
 
+          <span className="mt-0.5 flex flex-wrap items-center gap-x-2 text-xs text-mb-muted">
+            {!textbook.is_published && (
+              <span className="rounded-full bg-slate-100 px-2 py-0.5 font-semibold text-slate-600">
+                Yopiq
+              </span>
+            )}
+            {isSchool && <span>{textbook.grade}-sinf</span>}
+            <span>{topicCount} mavzu</span>
+            {textbook.author_name && <span>{textbook.author_name}</span>}
+          </span>
+        </Link>
+
+        <RowMenu>
           <form action={changePublishedState}>
-            <input
-              type="hidden"
-              name="textbookId"
-              value={textbook.id}
-            />
-
+            <input type="hidden" name="textbookId" value={textbook.id} />
             <input
               type="hidden"
               name="nextState"
-              value={String(
-                !textbook.is_published,
-              )}
+              value={String(!textbook.is_published)}
             />
-
-            <SubmitButton
-              className={
-                textbook.is_published
-                  ? "rounded-xl bg-amber-100 px-4 py-2.5 text-sm font-bold text-amber-700 hover:bg-amber-200"
-                  : "rounded-xl bg-emerald-100 px-4 py-2.5 text-sm font-bold text-emerald-700 hover:bg-emerald-200"
-              }
-            >
-              {textbook.is_published
-                ? "Yopish"
-                : "Nashr qilish"}
+            <SubmitButton className={rowMenuItem}>
+              {textbook.is_published ? "Yopish" : "Nashr qilish"}
             </SubmitButton>
           </form>
 
           {topicCount === 0 && (
             <form action={deleteTextbook}>
-              <input
-                type="hidden"
-                name="textbookId"
-                value={textbook.id}
-              />
-
-              <SubmitButton
-                className="rounded-xl bg-red-50 px-4 py-2.5 text-sm font-bold text-red-600 hover:bg-red-100"
+              <input type="hidden" name="textbookId" value={textbook.id} />
+              <ConfirmSubmitButton
+                className={rowMenuDanger}
+                title="Darslik o‘chirilsinmi?"
+                description={`“${textbook.title}” butunlay o‘chiriladi.`}
               >
                 O‘chirish
-              </SubmitButton>
+              </ConfirmSubmitButton>
             </form>
           )}
-        </div>
+        </RowMenu>
+      </div>
 
+      <div className="mt-1 pl-14">
         {/* Ma'lumotlarni tahrirlash */}
-        <details className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-          <summary className="cursor-pointer list-none text-sm font-bold text-blue-700">
+        <details className="rounded-xl open:mt-2 open:border open:border-slate-200 open:bg-slate-50 open:p-3">
+          <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand">
             Nomi va muallifini tahrirlash
           </summary>
 
@@ -843,8 +775,8 @@ function TextbookCard({
         </details>
 
         {/* Muqova — bu yerda almashtiriladi */}
-        <details className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-          <summary className="cursor-pointer list-none text-sm font-bold text-blue-700">
+        <details className="rounded-xl open:mt-2 open:border open:border-slate-200 open:bg-slate-50 open:p-3">
+          <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand">
             {textbook.cover_url
               ? "Muqovani almashtirish"
               : "Muqova qo‘yish"}
@@ -1052,22 +984,19 @@ export default async function AdminTextbooksPage({
         )}
       </div>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[390px_1fr] lg:py-10">
-        <div>
-          <CreateTextbookForm
-            action={createTextbook}
-          />
-        </div>
+      <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-8">
+        <CreatePanel
+          label="Yangi darslik"
+          defaultOpen={schoolBooks.length + popularBooks.length === 0}
+        >
+          <CreateTextbookForm action={createTextbook} />
+        </CreatePanel>
 
-        <div className="space-y-10">
+        <div className="mt-8 space-y-8">
           <section>
-            <div className="mb-5 flex items-end justify-between gap-4">
+            <div className="mb-3 flex items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-600">
-                  1-bo‘lim
-                </p>
-
-                <h2 className="mt-1 text-2xl font-bold">
+                <h2 className="text-lg font-bold">
                   Maktab darsliklari
                 </h2>
               </div>
@@ -1078,11 +1007,11 @@ export default async function AdminTextbooksPage({
             </div>
 
             {schoolBooks.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center text-sm text-slate-500">
+              <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-4 py-3 text-sm text-slate-500">
                 Maktab darsligi hali yaratilmagan.
               </div>
             ) : (
-              <div className="grid gap-5 xl:grid-cols-2">
+              <div className="space-y-2">
                 {schoolBooks.map((book) => (
                   <TextbookCard
                     key={book.id}
@@ -1099,13 +1028,9 @@ export default async function AdminTextbooksPage({
           </section>
 
           <section>
-            <div className="mb-5 flex items-end justify-between gap-4">
+            <div className="mb-3 flex items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-600">
-                  2-bo‘lim
-                </p>
-
-                <h2 className="mt-1 text-2xl font-bold">
+                <h2 className="text-lg font-bold">
                   Mashhur darslik yechimlari
                 </h2>
               </div>
@@ -1116,11 +1041,11 @@ export default async function AdminTextbooksPage({
             </div>
 
             {popularBooks.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center text-sm text-slate-500">
+              <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-4 py-3 text-sm text-slate-500">
                 Mashhur darslik hali yaratilmagan.
               </div>
             ) : (
-              <div className="grid gap-5 xl:grid-cols-2">
+              <div className="space-y-2">
                 {popularBooks.map((book) => (
                   <TextbookCard
                     key={book.id}

@@ -1,4 +1,8 @@
 import Link from "next/link";
+
+import ConfirmSubmitButton from "@/components/admin/confirm-submit-button";
+import CreatePanel from "@/components/admin/create-panel";
+import RowMenu, { rowMenuDanger, rowMenuItem } from "@/components/admin/row-menu";
 import { revalidatePath } from "next/cache";
 import { notFound, redirect } from "next/navigation";
 
@@ -311,8 +315,8 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
         </div>
       </header>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[380px_1fr] lg:py-12">
-        <div>
+      <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-8">
+        <CreatePanel label="Yangi bo‘lim" defaultOpen={sections.length === 0}>
           <form
             action={createSection}
             className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
@@ -368,28 +372,16 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
               Bo‘limni yaratish
             </SubmitButton>
           </form>
-        </div>
+        </CreatePanel>
 
-        <div>
-          <div className="mb-5">
-            <h2 className="text-2xl font-bold">Bo‘limlar</h2>
-            <p className="mt-1 text-sm text-slate-500">
-              Jami: {sections.length} ta. Birinchi nashr qilingan bo‘limning
-              birinchi mavzusidagi barcha testlar bepul bo‘ladi.
-            </p>
-          </div>
+        <div className="mt-5">
+          <p className="mb-3 text-xs text-mb-muted">
+            Birinchi nashr qilingan bo‘limning birinchi mavzusidagi testlar
+            bepul bo‘ladi.
+          </p>
 
-          {!sections.length ? (
-            <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
-              <p className="font-bold text-slate-700">
-                Hozircha bo‘lim yaratilmagan
-              </p>
-              <p className="mt-2 text-sm text-slate-500">
-                Chap tomondagi forma orqali birinchi bo‘limni yarating.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-4">
+          {sections.length > 0 && (
+            <div className="space-y-2">
               {sections.map((section) => {
                 const testCount = tests.filter(
                   (test) => test.section_id === section.id,
@@ -413,61 +405,40 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
                 return (
                   <article
                     key={section.id}
-                    className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+                    className="rounded-2xl border border-mb-line bg-white px-3 py-3 shadow-sm sm:px-4"
                   >
-                    <div className="flex flex-col justify-between gap-5 md:flex-row md:items-start">
-                      <div className="min-w-0">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="grid h-9 w-9 place-items-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">
-                            {section.order_number}
-                          </span>
-                          <h3 className="text-xl font-bold">{section.title}</h3>
-                          <span
-                            className={
-                              section.is_published
-                                ? "rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700"
-                                : "rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-700"
-                            }
-                          >
-                            {section.is_published ? "Nashr qilingan" : "Qoralama"}
-                          </span>
-                          {isAutomaticFreeSection && (
-                            <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">
-                              Birinchi mavzu bepul
+                    <div className="flex items-center gap-3">
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-blue-50 text-sm font-bold text-blue-700">
+                        {section.order_number}
+                      </span>
+
+                      <Link
+                        href={`/admin/tests/section?sectionId=${section.id}`}
+                        className="min-w-0 flex-1"
+                      >
+                        <span className="block truncate text-[15px] font-semibold text-mb-ink hover:text-mb-brand">
+                          {section.title}
+                        </span>
+
+                        <span className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-mb-muted">
+                          {!section.is_published && (
+                            <span className="rounded-full bg-amber-50 px-2 py-0.5 font-semibold text-amber-700">
+                              Qoralama
                             </span>
                           )}
-                          {!isAutomaticFreeSection &&
-                            hasFreeTopic &&
-                            examType.code !== GROUP_EXAM_CODE && (
-                              <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">
-                                Qo‘lda bepul mavzu bor
-                              </span>
-                            )}
-                        </div>
+                          {(isAutomaticFreeSection ||
+                            (hasFreeTopic && examType.code !== GROUP_EXAM_CODE)) && (
+                            <span className="rounded-full bg-emerald-50 px-2 py-0.5 font-semibold text-emerald-700">
+                              {isAutomaticFreeSection ? "1-mavzu bepul" : "bepul mavzu bor"}
+                            </span>
+                          )}
+                          <span>
+                            {topicCount} mavzu · {testCount} test
+                          </span>
+                        </span>
+                      </Link>
 
-                        {section.description && (
-                          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-                            {section.description}
-                          </p>
-                        )}
-
-                        <p className="mt-3 text-sm font-bold text-slate-500">
-                          Mavzular:{" "}
-                          <span className="text-slate-900">{topicCount} ta</span>
-                          {" · "}
-                          Testlar:{" "}
-                          <span className="text-slate-900">{testCount} ta</span>
-                        </p>
-                      </div>
-
-                      <div className="flex shrink-0 flex-wrap gap-2">
-                        <Link
-                          href={`/admin/tests/section?sectionId=${section.id}`}
-                          className="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white hover:bg-slate-700"
-                        >
-                          Mavzularni boshqarish
-                        </Link>
-
+                      <RowMenu>
                         <form action={changeSectionState}>
                           <input type="hidden" name="sectionId" value={section.id} />
                           <input
@@ -475,58 +446,34 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
                             name="nextState"
                             value={String(!section.is_published)}
                           />
-                          <SubmitButton
-                            className={
-                              section.is_published
-                                ? "rounded-xl bg-amber-100 px-4 py-2.5 text-sm font-bold text-amber-700 hover:bg-amber-200"
-                                : "rounded-xl bg-emerald-100 px-4 py-2.5 text-sm font-bold text-emerald-700 hover:bg-emerald-200"
-                            }
-                          >
+                          <SubmitButton className={rowMenuItem}>
                             {section.is_published ? "Bo‘limni yopish" : "Nashr qilish"}
                           </SubmitButton>
                         </form>
-                      </div>
+
+                        {testCount === 0 ? (
+                          <form action={deleteSection}>
+                            <input type="hidden" name="sectionId" value={section.id} />
+                            <ConfirmSubmitButton
+                              className={rowMenuDanger}
+                              title="Bo‘lim o‘chirilsinmi?"
+                              description={`“${section.title}” bo‘limi butunlay o‘chiriladi. Bu amalni orqaga qaytarib bo‘lmaydi.`}
+                            >
+                              O‘chirish
+                            </ConfirmSubmitButton>
+                          </form>
+                        ) : (
+                          <p className="px-3 py-2 text-xs leading-5 text-mb-muted">
+                            O‘chirish uchun avval ichidagi {testCount} ta testni
+                            o‘chiring.
+                          </p>
+                        )}
+                      </RowMenu>
                     </div>
 
-                    {testCount === 0 && (
-                      <details className="mt-5 rounded-2xl border border-red-200 bg-red-50/50">
-                        <summary className="cursor-pointer px-5 py-4 text-sm font-bold text-red-700">
-                          Bo‘limni o‘chirish
-                        </summary>
-
-                        <div className="px-5 pb-5">
-                          <p className="text-sm leading-6 text-red-900">
-                            “{section.title}” bo‘limi butunlay o‘chiriladi.
-                            Bu amalni orqaga qaytarib bo‘lmaydi.
-                          </p>
-
-                          <form action={deleteSection} className="mt-4">
-                            <input
-                              type="hidden"
-                              name="sectionId"
-                              value={section.id}
-                            />
-                            <SubmitButton
-                              className="min-h-11 rounded-xl bg-red-600 px-5 text-sm font-bold text-white hover:bg-red-700"
-                            >
-                              Ha, o‘chirilsin
-                            </SubmitButton>
-                          </form>
-                        </div>
-                      </details>
-                    )}
-
-                    {testCount > 0 && (
-                      <p className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 px-5 py-3 text-sm leading-6 text-slate-600">
-                        Bo‘limni o‘chirish uchun avval ichidagi{" "}
-                        <strong>{testCount} ta testni</strong> o‘chiring —
-                        aks holda o‘quvchilarning natijalari ham yo‘qoladi.
-                      </p>
-                    )}
-
-                    <details className="mt-5 rounded-2xl border border-slate-200 bg-slate-50">
-                      <summary className="cursor-pointer px-5 py-4 text-sm font-bold text-blue-700">
-                        Bo‘lim ma’lumotlarini tahrirlash
+                    <details className="group/edit ml-11 mt-1 rounded-xl open:border open:border-slate-200 open:bg-slate-50">
+                      <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand group-open/edit:px-3">
+                        Tahrirlash
                       </summary>
                       <form
                         action={updateSection}
