@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import ConfirmSubmitButton from "@/components/admin/confirm-submit-button";
 import CreatePanel from "@/components/admin/create-panel";
 import RowMenu, { rowMenuDanger } from "@/components/admin/row-menu";
 import { revalidatePath } from "next/cache";
@@ -20,7 +21,6 @@ import EditTopicForm from "@/components/admin/edit-topic-form";
 import TopicExamplesEditor, {
   type AdminExample,
 } from "@/components/admin/topic-examples-editor";
-import SubmitButton from "@/components/ui/submit-button";
 
 type PageProps = {
   searchParams: Promise<{
@@ -901,9 +901,13 @@ export default async function ManageTextbookPage({
                       <form action={deleteTopic}>
                         <input type="hidden" name="textbookId" value={textbookId} />
                         <input type="hidden" name="topicId" value={topic.id} />
-                        <SubmitButton className={rowMenuDanger}>
+                        <ConfirmSubmitButton
+                          className={rowMenuDanger}
+                          title="Mavzu o‘chirilsinmi?"
+                          description={`“${topic.title}” butunlay o‘chiriladi.`}
+                        >
                           O‘chirish
-                        </SubmitButton>
+                        </ConfirmSubmitButton>
                       </form>
                     </RowMenu>
                   </div>

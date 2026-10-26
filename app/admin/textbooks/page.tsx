@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import ConfirmSubmitButton from "@/components/admin/confirm-submit-button";
 import CreatePanel from "@/components/admin/create-panel";
 import RowMenu, { rowMenuDanger, rowMenuItem } from "@/components/admin/row-menu";
 
@@ -683,7 +684,13 @@ function TextbookCard({
           {topicCount === 0 && (
             <form action={deleteTextbook}>
               <input type="hidden" name="textbookId" value={textbook.id} />
-              <SubmitButton className={rowMenuDanger}>O‘chirish</SubmitButton>
+              <ConfirmSubmitButton
+                className={rowMenuDanger}
+                title="Darslik o‘chirilsinmi?"
+                description={`“${textbook.title}” butunlay o‘chiriladi.`}
+              >
+                O‘chirish
+              </ConfirmSubmitButton>
             </form>
           )}
         </RowMenu>

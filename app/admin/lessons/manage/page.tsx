@@ -10,6 +10,7 @@ import {
 import { createClient } from "@/lib/supabase/server";
 import type { FormState } from "@/lib/form-state";
 import CreateLessonForm from "@/components/admin/create-lesson-form";
+import ConfirmSubmitButton from "@/components/admin/confirm-submit-button";
 import CreatePanel from "@/components/admin/create-panel";
 import RowMenu, { rowMenuDanger, rowMenuItem } from "@/components/admin/row-menu";
 import { getYouTubeThumbnail } from "@/lib/youtube";
@@ -848,9 +849,13 @@ export default async function ManageLessonsPage({
                       <form action={deleteLesson}>
                         <input type="hidden" name="categoryId" value={categoryId} />
                         <input type="hidden" name="lessonId" value={lesson.id} />
-                        <SubmitButton className={rowMenuDanger}>
+                        <ConfirmSubmitButton
+                          className={rowMenuDanger}
+                          title="Videodars o‘chirilsinmi?"
+                          description={`“${lesson.title}” butunlay o‘chiriladi. Bu amalni orqaga qaytarib bo‘lmaydi.`}
+                        >
                           O‘chirish
-                        </SubmitButton>
+                        </ConfirmSubmitButton>
                       </form>
                     </RowMenu>
                   </div>
