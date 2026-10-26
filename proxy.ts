@@ -23,7 +23,11 @@ export const config = {
      * tasdiqlash uchun `google1a2b3c.html` kabi fayl so'raydi. U ham
      * cookie'siz so'raladi va login sahifasiga yo'naltirilsa,
      * tasdiqlash muvaffaqiyatsiz tugaydi.
+     *
+     * `pdfjs/` — PDF yozuv bo'limining pdf.js worker fayli. Worker
+     * tekshiruvdan o'tsa, sessiya tugagan paytda JS o'rniga login
+     * sahifasining HTML'i qaytardi va PDF ochilmasdi.
      */
-    "/((?!_next/static|_next/image|favicon.ico|manifest.webmanifest|sw\\.js|robots\\.txt|sitemap\\.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|webmanifest|html|txt|xml)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|manifest.webmanifest|sw\\.js|pdfjs/|robots\\.txt|sitemap\\.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|webmanifest|html|txt|xml)$).*)",
   ],
 };

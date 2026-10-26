@@ -24,6 +24,9 @@ const eslintConfig = [
      * kodimiz emas, uni tuzatish ham bizning ishimiz emas: har
      * yangilanishda xatolar qaytib keladi. Ularsiz `npm run check`
      * faqat saytning o'z kodini ko'rsatadi.
+     *
+     * `public/pdfjs/` — pdf.js worker'ining node_modules dan
+     * ko'chirilgan nusxasi (scripts/copy-pdf-worker.mjs).
      */
     ignores: [
       "backups/**",
@@ -34,6 +37,7 @@ const eslintConfig = [
       ".codex/**",
       ".impeccable/**",
       "Claude outputs/**",
+      "public/pdfjs/**",
     ],
   },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
