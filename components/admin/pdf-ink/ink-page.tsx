@@ -50,6 +50,47 @@ function pixelRatio() {
   return Math.min(window.devicePixelRatio || 1, 2);
 }
 
+/*
+ * PDF sahifasi uchun piksel chegarasi. Skaner qilingan PDF'ni katta
+ * masshtabda chizish asosiy oqimni soniyalab band qiladi — shu paytda
+ * qalam "qotib" qoladi. Bu chegara A4 ni ~200% da tiniq chizishga
+ * yetadi; undan kattasini brauzer cho'zib ko'rsatadi.
+ */
+const PDF_PIXEL_BUDGET = 8_000_000;
+
+/** Chizgi egallagan to'rtburchak (sahifa koordinatasida) */
+function strokeBounds(points: number[], pad: number) {
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  for (let i = 0; i + 1 < points.length; i += 2) {
+    if (points[i] < minX) minX = points[i];
+    if (points[i] > maxX) maxX = points[i];
+    if (points[i + 1] < minY) minY = points[i + 1];
+    if (points[i + 1] > maxY) maxY = points[i + 1];
+  }
+  return { x: minX - pad, y: minY - pad, w: maxX - minX + pad * 2, h: maxY - minY + pad * 2 };
+}
+
+type Box = ReturnType<typeof strokeBounds>;
+
+/** Kanvasning bir qismini tozalash; `box` yo'q bo'lsa — hammasini */
+function clearArea(canvas: HTMLCanvasElement, box: Box | null, scale: number) {
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  if (!box) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    return;
+  }
+  ctx.clearRect(
+    Math.floor(box.x * scale) - 2,
+    Math.floor(box.y * scale) - 2,
+    Math.ceil(box.w * scale) + 4,
+    Math.ceil(box.h * scale) + 4,
+  );
+}
+
 function tracePath(ctx: CanvasRenderingContext2D, segments: PathSegment[]) {
   ctx.beginPath();
   for (const segment of segments) {
@@ -57,6 +98,33 @@ function tracePath(ctx: CanvasRenderingContext2D, segments: PathSegment[]) {
     else if (segment.kind === "line") ctx.lineTo(segment.x, segment.y);
     else ctx.quadraticCurveTo(segment.cx, segment.cy, segment.x, segment.y);
   }
+}
+
+/*
+ * Tugagan qalam chizgisining konturi bir marta hisoblanadi.
+ * Chizgi obyektlari o'zgarmaydi (yangisi yaratiladi), shuning uchun
+ * kalit sifatida obyektning o'zi yetarli; o'chirilgan chizgi
+ * keshdan o'zi tushib ketadi.
+ */
+const outlineCache = new WeakMap<Stroke, Path2D | null>();
+
+function cachedOutline(stroke: Stroke): Path2D | null {
+  let path = outlineCache.get(stroke);
+  if (path === undefined) {
+    const outline = penOutline(stroke);
+    path = null;
+    if (outline) {
+      path = new Path2D();
+      for (const segment of outlinePath(outline)) {
+        if (segment.kind === "move") path.moveTo(segment.x, segment.y);
+        else if (segment.kind === "line") path.lineTo(segment.x, segment.y);
+        else path.quadraticCurveTo(segment.cx, segment.cy, segment.x, segment.y);
+      }
+      path.closePath();
+    }
+    outlineCache.set(stroke, path);
+  }
+  return path;
 }
 
 /** `complete: false` — chizgi hali yozilmoqda (jonli qatlam) */
@@ -69,14 +137,24 @@ export function paintStroke(
   ctx.save();
   ctx.scale(scale, scale);
 
-  const outline = penOutline(stroke, complete);
-  if (outline) {
-    ctx.fillStyle = stroke.color;
-    tracePath(ctx, outlinePath(outline));
-    ctx.closePath();
-    ctx.fill();
-    ctx.restore();
-    return;
+  if (complete) {
+    const path = cachedOutline(stroke);
+    if (path) {
+      ctx.fillStyle = stroke.color;
+      ctx.fill(path);
+      ctx.restore();
+      return;
+    }
+  } else {
+    const outline = penOutline(stroke, false);
+    if (outline) {
+      ctx.fillStyle = stroke.color;
+      tracePath(ctx, outlinePath(outline));
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+      return;
+    }
   }
 
   ctx.lineCap = "round";
@@ -157,6 +235,10 @@ function InkPageView({
   const liveCanvasRef = useRef<HTMLCanvasElement>(null);
   const gestureRef = useRef<Gesture | null>(null);
   const frameRef = useRef(0);
+  /* Yozuv qatlamida nima chizilgani — yangi chizgi qo'shilsa, faqat uni chizamiz */
+  const paintedRef = useRef<{ strokes: Stroke[]; scale: number } | null>(null);
+  /* Jonli qatlamning oxirgi bo'yalgan joyi — butun kanvasni har kadrda tozalamaslik uchun */
+  const liveBoxRef = useRef<Box | null>(null);
   const [visible, setVisible] = useState(false);
 
   const cssWidth = page.width * zoom;
@@ -169,7 +251,7 @@ function InkPageView({
 
     const observer = new IntersectionObserver(
       ([entry]) => setVisible(entry.isIntersecting),
-      { root: scrollRef.current, rootMargin: "1200px 0px" },
+      { root: scrollRef.current, rootMargin: "600px 0px" },
     );
     observer.observe(node);
     return () => observer.disconnect();
@@ -194,7 +276,10 @@ function InkPageView({
         const pdfPage = await pdf.getPage(page.source! + 1);
         if (cancelled) return;
 
-        const viewport = pdfPage.getViewport({ scale: zoom * pixelRatio() });
+        const base = pdfPage.getViewport({ scale: 1 });
+        const wanted = zoom * pixelRatio();
+        const limit = Math.sqrt(PDF_PIXEL_BUDGET / (base.width * base.height));
+        const viewport = pdfPage.getViewport({ scale: Math.min(wanted, limit) });
         const offscreen = document.createElement("canvas");
         sizeCanvas(offscreen, viewport.width, viewport.height);
         const ctx = offscreen.getContext("2d");
@@ -229,23 +314,49 @@ function InkPageView({
     if (!visible) {
       releaseCanvas(ink);
       releaseCanvas(live);
+      paintedRef.current = null;
+      liveBoxRef.current = null;
       return;
     }
 
     const ratio = pixelRatio();
+    const scale = zoom * ratio;
     sizeCanvas(ink, cssWidth * ratio, cssHeight * ratio);
     sizeCanvas(live, cssWidth * ratio, cssHeight * ratio);
 
     const ctx = ink.getContext("2d");
     if (!ctx) return;
-    ctx.clearRect(0, 0, ink.width, ink.height);
-    for (const stroke of page.strokes) {
-      paintStroke(ctx, stroke, zoom * ratio);
+
+    /*
+     * Odatda yangi chizgi oxiriga qo'shiladi: oldingilari joyida,
+     * faqat yangisini ustidan chizamiz. O'chirish, orqaga qaytarish
+     * yoki kattalashtirishda hammasi qaytadan chiziladi.
+     */
+    const painted = paintedRef.current;
+    const strokes = page.strokes;
+    const appended =
+      painted !== null &&
+      painted.scale === scale &&
+      ink.width > 1 &&
+      strokes.length >= painted.strokes.length &&
+      painted.strokes.every((stroke, i) => strokes[i] === stroke);
+
+    if (appended) {
+      for (let i = painted.strokes.length; i < strokes.length; i += 1) {
+        paintStroke(ctx, strokes[i], scale);
+      }
+    } else {
+      ctx.clearRect(0, 0, ink.width, ink.height);
+      for (const stroke of strokes) {
+        paintStroke(ctx, stroke, scale);
+      }
     }
+    paintedRef.current = { strokes, scale };
 
     /* Yangi chizgi endi yozuv qatlamida — jonli qatlamni tozalaymiz */
     if (!gestureRef.current) {
-      live.getContext("2d")?.clearRect(0, 0, live.width, live.height);
+      clearArea(live, liveBoxRef.current, scale);
+      liveBoxRef.current = null;
     }
   }, [visible, page.strokes, zoom, cssWidth, cssHeight]);
 
@@ -258,6 +369,13 @@ function InkPageView({
     return [Math.round(x * 100) / 100, Math.round(y * 100) / 100] as const;
   }
 
+  /** Jonli qatlamni tozalash — faqat oxirgi chizgi turgan joyni */
+  function clearLive() {
+    const live = liveCanvasRef.current;
+    if (live) clearArea(live, liveBoxRef.current, zoom * pixelRatio());
+    liveBoxRef.current = null;
+  }
+
   function drawLive() {
     frameRef.current = 0;
     const gesture = gestureRef.current;
@@ -266,8 +384,24 @@ function InkPageView({
 
     const ctx = live.getContext("2d");
     if (!ctx) return;
-    ctx.clearRect(0, 0, live.width, live.height);
-    paintStroke(ctx, buildStroke(gesture), zoom * pixelRatio(), false);
+
+    /*
+     * Har kadrda butun sahifa kanvasini (millionlab piksel) tozalash
+     * sekin. Faqat chizgi turgan to'rtburchakni tozalaymiz.
+     */
+    const box = strokeBounds(gesture.points, width * 2 + 2);
+    const previous = liveBoxRef.current;
+    liveBoxRef.current = previous
+      ? {
+          x: Math.min(previous.x, box.x),
+          y: Math.min(previous.y, box.y),
+          w: Math.max(previous.x + previous.w, box.x + box.w) - Math.min(previous.x, box.x),
+          h: Math.max(previous.y + previous.h, box.y + box.h) - Math.min(previous.y, box.y),
+        }
+      : box;
+    const scale = zoom * pixelRatio();
+    clearArea(live, liveBoxRef.current, scale);
+    paintStroke(ctx, buildStroke(gesture), scale, false);
   }
 
   function buildStroke(gesture: Extract<Gesture, { kind: "draw" }>): Stroke {
@@ -391,9 +525,7 @@ function InkPageView({
     frameRef.current = 0;
 
     if (gesture.tool === "line" && gesture.points.length < 4) {
-      liveCanvasRef.current
-        ?.getContext("2d")
-        ?.clearRect(0, 0, liveCanvasRef.current.width, liveCanvasRef.current.height);
+      clearLive();
       return;
     }
 

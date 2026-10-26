@@ -40,6 +40,7 @@ import {
 import { cn } from "@/lib/utils";
 
 import InkPageView, { type EditorTool, type PageHandlers } from "./ink-page";
+import ExportPanel from "./export-panel";
 import PenPanel, { PEN_KINDS, PEN_SIZES } from "./pen-panel";
 
 /**
@@ -84,6 +85,61 @@ async function loadPdfjs() {
   /* Worker faylini `scripts/copy-pdf-worker.mjs` public/ ga qo'yadi */
   pdfjs.GlobalWorkerOptions.workerSrc = "/pdfjs/pdf.worker.min.js";
   return pdfjs;
+}
+
+/*
+ * Internetsiz ishlash.
+ *
+ * Muharrir to'liq brauzerda ishlaydi, faqat sahifaning o'zi va uning
+ * JS fayllari kerak. Sahifa ochilganda ularni `vepa-offline` keshiga
+ * yozib qo'yamiz; internet uzilsa service worker (public/sw.js)
+ * sahifani shu keshdan ochadi. Har onlayn ochilishda kesh yangilanadi,
+ * eski deploy fayllari tozalanadi.
+ */
+const OFFLINE_CACHE = "vepa-offline";
+
+async function prepareOffline() {
+  if (!("caches" in window) || !navigator.onLine) return;
+
+  try {
+    /* pdf.js bo'lagi ham yuklansin — u faqat PDF ochilganda kerak bo'ladi */
+    await loadPdfjs();
+
+    const pageUrl = window.location.pathname;
+    const response = await fetch(pageUrl, { credentials: "same-origin", cache: "no-store" });
+    /* Sessiya tugagan bo'lsa login sahifasiga yo'naltiriladi — uni saqlamaymiz */
+    if (!response.ok || response.redirected) return;
+
+    const cache = await caches.open(OFFLINE_CACHE);
+    await cache.put(pageUrl, response);
+
+    const assets = new Set<string>([`${window.location.origin}/pdfjs/pdf.worker.min.js`]);
+    for (const entry of performance.getEntriesByType("resource")) {
+      const url = new URL(entry.name);
+      if (url.origin === window.location.origin && url.pathname.startsWith("/_next/static/")) {
+        assets.add(url.href);
+      }
+    }
+
+    for (const request of await cache.keys()) {
+      if (new URL(request.url).pathname !== pageUrl && !assets.has(request.url)) {
+        await cache.delete(request);
+      }
+    }
+
+    await Promise.all(
+      [...assets].map(async (url) => {
+        if (await cache.match(url)) return;
+        try {
+          await cache.add(url);
+        } catch {
+          /* Bitta fayl tushmasa ham qolganlari saqlansin */
+        }
+      }),
+    );
+  } catch {
+    /* Kesh ishlamasa ham muharrir onlayn ishlayveradi */
+  }
 }
 
 /** Faylni kompyuterga saqlash: imkon bo'lsa "Saqlash" oynasi, bo'lmasa yuklab olish */
@@ -195,12 +251,15 @@ export default function PdfInkEditor() {
   const [notice, setNotice] = useState("");
   const [dragOver, setDragOver] = useState(false);
   const [blankMenu, setBlankMenu] = useState(false);
+  const [exportPanel, setExportPanel] = useState(false);
 
   const originalRef = useRef<Uint8Array | null>(null);
   const pagesRef = useRef(pages);
   const scrollRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const eraseBaseRef = useRef<InkPage[] | null>(null);
+  const eraseFrameRef = useRef(0);
+  const scrollFrameRef = useRef(0);
   const erasedRef = useRef(false);
   const penSeenRef = useRef(false);
   const zoomAnchorRef = useRef<number | null>(null);
@@ -286,8 +345,20 @@ export default function PdfInkEditor() {
       const next = current.slice();
       next[index] = { ...page, strokes: kept };
       pagesRef.current = next;
-      setPages(next);
       erasedRef.current = true;
+
+      /*
+       * O'chirg'ich sekundiga yuzlab nuqta beradi. Har biriga ekranni
+       * yangilasak qotib qoladi — kadrga bir marta yangilaymiz.
+       * Keyingi nuqtalar `pagesRef` dagi eng so'nggi holat bilan
+       * tekshiriladi, shuning uchun hech narsa yo'qolmaydi.
+       */
+      if (!eraseFrameRef.current) {
+        eraseFrameRef.current = requestAnimationFrame(() => {
+          eraseFrameRef.current = 0;
+          setPages(pagesRef.current);
+        });
+      }
     },
     onEraseEnd() {
       const base = eraseBaseRef.current;
@@ -377,19 +448,27 @@ export default function PdfInkEditor() {
 
   /* -------------------------- saqlash --------------------------- */
 
-  async function save() {
+  /** `indexes` — saqlanadigan betlar (0 dan); berilmasa hammasi */
+  async function save(indexes?: number[]) {
     const original = originalRef.current;
     if (!original || saving) return;
+
+    const all = pagesRef.current;
+    const chosen = indexes ? all.filter((_, i) => indexes.includes(i)) : all;
+    if (chosen.length === 0) return;
+    const whole = chosen.length === all.length;
 
     setSaving(true);
     setError("");
 
     try {
-      const bytes = await exportInkPdf(original, pagesRef.current);
+      const bytes = await exportInkPdf(original, chosen);
       const saved = await saveToComputer(bytes, exportFileName(fileName));
       if (saved) {
-        setDirty(false);
-        setNotice("PDF saqlandi.");
+        setExportPanel(false);
+        /* Bir qismi saqlansa, qolgan yozuvlar hali saqlanmagan */
+        if (whole) setDirty(false);
+        setNotice(whole ? "PDF saqlandi." : `${chosen.length} ta bet PDF qilib saqlandi.`);
       }
     } catch {
       setError("PDF saqlanmadi. Qaytadan urinib ko'ring.");
@@ -485,15 +564,20 @@ export default function PdfInkEditor() {
 
   /* Hozirgi sahifa — ekran o'rtasidagisi */
   function onScroll() {
-    const scroller = scrollRef.current;
-    if (!scroller) return;
-    const middle = scroller.getBoundingClientRect().top + scroller.clientHeight / 2;
-    const nodes = scroller.querySelectorAll<HTMLElement>("[data-page-id]");
-    let index = 0;
-    nodes.forEach((node, i) => {
-      if (node.getBoundingClientRect().top <= middle) index = i;
+    /* Surish hodisasi kadrdan ko'p keladi — kadrga bir marta hisoblaymiz */
+    if (scrollFrameRef.current) return;
+    scrollFrameRef.current = requestAnimationFrame(() => {
+      scrollFrameRef.current = 0;
+      const scroller = scrollRef.current;
+      if (!scroller) return;
+      const middle = scroller.getBoundingClientRect().top + scroller.clientHeight / 2;
+      const nodes = scroller.querySelectorAll<HTMLElement>("[data-page-id]");
+      let index = 0;
+      nodes.forEach((node, i) => {
+        if (node.getBoundingClientRect().top <= middle) index = i;
+      });
+      setCurrentPage(index);
     });
-    setCurrentPage(index);
   }
 
   /* -------------------------- klaviatura ------------------------ */
@@ -530,6 +614,12 @@ export default function PdfInkEditor() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   });
+
+  /* Sahifa yuklanib bo'lgach — internetsiz ochilishga tayyorlanamiz */
+  useEffect(() => {
+    const timer = window.setTimeout(() => void prepareOffline(), 2000);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   /* Saqlanmagan yozuv bilan sahifani yopishdan oldin ogohlantirish */
   useEffect(() => {
@@ -838,8 +928,8 @@ export default function PdfInkEditor() {
 
           <button
             type="button"
-            onClick={() => void save()}
-            title="PDF saqlash (Ctrl+S)"
+            onClick={() => setExportPanel((open) => !open)}
+            title="PDF saqlash (Ctrl+S — hamma betlar)"
             aria-label="PDF saqlash"
             disabled={saving}
             className="inline-flex h-10 shrink-0 items-center gap-2 rounded-xl bg-mb-brand px-4 text-sm font-semibold text-white transition hover:bg-mb-brandDark disabled:opacity-60"
@@ -879,6 +969,17 @@ export default function PdfInkEditor() {
             }}
             onSize={setPenWidth}
             onClose={() => setPenPanel(false)}
+          />
+        )}
+
+        {exportPanel && (
+          <ExportPanel
+            pageCount={pages.length}
+            currentPage={Math.min(currentPage, pages.length - 1)}
+            inked={pages.map((page) => page.strokes.length > 0)}
+            saving={saving}
+            onExport={(indexes) => void save(indexes)}
+            onClose={() => setExportPanel(false)}
           />
         )}
 
