@@ -193,15 +193,21 @@ type Gesture =
   | {
       kind: "draw";
       pointerId: number;
+      pointerType: string;
+      /** Kanvas joyi — har nuqtada qayta o'lchash sekin */
+      rect: DOMRect;
       tool: InkTool;
       points: number[];
       /** Faqat stilusda */
       pressures: number[] | null;
+      /** Brauzer taxmin qilgan keyingi nuqtalar — faqat ekranda */
+      predicted: number[];
     }
-  | { kind: "erase"; pointerId: number }
+  | { kind: "erase"; pointerId: number; pointerType: string; rect: DOMRect }
   | {
       kind: "pan";
       pointerId: number;
+      pointerType: string;
       x: number;
       y: number;
       left: number;
@@ -364,8 +370,7 @@ function InkPageView({
 
   useEffect(() => () => cancelAnimationFrame(frameRef.current), []);
 
-  function pointFrom(event: { clientX: number; clientY: number }) {
-    const rect = liveCanvasRef.current!.getBoundingClientRect();
+  function pointFrom(event: { clientX: number; clientY: number }, rect: DOMRect) {
     const x = ((event.clientX - rect.left) / rect.width) * page.width;
     const y = ((event.clientY - rect.top) / rect.height) * page.height;
     return [Math.round(x * 100) / 100, Math.round(y * 100) / 100] as const;
@@ -391,7 +396,10 @@ function InkPageView({
      * Har kadrda butun sahifa kanvasini (millionlab piksel) tozalash
      * sekin. Faqat chizgi turgan to'rtburchakni tozalaymiz.
      */
-    const box = strokeBounds(gesture.points, width * 2 + 2);
+    const box = strokeBounds(
+      gesture.predicted.length > 0 ? [...gesture.points, ...gesture.predicted] : gesture.points,
+      width * 2 + 2,
+    );
     const previous = liveBoxRef.current;
     liveBoxRef.current = previous
       ? {
@@ -403,19 +411,26 @@ function InkPageView({
       : box;
     const scale = zoom * pixelRatio();
     clearArea(live, liveBoxRef.current, scale);
-    paintStroke(ctx, buildStroke(gesture), scale, false);
+    paintStroke(ctx, buildStroke(gesture, true), scale, false);
   }
 
-  function buildStroke(gesture: Extract<Gesture, { kind: "draw" }>): Stroke {
+  function buildStroke(gesture: Extract<Gesture, { kind: "draw" }>, withPrediction = false): Stroke {
+    const extra = withPrediction ? gesture.predicted : [];
     const stroke: Stroke = {
       tool: gesture.tool,
       color,
       width,
-      points: gesture.points,
+      points: extra.length > 0 ? [...gesture.points, ...extra] : gesture.points,
     };
     if (gesture.tool === "pen") {
       stroke.pen = pen;
-      if (gesture.pressures) stroke.pressures = gesture.pressures;
+      const pressures = gesture.pressures;
+      if (pressures) {
+        stroke.pressures =
+          extra.length > 0
+            ? [...pressures, ...Array(extra.length / 2).fill(pressures[pressures.length - 1])]
+            : pressures;
+      }
     }
     return stroke;
   }
@@ -441,14 +456,16 @@ function InkPageView({
   }
 
   function onPointerDown(event: React.PointerEvent<HTMLCanvasElement>) {
-    if (handlers.current.isPinching()) {
+    const isPen = event.pointerType === "pen";
+    if (handlers.current.isPinching() && !isPen) {
       abort();
       return;
     }
+    /* Kaft ekranga qalamdan oldin tegsa ham qalam yozaversin */
+    if (gestureRef.current && isPen && gestureRef.current.pointerType === "touch") abort();
     if (gestureRef.current) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
 
-    const isPen = event.pointerType === "pen";
     if (isPen) handlers.current.onPenDetected();
 
     const canvas = event.currentTarget;
@@ -462,6 +479,7 @@ function InkPageView({
       gestureRef.current = {
         kind: "pan",
         pointerId: event.pointerId,
+        pointerType: event.pointerType,
         x: event.clientX,
         y: event.clientY,
         left: scroller?.scrollLeft ?? 0,
@@ -472,10 +490,11 @@ function InkPageView({
 
     /* Qalamning orqa uchi yoki o'chirg'ich tugmasi — o'chiradi */
     const penEraser = isPen && (event.buttons & 32) !== 0;
-    const [x, y] = pointFrom(event);
+    const rect = canvas.getBoundingClientRect();
+    const [x, y] = pointFrom(event, rect);
 
     if (tool === "eraser" || penEraser) {
-      gestureRef.current = { kind: "erase", pointerId: event.pointerId };
+      gestureRef.current = { kind: "erase", pointerId: event.pointerId, pointerType: event.pointerType, rect };
       handlers.current.onEraseStart();
       handlers.current.onErase(page.id, x, y, ERASER_RADIUS);
       return;
@@ -484,9 +503,12 @@ function InkPageView({
     gestureRef.current = {
       kind: "draw",
       pointerId: event.pointerId,
+      pointerType: event.pointerType,
+      rect,
       tool,
       points: [x, y],
       pressures: isPen ? [pressureOf(event)] : null,
+      predicted: [],
     };
     scheduleLive();
   }
@@ -494,7 +516,7 @@ function InkPageView({
   function onPointerMove(event: React.PointerEvent<HTMLCanvasElement>) {
     const gesture = gestureRef.current;
     if (!gesture || gesture.pointerId !== event.pointerId) return;
-    if (handlers.current.isPinching()) {
+    if (handlers.current.isPinching() && gesture.pointerType !== "pen") {
       abort();
       return;
     }
@@ -513,20 +535,29 @@ function InkPageView({
 
     if (gesture.kind === "erase") {
       for (const sample of samples) {
-        const [x, y] = pointFrom(sample);
+        const [x, y] = pointFrom(sample, gesture.rect);
         handlers.current.onErase(page.id, x, y, ERASER_RADIUS);
       }
       return;
     }
 
     if (gesture.tool === "line") {
-      const [x, y] = pointFrom(event);
+      const [x, y] = pointFrom(event, gesture.rect);
       gesture.points = [gesture.points[0], gesture.points[1], x, y];
     } else {
       for (const sample of samples) {
-        const [x, y] = pointFrom(sample);
+        const [x, y] = pointFrom(sample, gesture.rect);
         gesture.points.push(x, y);
         gesture.pressures?.push(pressureOf(sample));
+      }
+      /*
+       * Ekran bir kadr kechikib chizadi. Brauzer qalam qayerga
+       * borishini taxmin qilsa, chiziqni o'sha yergacha cho'zib
+       * qo'yamiz — Nebo kabi uchi qalam ostida turadi. Saqlanmaydi.
+       */
+      gesture.predicted = [];
+      for (const sample of event.nativeEvent.getPredictedEvents?.() ?? []) {
+        gesture.predicted.push(...pointFrom(sample, gesture.rect));
       }
     }
 
@@ -536,7 +567,7 @@ function InkPageView({
   function finish(event: React.PointerEvent<HTMLCanvasElement>) {
     const gesture = gestureRef.current;
     if (!gesture || gesture.pointerId !== event.pointerId) return;
-    if (handlers.current.isPinching()) {
+    if (handlers.current.isPinching() && gesture.pointerType !== "pen") {
       abort();
       return;
     }
@@ -602,7 +633,13 @@ function InkPageView({
       <canvas
         ref={liveCanvasRef}
         className="absolute inset-0 h-full w-full select-none"
-        style={{ touchAction: "none", cursor }}
+        style={{
+          touchAction: "none",
+          cursor,
+          /* iPad: bosib turganda menyu/lupa chiqmasin */
+          WebkitTouchCallout: "none",
+          WebkitUserSelect: "none",
+        }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={finish}

@@ -298,13 +298,13 @@ const PEN_OPTIONS: Record<PenKind, (size: number) => StrokeOptions> = {
   felt: () => ({
     thinning: 0,
     smoothing: 0.6,
-    streamline: 0.45,
+    streamline: 0.25,
     simulatePressure: false,
   }),
   fountain: (size) => ({
     thinning: 0.6,
     smoothing: 0.65,
-    streamline: 0.5,
+    streamline: 0.3,
     /* Yumshoq egri: yengil bosimda ham chiziq uzilmasin */
     easing: (t) => Math.sin((t * Math.PI) / 2),
     start: { taper: size * 2.5, cap: true },
@@ -313,7 +313,7 @@ const PEN_OPTIONS: Record<PenKind, (size: number) => StrokeOptions> = {
   brush: (size) => ({
     thinning: 0.85,
     smoothing: 0.7,
-    streamline: 0.5,
+    streamline: 0.3,
     easing: (t) => t * t * (3 - 2 * t),
     start: { taper: size * 6, cap: true },
     end: { taper: size * 8, cap: true },
@@ -325,8 +325,9 @@ const PEN_OPTIONS: Record<PenKind, (size: number) => StrokeOptions> = {
  * chiziladigan chizgi (marker, to'g'ri chiziq, eski chizgilar)
  * uchun `null`.
  *
- * `complete` — chizgi tugaganmi. Yozish paytida oxiri ochiq
- * hisoblanadi, aks holda uchi har kadrda "sakrab" turardi.
+ * `complete` — chizgi tugaganmi. Yozish paytida uchi ingichkalashmaydi
+ * (aks holda har kadrda "sakrab" turardi), lekin aynan qalam turgan
+ * nuqtaga yetadi — chiziq qalamdan orqada qolmaydi.
  */
 export function penOutline(stroke: Stroke, complete = true): number[][] | null {
   if (stroke.tool !== "pen" || !stroke.pen) return null;
@@ -345,7 +346,8 @@ export function penOutline(stroke: Stroke, complete = true): number[][] | null {
     size: stroke.width,
     ...base,
     simulatePressure: base.simulatePressure ?? !pressures,
-    last: complete,
+    ...(complete ? {} : { end: { taper: 0, cap: true } }),
+    last: true,
   });
 }
 

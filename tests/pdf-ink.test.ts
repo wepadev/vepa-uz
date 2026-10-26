@@ -161,3 +161,15 @@ test("bet oralig'i o'qiladi va yoziladi", () => {
   assert.equal(formatPageRange([4, 0, 1, 2, 9]), "1-3, 5, 10");
   assert.equal(formatPageRange([]), "");
 });
+
+test("yozish paytida chiziq uchi qalamdan orqada qolmaydi", () => {
+  const points: number[] = [];
+  for (let i = 0; i <= 30; i += 1) points.push(i * 3, 0);
+
+  for (const kind of ["felt", "fountain", "brush"] as const) {
+    const outline = penOutline({ ...pen(points, 3), pen: kind }, false)!;
+    const reach = Math.max(...outline.map((p) => p[0]));
+    /* Oxirgi nuqta x = 90; uchi unga qalam yarim eni ichida yetadi */
+    assert.ok(reach >= 90 - 0.5, `${kind}: ${reach}`);
+  }
+});
