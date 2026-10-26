@@ -741,6 +741,8 @@ export default function PdfInkEditor() {
     const scroller = scrollRef.current;
     if (!scroller) return;
     const touches = touchesRef.current;
+    /* Qalam ekranda bo'lsa, kaft tegishi kattalashtirmasin */
+    const pens = new Set<number>();
 
     function spread() {
       const [a, b] = [...touches.values()];
@@ -752,9 +754,10 @@ export default function PdfInkEditor() {
     }
 
     function onDown(event: PointerEvent) {
+      if (event.pointerType === "pen") pens.add(event.pointerId);
       if (event.pointerType !== "touch") return;
       touches.set(event.pointerId, { x: event.clientX, y: event.clientY });
-      if (touches.size === 2 && !pinchRef.current) {
+      if (touches.size === 2 && !pinchRef.current && pens.size === 0) {
         /* Birinchi barmoq boshlagan chizgi bekor bo'ladi (ink-page.tsx) */
         pinchingRef.current = true;
         window.clearTimeout(wheelTimerRef.current);
@@ -776,6 +779,7 @@ export default function PdfInkEditor() {
     }
 
     function onUp(event: PointerEvent) {
+      pens.delete(event.pointerId);
       if (!touches.delete(event.pointerId)) return;
       if (pinchRef.current && touches.size < 2) {
         pinchRef.current = null;
