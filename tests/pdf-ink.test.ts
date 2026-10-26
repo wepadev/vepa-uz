@@ -10,7 +10,10 @@ import {
   exportInkPdf,
   invertMatrix,
   looksLikePdf,
+  outlinePath,
+  penOutline,
   simplifyPoints,
+  simplifyStroke,
   strokeHit,
   strokePath,
   type InkPage,
@@ -60,6 +63,38 @@ test("yaqin nuqtalar tashlanadi, chetlari qoladi", () => {
   assert.deepEqual(result, [0, 0, 5, 0, 5.1, 0]);
 });
 
+test("bosim nuqtalari bilan birga soddalashtiriladi", () => {
+  const result = simplifyStroke([0, 0, 0.1, 0, 5, 0, 9, 0], [0.2, 0.3, 0.6, 0.9]);
+  assert.deepEqual(result.points, [0, 0, 5, 0, 9, 0]);
+  assert.deepEqual(result.pressures, [0.2, 0.6, 0.9]);
+  assert.equal(simplifyStroke([1, 2, 3, 4], undefined).pressures, undefined);
+});
+
+test("qalam konturi: pero bosimga sezgir, flomaster bir xil", () => {
+  const points: number[] = [];
+  for (let i = 0; i <= 40; i += 1) points.push(i * 2, 0);
+
+  const width = (pressures: number[], kind: "felt" | "fountain") => {
+    const outline = penOutline({ ...pen(points, 4), pen: kind, pressures })!;
+    const ys = outline.map((p) => p[1]);
+    return Math.max(...ys) - Math.min(...ys);
+  };
+
+  const light = points.map(() => 0.15);
+  const hard = points.map(() => 0.95);
+
+  assert.ok(width(hard, "fountain") > width(light, "fountain") * 1.3);
+  assert.ok(Math.abs(width(hard, "felt") - width(light, "felt")) < 0.5);
+
+  /* Marker va eski chizgilar oddiy chiziq bo'lib qoladi */
+  assert.equal(penOutline(pen(points)), null);
+  assert.equal(penOutline({ ...pen(points), tool: "marker", pen: "felt" }), null);
+
+  const path = outlinePath(penOutline({ ...pen(points, 3), pen: "brush" })!);
+  assert.equal(path[0].kind, "move");
+  assert.ok(path.slice(1).every((segment) => segment.kind === "quad"));
+});
+
 test("fayl nomi va PDF belgisi", () => {
   assert.equal(exportFileName("Dars 5.PDF"), "Dars 5-yozuv.pdf");
   assert.equal(exportFileName(".pdf"), "hujjat-yozuv.pdf");
@@ -82,7 +117,10 @@ test("eksport: sahifalar tartibi, bo'sh sahifa va burilgan sahifa saqlanadi", as
       height: 842,
       toPdf: blankPageMatrix(842),
       background: "blank",
-      strokes: [pen([10, 10, 50, 60, 90, 20])],
+      strokes: [
+        pen([10, 10, 50, 60, 90, 20]),
+        { ...pen([10, 100, 60, 120, 120, 90], 2), pen: "fountain", pressures: [0.3, 0.8, 0.5] },
+      ],
     },
     {
       id: "b",
