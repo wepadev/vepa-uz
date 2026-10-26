@@ -61,6 +61,24 @@ function back(path: string, message?: string): never {
   );
 }
 
+/** Guruh sahifasidagi tablar — `?tab=` qiymatlari */
+const GROUP_TABS = new Set(["bugun", "oquvchilar", "vazifalar", "sozlamalar"]);
+
+/**
+ * Guruh sahifasiga qaytish manzili.
+ *
+ * Forma qaysi tabdan yuborilgan bo'lsa, o'sha tabga qaytamiz —
+ * aks holda "Saqlash"dan keyin admin birinchi tabga tashlanib,
+ * qayerda turganini yo'qotardi.
+ */
+function groupPath(formData: FormData, groupId: number) {
+  const tab = text(formData, "tab");
+
+  return GROUP_TABS.has(tab) && tab !== "bugun"
+    ? `/admin/crm/guruh?id=${groupId}&tab=${tab}`
+    : `/admin/crm/guruh?id=${groupId}`;
+}
+
 /* ------------------------------------------------------------------ */
 /* Guruhlar                                                            */
 /* ------------------------------------------------------------------ */
@@ -107,7 +125,7 @@ export async function updateCrmGroup(formData: FormData) {
   const title = text(formData, "title");
   const isActive = formData.get("isActive") === "1";
 
-  const path = `/admin/crm/guruh?id=${groupId}`;
+  const path = groupPath(formData, groupId);
 
   if (title.length < 2) {
     back(path, "Guruh nomi kamida 2 ta belgidan iborat bo‘lsin.");
@@ -142,7 +160,7 @@ export async function deleteCrmGroup(formData: FormData) {
   const groupId = number(formData, "groupId");
   const confirmTitle = text(formData, "confirmTitle");
 
-  const path = `/admin/crm/guruh?id=${groupId}`;
+  const path = groupPath(formData, groupId);
 
   const { data: group } = await supabase
     .from("crm_groups")
@@ -185,7 +203,7 @@ export async function addCrmStudent(formData: FormData) {
   const fullName = text(formData, "fullName");
   const phone = text(formData, "phone");
 
-  const path = `/admin/crm/guruh?id=${groupId}`;
+  const path = groupPath(formData, groupId);
 
   if (fullName.length < 2) {
     back(path, "O‘quvchi ismini kiriting.");
@@ -212,7 +230,7 @@ export async function updateCrmStudent(formData: FormData) {
   const phone = text(formData, "phone");
   const email = text(formData, "email").toLowerCase();
 
-  const path = `/admin/crm/guruh?id=${groupId}`;
+  const path = groupPath(formData, groupId);
 
   if (fullName.length < 2) {
     back(path, "O‘quvchi ismini kiriting.");
@@ -264,7 +282,7 @@ export async function removeCrmStudent(formData: FormData) {
   const groupId = number(formData, "groupId");
   const studentId = number(formData, "studentId");
 
-  const path = `/admin/crm/guruh?id=${groupId}`;
+  const path = groupPath(formData, groupId);
 
   /*
    * O'chirmaymiz, faqat faolsizlantiramiz.
@@ -324,7 +342,7 @@ export async function saveCrmRules(formData: FormData) {
   const supabase = await requireAdmin();
   const groupId = number(formData, "groupId");
 
-  const path = `/admin/crm/guruh?id=${groupId}`;
+  const path = groupPath(formData, groupId);
 
   const coinsPerPoints = number(formData, "coinsPerPoints");
 
@@ -616,7 +634,7 @@ export async function mergeCrmStudents(formData: FormData) {
   const keepId = number(formData, "keepId");
   const removeId = number(formData, "removeId");
 
-  const path = `/admin/crm/guruh?id=${groupId}`;
+  const path = groupPath(formData, groupId);
 
   if (!keepId || !removeId) {
     back(path, "Ikkala o‘quvchini ham tanlang.");
