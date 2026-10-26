@@ -548,3 +548,41 @@ export function looksLikePdf(bytes: Uint8Array) {
   const head = new TextDecoder("latin1").decode(bytes.subarray(0, 1024));
   return head.includes("%PDF-");
 }
+
+/**
+ * "1-3, 5, 8-" kabi bet ro'yxatini o'qish (1 dan boshlab).
+ * Natija — 0 dan boshlangan, tartiblangan raqamlar. Noto'g'ri yoki
+ * chegaradan tashqaridagi qismlar tashlab yuboriladi.
+ */
+export function parsePageRange(text: string, total: number): number[] {
+  const result = new Set<number>();
+
+  for (const part of text.split(/[,;\s]+/)) {
+    const match = /^(\d*)\s*[-–]\s*(\d*)$/.exec(part) ?? /^(\d+)$/.exec(part);
+    if (!match) continue;
+
+    const single = match.length === 2;
+    const from = match[1] ? Number(match[1]) : 1;
+    const to = single ? from : match[2] ? Number(match[2]) : total;
+
+    for (let page = Math.max(1, Math.min(from, to)); page <= Math.min(total, Math.max(from, to)); page += 1) {
+      result.add(page - 1);
+    }
+  }
+
+  return [...result].sort((a, b) => a - b);
+}
+
+/** [0, 1, 2, 4] → "1-3, 5" */
+export function formatPageRange(indexes: number[]): string {
+  const sorted = [...new Set(indexes)].sort((a, b) => a - b);
+  const parts: string[] = [];
+
+  for (let i = 0; i < sorted.length; i += 1) {
+    const start = sorted[i];
+    while (i + 1 < sorted.length && sorted[i + 1] === sorted[i] + 1) i += 1;
+    parts.push(start === sorted[i] ? `${start + 1}` : `${start + 1}-${sorted[i] + 1}`);
+  }
+
+  return parts.join(", ");
+}

@@ -12,10 +12,19 @@
  * keshlansa, o'quvchi boshqa odamning ma'lumotini yoki eskirgan
  * natijani ko'rib qolishi mumkin edi. Shu sababli sahifalar doim
  * tarmoqdan olinadi, kesh faqat o'zgarmaydigan fayllar uchun.
+ *
+ * BITTA ISTISNO: admin paneldagi "PDF yozuv" (/admin/pdf-yozuv).
+ * U shaxsiy ma'lumot ko'rsatmaydi — bo'sh muharrir, PDF esa
+ * kompyuterning o'zidan ochiladi. Sahifaning o'zi uni ochganda
+ * nusxasini `vepa-offline` keshiga qo'yadi (pdf-ink-editor.tsx),
+ * internet bo'lmasa shu nusxa ochiladi. Internet bo'lsa doim
+ * yangisi olinadi.
  */
 
-const VERSION = "v1";
+const VERSION = "v2";
 const CACHE = `vepa-ustoz-${VERSION}`;
+/* Sahifa o'zi to'ldiradigan kesh — versiya yangilanganda o'chmaydi */
+const OFFLINE_CACHE = "vepa-offline";
 const OFFLINE_URL = "/offline.html";
 
 /** Oldindan saqlanadigan fayllar */
@@ -38,7 +47,9 @@ self.addEventListener("activate", (event) => {
       // Eski versiyalarning keshini tozalaymiz
       const keys = await caches.keys();
       await Promise.all(
-        keys.filter((key) => key !== CACHE).map((key) => caches.delete(key)),
+        keys
+          .filter((key) => key !== CACHE && key !== OFFLINE_CACHE)
+          .map((key) => caches.delete(key)),
       );
       await self.clients.claim();
     })(),
@@ -49,6 +60,7 @@ self.addEventListener("activate", (event) => {
 function isStaticAsset(url) {
   return (
     url.pathname.startsWith("/_next/static/") ||
+    url.pathname.startsWith("/pdfjs/") ||
     /\.(?:png|jpg|jpeg|svg|webp|ico|woff|woff2|ttf|css)$/i.test(url.pathname)
   );
 }
@@ -71,6 +83,13 @@ self.addEventListener("fetch", (event) => {
         try {
           return await fetch(request);
         } catch {
+          /* Oldindan saqlangan sahifa bo'lsa (PDF yozuv) — o'sha */
+          const saved = await caches.match(request, {
+            cacheName: OFFLINE_CACHE,
+            ignoreSearch: true,
+          });
+          if (saved) return saved;
+
           const cached = await caches.match(OFFLINE_URL);
 
           return (

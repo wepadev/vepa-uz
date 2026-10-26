@@ -8,6 +8,8 @@ import {
   blankPageMatrix,
   exportFileName,
   exportInkPdf,
+  formatPageRange,
+  parsePageRange,
   invertMatrix,
   looksLikePdf,
   outlinePath,
@@ -149,4 +151,13 @@ test("eksport: sahifalar tartibi, bo'sh sahifa va burilgan sahifa saqlanadi", as
   assert.equal(result.getPageCount(), 3);
   assert.equal(result.getPage(1).getWidth(), 595);
   assert.equal(result.getPage(2).getRotation().angle, 90);
+});
+
+test("bet oralig'i o'qiladi va yoziladi", () => {
+  assert.deepEqual(parsePageRange("1-3, 5", 10), [0, 1, 2, 4]);
+  assert.deepEqual(parsePageRange("8-", 10), [7, 8, 9]);
+  assert.deepEqual(parsePageRange("5-3 12 0 abc", 10), [2, 3, 4]);
+  assert.deepEqual(parsePageRange("", 10), []);
+  assert.equal(formatPageRange([4, 0, 1, 2, 9]), "1-3, 5, 10");
+  assert.equal(formatPageRange([]), "");
 });
