@@ -6,6 +6,10 @@
  * faqat mavzular: yaratish, tartiblash, nashr qilish, o'chirish.
  */
 import Link from "next/link";
+
+import ConfirmSubmitButton from "@/components/admin/confirm-submit-button";
+import CreatePanel from "@/components/admin/create-panel";
+import RowMenu, { rowMenuDanger, rowMenuItem } from "@/components/admin/row-menu";
 import { revalidatePath } from "next/cache";
 import { notFound, redirect } from "next/navigation";
 
@@ -420,8 +424,17 @@ export default async function AdminSectionTopicsPage({
         </div>
       </header>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[390px_1fr] lg:py-12">
-        <div>
+      <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-8">
+        {orphanCount > 0 && (
+          <div className="mb-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900">
+            Bu bo‘limda mavzuga biriktirilmagan{" "}
+            <strong>{orphanCount} ta test</strong> bor. Ular o‘quvchiga
+            ko‘rinmaydi. db/34 migratsiyasini Supabase’da ishga
+            tushirsangiz, ular “Umumiy” mavzusiga tushadi.
+          </div>
+        )}
+
+        <CreatePanel label="Yangi mavzu" defaultOpen={topics.length === 0}>
           <form
             action={createTopic}
             className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
@@ -485,26 +498,16 @@ export default async function AdminSectionTopicsPage({
               Mavzuni yaratish
             </SubmitButton>
           </form>
+        </CreatePanel>
 
-          {orphanCount > 0 && (
-            <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-6 text-amber-900">
-              Bu bo‘limda mavzuga biriktirilmagan{" "}
-              <strong>{orphanCount} ta test</strong> bor. Ular o‘quvchiga
-              ko‘rinmaydi. db/34 migratsiyasini Supabase’da ishga
-              tushirsangiz, ular “Umumiy” mavzusiga tushadi.
-            </div>
-          )}
-        </div>
-
-        <div>
-          <div className="mb-5">
-            <h2 className="text-2xl font-bold">Mavzular</h2>
-            <p className="mt-1 text-sm text-slate-500">
-              Jami: {topics.length} ta
-            </p>
-
+        <div className="mt-5">
+          <div className="mb-3">
             {!isGroupExam && (
-              <div className="mt-3 rounded-2xl border border-mb-line bg-white px-4 py-3 text-sm leading-6 text-slate-600">
+              <details className="text-sm leading-6 text-slate-600">
+                <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand">
+                  Qaysi mavzu bepul bo‘ladi?
+                </summary>
+                <div className="mt-1 rounded-2xl border border-mb-line bg-white px-4 py-3">
                 {!section.is_published ? (
                   <>
                     Bu bo‘lim hali <strong>qoralama</strong>. Avtomatik bepul
@@ -538,21 +541,13 @@ export default async function AdminSectionTopicsPage({
                     ? ` (hozir ${manualFreeCount} ta shunday mavzu bor).`
                     : "."}
                 </span>
-              </div>
+                </div>
+              </details>
             )}
           </div>
 
-          {!topics.length ? (
-            <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
-              <p className="font-bold text-slate-700">
-                Hozircha mavzu yaratilmagan
-              </p>
-              <p className="mt-2 text-sm text-slate-500">
-                Chap tomondagi forma orqali birinchi mavzuni yarating.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-4">
+          {topics.length > 0 && (
+            <div className="space-y-2">
               {topics.map((topic) => {
                 const testCount = testCountByTopic.get(topic.id) ?? 0;
                 const isAutoFree = topic.id === freeTopicId;
@@ -562,63 +557,41 @@ export default async function AdminSectionTopicsPage({
                 return (
                   <article
                     key={topic.id}
-                    className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+                    className="rounded-2xl border border-mb-line bg-white px-3 py-3 shadow-sm sm:px-4"
                   >
-                    <div className="flex flex-col justify-between gap-5 md:flex-row md:items-start">
-                      <div className="min-w-0">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="grid h-9 w-9 place-items-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">
-                            {topic.order_number}
-                          </span>
-                          <h3 className="text-xl font-bold">{topic.title}</h3>
-                          <span
-                            className={
-                              topic.is_published
-                                ? "rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700"
-                                : "rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-700"
-                            }
-                          >
-                            {topic.is_published ? "Faol" : "Qoralama"}
-                          </span>
-                          {!isGroupExam && (
-                            <span
-                              className={
-                                isFreeTopic
-                                  ? "rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700"
-                                  : isPendingFree
-                                    ? "rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700"
-                                    : "rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700"
-                              }
-                            >
+                    <div className="flex items-center gap-3">
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-blue-50 text-sm font-bold text-blue-700">
+                        {topic.order_number}
+                      </span>
+
+                      <Link
+                        href={`/admin/tests/topic?topicId=${topic.id}`}
+                        className="min-w-0 flex-1"
+                      >
+                        <span className="block truncate text-[15px] font-semibold text-mb-ink hover:text-mb-brand">
+                          {topic.title}
+                        </span>
+
+                        <span className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-mb-muted">
+                          {!topic.is_published && (
+                            <span className="rounded-full bg-amber-50 px-2 py-0.5 font-semibold text-amber-700">
+                              Qoralama
+                            </span>
+                          )}
+                          {!isGroupExam && (isFreeTopic || isPendingFree) && (
+                            <span className="rounded-full bg-emerald-50 px-2 py-0.5 font-semibold text-emerald-700">
                               {topic.is_free
                                 ? "Qo‘lda bepul"
                                 : isAutoFree
-                                  ? "Bepul mavzu"
-                                  : isPendingFree
-                                    ? "Nashr qilinsa bepul"
-                                    : "Premium"}
+                                  ? "Bepul"
+                                  : "Nashr qilinsa bepul"}
                             </span>
                           )}
-                        </div>
+                          <span>{testCount} test</span>
+                        </span>
+                      </Link>
 
-                        <p className="mt-3 text-sm font-bold text-blue-700">
-                          {testCount} ta test
-                        </p>
-                        {topic.description && (
-                          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
-                            {topic.description}
-                          </p>
-                        )}
-                      </div>
-
-                      <div className="flex shrink-0 flex-wrap gap-2">
-                        <Link
-                          href={`/admin/tests/topic?topicId=${topic.id}`}
-                          className="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white hover:bg-slate-700"
-                        >
-                          Testlarni boshqarish
-                        </Link>
-
+                      <RowMenu>
                         <form action={changeTopicState}>
                           <input type="hidden" name="topicId" value={topic.id} />
                           <input
@@ -626,54 +599,53 @@ export default async function AdminSectionTopicsPage({
                             name="nextState"
                             value={String(!topic.is_published)}
                           />
-                          <SubmitButton
-                            className={
-                              topic.is_published
-                                ? "rounded-xl bg-amber-100 px-4 py-2.5 text-sm font-bold text-amber-700 hover:bg-amber-200"
-                                : "rounded-xl bg-emerald-100 px-4 py-2.5 text-sm font-bold text-emerald-700 hover:bg-emerald-200"
-                            }
-                          >
+                          <SubmitButton className={rowMenuItem}>
                             {topic.is_published ? "Yopish" : "Nashr qilish"}
                           </SubmitButton>
                         </form>
 
                         {/*
                           Avtomatik bepul mavzuda tugma kerak emas:
-                          u allaqachon ochiq, bosish hech narsani
-                          o'zgartirmasdi. Guruh testlari ham doim
+                          u allaqachon ochiq. Guruh testlari ham doim
                           bepul (db/10).
                         */}
                         {!isGroupExam && !isAutoFree && (
                           <form action={toggleTopicFree}>
-                            <input
-                              type="hidden"
-                              name="topicId"
-                              value={topic.id}
-                            />
+                            <input type="hidden" name="topicId" value={topic.id} />
                             <input
                               type="hidden"
                               name="nextState"
                               value={String(!topic.is_free)}
                             />
-                            <SubmitButton
-                              className={
-                                topic.is_free
-                                  ? "rounded-xl bg-blue-100 px-4 py-2.5 text-sm font-bold text-blue-700 hover:bg-blue-200"
-                                  : "rounded-xl bg-emerald-100 px-4 py-2.5 text-sm font-bold text-emerald-700 hover:bg-emerald-200"
-                              }
-                            >
-                              {topic.is_free
-                                ? "Premium qilish"
-                                : "Bepul qilish"}
+                            <SubmitButton className={rowMenuItem}>
+                              {topic.is_free ? "Premium qilish" : "Bepul qilish"}
                             </SubmitButton>
                           </form>
                         )}
-                      </div>
+
+                        {testCount === 0 ? (
+                          <form action={deleteTopic}>
+                            <input type="hidden" name="topicId" value={topic.id} />
+                            <ConfirmSubmitButton
+                              className={rowMenuDanger}
+                              title="Mavzu o‘chirilsinmi?"
+                              description={`“${topic.title}” mavzusi o‘chiriladi. Ichida test yo‘q, hech qanday natija yo‘qolmaydi.`}
+                            >
+                              O‘chirish
+                            </ConfirmSubmitButton>
+                          </form>
+                        ) : (
+                          <p className="px-3 py-2 text-xs leading-5 text-mb-muted">
+                            O‘chirish uchun avval ichidagi {testCount} ta testni
+                            ko‘chiring yoki o‘chiring.
+                          </p>
+                        )}
+                      </RowMenu>
                     </div>
 
-                    <details className="mt-5 rounded-2xl border border-slate-200 bg-slate-50">
-                      <summary className="cursor-pointer px-5 py-4 text-sm font-bold text-blue-700">
-                        Mavzu ma’lumotlarini tahrirlash
+                    <details className="group/edit ml-11 mt-1 rounded-xl open:border open:border-slate-200 open:bg-slate-50">
+                      <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand group-open/edit:px-3">
+                        Tahrirlash
                       </summary>
                       <form
                         action={updateTopic}
@@ -725,38 +697,6 @@ export default async function AdminSectionTopicsPage({
                       </form>
                     </details>
 
-                    {testCount === 0 ? (
-                      <details className="mt-5 rounded-2xl border border-red-200 bg-red-50/50">
-                        <summary className="cursor-pointer px-5 py-4 text-sm font-bold text-red-700">
-                          Mavzuni o‘chirish
-                        </summary>
-
-                        <div className="px-5 pb-5">
-                          <p className="text-sm leading-6 text-red-900">
-                            “{topic.title}” mavzusi o‘chiriladi. Ichida test
-                            yo‘q, shuning uchun hech qanday natija yoki ball
-                            yo‘qolmaydi.
-                          </p>
-
-                          <form action={deleteTopic} className="mt-4">
-                            <input
-                              type="hidden"
-                              name="topicId"
-                              value={topic.id}
-                            />
-                            <SubmitButton className="min-h-11 rounded-xl bg-red-600 px-5 text-sm font-bold text-white hover:bg-red-700">
-                              Ha, o‘chirilsin
-                            </SubmitButton>
-                          </form>
-                        </div>
-                      </details>
-                    ) : (
-                      <p className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-sm leading-6 text-slate-600">
-                        Mavzuni o‘chirish uchun avval ichidagi{" "}
-                        <strong>{testCount} ta testni</strong> boshqa mavzuga
-                        ko‘chiring yoki o‘chiring.
-                      </p>
-                    )}
                   </article>
                 );
               })}
