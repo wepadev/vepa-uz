@@ -1,4 +1,6 @@
 import Link from "next/link";
+
+import AdminTabs from "@/components/admin/admin-tabs";
 import {
   revalidatePath,
 } from "next/cache";
@@ -311,14 +313,16 @@ export default async function AdminLessonsPage() {
               ← Admin panelga qaytish
             </Link>
 
-            <h1 className="text-xl font-bold sm:text-2xl">
-              Darslarni boshqarish
-            </h1>
+            <h1 className="text-xl font-bold sm:text-2xl">Darslar</h1>
 
-            <p className="mt-1 text-sm text-slate-500">
-              Dars bo‘limlari va
-              videodarslarni boshqarish
-            </p>
+            <AdminTabs
+              className="mt-2"
+              active="/admin/lessons"
+              tabs={[
+              { href: "/admin/lessons", label: "Videodarslar" },
+              { href: "/admin/textbooks", label: "Darslik yechimlari" },
+            ]}
+            />
           </div>
 
           <div className="flex flex-wrap gap-3">

@@ -264,7 +264,7 @@ export async function addWrittenPartsBlock(formData: FormData) {
 
   revalidatePath("/admin/tests");
   revalidatePath("/admin/tests/manage");
-  redirect(`/admin/tests/manage?testId=${testId}`);
+  redirect(`/admin/tests/manage?testId=${testId}&tur=yozma`);
 }
 
 export async function addSharedOptionsBlock(formData: FormData) {
@@ -430,7 +430,7 @@ export async function addSharedOptionsBlock(formData: FormData) {
 
   revalidatePath("/admin/tests");
   revalidatePath("/admin/tests/manage");
-  redirect(`/admin/tests/manage?testId=${testId}`);
+  redirect(`/admin/tests/manage?testId=${testId}&tur=umumiy`);
 }
 
 export async function updateTestDetails(formData: FormData) {

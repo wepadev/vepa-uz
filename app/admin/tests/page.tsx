@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { EyeOff, FileUp } from "lucide-react";
+import { ChevronRight, EyeOff, FileUp, Settings2 } from "lucide-react";
 
 import { examIcon } from "@/lib/exam-visuals";
 import { GROUP_EXAM_CODE } from "@/lib/group-tests";
@@ -20,12 +20,89 @@ type ExamTypeRow = {
 type SectionRow = {
   id: number;
   exam_type_id: number;
+  title: string;
+  is_published: boolean;
+};
+
+type TopicRow = {
+  id: number;
+  section_id: number;
+  title: string;
+  is_published: boolean;
 };
 
 type TestRow = {
   id: number;
   section_id: number | null;
+  topic_id: number | null;
+  title: string;
+  is_published: boolean;
 };
+
+/**
+ * Testlar katalogi — bitta sahifada daraxt ko'rinishida.
+ *
+ * Ilgari testga yetish uchun to'rtta sahifadan o'tilardi:
+ * yo'nalish → bo'lim → mavzu → test. Endi hammasi shu yerda
+ * ochilib-yopiladigan ro'yxat: testni bosish bilan savollari
+ * ochiladi.
+ *
+ * Yaratish, tartiblash va nashr qilish o'z sahifalarida qoldi —
+ * har bir qatordagi ⚙ havolasi o'sha sahifaga olib boradi.
+ */
+
+/** Nashr qilinmaganlar uchun kichik yorliq */
+function DraftBadge({ published }: { published: boolean }) {
+  if (published) return null;
+
+  return (
+    <span className="shrink-0 rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-semibold text-amber-700">
+      Qoralama
+    </span>
+  );
+}
+
+/** Daraxt qatoridagi "boshqarish" havolasi */
+function ManageLink({ href, label }: { href: string; label: string }) {
+  return (
+    <Link
+      href={href}
+      title={label}
+      aria-label={label}
+      className="inline-flex min-h-8 shrink-0 items-center gap-1 rounded-lg px-2 text-xs font-semibold text-mb-brand hover:bg-blue-50"
+    >
+      <Settings2 className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
+      <span className="hidden sm:inline">Boshqarish</span>
+    </Link>
+  );
+}
+
+function TestLinks({ tests }: { tests: TestRow[] }) {
+  if (tests.length === 0) {
+    return <p className="px-3 py-2 text-xs text-mb-muted">Test yo‘q</p>;
+  }
+
+  return (
+    <ul>
+      {tests.map((test) => (
+        <li key={test.id}>
+          <Link
+            href={`/admin/tests/manage?testId=${test.id}`}
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-slate-50"
+          >
+            <ChevronRight
+              className="h-3.5 w-3.5 shrink-0 text-mb-muted"
+              strokeWidth={2}
+              aria-hidden="true"
+            />
+            <span className="min-w-0 flex-1 truncate">{test.title}</span>
+            <DraftBadge published={test.is_published} />
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 async function getAdminClient() {
   const supabase = await createClient();
@@ -48,36 +125,33 @@ async function getAdminClient() {
   return supabase;
 }
 
-/*
- * Ikonkalar lib/exam-visuals.ts dan olinadi — foydalanuvchi katalogi
- * bilan bitta manba. Bu yerda faqat admin kartasining ranglari turadi.
- */
-/*
- * Yo'nalish kartasining ko'rinishi.
- *
- * Avval har bir yo'nalish o'z rangiga ega edi (ko'k, yashil,
- * binafsha, moviy) va sahifa rang-barang bo'lib ketgandi. Endi
- * hammasi bitta brend ko'kida: yo'nalishni rang emas, ikonka va
- * nom ajratib turadi.
- */
-const cardVisual = {
-  accent: "bg-mb-brand",
-  icon: "bg-mb-tint text-mb-brand",
-  button: "bg-mb-brand hover:bg-mb-brandDark",
-} as const;
-
 export default async function AdminTestsPage() {
   const supabase = await getAdminClient();
 
-  const [examTypesResult, sectionsResult, testsResult] = await Promise.all([
-    supabase
-      .from("test_exam_types")
-      .select("id, code, title, description, order_number, is_published")
-      .order("order_number", { ascending: true })
-      .order("id", { ascending: true }),
-    supabase.from("test_sections").select("id, exam_type_id"),
-    supabase.from("tests").select("id, section_id").not("section_id", "is", null),
-  ]);
+  const [examTypesResult, sectionsResult, topicsResult, testsResult] =
+    await Promise.all([
+      supabase
+        .from("test_exam_types")
+        .select("id, code, title, description, order_number, is_published")
+        .order("order_number", { ascending: true })
+        .order("id", { ascending: true }),
+      supabase
+        .from("test_sections")
+        .select("id, exam_type_id, title, is_published")
+        .order("order_number", { ascending: true })
+        .order("id", { ascending: true }),
+      supabase
+        .from("test_topics")
+        .select("id, section_id, title, is_published")
+        .order("order_number", { ascending: true })
+        .order("id", { ascending: true }),
+      supabase
+        .from("tests")
+        .select("id, section_id, topic_id, title, is_published")
+        .not("section_id", "is", null)
+        .order("order_number", { ascending: true })
+        .order("id", { ascending: true }),
+    ]);
 
   if (examTypesResult.error) {
     throw new Error(
@@ -99,6 +173,9 @@ export default async function AdminTestsPage() {
   const sections = (sectionsResult.data ?? []) as SectionRow[];
   const tests = (testsResult.data ?? []) as TestRow[];
 
+  /* db/34 ishga tushirilmagan bo'lsa mavzular bo'sh — testlar "Mavzusiz"da */
+  const topics = (topicsResult.data ?? []) as TopicRow[];
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
@@ -110,9 +187,9 @@ export default async function AdminTestsPage() {
             >
               ← Admin panelga qaytish
             </Link>
-            <h1 className="text-xl font-bold sm:text-2xl">Testlarni boshqarish</h1>
+            <h1 className="text-xl font-bold sm:text-2xl">Testlar</h1>
             <p className="mt-1 text-sm text-slate-500">
-              Yo‘nalish → mavzu yoki bo‘lim → test tartibida kontent yarating.
+              Yo‘nalish → bo‘lim → mavzu → test. Ochish uchun bosing.
             </p>
           </div>
 
@@ -127,40 +204,17 @@ export default async function AdminTestsPage() {
 
             <Link
               href="/tests"
-              className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-700"
+              className="inline-flex items-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50"
             >
-              Foydalanuvchi sahifasini ko‘rish
+              O‘quvchi ko‘rinishi
             </Link>
           </div>
         </div>
       </header>
 
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
-        {/* Hero butun saytdagi bitta ohangda: tekis brend ko‘ki */}
-        <div className="rounded-2xl border border-blue-100 bg-mb-brand p-6 text-white shadow-lg sm:p-9">
-          <p className="text-sm font-bold text-blue-100">Yangi katalog tuzilmasi</p>
-          <h2 className="mt-2 text-3xl font-bold sm:text-5xl">
-            Yo‘nalishni tanlang
-          </h2>
-          <p className="mt-3 max-w-3xl text-sm leading-6 text-blue-100 sm:text-base">
-            Har bir yo‘nalishda bo‘limlar yaratasiz.
-          </p>
-
-          <p className="mt-3 inline-flex items-start gap-2 rounded-xl bg-white/15 px-3 py-2 text-xs leading-5 text-blue-50 ring-1 ring-white/20 sm:text-sm">
-            <EyeOff
-              className="mt-0.5 h-4 w-4 shrink-0"
-              strokeWidth={2}
-              aria-hidden="true"
-            />
-            <span>
-              “Guruhlar uchun maxsus testlar” katalogda ko‘rinmaydi. U yerdagi
-              testlar faqat guruhga uy vazifasi qilib berilganda ochiladi.
-            </span>
-          </p>
-        </div>
-
         {!examTypes.length ? (
-          <div className="mt-7 rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
+          <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
             <p className="text-lg font-bold text-slate-700">
               Katalog migratsiyasi hali ishlatilmagan
             </p>
@@ -169,9 +223,8 @@ export default async function AdminTestsPage() {
             </p>
           </div>
         ) : (
-          <div className="mt-7 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="space-y-3">
             {examTypes.map((examType) => {
-              const visual = cardVisual;
               const ExamIcon = examIcon(examType.code);
               const isGroupExam = examType.code === GROUP_EXAM_CODE;
               const examSections = sections.filter(
@@ -183,77 +236,142 @@ export default async function AdminTestsPage() {
               ).length;
 
               return (
-                <article
+                <details
                   key={examType.id}
-                  className="flex h-full flex-col overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm"
+                  className="group overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm"
                 >
-                  <div className={`h-2 ${visual.accent}`} />
-                  <div className="flex flex-1 flex-col p-6">
-                    <div className="flex items-start justify-between gap-4">
-                      <span
-                        className={`grid h-14 w-14 place-items-center rounded-2xl ${visual.icon}`}
-                      >
-                        <ExamIcon
-                          className="h-7 w-7"
-                          strokeWidth={1.9}
-                          aria-hidden="true"
-                        />
+                  <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-4 sm:px-5">
+                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-mb-tint text-mb-brand">
+                      <ExamIcon className="h-6 w-6" strokeWidth={1.9} aria-hidden="true" />
+                    </span>
+
+                    <span className="min-w-0 flex-1">
+                      <span className="flex flex-wrap items-center gap-2">
+                        <span className="text-lg font-bold">{examType.title}</span>
+
+                        {isGroupExam ? (
+                          <span
+                            title="Bu yo‘nalish o‘quvchiga ko‘rinmaydi — testlari faqat uy vazifasi bo‘lib ochiladi"
+                            className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[11px] font-bold text-blue-700"
+                          >
+                            <EyeOff className="h-3 w-3" strokeWidth={2.2} aria-hidden="true" />
+                            Faqat admin
+                          </span>
+                        ) : (
+                          <DraftBadge published={examType.is_published} />
+                        )}
                       </span>
-                      {isGroupExam ? (
-                        <span
-                          title="Bu yo‘nalish o‘quvchiga ko‘rinmaydi"
-                          className="inline-flex items-center gap-1.5 rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700"
-                        >
-                          <EyeOff
-                            className="h-3.5 w-3.5"
-                            strokeWidth={2.2}
-                            aria-hidden="true"
-                          />
-                          Faqat admin
-                        </span>
-                      ) : (
-                        <span
-                          className={
-                            examType.is_published
-                              ? "rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700"
-                              : "rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600"
-                          }
-                        >
-                          {examType.is_published ? "Faol" : "Yopiq"}
-                        </span>
-                      )}
-                    </div>
 
-                    <h3 className="mt-5 text-2xl font-bold">{examType.title}</h3>
-                    <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">
-                      {examType.description || "Test yo‘nalishi"}
-                    </p>
+                      <span className="block text-xs text-mb-muted">
+                        {examSections.length} bo‘lim · {testCount} test
+                      </span>
+                    </span>
 
-                    <div className="mt-5 grid grid-cols-2 gap-3">
-                      <div className="rounded-2xl bg-slate-50 p-3 text-center">
-                        <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500">
-                          Bo‘limlar
-                        </p>
-                        <p className="mt-1 text-xl font-bold">
-                          {examSections.length}
-                        </p>
-                      </div>
-                      <div className="rounded-2xl bg-slate-50 p-3 text-center">
-                        <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500">
-                          Testlar
-                        </p>
-                        <p className="mt-1 text-xl font-bold">{testCount}</p>
-                      </div>
-                    </div>
-
-                    <Link
+                    <ManageLink
                       href={`/admin/tests/sections?exam=${encodeURIComponent(examType.code)}`}
-                      className={`mt-5 inline-flex min-h-12 items-center justify-center rounded-2xl px-5 py-3 text-center font-bold text-white ${visual.button}`}
-                    >
-                      Bo‘limlarni boshqarish
-                    </Link>
+                      label="Bo‘limlarni boshqarish"
+                    />
+
+                    <ChevronRight
+                      className="h-5 w-5 shrink-0 text-mb-muted transition group-open:rotate-90"
+                      strokeWidth={2}
+                      aria-hidden="true"
+                    />
+                  </summary>
+
+                  <div className="space-y-2 border-t border-mb-line bg-slate-50/60 p-3">
+                    {examSections.length === 0 && (
+                      <p className="px-2 py-2 text-sm text-mb-muted">
+                        Bo‘lim yo‘q.{" "}
+                        <Link
+                          href={`/admin/tests/sections?exam=${encodeURIComponent(examType.code)}`}
+                          className="font-semibold text-mb-brand"
+                        >
+                          Bo‘lim yaratish
+                        </Link>
+                      </p>
+                    )}
+
+                    {examSections.map((section) => {
+                      const sectionTopics = topics.filter(
+                        (topic) => topic.section_id === section.id,
+                      );
+                      const sectionTests = tests.filter(
+                        (test) => test.section_id === section.id,
+                      );
+                      const topicIds = new Set(sectionTopics.map((topic) => topic.id));
+                      const looseTests = sectionTests.filter(
+                        (test) => test.topic_id === null || !topicIds.has(test.topic_id),
+                      );
+
+                      return (
+                        <details
+                          key={section.id}
+                          className="group/section rounded-xl border border-mb-line bg-white"
+                        >
+                          <summary className="flex cursor-pointer list-none items-center gap-2 px-3 py-3">
+                            <ChevronRight
+                              className="h-4 w-4 shrink-0 text-mb-muted transition group-open/section:rotate-90"
+                              strokeWidth={2}
+                              aria-hidden="true"
+                            />
+                            <span className="min-w-0 flex-1 truncate font-semibold">
+                              {section.title}
+                            </span>
+                            <span className="shrink-0 text-xs text-mb-muted">
+                              {sectionTests.length} test
+                            </span>
+                            <DraftBadge published={section.is_published} />
+                            <ManageLink
+                              href={`/admin/tests/section?sectionId=${section.id}`}
+                              label="Mavzularni boshqarish"
+                            />
+                          </summary>
+
+                          <div className="space-y-1 border-t border-mb-line px-2 py-2">
+                            {sectionTopics.map((topic) => (
+                              <div key={topic.id} className="rounded-lg">
+                                <div className="flex items-center gap-2 px-3 pt-2">
+                                  <span className="min-w-0 flex-1 truncate text-xs font-bold uppercase tracking-wide text-slate-500">
+                                    {topic.title}
+                                  </span>
+                                  <DraftBadge published={topic.is_published} />
+                                  <ManageLink
+                                    href={`/admin/tests/topic?topicId=${topic.id}`}
+                                    label="Mavzu testlarini boshqarish"
+                                  />
+                                </div>
+
+                                <TestLinks
+                                  tests={sectionTests.filter(
+                                    (test) => test.topic_id === topic.id,
+                                  )}
+                                />
+                              </div>
+                            ))}
+
+                            {looseTests.length > 0 && (
+                              <div>
+                                {sectionTopics.length > 0 && (
+                                  <p className="px-3 pt-2 text-xs font-bold uppercase tracking-wide text-slate-500">
+                                    Mavzusiz
+                                  </p>
+                                )}
+                                <TestLinks tests={looseTests} />
+                              </div>
+                            )}
+
+                            {sectionTopics.length === 0 && looseTests.length === 0 && (
+                              <p className="px-3 py-2 text-xs text-mb-muted">
+                                Hali mavzu yoki test yo‘q.
+                              </p>
+                            )}
+                          </div>
+                        </details>
+                      );
+                    })}
                   </div>
-                </article>
+                </details>
               );
             })}
           </div>

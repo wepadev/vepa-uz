@@ -1,4 +1,6 @@
 import Link from "next/link";
+
+import AdminTabs from "@/components/admin/admin-tabs";
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
@@ -489,30 +491,26 @@ export default async function AdminResultsPage({
         <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
             <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-2xl font-bold">
-                  Test natijalari
-                </h1>
+              <Link
+                href="/admin"
+                className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
+              >
+                ← Admin panelga qaytish
+              </Link>
 
-                <span className="rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-blue-700">
-                  SQL RPC
-                </span>
-              </div>
+              <h1 className="text-xl font-bold sm:text-2xl">Natijalar</h1>
 
-              <p className="mt-1 text-sm text-slate-500">
-                Oʼquvchilarning barcha
-                urinishlari va natijalari
-              </p>
+              <AdminTabs
+                className="mt-2"
+                active="/admin/results"
+                tabs={[
+                { href: "/admin/results", label: "Barcha natijalar" },
+                { href: "/admin/analytics", label: "Tahlil" },
+              ]}
+              />
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <Link
-                href="/admin/analytics"
-                className="inline-flex min-h-11 items-center justify-center rounded-xl border border-blue-200 bg-blue-50 px-5 py-2.5 text-sm font-bold text-blue-700 hover:bg-blue-100"
-              >
-                Analitika
-              </Link>
-
               <Link
                 href="/admin/tests"
                 className="inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-bold text-slate-700 hover:bg-slate-50"

@@ -55,11 +55,29 @@ function MathValue({
 type PageProps = {
   searchParams: Promise<{
     testId?: string;
+    tur?: string;
   }>;
 };
 
+/**
+ * Savol turlari. Ilgari uchala forma bir vaqtda ochiq turardi va
+ * sahifa juda uzun bo'lib ketardi. Endi tur tugmalardan tanlanadi
+ * (`?tur=`) va faqat o'sha forma ko'rinadi. Savol qo'shilgach
+ * sahifa o'sha turda qoladi — ketma-ket bir xil savol kiritish oson.
+ */
+const QUESTION_TYPES = [
+  { value: "oddiy", label: "A–D test", hint: "Oddiy variantli savol — 2 ball" },
+  { value: "yozma", label: "a)–b) yozma", hint: "Ikki qismli yozma savol — har qism 2 ball" },
+  { value: "umumiy", label: "A–F blok", hint: "Umumiy variantli 3 ta savol — har biri 2 ball" },
+] as const;
+
+type QuestionType = (typeof QUESTION_TYPES)[number]["value"];
+
 export default async function ManageTestPage({ searchParams }: PageProps) {
-  const { testId: testIdValue } = await searchParams;
+  const { testId: testIdValue, tur: turValue } = await searchParams;
+
+  const questionType: QuestionType =
+    QUESTION_TYPES.find((item) => item.value === turValue)?.value ?? "oddiy";
 
   const testId = Number(testIdValue);
 
@@ -388,27 +406,37 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
 
           <aside className="min-w-0 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:overscroll-contain lg:pb-4 lg:pr-1">
             <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-2xl font-bold">Savol turini tanlang</h2>
+          <h2 className="text-2xl font-bold">Savol qo‘shish</h2>
 
-          <p className="mt-2 text-sm leading-6 text-slate-500">
-            Oddiy A–D test, a)–b) yozma savol yoki umumiy A–F variantli uchta
-            savol blokini yaratishingiz mumkin. Barcha matn, variant, javob va
-            yechim maydonlarida LaTeX ishlaydi. Inline formula uchun \( ... \),
-            alohida formula uchun \[ ... \] yozing.
+          <div className="mt-4 grid grid-cols-3 gap-1 rounded-2xl bg-slate-100 p-1">
+            {QUESTION_TYPES.map((item) => (
+              <Link
+                key={item.value}
+                href={`/admin/tests/manage?testId=${test.id}&tur=${item.value}`}
+                aria-current={item.value === questionType ? "page" : undefined}
+                className={
+                  item.value === questionType
+                    ? "rounded-xl bg-white px-2 py-2 text-center text-sm font-bold text-mb-brand shadow-sm"
+                    : "rounded-xl px-2 py-2 text-center text-sm font-semibold text-slate-600 hover:bg-white/60"
+                }
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+
+          <p className="mt-3 text-sm text-slate-500">
+            {QUESTION_TYPES.find((item) => item.value === questionType)?.hint}.
+            Formula uchun \( ... \) yoki \[ ... \] yozing.
           </p>
 
           <div className="mt-6 space-y-4">
-            <details
-              open
-              className="rounded-2xl border border-blue-200 bg-blue-50/40"
-            >
-              <summary className="cursor-pointer px-5 py-4 font-bold text-blue-900">
-                1. Oddiy A–D variantli savol — 2 ball
-              </summary>
+            {questionType === "oddiy" && (
+              <div className="overflow-hidden rounded-2xl border border-mb-line">
 
               <form
                 action={addMultipleChoiceQuestion}
-                className="border-t border-blue-200 bg-white p-5"
+                className="bg-white p-5"
               >
                 <input type="hidden" name="testId" value={test.id} />
 
@@ -512,16 +540,15 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                   Oddiy savolni qo‘shish
                 </SubmitButton>
               </form>
-            </details>
+            </div>
+            )}
 
-            <details className="rounded-2xl border border-blue-200 bg-blue-50/40">
-              <summary className="cursor-pointer px-5 py-4 font-bold text-blue-900">
-                2. a) va b) yozma savol — har bir qism 2 ball
-              </summary>
+            {questionType === "yozma" && (
+              <div className="overflow-hidden rounded-2xl border border-mb-line">
 
               <form
                 action={addWrittenPartsBlock}
-                className="border-t border-blue-200 bg-white p-5"
+                className="bg-white p-5"
               >
                 <input type="hidden" name="testId" value={test.id} />
 
@@ -636,16 +663,15 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                   a)–b) yozma savolni qo‘shish
                 </SubmitButton>
               </form>
-            </details>
+            </div>
+            )}
 
-            <details className="rounded-2xl border border-emerald-200 bg-emerald-50/40">
-              <summary className="cursor-pointer px-5 py-4 font-bold text-emerald-900">
-                3. Umumiy A–F variantli 3 ta savol — har biri 2 ball
-              </summary>
+            {questionType === "umumiy" && (
+              <div className="overflow-hidden rounded-2xl border border-mb-line">
 
               <form
                 action={addSharedOptionsBlock}
-                className="border-t border-emerald-200 bg-white p-5"
+                className="bg-white p-5"
               >
                 <input type="hidden" name="testId" value={test.id} />
 
@@ -768,7 +794,8 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                   Umumiy A–F blokni qo‘shish
                 </SubmitButton>
               </form>
-            </details>
+            </div>
+            )}
           </div>
             </div>
           </aside>
@@ -787,7 +814,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
               <p className="font-semibold">Hozircha savol yo‘q</p>
 
               <p className="mt-2 text-sm text-slate-500">
-                Yuqoridagi uchta turdan birini tanlab savol qo‘shing.
+                “Savol qo‘shish” bo‘limida turini tanlab, birinchi savolni kiriting.
               </p>
             </div>
           ) : (

@@ -353,7 +353,7 @@ export default async function CrmAnalysisPage({ searchParams }: PageProps) {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <PageHeader
-        backHref={`/admin/crm/guruh?guruh=${groupId}`}
+        backHref={`/admin/crm/guruh?id=${groupId}`}
         backLabel="Guruh"
         title="Ball tahlili"
         subtitle={group.title}
@@ -563,7 +563,7 @@ export default async function CrmAnalysisPage({ searchParams }: PageProps) {
                       </span>
 
                       <Link
-                        href={`/admin/crm/guruh?guruh=${groupId}`}
+                        href={`/admin/crm/guruh?id=${groupId}`}
                         className="shrink-0 rounded-xl border border-red-300 bg-white px-3 py-2 text-xs font-bold text-red-800 transition hover:bg-red-100"
                       >
                         Birlashtirish

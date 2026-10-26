@@ -1,4 +1,6 @@
 ﻿import Link from "next/link";
+
+import AdminTabs from "@/components/admin/admin-tabs";
 import { redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
@@ -422,32 +424,28 @@ export default async function AdminAnalyticsPage({
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <section className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-10">
-        <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
-          <div>
-            <p className="text-sm font-bold text-blue-600">
-              Vepa Ustoz analitikasi
-            </p>
+        <Link
+          href="/admin"
+          className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
+        >
+          ← Admin panelga qaytish
+        </Link>
 
-            <h1 className="mt-1 text-3xl font-bold text-slate-950">
-              Testlar va o‘quvchilar tahlili
-            </h1>
+        <h1 className="text-xl font-bold sm:text-2xl">Natijalar</h1>
 
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-500">
-              Barcha urinishlar asosida
-              testlarning qiyinligi,
-              yakunlanish darajasi va
-              o‘quvchilar reytingi
-              hisoblanadi.
-            </p>
-          </div>
+        <AdminTabs
+          className="mt-2"
+          active="/admin/analytics"
+          tabs={[
+            { href: "/admin/results", label: "Barcha natijalar" },
+            { href: "/admin/analytics", label: "Tahlil" },
+          ]}
+        />
 
-          <Link
-            href="/admin/results"
-            className="inline-flex min-h-11 items-center justify-center rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-bold text-white hover:bg-slate-800"
-          >
-            Barcha natijalar
-          </Link>
-        </div>
+        <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-500">
+          Barcha urinishlar asosida testlarning qiyinligi, yakunlanish
+          darajasi va o‘quvchilar reytingi.
+        </p>
 
         <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
