@@ -9,6 +9,7 @@ import {
   Gift,
   ListChecks,
   MonitorPlay,
+  NotebookPen,
   Timer,
   Users,
   UsersRound,
@@ -225,6 +226,7 @@ export default async function AdminPage() {
     { title: "Foydalanuvchilar", href: "/admin/users", icon: Users },
     { title: "Test tekshirish", href: "/admin/test-tekshirish", icon: ListChecks },
     { title: "Imtihon taymeri", href: "/admin/taymer", icon: Timer },
+    { title: "PDF yozuv", href: "/admin/pdf-yozuv", icon: NotebookPen },
     { title: "Texnik xizmat", href: "/admin/xizmat", icon: Database },
   ];
 

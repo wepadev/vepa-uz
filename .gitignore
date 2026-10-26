@@ -72,3 +72,7 @@ next-env.d.ts
 # saytning ishlashiga kerak emas. Alohida saqlang.
 /Matematika-savollar-tex-1-89/
 /Matematika-javoblar-1-89/
+
+# pdf.js worker — `scripts/copy-pdf-worker.mjs` har build oldidan
+# node_modules dan ko'chiradi, paket versiyasiga mos bo'lsin.
+/public/pdfjs/
