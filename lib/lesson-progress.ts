@@ -40,6 +40,24 @@ export function isLessonPassed(
   return average === null || average >= LESSON_PASS_PERCENTAGE;
 }
 
+/**
+ * O'quvchiga "Tugallangan" deb ko'rsatiladimi.
+ *
+ * `isLessonPassed` dan farqi: testsiz dars navbatni to'smaydi, lekin
+ * uni "tugallangan" deyish ham to'g'ri emas — o'quvchi hech narsa
+ * ishlamagan. Shuning uchun belgi faqat testi bor va 90% ga yetgan
+ * darsga qo'yiladi.
+ */
+export function isLessonCompletedByTests(
+  testIds: number[],
+  bestScoreMap: Map<number, number>,
+) {
+  return (
+    testIds.length > 0 &&
+    isLessonPassed(testIds, bestScoreMap)
+  );
+}
+
 /** Bir necha urinishdan eng yaxshisini oladi */
 export function buildBestScoreMap(
   attempts: Array<{ test_id: number; percentage: number | string }>,

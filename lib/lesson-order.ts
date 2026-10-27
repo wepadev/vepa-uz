@@ -1,9 +1,11 @@
 /*
  * Videodarslarning bo'lim ichidagi tartibi.
  *
- * Admin darsga tartib raqamini o'zi beradi. Shu raqam band bo'lsa,
- * o'sha joydagi va undan keyingi darslar bir pog'ona suriladi.
- * Natijada bo'limdagi raqamlar doim 1, 2, 3, ... bo'lib qoladi.
+ * Admin darsga tartib raqamini o'zi beradi va dars AYNAN shu raqam
+ * bilan saqlanadi: "Algebra 1-qism" da 11- va 13-dars bo'lishi
+ * mumkin, ular 1, 2 ga aylantirilmaydi. Raqam band bo'lsa, o'sha
+ * dars bir pog'ona suriladi; uning orqasida zich turganlar ham
+ * (12, 13, 14 …) suriladi. Bo'sh joydan keyingilarga tegilmaydi.
  */
 
 export type LessonOrderRow = {
@@ -40,34 +42,49 @@ export function parseOrderNumber(
 }
 
 /**
- * Darsni berilgan o'ringa qo'yganda har bir darsning yangi raqami.
- * O'rin 1 dan kichik bo'lsa birinchi, darslar sonidan katta bo'lsa
- * oxirgi o'ringa tushadi.
+ * Darsni berilgan raqamga qo'yganda har bir darsning yangi raqami.
+ * Ko'chirilayotgan dars aynan shu raqamni oladi (1 dan kichik
+ * bo'lsa 1). Boshqa darslar faqat to'qnashuv bo'lsa suriladi.
  */
 export function placeLesson(
   lessons: LessonOrderRow[],
   lessonId: number,
   position: number,
 ): LessonOrderUpdate[] {
-  const ordered = [...lessons]
+  const target = Math.max(Math.trunc(position), 1);
+
+  const others = lessons
+    .filter((lesson) => lesson.id !== lessonId)
     .sort(
       (a, b) =>
         a.order_number - b.order_number || a.id - b.id,
-    )
-    .map((lesson) => lesson.id)
-    .filter((id) => id !== lessonId);
+    );
 
-  const index = Math.min(
-    Math.max(Math.trunc(position) - 1, 0),
-    ordered.length,
+  const result: LessonOrderUpdate[] = [
+    { id: lessonId, order_number: target },
+  ];
+
+  /* Oxirgi band raqam: shundan kichik yoki teng turgan dars suriladi */
+  let taken = target;
+
+  for (const lesson of others) {
+    if (
+      lesson.order_number >= target &&
+      lesson.order_number <= taken
+    ) {
+      taken += 1;
+      result.push({ id: lesson.id, order_number: taken });
+    } else {
+      result.push({
+        id: lesson.id,
+        order_number: lesson.order_number,
+      });
+    }
+  }
+
+  return result.sort(
+    (a, b) => a.order_number - b.order_number,
   );
-
-  ordered.splice(index, 0, lessonId);
-
-  return ordered.map((id, i) => ({
-    id,
-    order_number: i + 1,
-  }));
 }
 
 /**
@@ -111,8 +128,8 @@ export function planLessonReorder(
 
   const parkingSpot =
     Math.max(
-      lessons.length,
       ...lessons.map((lesson) => lesson.order_number),
+      ...target.map((row) => row.order_number),
     ) + 1;
 
   return [

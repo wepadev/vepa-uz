@@ -282,7 +282,7 @@ async function createLesson(
 
   if (
     orderNumber &&
-    orderNumber < nextOrderNumber
+    orderNumber !== nextOrderNumber
   ) {
     const moveError = await moveLessonTo(
       supabase,
@@ -489,43 +489,10 @@ async function deleteLesson(
     );
   }
 
-  const {
-    data: remainingLessons,
-    error: remainingError,
-  } = await supabase
-    .from("lessons")
-    .select("id")
-    .eq("category_id", categoryId)
-    .order("order_number", {
-      ascending: true,
-    })
-    .order("id", {
-      ascending: true,
-    });
-
-  if (!remainingError) {
-    for (
-      let index = 0;
-      index <
-      (remainingLessons?.length ?? 0);
-      index += 1
-    ) {
-      const lesson =
-        remainingLessons?.[index];
-
-      if (!lesson) {
-        continue;
-      }
-
-      await supabase
-        .from("lessons")
-        .update({
-          order_number: index + 1,
-        })
-        .eq("id", lesson.id)
-        .eq("category_id", categoryId);
-    }
-  }
+  /*
+   * Qolgan darslarning raqamiga tegilmaydi: admin bergan raqamlar
+   * (masalan 11, 13) o'chirishdan keyin ham saqlanib qoladi.
+   */
 
   revalidatePath(
     "/admin/lessons/manage",
@@ -713,7 +680,14 @@ export default async function ManageLessonsPage({
         >
           <CreateLessonForm
             categoryId={categoryId}
-            nextOrderNumber={lessons.length + 1}
+            nextOrderNumber={
+              Math.max(
+                0,
+                ...lessons.map(
+                  (lesson) => lesson.order_number,
+                ),
+              ) + 1
+            }
             tests={tests}
             action={createLesson}
           />

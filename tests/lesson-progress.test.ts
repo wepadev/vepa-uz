@@ -59,3 +59,15 @@ test("dars va testlar xaritasi tuziladi", () => {
   assert.deepEqual(map.get(5), [1, 2]);
   assert.deepEqual(map.get(6), [3]);
 });
+
+test("testsiz dars navbatni to'smaydi, lekin 'Tugallangan' emas", async () => {
+  const { isLessonCompletedByTests } = await import(
+    "../lib/lesson-progress.ts"
+  );
+
+  const best = new Map([[1, 95]]);
+
+  assert.equal(isLessonPassed([], best), true);
+  assert.equal(isLessonCompletedByTests([], best), false);
+  assert.equal(isLessonCompletedByTests([1], best), true);
+});

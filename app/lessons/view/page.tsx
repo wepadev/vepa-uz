@@ -10,6 +10,7 @@ import {
   buildBestScoreMap,
   buildLessonGates,
   buildLessonTestMap,
+  isLessonCompletedByTests,
   isLessonPassed,
   lessonAverageScore,
 } from "@/lib/lesson-progress";
@@ -298,7 +299,10 @@ export default async function LessonViewPage({
       : null;
 
   const currentCompleted =
-    isLessonCompleted(currentLesson);
+    isLessonCompletedByTests(
+      testsByLesson.get(currentLesson.id) ?? [],
+      bestScoreMap,
+    );
 
   const nextLessonHasAccess =
     Boolean(
@@ -396,7 +400,10 @@ export default async function LessonViewPage({
               >
                 {currentCompleted
                   ? "Tugallangan"
-                  : "Jarayonda"}
+                  : (testsByLesson.get(currentLesson.id) ?? [])
+                        .length === 0
+                    ? "Testsiz dars"
+                    : "Jarayonda"}
               </span>
             </div>
           </div>
