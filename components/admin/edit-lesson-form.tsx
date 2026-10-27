@@ -136,7 +136,8 @@ export default function EditLessonForm({
       />
 
       <p className="mt-1 text-xs leading-5 text-slate-500">
-        Raqam o‘zgartirilsa, boshqa darslar o‘z-o‘zidan suriladi.
+        Dars aynan shu raqam bilan chiqadi. Raqam band bo‘lsa,
+        o‘sha dars bir pog‘ona suriladi.
       </p>
 
       <FieldError

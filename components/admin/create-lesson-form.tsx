@@ -125,8 +125,9 @@ export default function CreateLessonForm({
       />
 
       <p className="mt-1 text-xs leading-5 text-slate-500">
-        Shu raqamdagi va undan keyingi darslar bir pog‘ona
-        suriladi. Bo‘sh qoldirilsa dars oxiriga qo‘yiladi.
+        Dars aynan shu raqam bilan chiqadi. Raqam band bo‘lsa,
+        o‘sha dars bir pog‘ona suriladi. Bo‘sh qoldirilsa dars
+        oxiriga qo‘yiladi.
       </p>
 
       <FieldError

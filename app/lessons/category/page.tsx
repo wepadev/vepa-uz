@@ -9,6 +9,7 @@ import {
   buildBestScoreMap,
   buildLessonGates,
   buildLessonTestMap,
+  isLessonCompletedByTests,
   isLessonPassed,
   lessonAverageScore,
 } from "@/lib/lesson-progress";
@@ -213,6 +214,11 @@ export default async function LessonCategoryPage({
         lessonTests,
         bestScoreMap,
       ),
+      /* Ekrandagi "Tugallangan" — testsiz dars bunga kirmaydi */
+      isDone: isLessonCompletedByTests(
+        lessonTests,
+        bestScoreMap,
+      ),
     };
   });
 
@@ -231,7 +237,7 @@ export default async function LessonCategoryPage({
         gates[index].isSequenceUnlocked,
       hasContentAccess:
         gates[index].hasContentAccess,
-      isCompleted: fact.isCompleted,
+      isCompleted: fact.isDone,
       averageScore: fact.averageScore,
       testCount: fact.lessonTests.length,
     }),
@@ -242,11 +248,17 @@ export default async function LessonCategoryPage({
       (state) => state.isCompleted,
     ).length;
 
+  /* Testsiz darsni tugallab bo'lmaydi, shuning uchun hisobga kirmaydi */
+  const countableLessons =
+    lessonStates.filter(
+      (state) => state.testCount > 0,
+    ).length;
+
   const categoryPercentage =
-    lessons.length > 0
+    countableLessons > 0
       ? Math.round(
           (completedCount /
-            lessons.length) *
+            countableLessons) *
             100,
         )
       : 0;
@@ -287,23 +299,25 @@ export default async function LessonCategoryPage({
               )}
             </div>
 
-            <div className="w-full sm:w-44">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-blue-100">Tugallangan</span>
-                <strong>
-                  {completedCount}/{lessons.length}
-                </strong>
-              </div>
+            {countableLessons > 0 && (
+              <div className="w-full sm:w-44">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-blue-100">Tugallangan</span>
+                  <strong>
+                    {completedCount}/{countableLessons}
+                  </strong>
+                </div>
 
-              <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/20">
-                <div
-                  className="h-full rounded-full bg-white"
-                  style={{
-                    width: `${categoryPercentage}%`,
-                  }}
-                />
+                <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/20">
+                  <div
+                    className="h-full rounded-full bg-white"
+                    style={{
+                      width: `${categoryPercentage}%`,
+                    }}
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 

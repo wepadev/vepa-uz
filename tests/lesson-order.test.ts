@@ -47,40 +47,64 @@ test("bo'sh raqam — oxiriga, noto'g'ri raqam — xato", () => {
   assert.equal(parseOrderNumber("abc"), undefined);
 });
 
-test("yangi dars 2-o'ringa qo'yilsa, qolganlari suriladi", () => {
-  const withNew = [...lessons, { id: 20, order_number: 5 }];
+test("dars aynan admin bergan raqamni oladi", () => {
+  const two = [
+    { id: 1, order_number: 1 },
+    { id: 2, order_number: 2 },
+  ];
 
-  assert.deepEqual(
-    placeLesson(withNew, 20, 2).map((row) => row.id),
-    [10, 20, 11, 12, 13],
+  const result = apply(two, planLessonReorder(two, 1, 11));
+
+  assert.equal(result.get(1), 11);
+  assert.equal(result.get(2), 2);
+
+  const next = apply(
+    [...result].map(([id, order_number]) => ({ id, order_number })),
+    planLessonReorder(
+      [...result].map(([id, order_number]) => ({ id, order_number })),
+      2,
+      13,
+    ),
   );
+
+  assert.equal(next.get(1), 11);
+  assert.equal(next.get(2), 13);
 });
 
-test("katta raqam oxiriga, kichik raqam boshiga tushadi", () => {
-  assert.deepEqual(
-    placeLesson(lessons, 11, 99).map((row) => row.id),
-    [10, 12, 13, 11],
-  );
+test("band raqamga qo'yilsa, faqat zich turganlar suriladi", () => {
+  const rows = [
+    { id: 1, order_number: 11 },
+    { id: 2, order_number: 12 },
+    { id: 3, order_number: 15 },
+    { id: 9, order_number: 30 },
+  ];
 
-  assert.deepEqual(
-    placeLesson(lessons, 13, -5).map((row) => row.id),
-    [13, 10, 11, 12],
+  assert.deepEqual(placeLesson(rows, 9, 11), [
+    { id: 9, order_number: 11 },
+    { id: 1, order_number: 12 },
+    { id: 2, order_number: 13 },
+    { id: 3, order_number: 15 },
+  ]);
+});
+
+test("0 yoki manfiy raqam 1 ga tushadi", () => {
+  assert.equal(
+    placeLesson(lessons, 13, -5).find((row) => row.id === 13)
+      ?.order_number,
+    1,
   );
 });
 
 test("o'zgarishlar hech qachon ikki darsni bir raqamga qo'ymaydi", () => {
   for (const id of [10, 11, 12, 13]) {
-    for (let position = 1; position <= 4; position += 1) {
+    for (let position = 1; position <= 7; position += 1) {
       const result = apply(
         lessons,
         planLessonReorder(lessons, id, position),
       );
 
       assert.equal(result.get(id), position);
-      assert.deepEqual(
-        [...result.values()].sort((a, b) => a - b),
-        [1, 2, 3, 4],
-      );
+      assert.equal(new Set(result.values()).size, 4);
     }
   }
 });
@@ -89,7 +113,7 @@ test("joyi o'zgarmasa hech narsa yozilmaydi", () => {
   assert.deepEqual(planLessonReorder(lessons, 12, 3), []);
 });
 
-test("teshikli raqamlar 1, 2, 3 ... ga keltiriladi", () => {
+test("bo'sh joylar saqlanadi", () => {
   const gappy = [
     { id: 1, order_number: 2 },
     { id: 2, order_number: 5 },
@@ -103,7 +127,7 @@ test("teshikli raqamlar 1, 2, 3 ... ga keltiriladi", () => {
     [
       [3, 1],
       [1, 2],
-      [2, 3],
+      [2, 5],
     ],
   );
 });
