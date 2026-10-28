@@ -15,6 +15,7 @@ import {
   outlinePath,
   penOutline,
   clampSmooth,
+  stabilizePoints,
   DEFAULT_SMOOTH,
   simplifyPoints,
   simplifyStroke,
@@ -183,7 +184,8 @@ test("stabilizatsiya: ko'p bo'lsa chiziq silliqroq, 0 da titrash saqlanadi", () 
 
   const wobble = (smooth: number) => {
     const outline = penOutline({ ...pen(points, 2), pen: "felt", smooth })!;
-    const ys = outline.map((p) => p[1]);
+    /* Uchlari qalam turgan joyda qoladi — o'rtasini o'lchaymiz */
+    const ys = outline.filter((p) => p[0] > 20 && p[0] < 100).map((p) => p[1]);
     return Math.max(...ys) - Math.min(...ys);
   };
 
@@ -191,4 +193,26 @@ test("stabilizatsiya: ko'p bo'lsa chiziq silliqroq, 0 da titrash saqlanadi", () 
   assert.equal(clampSmooth(2), 1);
   assert.equal(clampSmooth(-1), 0);
   assert.equal(clampSmooth(Number.NaN), DEFAULT_SMOOTH);
+});
+
+test("stabilizatsiya iPad qalamidek zich nuqtalarda ham ishlaydi", () => {
+  /* Har 0.25 punktda nuqta, qo'l 0.6 punktga titraydi (har 1.5 punktda) */
+  const dense: number[][] = [];
+  for (let i = 0; i <= 600; i += 1) {
+    const x = i * 0.25;
+    dense.push([x, Math.sin((x / 1.5) * Math.PI) * 0.6]);
+  }
+  const spread = (pts: number[][]) => {
+    const ys = pts.slice(100, -100).map((p) => p[1]);
+    return Math.max(...ys) - Math.min(...ys);
+  };
+
+  assert.ok(spread(stabilizePoints(dense, 0)) > 1.1);
+  assert.ok(spread(stabilizePoints(dense, 0.5)) < 0.6);
+  assert.ok(spread(stabilizePoints(dense, 1)) < 0.35);
+
+  /* Boshi va oxiri joyida qoladi */
+  const smoothed = stabilizePoints(dense, 1);
+  assert.deepEqual(smoothed[0], dense[0]);
+  assert.deepEqual(smoothed.at(-1), dense.at(-1));
 });
