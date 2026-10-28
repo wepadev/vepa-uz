@@ -200,8 +200,6 @@ type Gesture =
       points: number[];
       /** Faqat stilusda */
       pressures: number[] | null;
-      /** Brauzer taxmin qilgan keyingi nuqtalar — faqat ekranda */
-      predicted: number[];
     }
   | { kind: "erase"; pointerId: number; pointerType: string; rect: DOMRect }
   | {
@@ -396,10 +394,7 @@ function InkPageView({
      * Har kadrda butun sahifa kanvasini (millionlab piksel) tozalash
      * sekin. Faqat chizgi turgan to'rtburchakni tozalaymiz.
      */
-    const box = strokeBounds(
-      gesture.predicted.length > 0 ? [...gesture.points, ...gesture.predicted] : gesture.points,
-      width * 2 + 2,
-    );
+    const box = strokeBounds(gesture.points, width * 2 + 2);
     const previous = liveBoxRef.current;
     liveBoxRef.current = previous
       ? {
@@ -411,26 +406,19 @@ function InkPageView({
       : box;
     const scale = zoom * pixelRatio();
     clearArea(live, liveBoxRef.current, scale);
-    paintStroke(ctx, buildStroke(gesture, true), scale, false);
+    paintStroke(ctx, buildStroke(gesture), scale, false);
   }
 
-  function buildStroke(gesture: Extract<Gesture, { kind: "draw" }>, withPrediction = false): Stroke {
-    const extra = withPrediction ? gesture.predicted : [];
+  function buildStroke(gesture: Extract<Gesture, { kind: "draw" }>): Stroke {
     const stroke: Stroke = {
       tool: gesture.tool,
       color,
       width,
-      points: extra.length > 0 ? [...gesture.points, ...extra] : gesture.points,
+      points: gesture.points,
     };
     if (gesture.tool === "pen") {
       stroke.pen = pen;
-      const pressures = gesture.pressures;
-      if (pressures) {
-        stroke.pressures =
-          extra.length > 0
-            ? [...pressures, ...Array(extra.length / 2).fill(pressures[pressures.length - 1])]
-            : pressures;
-      }
+      if (gesture.pressures) stroke.pressures = gesture.pressures;
     }
     return stroke;
   }
@@ -508,7 +496,6 @@ function InkPageView({
       tool,
       points: [x, y],
       pressures: isPen ? [pressureOf(event)] : null,
-      predicted: [],
     };
     scheduleLive();
   }
@@ -549,15 +536,6 @@ function InkPageView({
         const [x, y] = pointFrom(sample, gesture.rect);
         gesture.points.push(x, y);
         gesture.pressures?.push(pressureOf(sample));
-      }
-      /*
-       * Ekran bir kadr kechikib chizadi. Brauzer qalam qayerga
-       * borishini taxmin qilsa, chiziqni o'sha yergacha cho'zib
-       * qo'yamiz — Nebo kabi uchi qalam ostida turadi. Saqlanmaydi.
-       */
-      gesture.predicted = [];
-      for (const sample of event.nativeEvent.getPredictedEvents?.() ?? []) {
-        gesture.predicted.push(...pointFrom(sample, gesture.rect));
       }
     }
 
