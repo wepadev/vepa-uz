@@ -338,6 +338,37 @@ const PEN_OPTIONS: Record<PenKind, (size: number) => StrokeOptions> = {
  * (aks holda har kadrda "sakrab" turardi), lekin aynan qalam turgan
  * nuqtaga yetadi — chiziq qalamdan orqada qolmaydi.
  */
+/** 100% stabilizatsiyada qo'l titrashi shu masofada (punkt) so'nadi */
+const MAX_STABILIZE_DISTANCE = 6;
+
+/**
+ * Qo'l titrashini tekislash: chiziq qalamga "ip bilan tortilgandek"
+ * ergashadi. Qalam `d` punkt yurganda orqada qolish `e^(-d/L)`
+ * marta kamayadi — ya'ni tekislash qalam tezligiga va qurilma
+ * nechta nuqta berishiga bog'liq emas. (`perfect-freehand` ning
+ * `streamline` i har nuqtaga bog'liq: iPad qalami soniyasiga 240
+ * nuqta bergani uchun u yerda deyarli sezilmasdi.)
+ *
+ * Oxirgi nuqta o'zgarmaydi — chiziq aynan qalam turgan joyda tugaydi.
+ */
+export function stabilizePoints(input: number[][], smooth: number): number[][] {
+  const reach = clampSmooth(smooth) * MAX_STABILIZE_DISTANCE;
+  if (reach <= 0 || input.length < 3) return input;
+
+  const output: number[][] = [input[0]];
+  let [x, y] = input[0];
+  for (let i = 1; i < input.length - 1; i += 1) {
+    const [tx, ty] = input[i];
+    const moved = Math.hypot(tx - input[i - 1][0], ty - input[i - 1][1]);
+    const follow = 1 - Math.exp(-moved / reach);
+    x += (tx - x) * follow;
+    y += (ty - y) * follow;
+    output.push([x, y, ...input[i].slice(2)]);
+  }
+  output.push(input[input.length - 1]);
+  return output;
+}
+
 export function penOutline(stroke: Stroke, complete = true): number[][] | null {
   if (stroke.tool !== "pen" || !stroke.pen) return null;
 
@@ -351,16 +382,12 @@ export function penOutline(stroke: Stroke, complete = true): number[][] | null {
   if (input.length === 0) return [];
 
   const base = PEN_OPTIONS[stroke.pen](stroke.width);
-  /*
-   * Stabilizatsiya ikki narsani boshqaradi: `streamline` — chiziq
-   * uchi qo'lning titrashiga qanchalik sekin ergashadi (kechikish),
-   * `smoothing` — kontur chetlarining yumshoqligi.
-   */
   const smooth = clampSmooth(stroke.smooth ?? DEFAULT_SMOOTH);
-  return getStroke(input, {
+  return getStroke(stabilizePoints(input, smooth), {
     size: stroke.width,
     ...base,
-    streamline: smooth * 0.8,
+    /* Titrashni `stabilizePoints` tekislaydi; bu yerda faqat kontur chetlari */
+    streamline: 0,
     smoothing: 0.35 + smooth * 0.5,
     simulatePressure: base.simulatePressure ?? !pressures,
     ...(complete ? {} : { end: { taper: 0, cap: true } }),
