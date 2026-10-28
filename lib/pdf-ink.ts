@@ -293,18 +293,21 @@ export function hexToRgb(hex: string): [number, number, number] {
  * Shakl ekranda ham, PDF'da ham aynan bir xil nuqtalardan quriladi,
  * shuning uchun saqlangan PDF ekrandagidek chiqadi va vektor
  * bo'lgani uchun har qancha kattalashtirilsa ham tiniq qoladi.
+ *
+ * Stabilizatsiya (`streamline`) yo'q: chiziq aynan qalam yurgan
+ * yerdan o'tadi, yozish paytida ham, keyin ham joyidan siljimaydi.
  */
 const PEN_OPTIONS: Record<PenKind, (size: number) => StrokeOptions> = {
   felt: () => ({
     thinning: 0,
     smoothing: 0.6,
-    streamline: 0.25,
+    streamline: 0,
     simulatePressure: false,
   }),
   fountain: (size) => ({
     thinning: 0.6,
     smoothing: 0.65,
-    streamline: 0.3,
+    streamline: 0,
     /* Yumshoq egri: yengil bosimda ham chiziq uzilmasin */
     easing: (t) => Math.sin((t * Math.PI) / 2),
     start: { taper: size * 2.5, cap: true },
@@ -313,7 +316,7 @@ const PEN_OPTIONS: Record<PenKind, (size: number) => StrokeOptions> = {
   brush: (size) => ({
     thinning: 0.85,
     smoothing: 0.7,
-    streamline: 0.3,
+    streamline: 0,
     easing: (t) => t * t * (3 - 2 * t),
     start: { taper: size * 6, cap: true },
     end: { taper: size * 8, cap: true },

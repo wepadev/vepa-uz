@@ -173,3 +173,16 @@ test("yozish paytida chiziq uchi qalamdan orqada qolmaydi", () => {
     assert.ok(reach >= 90 - 0.5, `${kind}: ${reach}`);
   }
 });
+
+test("stabilizatsiya yo'q: chiziq qalam yurgan yerdan o'tadi", () => {
+  /* Keskin zigzag: tepalari y = ±6 */
+  const points: number[] = [];
+  for (let i = 0; i <= 20; i += 1) points.push(i * 4, i % 2 === 0 ? 6 : -6);
+
+  for (const kind of ["felt", "fountain", "brush"] as const) {
+    const outline = penOutline({ ...pen(points, 1), pen: kind })!;
+    const ys = outline.filter((p) => p[0] > 8 && p[0] < 72).map((p) => p[1]);
+    /* Tepalar kesilmaydi — chiziq qalam turgan joydan o'tgan */
+    assert.ok(Math.max(...ys) > 5.5 && Math.min(...ys) < -5.5, kind);
+  }
+});
