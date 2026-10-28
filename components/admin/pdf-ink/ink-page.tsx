@@ -41,8 +41,6 @@ type InkPageViewProps = {
   color: string;
   width: number;
   pen: PenKind;
-  /** Tanlangan qalamning stabilizatsiyasi, 0..1 */
-  smooth: number;
   /** Barmoq chizmaydi, sahifani suradi */
   penOnly: boolean;
   scrollRef: RefObject<HTMLDivElement | null>;
@@ -235,7 +233,6 @@ function InkPageView({
   color,
   width,
   pen,
-  smooth,
   penOnly,
   scrollRef,
   handlers,
@@ -427,7 +424,6 @@ function InkPageView({
     };
     if (gesture.tool === "pen") {
       stroke.pen = pen;
-      stroke.smooth = smooth;
       const pressures = gesture.pressures;
       if (pressures) {
         stroke.pressures =

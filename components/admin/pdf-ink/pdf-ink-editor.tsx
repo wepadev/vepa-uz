@@ -24,8 +24,6 @@ import {
 import AppAlert from "@/components/ui/app-alert";
 import {
   blankPageMatrix,
-  clampSmooth,
-  DEFAULT_SMOOTH,
   exportFileName,
   exportInkPdf,
   invertMatrix,
@@ -72,29 +70,6 @@ const MAX_ZOOM = 4;
 const HISTORY_LIMIT = 100;
 
 type History = { past: InkPage[][]; future: InkPage[][] };
-
-type SmoothByPen = Record<PenKind, number>;
-
-/** Har qalamning stabilizatsiyasi shu brauzerda eslab qolinadi */
-const SMOOTH_KEY = "vepa-pdf-yozuv-smooth";
-const DEFAULT_SMOOTH_BY_PEN: SmoothByPen = {
-  felt: DEFAULT_SMOOTH,
-  fountain: DEFAULT_SMOOTH,
-  brush: DEFAULT_SMOOTH,
-};
-
-function loadSmooth(): SmoothByPen {
-  try {
-    const saved = JSON.parse(localStorage.getItem(SMOOTH_KEY) ?? "{}") as Partial<SmoothByPen>;
-    const result = { ...DEFAULT_SMOOTH_BY_PEN };
-    for (const kind of Object.keys(result) as PenKind[]) {
-      if (typeof saved[kind] === "number") result[kind] = clampSmooth(saved[kind]);
-    }
-    return result;
-  } catch {
-    return { ...DEFAULT_SMOOTH_BY_PEN };
-  }
-}
 
 let idCounter = 0;
 const newId = () => `p${Date.now().toString(36)}${(idCounter += 1)}`;
@@ -279,7 +254,6 @@ export default function PdfInkEditor() {
   const [penPanel, setPenPanel] = useState(false);
   const [markerColor, setMarkerColor] = useState(MARKER_COLORS[0]);
   const [penWidth, setPenWidth] = useState(PEN_SIZES[2]);
-  const [penSmooth, setPenSmooth] = useState<SmoothByPen>(DEFAULT_SMOOTH_BY_PEN);
   const [markerWidth, setMarkerWidth] = useState(MARKER_WIDTHS[1]);
   const [zoom, setZoom] = useState(1);
   const [penOnly, setPenOnly] = useState(false);
@@ -558,23 +532,6 @@ export default function PdfInkEditor() {
   }
 
   /* --------------------------- sahifalar ------------------------ */
-
-  /* Saqlangan stabilizatsiya — faqat brauzerda o'qiladi */
-  useEffect(() => {
-    setPenSmooth(loadSmooth());
-  }, []);
-
-  function changeSmooth(kind: PenKind, value: number) {
-    setPenSmooth((current) => {
-      const next = { ...current, [kind]: clampSmooth(value) };
-      try {
-        localStorage.setItem(SMOOTH_KEY, JSON.stringify(next));
-      } catch {
-        /* Xususiy rejimda saqlanmasa ham sozlama shu safar ishlaydi */
-      }
-      return next;
-    });
-  }
 
   function addBlankPage(background: PageBackground) {
     setBlankMenu(false);
@@ -1258,8 +1215,6 @@ export default function PdfInkEditor() {
               setTool("pen");
             }}
             onSize={setPenWidth}
-            smooth={penSmooth[penKind]}
-            onSmooth={(value) => changeSmooth(penKind, value)}
             onClose={() => setPenPanel(false)}
           />
         )}
@@ -1324,7 +1279,6 @@ export default function PdfInkEditor() {
               color={color}
               width={width}
               pen={penKind}
-              smooth={penSmooth[penKind]}
               penOnly={penOnly}
               scrollRef={scrollRef}
               handlers={handlers}

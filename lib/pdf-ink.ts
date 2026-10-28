@@ -73,22 +73,7 @@ export type Stroke = {
    * tezlikdan taxmin qilinadi.
    */
   pressures?: number[];
-  /**
-   * Stabilizatsiya (0..1): qo'l titrashini qanchalik tekislash.
-   * Ko'p bo'lsa chiziq silliqroq, lekin qalamdan ko'proq orqada qoladi.
-   * Yo'q bo'lsa — `DEFAULT_SMOOTH`.
-   */
-  smooth?: number;
 };
-
-/** Qalamlarning boshlang'ich stabilizatsiyasi — yengil, chiziq qalamdan qolmasin */
-export const DEFAULT_SMOOTH = 0.2;
-
-/** Stabilizatsiya 0..1 oralig'ida, yuzdan bir aniqlikda */
-export function clampSmooth(value: number) {
-  if (!Number.isFinite(value)) return DEFAULT_SMOOTH;
-  return Math.round(Math.min(1, Math.max(0, value)) * 100) / 100;
-}
 
 /** [a, b, c, d, e, f] — PDF'dagi kabi affin matritsa */
 export type Matrix = [number, number, number, number, number, number];
@@ -312,10 +297,14 @@ export function hexToRgb(hex: string): [number, number, number] {
 const PEN_OPTIONS: Record<PenKind, (size: number) => StrokeOptions> = {
   felt: () => ({
     thinning: 0,
+    smoothing: 0.6,
+    streamline: 0.25,
     simulatePressure: false,
   }),
   fountain: (size) => ({
     thinning: 0.6,
+    smoothing: 0.65,
+    streamline: 0.3,
     /* Yumshoq egri: yengil bosimda ham chiziq uzilmasin */
     easing: (t) => Math.sin((t * Math.PI) / 2),
     start: { taper: size * 2.5, cap: true },
@@ -323,6 +312,8 @@ const PEN_OPTIONS: Record<PenKind, (size: number) => StrokeOptions> = {
   }),
   brush: (size) => ({
     thinning: 0.85,
+    smoothing: 0.7,
+    streamline: 0.3,
     easing: (t) => t * t * (3 - 2 * t),
     start: { taper: size * 6, cap: true },
     end: { taper: size * 8, cap: true },
@@ -338,37 +329,6 @@ const PEN_OPTIONS: Record<PenKind, (size: number) => StrokeOptions> = {
  * (aks holda har kadrda "sakrab" turardi), lekin aynan qalam turgan
  * nuqtaga yetadi — chiziq qalamdan orqada qolmaydi.
  */
-/** 100% stabilizatsiyada qo'l titrashi shu masofada (punkt) so'nadi */
-const MAX_STABILIZE_DISTANCE = 6;
-
-/**
- * Qo'l titrashini tekislash: chiziq qalamga "ip bilan tortilgandek"
- * ergashadi. Qalam `d` punkt yurganda orqada qolish `e^(-d/L)`
- * marta kamayadi — ya'ni tekislash qalam tezligiga va qurilma
- * nechta nuqta berishiga bog'liq emas. (`perfect-freehand` ning
- * `streamline` i har nuqtaga bog'liq: iPad qalami soniyasiga 240
- * nuqta bergani uchun u yerda deyarli sezilmasdi.)
- *
- * Oxirgi nuqta o'zgarmaydi — chiziq aynan qalam turgan joyda tugaydi.
- */
-export function stabilizePoints(input: number[][], smooth: number): number[][] {
-  const reach = clampSmooth(smooth) * MAX_STABILIZE_DISTANCE;
-  if (reach <= 0 || input.length < 3) return input;
-
-  const output: number[][] = [input[0]];
-  let [x, y] = input[0];
-  for (let i = 1; i < input.length - 1; i += 1) {
-    const [tx, ty] = input[i];
-    const moved = Math.hypot(tx - input[i - 1][0], ty - input[i - 1][1]);
-    const follow = 1 - Math.exp(-moved / reach);
-    x += (tx - x) * follow;
-    y += (ty - y) * follow;
-    output.push([x, y, ...input[i].slice(2)]);
-  }
-  output.push(input[input.length - 1]);
-  return output;
-}
-
 export function penOutline(stroke: Stroke, complete = true): number[][] | null {
   if (stroke.tool !== "pen" || !stroke.pen) return null;
 
@@ -382,13 +342,9 @@ export function penOutline(stroke: Stroke, complete = true): number[][] | null {
   if (input.length === 0) return [];
 
   const base = PEN_OPTIONS[stroke.pen](stroke.width);
-  const smooth = clampSmooth(stroke.smooth ?? DEFAULT_SMOOTH);
-  return getStroke(stabilizePoints(input, smooth), {
+  return getStroke(input, {
     size: stroke.width,
     ...base,
-    /* Titrashni `stabilizePoints` tekislaydi; bu yerda faqat kontur chetlari */
-    streamline: 0,
-    smoothing: 0.35 + smooth * 0.5,
     simulatePressure: base.simulatePressure ?? !pressures,
     ...(complete ? {} : { end: { taper: 0, cap: true } }),
     last: true,
