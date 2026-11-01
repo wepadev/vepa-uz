@@ -100,7 +100,7 @@ function ExampleRow({
             </a>
           ) : (
             <span className="mt-0.5 block text-xs font-semibold text-amber-700">
-              Video hali yo‘q
+              Video hali yöq
             </span>
           )}
         </span>
@@ -111,7 +111,7 @@ function ExampleRow({
             onClick={() => setEditing((value) => !value)}
             className="min-h-9 rounded-lg px-3 text-xs font-semibold text-mb-brand hover:bg-slate-100"
           >
-            {editing ? "Yopish" : "Tahrirlash"}
+            {editing ? "Yopiş" : "Tahrirlaş"}
           </button>
 
           <form action={deleteAction}>
@@ -120,7 +120,7 @@ function ExampleRow({
             <input type="hidden" name="exampleId" value={example.id} />
 
             <SubmitButton className="min-h-9 rounded-lg px-3 text-xs font-semibold text-red-600 hover:bg-red-50">
-              O‘chirish
+              Öçiriş
             </SubmitButton>
           </form>
         </span>
@@ -159,7 +159,7 @@ function ExampleRow({
             disabled={pending}
             className="min-h-11 rounded-xl bg-blue-600 px-4 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60"
           >
-            {pending ? "Saqlanmoqda..." : "Saqlash"}
+            {pending ? "Saqlanmoqda..." : "Saqlaş"}
           </SubmitButton>
 
           {state.status === "error" && state.message && (
@@ -221,14 +221,14 @@ function AddExamplesForm({
         htmlFor={`lines-${topicId}`}
         className="block text-sm font-semibold text-slate-900"
       >
-        Misol qo‘shish
+        Misol qöşiş
       </label>
 
       <p className="mt-1 text-xs leading-5 text-slate-500">
         Har bir qator — bitta misol. Nomi va havolasi orasiga{" "}
         <code className="rounded bg-white px-1 py-0.5 font-mono">|</code>{" "}
-        belgisini qo‘ying. Havolasiz ham qo‘shsa bo‘ladi — videoni
-        keyinroq qo‘yasiz.
+        belgisini qöying. Havolasiz ham qöşsa böladi — videoni
+        keyinroq qöyasiz.
       </p>
 
       <textarea
@@ -271,7 +271,7 @@ function AddExamplesForm({
         disabled={pending}
         className="mt-3 min-h-11 w-full rounded-xl bg-blue-600 px-5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
       >
-        {pending ? "Qo‘shilmoqda..." : "Misollarni qo‘shish"}
+        {pending ? "Qöşilmoqda..." : "Misollarni qöşiş"}
       </SubmitButton>
     </form>
   );

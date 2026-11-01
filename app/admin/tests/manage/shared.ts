@@ -93,7 +93,7 @@ export function parseAcceptedAnswers(value: string, primaryAnswer: string) {
 
 export function validateTestId(testId: number) {
   if (!Number.isInteger(testId) || testId <= 0) {
-    throw new Error("Test ID noto‘g‘ri.");
+    throw new Error("Test ID notöğri.");
   }
 }
 
@@ -101,11 +101,11 @@ export function normalizePositiveMinutes(value: string) {
   const normalized = value.replace(",", ".");
 
   if (!/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(normalized)) {
-    throw new Error("Vaqtni 0 dan katta son ko‘rinishida kiriting.");
+    throw new Error("Vaqtni 0 dan katta son körinişida kiriting.");
   }
 
   if (/^0*(?:\.0*)?$/.test(normalized)) {
-    throw new Error("Test vaqti 0 dan katta bo‘lishi kerak.");
+    throw new Error("Test vaqti 0 dan katta bölişi kerak.");
   }
 
   return normalized;
@@ -124,11 +124,11 @@ export async function uploadImage(
   const extension = IMAGE_EXTENSION_BY_TYPE.get(image.type);
 
   if (!extension) {
-    throw new Error("Rasm faqat PNG, JPG yoki WEBP formatida bo‘lishi kerak.");
+    throw new Error("Rasm faqat PNG, JPG yoki WEBP formatida bölişi kerak.");
   }
 
   if (image.size > MAX_IMAGE_SIZE) {
-    throw new Error("Rasm hajmi 5 MB dan oshmasligi kerak.");
+    throw new Error("Rasm hajmi 5 MB dan oşmasligi kerak.");
   }
 
   const imagePath = `${testId}/${folder}/${randomUUID()}.${extension}`;
@@ -161,7 +161,7 @@ export async function removeImage(
     .remove([imagePath]);
 
   if (error) {
-    console.error("Storage ichidagi rasm o‘chirilmadi:", error);
+    console.error("Storage içidagi rasm öçirilmadi:", error);
   }
 }
 
@@ -314,7 +314,7 @@ export async function renumberTestQuestions(
 
       if (blockQuestionsError) {
         throw new Error(
-          `Uchtalik savollar raqami aniqlanmadi: ${blockQuestionsError.message}`,
+          `Uçtalik savollar raqami aniqlanmadi: ${blockQuestionsError.message}`,
         );
       }
 
@@ -328,7 +328,7 @@ export async function renumberTestQuestions(
 
         if (error) {
           throw new Error(
-            `Uchtalik savol raqami yangilanmadi: ${error.message}`,
+            `Uçtalik savol raqami yangilanmadi: ${error.message}`,
           );
         }
       }
@@ -360,7 +360,7 @@ export async function createSignedUrlMap(
         .createSignedUrl(row.image_path, 60 * 60);
 
       if (error) {
-        console.error(`Rasm ochilmadi (${row.id}):`, error);
+        console.error(`Rasm oçilmadi (${row.id}):`, error);
         return;
       }
 

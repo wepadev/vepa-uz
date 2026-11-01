@@ -19,7 +19,7 @@ export default async function SiteNav({ children }: { children: ReactNode }) {
   let isAuthenticated = false;
   let isAdmin = false;
   let isInGroup = false;
-  let fullName = "O‘quvchi";
+  let fullName = "Öquvçi";
 
   try {
     const {
@@ -40,7 +40,7 @@ export default async function SiteNav({ children }: { children: ReactNode }) {
       isAuthenticated = Boolean(profile && profile.is_active === true);
       isAdmin = isAuthenticated && profile?.role === "admin";
       fullName =
-        profile?.full_name?.trim() || user.email?.split("@")[0] || "O‘quvchi";
+        profile?.full_name?.trim() || user.email?.split("@")[0] || "Öquvçi";
 
       /* Do'kon faqat guruh o'quvchisiga ko'rinadi */
       if (isAuthenticated) {

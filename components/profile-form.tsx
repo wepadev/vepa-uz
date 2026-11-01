@@ -29,24 +29,24 @@ function translatePasswordError(message: string) {
     normalized.includes("same password") ||
     normalized.includes("different from the old")
   ) {
-    return "Yangi parol eski paroldan farq qilishi kerak.";
+    return "Yangi parol eski paroldan farq qilişi kerak.";
   }
 
   if (
     normalized.includes("reauthentication") ||
     normalized.includes("nonce")
   ) {
-    return "Xavfsizlik uchun parolni tiklash havolasi orqali yangilang.";
+    return "Xavfsizlik uçun parolni tiklaş havolasi orqali yangilang.";
   }
 
   if (
     normalized.includes("password") &&
     normalized.includes("at least")
   ) {
-    return "Parol kamida 8 ta belgidan iborat bo‘lishi kerak.";
+    return "Parol kamida 8 ta belgidan iborat bölişi kerak.";
   }
 
-  return "Parolni yangilab bo‘lmadi. Qayta urinib ko‘ring.";
+  return "Parolni yangilab bölmadi. Qayta urinib köring.";
 }
 
 export default function ProfileForm({
@@ -102,14 +102,14 @@ export default function ProfileForm({
 
     if (normalizedName.length < 2) {
       setNameError(
-        "Ism-familiya kamida 2 ta belgidan iborat bo‘lishi kerak.",
+        "Ism-familiya kamida 2 ta belgidan iborat bölişi kerak.",
       );
       return;
     }
 
     if (normalizedName.length > 120) {
       setNameError(
-        "Ism-familiya 120 ta belgidan oshmasligi kerak.",
+        "Ism-familiya 120 ta belgidan oşmasligi kerak.",
       );
       return;
     }
@@ -164,7 +164,7 @@ export default function ProfileForm({
 
       setNameError(
         message ||
-          "Profilni yangilab bo‘lmadi.",
+          "Profilni yangilab bölmadi.",
       );
     } finally {
       setNameLoading(false);
@@ -181,7 +181,7 @@ export default function ProfileForm({
 
     if (password.length < 8) {
       setPasswordError(
-        "Parol kamida 8 ta belgidan iborat bo‘lishi kerak.",
+        "Parol kamida 8 ta belgidan iborat bölişi kerak.",
       );
       return;
     }
@@ -250,12 +250,12 @@ export default function ProfileForm({
           </p>
 
           <h2 className="mt-2 text-2xl font-bold text-slate-950">
-            Ism-familiyani o‘zgartirish
+            Ism-familiyani özgartiriş
           </h2>
 
           <p className="mt-2 text-sm leading-6 text-slate-500">
-            Bu ism bosh sahifa, testlar va
-            natijalarda ko‘rinadi.
+            Bu ism boş sahifa, testlar va
+            natijalarda körinadi.
           </p>
 
           <form
@@ -314,7 +314,7 @@ export default function ProfileForm({
                   Saqlanmoqda...
                 </LoadingLabel>
               ) : (
-                "O‘zgarishni saqlash"
+                "Özgarişni saqlaş"
               )}
             </button>
           </form>
@@ -326,7 +326,7 @@ export default function ProfileForm({
           </p>
 
           <h2 className="mt-2 text-2xl font-bold text-slate-950">
-            Parolni yangilash
+            Parolni yangilaş
           </h2>
 
           {provider === "google" ? (
@@ -338,7 +338,7 @@ export default function ProfileForm({
               <p className="mt-1 text-sm leading-6 text-blue-700">
                 Bu akkauntga Google hisobingiz orqali
                 kirasiz. Google parolini Google
-                akkauntingiz sozlamalaridan boshqaring.
+                akkauntingiz sozlamalaridan boşqaring.
               </p>
             </div>
           ) : (
@@ -386,8 +386,8 @@ export default function ProfileForm({
                     className="absolute inset-y-0 right-3 my-auto h-fit rounded-lg px-2 py-1 text-xs font-bold text-slate-500 hover:bg-slate-100 hover:text-slate-800"
                   >
                     {showPassword
-                      ? "Yashirish"
-                      : "Ko‘rsatish"}
+                      ? "Yaşiriş"
+                      : "Körsatiş"}
                   </button>
                 </div>
               </div>
@@ -397,7 +397,7 @@ export default function ProfileForm({
                   htmlFor="profile-confirm-password"
                   className="text-sm font-semibold text-slate-700"
                 >
-                  Parolni tasdiqlash
+                  Parolni tasdiqlaş
                 </label>
 
                 <input
@@ -449,7 +449,7 @@ export default function ProfileForm({
                     Yangilanmoqda...
                   </LoadingLabel>
                 ) : (
-                  "Parolni yangilash"
+                  "Parolni yangilaş"
                 )}
               </button>
 
@@ -457,7 +457,7 @@ export default function ProfileForm({
                 href="/auth/forgot-password"
                 className="inline-flex min-h-11 w-full items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
               >
-                Email orqali tiklash
+                Email orqali tiklaş
               </a>
             </form>
           )}
@@ -476,13 +476,13 @@ export default function ProfileForm({
                 Email
               </p>
               <p className="mt-1 break-all font-semibold text-slate-800">
-                {email || "Ko‘rsatilmagan"}
+                {email || "Körsatilmagan"}
               </p>
             </div>
 
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                Kirish usuli
+                Kiriş usuli
               </p>
               <p className="mt-1 font-semibold text-slate-800">
                 {provider === "google"
@@ -498,7 +498,7 @@ export default function ProfileForm({
               <p className="mt-1 font-semibold text-slate-800">
                 {role === "admin"
                   ? "Administrator"
-                  : "O‘quvchi"}
+                  : "Öquvçi"}
               </p>
             </div>
           </div>
@@ -510,7 +510,7 @@ export default function ProfileForm({
           </p>
 
           <h2 className="mt-2 text-xl font-bold text-slate-950">
-            Platforma bo‘limlari
+            Platforma bölimlari
           </h2>
 
           <div className="mt-5 space-y-3">
@@ -540,7 +540,7 @@ export default function ProfileForm({
 
           <p className="mt-4 text-xs leading-5 text-slate-500">
             Ruxsatlarni faqat administrator
-            o‘zgartiradi.
+            özgartiradi.
           </p>
         </section>
       </aside>

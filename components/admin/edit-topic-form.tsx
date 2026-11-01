@@ -99,7 +99,7 @@ export default function EditTopicForm({
             htmlFor={`topic-video-${topicId}`}
             className="mt-4 block text-sm font-semibold"
           >
-            Videoyechim havolasi{" "}
+            Videoyeçim havolasi{" "}
             <span className="font-normal text-slate-500">
               (ixtiyoriy)
             </span>
@@ -120,8 +120,8 @@ export default function EditTopicForm({
           />
 
           <p className="mt-1.5 text-xs leading-5 text-slate-500">
-            Bitta video — mavzudagi barcha misollar uchun. Bo‘sh
-            qoldirsangiz video ko‘rsatilmaydi.
+            Bitta video — mavzudagi barça misollar uçun. Böş
+            qoldirsangiz video körsatilmaydi.
           </p>
 
           {state.errors.videoUrl && (
@@ -152,7 +152,7 @@ export default function EditTopicForm({
       >
         {pending
           ? "Saqlanmoqda..."
-          : "O‘zgarishni saqlash"}
+          : "Özgarişni saqlaş"}
       </SubmitButton>
     </form>
   );

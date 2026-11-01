@@ -15,7 +15,7 @@ export default function PrintResultButton() {
         aria-hidden="true"
       />
 
-      Chop etish / PDF
+      Çop etiş / PDF
     </button>
   );
 }

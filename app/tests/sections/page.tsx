@@ -9,9 +9,9 @@ import { cn } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Test bo‘limlari",
+  title: "Test bölimlari",
   description:
-    "Tanlangan yo‘nalishdagi test bo‘limlari.",
+    "Tanlangan yönalişdagi test bölimlari.",
 };
 
 type PageProps = {
@@ -72,7 +72,7 @@ export default async function TestSectionsPage({ searchParams }: PageProps) {
 
   if (examTypeError) {
     throw new Error(
-      `Test yo‘nalishi yuklanmadi: ${examTypeError.message}`,
+      `Test yönalişi yuklanmadi: ${examTypeError.message}`,
     );
   }
 
@@ -110,7 +110,7 @@ export default async function TestSectionsPage({ searchParams }: PageProps) {
 
   if (sectionsResult.error) {
     throw new Error(
-      `Bo‘limlar yuklanmadi: ${sectionsResult.error.message}`,
+      `Bölimlar yuklanmadi: ${sectionsResult.error.message}`,
     );
   }
 
@@ -124,7 +124,7 @@ export default async function TestSectionsPage({ searchParams }: PageProps) {
 
   if (lessonTestsResult.error) {
     throw new Error(
-      `Dars testlari tekshirilmadi: ${lessonTestsResult.error.message}`,
+      `Dars testlari tekşirilmadi: ${lessonTestsResult.error.message}`,
     );
   }
 
@@ -183,14 +183,14 @@ export default async function TestSectionsPage({ searchParams }: PageProps) {
         backHref="/tests"
         backLabel="Testlar"
         title={examType.title}
-        subtitle={examType.description || "Bo‘limni tanlang"}
+        subtitle={examType.description || "Bölimni tanlang"}
         action={
           profile.role === "admin" ? (
             <Link
               href={`/admin/tests/sections?exam=${encodeURIComponent(examType.code)}`}
               className="inline-flex min-h-10 items-center rounded-xl border border-blue-200 bg-blue-50 px-3 text-sm font-semibold text-blue-700 hover:bg-blue-100"
             >
-              Boshqarish
+              Boşqariş
             </Link>
           ) : (
             <Link
@@ -207,20 +207,20 @@ export default async function TestSectionsPage({ searchParams }: PageProps) {
         {/* Telefonda bu blok ekranning yarmini egallamasligi uchun ixchamroq */}
         <div className="rounded-2xl border border-blue-100 bg-mb-brand p-4 text-white shadow-lg sm:rounded-3xl sm:p-8">
           <p className="text-[12px] font-bold text-blue-100 sm:text-sm">
-            Mavzular va bo‘limlar
+            Mavzular va bölimlar
           </p>
           <h2 className="mt-1 text-xl font-bold sm:mt-2 sm:text-3xl">
-            Kerakli bo‘limni tanlang
+            Kerakli bölimni tanlang
           </h2>
         </div>
 
         {!sections.length ? (
           <div className="mt-7 rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
             <p className="text-lg font-bold text-slate-700">
-              Hozircha bo‘lim qo‘shilmagan
+              Hozirça bölim qöşilmagan
             </p>
             <p className="mt-2 text-sm text-slate-500">
-              Administrator bo‘lim yaratib, nashr qilganda shu yerda ko‘rinadi.
+              Administrator bölim yaratib, naşr qilganda şu yerda körinadi.
             </p>
           </div>
         ) : (
@@ -328,7 +328,7 @@ export default async function TestSectionsPage({ searchParams }: PageProps) {
                     {section.title}
                   </h3>
                   <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">
-                    {section.description || "Ushbu bo‘limdagi testlar."}
+                    {section.description || "Uşbu bölimdagi testlar."}
                   </p>
 
                   <div className="mt-5 grid grid-cols-2 gap-3">
@@ -354,7 +354,7 @@ export default async function TestSectionsPage({ searchParams }: PageProps) {
                     href={`/tests/topics?sectionId=${section.id}`}
                     className="mt-5 inline-flex min-h-12 items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-center font-bold text-white hover:bg-blue-700"
                   >
-                    Mavzularni ko‘rish
+                    Mavzularni köriş
                   </Link>
                 </article>
               );

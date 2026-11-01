@@ -53,7 +53,7 @@ export default function TopicExampleList({
             </span>
 
             <span className="mt-0.5 block text-xs text-mb-muted">
-              {empty ? "Video hali yo‘q" : "Videoyechim"}
+              {empty ? "Video hali yöq" : "Videoyeçim"}
             </span>
           </span>
         );
@@ -99,7 +99,7 @@ export default function TopicExampleList({
               <div className="border-t border-mb-line p-3">
                 <YouTubeEmbed
                   url={example.videoUrl}
-                  title={`${example.label} — videoyechim`}
+                  title={`${example.label} — videoyeçim`}
                 />
               </div>
             )}

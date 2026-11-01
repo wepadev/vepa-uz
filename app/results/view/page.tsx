@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Natija tafsiloti",
   description:
-    "Urinishdagi har bir savol bo‘yicha tahlil.",
+    "Urinişdagi har bir savol böyiça tahlil.",
 };
 
 const QUESTION_IMAGE_BUCKET = "question-images";
@@ -328,25 +328,25 @@ function formatDifference(
   difference: number | null,
 ) {
   if (difference === null) {
-    return "Birinchi tugallangan urinish";
+    return "Birinçi tugallangan uriniş";
   }
 
   const absolute =
     Math.abs(difference);
 
   if (difference > 0) {
-    return `Oldingi eng yaxshidan +${formatPercentage(
+    return `Oldingi eng yaxşidan +${formatPercentage(
       absolute,
     )} foiz punkt`;
   }
 
   if (difference < 0) {
-    return `Oldingi eng yaxshidan ${formatPercentage(
+    return `Oldingi eng yaxşidan ${formatPercentage(
       absolute,
     )} foiz punkt past`;
   }
 
-  return "Oldingi eng yaxshi natija bilan teng";
+  return "Oldingi eng yaxşi natija bilan teng";
 }
 
 function MathValue({
@@ -702,7 +702,7 @@ export default async function ResultViewPage({
 
   if (profileResult.error) {
     throw new Error(
-      "Oʼquvchi ma’lumotlari yuklanmadi.",
+      "Öquvçi ma’lumotlari yuklanmadi.",
     );
   }
 
@@ -726,7 +726,7 @@ export default async function ResultViewPage({
 
   if (userAnswersResult.error) {
     throw new Error(
-      "Oʼquvchi javoblari yuklanmadi.",
+      "Öquvçi javoblari yuklanmadi.",
     );
   }
 
@@ -744,7 +744,7 @@ export default async function ResultViewPage({
 
   if (currentUserAttemptsResult.error) {
     throw new Error(
-      `Shaxsiy urinishlar yuklanmadi: ${currentUserAttemptsResult.error.message}`,
+      `Şaxsiy urinişlar yuklanmadi: ${currentUserAttemptsResult.error.message}`,
     );
   }
 
@@ -783,7 +783,7 @@ export default async function ResultViewPage({
 
     if (answerKeysError) {
       throw new Error(
-        "Toʼgʼri javoblar yuklanmadi.",
+        "Töğri javoblar yuklanmadi.",
       );
     }
 
@@ -1078,22 +1078,22 @@ const retryHref =
 
 const retryLabel =
   isGroupOnlyTest
-    ? "Uy vazifalarimga qaytish"
-    : "Testni qayta ishlash";
+    ? "Uy vazifalarimga qaytiş"
+    : "Testni qayta işlaş";
 
 const lessonRetryLabel =
   isGroupOnlyTest
-    ? "Uy vazifalarimga qaytish"
+    ? "Uy vazifalarimga qaytiş"
     : retryLessonId
-      ? "Dars testini qayta ishlash"
-      : "Darslarga qaytish";
+      ? "Dars testini qayta işlaş"
+      : "Darslarga qaytiş";
 
 const differenceLabel =
   attempt.completed_at
     ? formatDifference(
         differenceFromPreviousBest,
       )
-    : "Urinish tugallanmagan";
+    : "Uriniş tugallanmagan";
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
@@ -1104,14 +1104,14 @@ const differenceLabel =
               href={`/lessons/view?lessonId=${lessonNavigation.currentLessonId}`}
               className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
             >
-              ← Darsga qaytish
+              ← Darsga qaytiş
             </a>
           ) : (
             <Link
               href="/results"
               className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
             >
-              ← Natijalarimga qaytish
+              ← Natijalarimga qaytiş
             </Link>
           )}
 
@@ -1152,8 +1152,8 @@ const differenceLabel =
 
           <div className="px-1.5 py-3 text-center sm:px-4 sm:py-4">
             <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 sm:text-xs sm:normal-case sm:tracking-normal">
-              <span className="sm:hidden">Toʼgʼri</span>
-              <span className="hidden sm:inline">Toʼgʼri javoblar</span>
+              <span className="sm:hidden">Töğri</span>
+              <span className="hidden sm:inline">Töğri javoblar</span>
             </p>
 
             <p className="mt-1 whitespace-nowrap text-lg font-bold text-emerald-600 sm:text-2xl">
@@ -1199,19 +1199,19 @@ const differenceLabel =
 
             {isPersonalBest && (
               <span className="rounded-full bg-emerald-300 px-3 py-1 text-xs font-bold text-emerald-950">
-                Shaxsiy rekord
+                Şaxsiy rekord
               </span>
             )}
           </div>
 
           <h2 className="mt-3 text-2xl font-bold">
-            Reyting va shaxsiy natija
+            Reyting va şaxsiy natija
           </h2>
 
           <p className="mt-2 text-sm leading-6 text-blue-100">
-            Har bir oʼquvchining eng yaxshi tugallangan
-            urinishi hisoblanadi. Teng foizda tezroq
-            tugatgan oʼquvchi yuqorida turadi.
+            Har bir öquvçining eng yaxşi tugallangan
+            urinişi hisoblanadi. Teng foizda tezroq
+            tugatgan öquvçi yuqorida turadi.
           </p>
         </div>
 
@@ -1231,7 +1231,7 @@ const differenceLabel =
           </div>
         ) : (
           <div className="rounded-2xl border border-white/20 bg-white/10 px-5 py-4 text-sm font-bold backdrop-blur">
-            Reyting uchun testni tugating
+            Reyting uçun testni tugating
           </div>
         )}
       </div>
@@ -1240,7 +1240,7 @@ const differenceLabel =
     <div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-2 lg:grid-cols-4 sm:p-6">
       <div className="rounded-2xl bg-blue-50 p-4">
         <p className="text-xs font-bold uppercase tracking-wide text-blue-600">
-          Eng yaxshi foiz
+          Eng yaxşi foiz
         </p>
 
         <p className="mt-2 text-2xl font-bold text-blue-950">
@@ -1254,7 +1254,7 @@ const differenceLabel =
 
       <div className="rounded-2xl bg-blue-50 p-4">
         <p className="text-xs font-bold uppercase tracking-wide text-blue-600">
-          Eng yaxshi vaqt
+          Eng yaxşi vaqt
         </p>
 
         <p className="mt-2 font-mono text-2xl font-bold tabular-nums text-blue-950">
@@ -1268,7 +1268,7 @@ const differenceLabel =
 
       <div className="rounded-2xl bg-emerald-50 p-4">
         <p className="text-xs font-bold uppercase tracking-wide text-emerald-600">
-          Jami urinish
+          Jami uriniş
         </p>
 
         <p className="mt-2 text-2xl font-bold text-emerald-950">
@@ -1314,7 +1314,7 @@ const differenceLabel =
         href={`/leaderboard?testId=${attempt.test_id}`}
         className="inline-flex min-h-12 flex-1 items-center justify-center rounded-2xl border border-blue-200 bg-blue-50 px-5 py-3 text-center font-bold text-blue-700 transition hover:bg-blue-100"
       >
-        Test reytingini koʼrish
+        Test reytingini köriş
       </Link>
     </div>
   </section>
@@ -1333,12 +1333,12 @@ const differenceLabel =
         </div>
 
         <h2 className="mt-3 text-xl font-bold text-blue-950 sm:text-2xl">
-          Bu natija faqat dars progressingiz uchun
+          Bu natija faqat dars progressingiz uçun
         </h2>
 
         <p className="mt-2 max-w-3xl text-sm leading-6 text-blue-800">
           Darsga biriktirilgan testlar umumiy reytingga
-          va testlar reytingiga qoʼshilmaydi.
+          va testlar reytingiga qöşilmaydi.
         </p>
       </div>
 
@@ -1363,7 +1363,7 @@ const differenceLabel =
         </h2>
 
         <p className="mt-2 text-sm leading-6 text-slate-600">
-          Test hozir Testlar boʼlimida faol emas yoki
+          Test hozir Testlar bölimida faol emas yoki
           darsga biriktirilgan.
         </p>
       </div>
@@ -1399,8 +1399,8 @@ const differenceLabel =
                   }
                 >
                   {passedLessonTest
-                    ? "Tabriklaymiz, testdan oʼtdingiz!"
-                    : "Keyingi dars hali ochilmadi"}
+                    ? "Tabriklaymiz, testdan ötdingiz!"
+                    : "Keyingi dars hali oçilmadi"}
                 </h2>
 
                 <p
@@ -1413,10 +1413,10 @@ const differenceLabel =
                   {passedLessonTest
                     ? `Natijangiz ${formatPercentage(
                         percentage,
-                      )}%. Keyingi darsga oʼtishingiz mumkin.`
+                      )}%. Keyingi darsga ötişingiz mumkin.`
                     : `Natijangiz ${formatPercentage(
                         percentage,
-                      )}%. Keyingi dars uchun kamida 90% kerak.`}
+                      )}%. Keyingi dars uçun kamida 90% kerak.`}
                 </p>
               </div>
 
@@ -1433,7 +1433,7 @@ const differenceLabel =
                     href={`/lessons/category?categoryId=${lessonNavigation.categoryId}`}
                     className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-600 px-6 py-3 text-center font-bold text-white transition hover:bg-emerald-700"
                   >
-                    Darslar roʼyxatiga qaytish
+                    Darslar röyxatiga qaytiş
                   </a>
                 )
               ) : (
@@ -1441,7 +1441,7 @@ const differenceLabel =
                   href={`/lessons/view?lessonId=${lessonNavigation.currentLessonId}`}
                   className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-2xl bg-amber-600 px-6 py-3 text-center font-bold text-white transition hover:bg-amber-700"
                 >
-                  ← Darsga qaytish
+                  ← Darsga qaytiş
                 </a>
               )}
             </div>
@@ -1452,7 +1452,7 @@ const differenceLabel =
           <div className="grid grid-cols-2 gap-4 text-sm sm:gap-5 lg:grid-cols-5">
             <div>
               <p className="text-slate-500">
-                Oʼquvchi
+                Öquvçi
               </p>
 
               <p className="mt-1 font-semibold">
@@ -1472,7 +1472,7 @@ const differenceLabel =
 
             <div>
               <p className="text-slate-500">
-                Boshlangan
+                Boşlangan
               </p>
 
               <p className="mt-1 font-semibold">
@@ -1512,7 +1512,7 @@ const differenceLabel =
           </h2>
 
           <p className="mt-1 text-sm text-slate-500">
-            Oʼquvchi javobi, toʼgʼri javob va yechimlar
+            Öquvçi javobi, töğri javob va yeçimlar
           </p>
         </div>
 
@@ -1578,9 +1578,9 @@ const differenceLabel =
                       }
                     >
                       {isCorrect
-                        ? "Toʼgʼri"
+                        ? "Töğri"
                         : selectedAnswer
-                          ? "Notoʼgʼri"
+                          ? "Notöğri"
                           : "Javob berilmagan"}
                     </span>
                   </div>
@@ -1591,7 +1591,7 @@ const differenceLabel =
                         loading="lazy"
                         decoding="async"
                         src={imageUrl}
-                        alt={`${question.order_number}-savol chizmasi`}
+                        alt={`${question.order_number}-savol çizmasi`}
                         className="mx-auto max-h-[520px] w-auto max-w-full rounded-xl object-contain"
                       />
                     </div>
@@ -1654,13 +1654,13 @@ const differenceLabel =
                             <div className="mt-2 flex flex-wrap gap-2">
                               {isSelected && (
                                 <span className="text-xs font-semibold">
-                                  Oʼquvchi tanlagan
+                                  Öquvçi tanlagan
                                 </span>
                               )}
 
                               {isRightAnswer && (
                                 <span className="text-xs font-semibold">
-                                  Toʼgʼri javob
+                                  Töğri javob
                                 </span>
                               )}
                             </div>
@@ -1673,7 +1673,7 @@ const differenceLabel =
                   {answerKey?.solution_text && (
                     <div className="mt-5 rounded-xl border border-blue-200 bg-blue-50 p-4 text-blue-950">
                       <p className="mb-2 text-sm font-bold">
-                        Yechim
+                        Yeçim
                       </p>
 
                       <MathValue
@@ -1687,14 +1687,14 @@ const differenceLabel =
                   {answerKey?.solution_video_url && (
                     <div className="mt-6">
                       <h3 className="mb-3 text-lg font-bold">
-                        Videoyechim
+                        Videoyeçim
                       </h3>
 
                       <YouTubeEmbed
                         url={
                           answerKey.solution_video_url
                         }
-                        title={`${question.order_number}-savol videoyechimi`}
+                        title={`${question.order_number}-savol videoyeçimi`}
                       />
                     </div>
                   )}
@@ -1758,7 +1758,7 @@ const differenceLabel =
                       loading="lazy"
                       decoding="async"
                       src={imageUrl}
-                      alt="Umumiy savol chizmasi"
+                      alt="Umumiy savol çizmasi"
                       className="mx-auto max-h-[560px] w-auto max-w-full rounded-xl object-contain"
                     />
                   </div>
@@ -1857,9 +1857,9 @@ const differenceLabel =
                               }
                             >
                               {isCorrect
-                                ? "Toʼgʼri"
+                                ? "Töğri"
                                 : selectedAnswer
-                                  ? "Notoʼgʼri"
+                                  ? "Notöğri"
                                   : "Javob berilmagan"}
                             </span>
                           </div>
@@ -1867,7 +1867,7 @@ const differenceLabel =
                           <div className="mt-4 grid gap-3 sm:grid-cols-2">
                             <div className="rounded-xl border border-slate-200 bg-white p-4">
                               <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                                Oʼquvchi javobi
+                                Öquvçi javobi
                               </p>
 
                               <div className="mt-2 font-semibold">
@@ -1887,7 +1887,7 @@ const differenceLabel =
 
                             <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4">
                               <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
-                                Toʼgʼri javob
+                                Töğri javob
                               </p>
 
                               <div className="mt-2 font-semibold text-emerald-900">
@@ -1905,7 +1905,7 @@ const differenceLabel =
                             answerKey.accepted_answers.length >
                               0 && (
                               <div className="mt-3 text-sm text-slate-500">
-                                Qabul qilinadigan boshqa javoblar:
+                                Qabul qilinadigan boşqa javoblar:
                                 <div className="mt-1">
                                   <MathValue
                                     value={answerKey.accepted_answers.join(
@@ -1919,7 +1919,7 @@ const differenceLabel =
                           {answerKey?.solution_text && (
                             <div className="mt-4 rounded-xl border border-blue-200 bg-blue-50 p-4 text-blue-950">
                               <p className="mb-2 text-sm font-bold">
-                                Yechim
+                                Yeçim
                               </p>
 
                               <MathValue
@@ -1933,14 +1933,14 @@ const differenceLabel =
                           {answerKey?.solution_video_url && (
                             <div className="mt-5">
                               <h4 className="mb-3 font-bold">
-                                Videoyechim
+                                Videoyeçim
                               </h4>
 
                               <YouTubeEmbed
                                 url={
                                   answerKey.solution_video_url
                                 }
-                                title={`${displayLabel} savol videoyechimi`}
+                                title={`${displayLabel} savol videoyeçimi`}
                               />
                             </div>
                           )}

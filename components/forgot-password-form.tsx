@@ -15,17 +15,17 @@ function translateResetError(message: string) {
   const normalized = message.toLowerCase();
 
   if (normalized.includes("rate limit")) {
-    return "Juda ko‘p urinish bo‘ldi. Birozdan keyin qayta urinib ko‘ring.";
+    return "Juda köp uriniş böldi. Birozdan keyin qayta urinib köring.";
   }
 
   if (
     normalized.includes("email") &&
     normalized.includes("invalid")
   ) {
-    return "Email manzili noto‘g‘ri.";
+    return "Email manzili notöğri.";
   }
 
-  return "Tiklash havolasini yuborib bo‘lmadi. Qayta urinib ko‘ring.";
+  return "Tiklaş havolasini yuborib bölmadi. Qayta urinib köring.";
 }
 
 export function ForgotPasswordForm({
@@ -86,7 +86,7 @@ export function ForgotPasswordForm({
       }
 
       setSuccess(
-        "Agar bu email bilan akkaunt mavjud bo‘lsa, parolni tiklash havolasi yuborildi. Emailning Spam bo‘limini ham tekshiring.",
+        "Agar bu email bilan akkaunt mavjud bölsa, parolni tiklaş havolasi yuborildi. Emailning Spam bölimini ham tekşiring.",
       );
     } catch (caughtError: unknown) {
       const message =
@@ -113,7 +113,7 @@ export function ForgotPasswordForm({
       </p>
 
       <h1 className="mt-3 text-3xl font-bold text-slate-950">
-        Parolni tiklash
+        Parolni tiklaş
       </h1>
 
       <p className="mt-2 leading-6 text-slate-500">
@@ -160,7 +160,7 @@ export function ForgotPasswordForm({
         {success && (
           <AppAlert
             variant="success"
-            title="Emailni tekshiring"
+            title="Emailni tekşiring"
           >
             {success}
           </AppAlert>
@@ -176,7 +176,7 @@ export function ForgotPasswordForm({
               Havola yuborilmoqda...
             </LoadingLabel>
           ) : (
-            "Tiklash havolasini yuborish"
+            "Tiklaş havolasini yuboriş"
           )}
         </button>
       </form>
@@ -185,7 +185,7 @@ export function ForgotPasswordForm({
         href="/auth/login"
         className="mt-5 inline-flex min-h-11 w-full items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
       >
-        ← Kirish sahifasiga qaytish
+        ← Kiriş sahifasiga qaytiş
       </a>
     </div>
   );

@@ -94,7 +94,7 @@ export default function CreateLessonForm({
         id="title"
         name="title"
         type="text"
-        placeholder="Masalan: Chiziqli tenglamalar"
+        placeholder="Masalan: Çiziqli tenglamalar"
         className={fieldClass(
           state.errors.title,
         )}
@@ -125,9 +125,9 @@ export default function CreateLessonForm({
       />
 
       <p className="mt-1 text-xs leading-5 text-slate-500">
-        Dars aynan shu raqam bilan chiqadi. Raqam band bo‘lsa,
-        o‘sha dars bir pog‘ona suriladi. Bo‘sh qoldirilsa dars
-        oxiriga qo‘yiladi.
+        Dars aynan şu raqam bilan çiqadi. Raqam band bölsa,
+        öşa dars bir poğona suriladi. Böş qoldirilsa dars
+        oxiriga qöyiladi.
       </p>
 
       <FieldError
@@ -138,14 +138,14 @@ export default function CreateLessonForm({
         htmlFor="description"
         className="mt-5 block text-sm font-semibold"
       >
-        Qisqacha tavsif
+        Qisqaça tavsif
       </label>
 
       <textarea
         id="description"
         name="description"
         rows={3}
-        placeholder="Dars haqida qisqacha ma’lumot"
+        placeholder="Dars haqida qisqaça ma’lumot"
         className={`${fieldClass()} resize-y`}
       />
 
@@ -181,7 +181,7 @@ export default function CreateLessonForm({
         id="content"
         name="content"
         rows={7}
-        placeholder="Darsning nazariy qismi. Matematik formulalarni $...$ shaklida yozishingiz mumkin."
+        placeholder="Darsning nazariy qismi. Matematik formulalarni $...$ şaklida yozişingiz mumkin."
         className={`${fieldClass()} resize-y`}
       />
 
@@ -198,7 +198,7 @@ export default function CreateLessonForm({
           </span>
 
           <span className="block text-xs leading-5 text-slate-500">
-            Belgilanmasa dars Premium bo‘ladi.
+            Belgilanmasa dars Premium böladi.
           </span>
         </span>
       </label>
@@ -208,8 +208,8 @@ export default function CreateLessonForm({
       </p>
 
       <p className="mt-1 text-xs leading-5 text-slate-500">
-        Bir nechtasini belgilash mumkin. Keyingi dars ularning
-        o‘rtacha natijasi 90% ga yetganda ochiladi.
+        Bir neçtasini belgilaş mumkin. Keyingi dars ularning
+        örtaça natijasi 90% ga yetganda oçiladi.
       </p>
 
       <div className="mt-2 max-h-56 space-y-1 overflow-y-auto rounded-xl border border-slate-300 p-2">
@@ -253,7 +253,7 @@ export default function CreateLessonForm({
       >
         {pending
           ? "Dars saqlanmoqda..."
-          : "Videodarsni qo‘shish"}
+          : "Videodarsni qöşiş"}
       </SubmitButton>
     </form>
   );

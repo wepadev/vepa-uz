@@ -16,7 +16,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Videodarslar",
   description:
-    "Mavzular bo‘yicha videodarslar va ular uchun testlar.",
+    "Mavzular böyiça videodarslar va ular uçun testlar.",
 };
 
 type CategoryRow = {
@@ -80,7 +80,7 @@ export default async function LessonsPage() {
 
   if (categoriesResult.error) {
     throw new Error(
-      `Dars bo‘limlari yuklanmadi: ${categoriesResult.error.message}`,
+      `Dars bölimlari yuklanmadi: ${categoriesResult.error.message}`,
     );
   }
 
@@ -176,7 +176,7 @@ export default async function LessonsPage() {
             href="/"
             className="inline-flex min-h-8 items-center text-sm font-semibold text-blue-600 hover:text-blue-700"
           >
-            ← Bosh sahifa
+            ← Boş sahifa
           </Link>
 
           <h1 className="mt-0.5 text-lg font-bold sm:text-2xl">
@@ -188,17 +188,17 @@ export default async function LessonsPage() {
       <section className="mx-auto max-w-6xl px-3 py-5 sm:px-6 sm:py-12">
         <div className="rounded-2xl bg-mb-brand p-4 text-white shadow-lg sm:rounded-3xl sm:p-6">
           <h2 className="text-xl font-bold sm:text-3xl">
-            Dars bo‘limlari
+            Dars bölimlari
           </h2>
 
           <p className="mt-2 text-sm leading-6 text-blue-100">
-            Keyingi dars test natijasi 90% ga yetganda ochiladi.
+            Keyingi dars test natijasi 90% ga yetganda oçiladi.
           </p>
         </div>
 
         {categories.length === 0 ? (
           <div className="mt-6 rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-12 text-center">
-            <p className="text-lg font-bold">Hozircha dars yo‘q</p>
+            <p className="text-lg font-bold">Hozirça dars yöq</p>
           </div>
         ) : (
           <div className="mt-5 grid grid-cols-2 gap-3 sm:mt-7 sm:gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -228,8 +228,8 @@ export default async function LessonsPage() {
                   description={category.description ?? ""}
                   actionLabel={
                     metrics.total > 0
-                      ? "Ochish"
-                      : "Dars yo‘q"
+                      ? "Oçiş"
+                      : "Dars yöq"
                   }
                   icon={MonitorPlay}
                   accent="content"
@@ -237,7 +237,7 @@ export default async function LessonsPage() {
                   meta={`${metrics.completed} / ${metrics.total} dars`}
                   badge={
                     <span className="rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-bold text-mb-muted shadow-sm">
-                      {category.order_number}-bo‘lim
+                      {category.order_number}-bölim
                     </span>
                   }
                 >

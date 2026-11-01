@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Mavzular",
-  description: "Darslik mavzulari va ularning videoyechimlari.",
+  description: "Darslik mavzulari va ularning videoyeçimlari.",
 };
 
 type PageProps = {
@@ -247,7 +247,7 @@ export default async function TextbookTopicsPage({
                   strokeWidth={2.4}
                   aria-hidden="true"
                 />
-                {withVideo} ta videoyechim
+                {withVideo} ta videoyeçim
               </span>
             </span>
           </span>
@@ -256,10 +256,10 @@ export default async function TextbookTopicsPage({
         {topics.length === 0 ? (
           <AppAlert
             variant="info"
-            title="Hozircha mavzu mavjud emas"
+            title="Hozirça mavzu mavjud emas"
             className="mt-4"
           >
-            Ustozingiz mavzu qo‘shgach shu yerda ko‘rinadi.
+            Ustozingiz mavzu qöşgaç şu yerda körinadi.
           </AppAlert>
         ) : (
           <div className="mt-4 grid gap-2.5">
@@ -278,11 +278,11 @@ export default async function TextbookTopicsPage({
 
               const caption = isPopular
                 ? exampleTotal === 0
-                  ? "Misol qo‘shilmagan"
+                  ? "Misol qöşilmagan"
                   : `${exampleTotal} ta misol · ${exampleVideos} ta video`
                 : empty
-                  ? "Video qo‘shilmagan"
-                  : `${topic.order_number}-mavzu · videoyechim`;
+                  ? "Video qöşilmagan"
+                  : `${topic.order_number}-mavzu · videoyeçim`;
 
               const row = (
                 <>

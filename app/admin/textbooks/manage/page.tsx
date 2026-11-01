@@ -105,7 +105,7 @@ async function createTopic(
     return {
       status: "error",
       message:
-        "Darslik ma’lumotlari noto‘g‘ri.",
+        "Darslik ma’lumotlari notöğri.",
       errors: {},
     };
   }
@@ -119,7 +119,7 @@ async function createTopic(
 
   if (title.length > 200) {
     errors.title =
-      "Mavzu nomi 200 ta belgidan oshmasin.";
+      "Mavzu nomi 200 ta belgidan oşmasin.";
   }
 
   if (video.error) {
@@ -130,7 +130,7 @@ async function createTopic(
     return {
       status: "error",
       message:
-        "Qizil bilan ko‘rsatilgan joylarni to‘g‘rilang.",
+        "Qizil bilan körsatilgan joylarni töğrilang.",
       errors,
     };
   }
@@ -171,7 +171,7 @@ async function createTopic(
     return {
       status: "error",
       message:
-        "Mavzu nomini tekshirib bo‘lmadi.",
+        "Mavzu nomini tekşirib bölmadi.",
       errors: {},
     };
   }
@@ -180,10 +180,10 @@ async function createTopic(
     return {
       status: "error",
       message:
-        "Bu mavzu avval qo‘shilgan.",
+        "Bu mavzu avval qöşilgan.",
       errors: {
         title:
-          "Boshqa mavzu nomini kiriting.",
+          "Boşqa mavzu nomini kiriting.",
       },
     };
   }
@@ -205,7 +205,7 @@ async function createTopic(
     return {
       status: "error",
       message:
-        "Mavzular tartibini aniqlab bo‘lmadi.",
+        "Mavzular tartibini aniqlab bölmadi.",
       errors: {},
     };
   }
@@ -228,7 +228,7 @@ async function createTopic(
     return {
       status: "error",
       message:
-        "Mavzuni qo‘shib bo‘lmadi.",
+        "Mavzuni qöşib bölmadi.",
       errors: {},
     };
   }
@@ -243,7 +243,7 @@ async function createTopic(
   return {
     status: "success",
     message:
-      "Mavzu muvaffaqiyatli qo‘shildi.",
+      "Mavzu muvaffaqiyatli qöşildi.",
     errors: {},
   };
 }
@@ -281,7 +281,7 @@ async function updateTopic(
     return {
       status: "error",
       message:
-        "Mavzu ma’lumotlari noto‘g‘ri.",
+        "Mavzu ma’lumotlari notöğri.",
       errors: {},
     };
   }
@@ -295,7 +295,7 @@ async function updateTopic(
 
   if (title.length > 200) {
     errors.title =
-      "Mavzu nomi 200 ta belgidan oshmasin.";
+      "Mavzu nomi 200 ta belgidan oşmasin.";
   }
 
   if (video.error) {
@@ -306,7 +306,7 @@ async function updateTopic(
     return {
       status: "error",
       message:
-        "Qizil bilan ko‘rsatilgan joylarni to‘g‘rilang.",
+        "Qizil bilan körsatilgan joylarni töğrilang.",
       errors,
     };
   }
@@ -327,7 +327,7 @@ async function updateTopic(
     return {
       status: "error",
       message:
-        "Mavzu nomini tekshirib bo‘lmadi.",
+        "Mavzu nomini tekşirib bölmadi.",
       errors: {},
     };
   }
@@ -339,7 +339,7 @@ async function updateTopic(
         "Bunday nomli mavzu mavjud.",
       errors: {
         title:
-          "Boshqa mavzu nomini kiriting.",
+          "Boşqa mavzu nomini kiriting.",
       },
     };
   }
@@ -365,7 +365,7 @@ async function updateTopic(
     return {
       status: "error",
       message:
-        "Mavzuni yangilab bo‘lmadi.",
+        "Mavzuni yangilab bölmadi.",
       errors: {},
     };
   }
@@ -492,7 +492,7 @@ async function addTopicExamples(
   ) {
     return {
       status: "error",
-      message: "Mavzu ma’lumotlari noto‘g‘ri.",
+      message: "Mavzu ma’lumotlari notöğri.",
       errors: {},
     };
   }
@@ -505,7 +505,7 @@ async function addTopicExamples(
   if (problems.length > 0) {
     return {
       status: "error",
-      message: "Quyidagi qatorlarni to‘g‘rilang.",
+      message: "Quyidagi qatorlarni töğrilang.",
       errors: { lines: problems.slice(0, 8).join("\n") },
     };
   }
@@ -536,7 +536,7 @@ async function addTopicExamples(
   if (orderError) {
     return {
       status: "error",
-      message: "Misollar tartibini aniqlab bo‘lmadi.",
+      message: "Misollar tartibini aniqlab bölmadi.",
       errors: {},
     };
   }
@@ -557,7 +557,7 @@ async function addTopicExamples(
   if (insertError) {
     return {
       status: "error",
-      message: "Misollarni qo‘shib bo‘lmadi.",
+      message: "Misollarni qöşib bölmadi.",
       errors: {},
     };
   }
@@ -569,8 +569,8 @@ async function addTopicExamples(
     status: "success",
     message:
       rows.length === 1
-        ? "Misol qo‘shildi."
-        : `${rows.length} ta misol qo‘shildi.`,
+        ? "Misol qöşildi."
+        : `${rows.length} ta misol qöşildi.`,
     errors: {},
   };
 }
@@ -599,7 +599,7 @@ async function updateTopicExample(
   ) {
     return {
       status: "error",
-      message: "Misol ma’lumotlari noto‘g‘ri.",
+      message: "Misol ma’lumotlari notöğri.",
       errors: {},
     };
   }
@@ -611,7 +611,7 @@ async function updateTopicExample(
   }
 
   if (label.length > MAX_EXAMPLE_LABEL) {
-    errors.label = `Misol nomi ${MAX_EXAMPLE_LABEL} ta belgidan oshmasin.`;
+    errors.label = `Misol nomi ${MAX_EXAMPLE_LABEL} ta belgidan oşmasin.`;
   }
 
   if (video.error) {
@@ -638,7 +638,7 @@ async function updateTopicExample(
   if (updateError) {
     return {
       status: "error",
-      message: "Misolni yangilab bo‘lmadi.",
+      message: "Misolni yangilab bölmadi.",
       errors: {},
     };
   }
@@ -822,7 +822,7 @@ export default async function ManageTextbookPage({
               href="/admin/textbooks"
               className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
             >
-              ← Darsliklarga qaytish
+              ← Darsliklarga qaytiş
             </Link>
 
             <h1 className="text-xl font-bold sm:text-2xl">
@@ -833,8 +833,8 @@ export default async function ManageTextbookPage({
               {textbook.book_type === "school"
                 ? `${textbook.grade}-sinf maktab darsligi`
                 : textbook.author_name
-                  ? `Mashhur darslik • ${textbook.author_name}`
-                  : "Mashhur darslik"}
+                  ? `Maşhur darslik • ${textbook.author_name}`
+                  : "Maşhur darslik"}
             </p>
           </div>
 
@@ -884,14 +884,14 @@ export default async function ManageTextbookPage({
                             </span>
                           ) : (
                             <span className="font-semibold text-amber-700">
-                              Misol hali yo‘q
+                              Misol hali yöq
                             </span>
                           )
                         ) : hasVideo ? (
                           <span className="text-mb-muted">video bor</span>
                         ) : (
                           <span className="font-semibold text-amber-700">
-                            Video hali yo‘q
+                            Video hali yöq
                           </span>
                         )}
                       </p>
@@ -903,10 +903,10 @@ export default async function ManageTextbookPage({
                         <input type="hidden" name="topicId" value={topic.id} />
                         <ConfirmSubmitButton
                           className={rowMenuDanger}
-                          title="Mavzu o‘chirilsinmi?"
-                          description={`“${topic.title}” butunlay o‘chiriladi.`}
+                          title="Mavzu öçirilsinmi?"
+                          description={`“${topic.title}” butunlay öçiriladi.`}
                         >
-                          O‘chirish
+                          Öçiriş
                         </ConfirmSubmitButton>
                       </form>
                     </RowMenu>
@@ -915,7 +915,7 @@ export default async function ManageTextbookPage({
                   <div className="pl-11">
                     <details className="mt-1">
                       <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand hover:text-mb-brandDark">
-                        {isPopular ? "Nomini tahrirlash" : "Nomi va videosini tahrirlash"}
+                        {isPopular ? "Nomini tahrirlaş" : "Nomi va videosini tahrirlaş"}
                       </summary>
 
                       <EditTopicForm

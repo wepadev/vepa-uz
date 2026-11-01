@@ -223,7 +223,7 @@ function readTest(body: string, number: number, title: string): TexTest {
 
       const flags: string[] = [];
 
-      if (!text) flags.push("savol matni bo'sh");
+      if (!text) flags.push("savol matni böş");
       if (choices.length !== 4) {
         flags.push(`variantlar soni ${choices.length}, 4 emas`);
       }
@@ -356,7 +356,7 @@ export function buildTests(
     const kept: ReadyQuestion[] = [];
 
     if (!answers) {
-      errors.push(`${test.number}-test uchun javoblar kaliti topilmadi.`);
+      errors.push(`${test.number}-test uçun javoblar kaliti topilmadi.`);
       continue;
     }
 
@@ -366,13 +366,13 @@ export function buildTests(
       const correct = answers.get(question.number);
 
       if (!correct) {
-        notes.push(`${question.number}-savol: kalitda javobi yo'q.`);
+        notes.push(`${question.number}-savol: kalitda javobi yöq.`);
         continue;
       }
 
       /* Variantlari to'liq bo'lmasa saqlash xavfli */
       const broken = question.flags.find((flag) =>
-        flag.includes("variantlar soni") || flag.includes("bo'sh"),
+        flag.includes("variantlar soni") || flag.includes("böş"),
       );
 
       if (broken) {
@@ -503,7 +503,7 @@ function readVariantTests(source: string): TexResult {
       const text = cleanTex(chunk.slice(0, textEnd));
       const flags: string[] = [];
 
-      if (!text) flags.push("savol matni bo'sh");
+      if (!text) flags.push("savol matni böş");
       if (choices.length !== 4) {
         flags.push(`variantlar soni ${choices.length}, 4 emas`);
       }
@@ -514,7 +514,7 @@ function readVariantTests(source: string): TexResult {
        * qo'lda qo'shish kerakligi belgilanadi.
        */
       if (/\\begin\{tikzpicture\}|\\includegraphics/.test(chunk)) {
-        flags.push("savolda chizma bor — rasmni qo'lda qo'shing");
+        flags.push("savolda çizma bor — rasmni qölda qöşing");
       }
 
       questions.push({

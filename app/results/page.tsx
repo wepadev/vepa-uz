@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Natijalarim",
   description:
-    "Ishlagan testlaringiz tarixi va statistikangiz.",
+    "Işlagan testlaringiz tarixi va statistikangiz.",
 };
 
 const PAGE_SIZE = 1000;
@@ -845,7 +845,7 @@ export default async function MyResultsPage({
   const filterTabs = [
     {
       key: "all",
-      title: "Barchasi",
+      title: "Barçasi",
       count: results.length,
       href: "/results",
     },
@@ -872,7 +872,7 @@ export default async function MyResultsPage({
               href="/"
               className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
             >
-              ← Bosh sahifa
+              ← Boş sahifa
             </Link>
 
             <p className="truncate text-lg font-bold sm:text-xl">
@@ -884,7 +884,7 @@ export default async function MyResultsPage({
             href="/tests"
             className="inline-flex min-h-10 shrink-0 items-center rounded-xl bg-mb-brand px-4 text-sm font-semibold text-white hover:bg-mb-brandDark"
           >
-            Test ishlash
+            Test işlaş
           </Link>
         </div>
       </header>
@@ -911,11 +911,11 @@ export default async function MyResultsPage({
                 <>
                   <p className="mt-1 text-4xl font-bold leading-none sm:text-5xl">
                     {currentOverallRank}
-                    <span className="text-2xl font-bold">-o‘rin</span>
+                    <span className="text-2xl font-bold">-örin</span>
                   </p>
 
                   <p className="mt-1.5 text-sm text-blue-100">
-                    {overallParticipants} o‘quvchi ichida ·{" "}
+                    {overallParticipants} öquvçi içida ·{" "}
                     {formatPercentage(
                       currentOverall.ratingPoints,
                     )}{" "}
@@ -929,8 +929,8 @@ export default async function MyResultsPage({
                   </p>
 
                   <p className="mt-1.5 text-sm text-blue-100">
-                    Reyting testlarini ishlang — o‘rningiz shu yerda
-                    chiqadi.
+                    Reyting testlarini işlang — örningiz şu yerda
+                    çiqadi.
                   </p>
                 </>
               )}
@@ -958,7 +958,7 @@ export default async function MyResultsPage({
               tone: "text-blue-600",
             },
             {
-              label: "O‘rtacha",
+              label: "Örtaça",
               value: `${formatPercentage(averageRankingPercentage)}%`,
               tone: "text-blue-600",
             },
@@ -1027,20 +1027,20 @@ export default async function MyResultsPage({
           0 ? (
             <div className="mt-5 rounded-3xl border border-dashed border-slate-300 bg-white px-5 py-14 text-center sm:px-6 sm:py-16">
               <h3 className="text-lg font-bold">
-                Bu boʼlimda natija yoʼq
+                Bu bölimda natija yöq
               </h3>
 
               <p className="mt-2 text-sm leading-6 text-slate-500">
-                Test ishlaganingizdan
-                keyin natija shu yerda
-                chiqadi.
+                Test işlaganingizdan
+                keyin natija şu yerda
+                çiqadi.
               </p>
 
               <Link
                 href="/tests"
                 className="mt-6 inline-flex min-h-12 items-center justify-center rounded-2xl bg-blue-600 px-6 py-3 font-bold text-white hover:bg-blue-700"
               >
-                Testlarni koʼrish
+                Testlarni köriş
               </Link>
             </div>
           ) : (
@@ -1104,8 +1104,8 @@ export default async function MyResultsPage({
 
                               {result.isBestAttempt && (
                                 <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">
-                                  Eng yaxshi
-                                  urinish
+                                  Eng yaxşi
+                                  uriniş
                                 </span>
                               )}
 
@@ -1178,7 +1178,7 @@ export default async function MyResultsPage({
 
                           <div className="rounded-2xl bg-emerald-50 p-3">
                             <p className="text-xs font-bold text-emerald-700">
-                              Toʼgʼri
+                              Töğri
                             </p>
 
                             <p className="mt-1 text-xl font-bold text-emerald-700">
@@ -1232,7 +1232,7 @@ export default async function MyResultsPage({
                             </span>
 
                             <span>
-                              Jami urinish:{" "}
+                              Jami uriniş:{" "}
                               {
                                 result.attemptsForTest
                               }
@@ -1241,7 +1241,7 @@ export default async function MyResultsPage({
                             {result.testKind ===
                               "ranking" && (
                               <span>
-                                Eng yaxshi:{" "}
+                                Eng yaxşi:{" "}
                                 {formatPercentage(
                                   result.bestPercentage,
                                 )}
@@ -1255,7 +1255,7 @@ export default async function MyResultsPage({
                               href={`/results/view?attemptId=${result.id}`}
                               className="inline-flex min-h-11 items-center justify-center rounded-xl bg-blue-600 px-5 py-2.5 text-center text-sm font-bold text-white transition hover:bg-blue-700"
                             >
-                              Batafsil koʼrish
+                              Batafsil köriş
                             </Link>
                           )}
                         </div>

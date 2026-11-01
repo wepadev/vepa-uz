@@ -17,8 +17,8 @@ export default async function TimerPage() {
           </h1>
 
           <p className="mt-1 text-sm text-mb-muted">
-            Doskaga chiqarish uchun: muddatni tanlang, “To‘liq ekran”ni
-            bosing. Sahifa yangilansa ham vaqt yo‘qolmaydi.
+            Doskaga çiqariş uçun: muddatni tanlang, “Töliq ekran”ni
+            bosing. Sahifa yangilansa ham vaqt yöqolmaydi.
           </p>
         </div>
       </header>

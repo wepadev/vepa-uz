@@ -16,27 +16,27 @@ function translateAuthError(message: string) {
   const lowerMessage = message.toLowerCase();
 
   if (lowerMessage.includes("invalid login credentials")) {
-    return "Email yoki parol noto‘g‘ri.";
+    return "Email yoki parol notöğri.";
   }
 
   if (lowerMessage.includes("email not confirmed")) {
-    return "Avval emailingizga yuborilgan tasdiqlash havolasini bosing.";
+    return "Avval emailingizga yuborilgan tasdiqlaş havolasini bosing.";
   }
 
   if (lowerMessage.includes("user already registered")) {
-    return "Bu email bilan akkaunt allaqachon mavjud.";
+    return "Bu email bilan akkaunt allaqaçon mavjud.";
   }
 
   if (lowerMessage.includes("password should be at least")) {
-    return "Parol kamida 6 ta belgidan iborat bo‘lishi kerak.";
+    return "Parol kamida 6 ta belgidan iborat bölişi kerak.";
   }
 
   if (lowerMessage.includes("signup is disabled")) {
-    return "Email orqali ro‘yxatdan o‘tish Supabase sozlamalarida o‘chirilgan.";
+    return "Email orqali röyxatdan ötiş Supabase sozlamalarida öçirilgan.";
   }
 
   if (lowerMessage.includes("rate limit")) {
-    return "Juda ko‘p urinish bo‘ldi. Birozdan keyin qayta urinib ko‘ring.";
+    return "Juda köp uriniş böldi. Birozdan keyin qayta urinib köring.";
   }
 
   return message || "Noma’lum xatolik yuz berdi.";
@@ -97,7 +97,7 @@ export function LoginForm({
 
     if (password.length < 6) {
       setError(
-        "Parol kamida 6 ta belgidan iborat bo‘lishi kerak.",
+        "Parol kamida 6 ta belgidan iborat bölişi kerak.",
       );
       return;
     }
@@ -160,7 +160,7 @@ export function LoginForm({
       }
 
       setSuccess(
-        "Ro‘yxatdan o‘tish muvaffaqiyatli. Emailingizga yuborilgan tasdiqlash havolasini bosing.",
+        "Röyxatdan ötiş muvaffaqiyatli. Emailingizga yuborilgan tasdiqlaş havolasini bosing.",
       );
       setPassword("");
       setConfirmPassword("");
@@ -191,14 +191,14 @@ export function LoginForm({
 
         <h1 className="mt-2 text-2xl font-bold text-slate-950 sm:mt-3 sm:text-3xl">
           {mode === "login"
-            ? "Xush kelibsiz"
+            ? "Xuş kelibsiz"
             : "Yangi akkaunt"}
         </h1>
 
         <p className="mt-1.5 text-sm leading-6 text-slate-500 sm:mt-2 sm:text-base">
           {mode === "login"
-            ? "Akkauntingizga kirib o‘qishni davom ettiring."
-            : "Email orqali bepul ro‘yxatdan o‘ting."}
+            ? "Akkauntingizga kirib öqişni davom ettiring."
+            : "Email orqali bepul röyxatdan öting."}
         </p>
       </div>
 
@@ -212,7 +212,7 @@ export function LoginForm({
               : "min-h-11 rounded-xl px-3 py-3 text-sm font-semibold text-slate-500 transition hover:text-slate-800"
           }
         >
-          Kirish
+          Kiriş
         </button>
 
         <button
@@ -224,7 +224,7 @@ export function LoginForm({
               : "min-h-11 rounded-xl px-3 py-3 text-sm font-semibold text-slate-500 transition hover:text-slate-800"
           }
         >
-          Ro‘yxatdan o‘tish
+          Röyxatdan ötiş
         </button>
       </div>
 
@@ -324,10 +324,10 @@ export function LoginForm({
               onClick={() =>
                 setShowPassword((current) => !current)
               }
-              aria-label={showPassword ? "Parolni yashirish" : "Parolni ko‘rsatish"}
+              aria-label={showPassword ? "Parolni yaşiriş" : "Parolni körsatiş"}
               className="absolute inset-y-1 right-1.5 my-auto flex min-h-10 items-center rounded-xl px-3 text-xs font-bold text-slate-500 transition active:bg-slate-100 hover:bg-slate-100 hover:text-slate-800"
             >
-              {showPassword ? "Yashirish" : "Ko‘rsatish"}
+              {showPassword ? "Yaşiriş" : "Körsatiş"}
             </button>
           </div>
         </div>
@@ -338,7 +338,7 @@ export function LoginForm({
               htmlFor="confirmPassword"
               className="text-sm font-semibold text-slate-700"
             >
-              Parolni tasdiqlash
+              Parolni tasdiqlaş
             </label>
 
             <input
@@ -361,7 +361,7 @@ export function LoginForm({
         {error && (
           <AppAlert
             variant="error"
-            title="Kirish amalga oshmadi"
+            title="Kiriş amalga oşmadi"
           >
             {error}
           </AppAlert>
@@ -388,9 +388,9 @@ export function LoginForm({
                 : "Akkaunt yaratilmoqda..."}
             </LoadingLabel>
           ) : mode === "login" ? (
-            "Kirish"
+            "Kiriş"
           ) : (
-            "Ro‘yxatdan o‘tish"
+            "Röyxatdan ötiş"
           )}
         </button>
       </form>
@@ -406,11 +406,11 @@ export function LoginForm({
       <GoogleSignInButton
         next={next}
         fullWidth
-        label="Google orqali davom etish"
+        label="Google orqali davom etiş"
       />
 
       <p className="mt-5 text-center text-xs leading-5 text-slate-400">
-        Davom etish orqali platformadan foydalanish
+        Davom etiş orqali platformadan foydalaniş
         qoidalariga rozilik bildirasiz.
       </p>
     </div>

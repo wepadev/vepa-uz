@@ -22,8 +22,8 @@ import { requestRewardAction } from "@/app/guruhim/actions";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Do‘kon",
-  description: "Yig‘gan tangalaringizni sovg‘aga almashtiring.",
+  title: "Dökon",
+  description: "Yiğgan tangalaringizni sovğaga almaştiring.",
 };
 
 type PageProps = {
@@ -147,7 +147,7 @@ export default async function ShopPage({ searchParams }: PageProps) {
             href="/"
             className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
           >
-            ← Bosh sahifa
+            ← Boş sahifa
           </Link>
 
           <div className="mt-4 rounded-3xl border border-mb-line bg-white px-5 py-10 text-center shadow-sm">
@@ -160,20 +160,20 @@ export default async function ShopPage({ searchParams }: PageProps) {
             </span>
 
             <h1 className="mt-4 text-xl font-bold">
-              Do‘kon guruh o‘quvchilari uchun
+              Dökon guruh öquvçilari uçun
             </h1>
 
             <p className="mx-auto mt-2 max-w-xs text-sm leading-6 text-mb-muted">
               Tangalar darsdagi ball va guruhga berilgan uy
-              vazifalaridan yig‘iladi. Ustozingiz bergan kod bilan
-              guruhga qo‘shilsangiz do‘kon ochiladi.
+              vazifalaridan yiğiladi. Ustozingiz bergan kod bilan
+              guruhga qöşilsangiz dökon oçiladi.
             </p>
 
             <Link
               href="/guruhim"
               className="mt-5 inline-flex min-h-12 items-center justify-center rounded-2xl bg-mb-brand px-6 font-bold text-white transition hover:bg-mb-brandDark"
             >
-              Guruhga qo‘shilish
+              Guruhga qöşiliş
             </Link>
           </div>
         </section>
@@ -217,8 +217,8 @@ export default async function ShopPage({ searchParams }: PageProps) {
       <PageHeader
         backHref="/guruhim"
         backLabel="Guruhim"
-        title="Do‘kon"
-        subtitle="Tangani sovg‘aga almashtiring"
+        title="Dökon"
+        subtitle="Tangani sovğaga almaştiring"
       />
 
       <section className="mx-auto max-w-3xl px-3 py-5 sm:px-6 sm:py-8">
@@ -241,7 +241,7 @@ export default async function ShopPage({ searchParams }: PageProps) {
                 strokeWidth={2.2}
                 aria-hidden="true"
               />
-              Do‘kon
+              Dökon
             </p>
 
             <p className="mt-2 flex items-baseline gap-2">
@@ -258,11 +258,11 @@ export default async function ShopPage({ searchParams }: PageProps) {
 
             <p className="mt-3 max-w-sm text-sm leading-6 text-white/90">
               {cheapest && available < cheapest.cost_coins
-                ? `Eng yaqin sovg‘a — “${cheapest.title}”. Yana ${
+                ? `Eng yaqin sovğa — “${cheapest.title}”. Yana ${
                     cheapest.cost_coins - available
-                  } ta tanga yig‘sangiz oldingiz.`
+                  } ta tanga yiğsangiz oldingiz.`
                 : cheapest
-                  ? "Tanga yetarli — pastdan sovg‘angizni tanlang."
+                  ? "Tanga yetarli — pastdan sovğangizni tanlang."
                   : "Darsdagi ballaringiz va uy vazifalaringiz tangaga aylanadi."}
             </p>
           </div>
@@ -271,10 +271,10 @@ export default async function ShopPage({ searchParams }: PageProps) {
         {migrationMissing && (
           <AppAlert
             variant="warning"
-            title="Bo‘lim tayyor emas"
+            title="Bölim tayyor emas"
             className="mt-5"
           >
-            Bu bo‘lim hali sozlanmoqda. Keyinroq qayta kiring.
+            Bu bölim hali sozlanmoqda. Keyinroq qayta kiring.
           </AppAlert>
         )}
 
@@ -298,11 +298,11 @@ export default async function ShopPage({ searchParams }: PageProps) {
               aria-hidden="true"
             />
 
-            <p className="mt-3 text-lg font-bold">Do‘kon hali bo‘sh</p>
+            <p className="mt-3 text-lg font-bold">Dökon hali böş</p>
 
             <p className="mx-auto mt-1 max-w-sm text-sm leading-6 text-mb-muted">
-              Ustozingiz sovg‘a qo‘shganda shu yerda paydo bo‘ladi.
-              Siz esa tanga yig‘ib turing.
+              Ustozingiz sovğa qöşganda şu yerda paydo böladi.
+              Siz esa tanga yiğib turing.
             </p>
           </div>
         ) : (
@@ -391,7 +391,7 @@ export default async function ShopPage({ searchParams }: PageProps) {
                   <div className="mt-3.5">
                     {soldOut ? (
                       <p className="rounded-xl bg-slate-100 px-3 py-2 text-center text-xs font-bold text-slate-500">
-                        Hozircha tugagan
+                        Hozirça tugagan
                       </p>
                     ) : affordable ? (
                       <form action={requestRewardAction}>
@@ -422,7 +422,7 @@ export default async function ShopPage({ searchParams }: PageProps) {
                           aria-valuenow={percent}
                           aria-valuemin={0}
                           aria-valuemax={100}
-                          aria-label={`${reward.title} uchun yig‘ilgan tanga`}
+                          aria-label={`${reward.title} uçun yiğilgan tanga`}
                         >
                           <div
                             className={cn("h-full rounded-full", accent.fill)}
@@ -453,7 +453,7 @@ export default async function ShopPage({ searchParams }: PageProps) {
                 strokeWidth={2}
                 aria-hidden="true"
               />
-              Olgan sovg‘alarim
+              Olgan sovğalarim
             </h2>
 
             <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">

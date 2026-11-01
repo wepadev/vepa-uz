@@ -178,7 +178,7 @@ export default async function MyGroupPage({ searchParams }: PageProps) {
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <PageHeader
         backHref="/"
-        backLabel="Bosh sahifa"
+        backLabel="Boş sahifa"
         title="Guruhim"
         subtitle={active?.title ?? null}
       />
@@ -188,10 +188,10 @@ export default async function MyGroupPage({ searchParams }: PageProps) {
         {migrationMissing && (
           <AppAlert
             variant="warning"
-            title="Bo‘lim tayyor emas"
+            title="Bölim tayyor emas"
             className="mt-5"
           >
-            Bu bo‘lim hali sozlanmoqda. Keyinroq qayta kiring.
+            Bu bölim hali sozlanmoqda. Keyinroq qayta kiring.
           </AppAlert>
         )}
 
@@ -217,19 +217,19 @@ export default async function MyGroupPage({ searchParams }: PageProps) {
             />
 
             <h2 className="mt-4 text-lg font-bold">
-              Hali guruhga qo‘shilmagansiz
+              Hali guruhga qöşilmagansiz
             </h2>
 
             <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-mb-muted">
-              Ustozingiz bergan 6 belgili kodni kiriting. Shundan
-              keyin uy vazifalari, ballaringiz va tangalaringiz shu
-              yerda ko‘rinadi.
+              Ustozingiz bergan 6 belgili kodni kiriting. Şundan
+              keyin uy vazifalari, ballaringiz va tangalaringiz şu
+              yerda körinadi.
             </p>
 
             <div className="mx-auto mt-5 max-w-md text-left">
               <JoinGroupButton
                 action={joinGroupAction}
-                label="Kodni kiritish"
+                label="Kodni kiritiş"
               />
             </div>
           </div>
@@ -263,7 +263,7 @@ export default async function MyGroupPage({ searchParams }: PageProps) {
                   strokeWidth={2.2}
                   aria-hidden="true"
                 />
-                Do‘kon
+                Dökon
               </Link>
             </div>
 
@@ -291,7 +291,7 @@ export default async function MyGroupPage({ searchParams }: PageProps) {
             <div className="mt-4 grid grid-cols-3 divide-x divide-slate-200 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
               <div className="px-2 py-3 text-center sm:px-4 sm:py-4">
                 <p className="text-[10px] font-semibold uppercase tracking-wide text-mb-muted sm:text-xs">
-                  O‘rningiz
+                  Örningiz
                 </p>
                 <p className="mt-1 text-lg font-bold text-mb-brand sm:text-2xl">
                   {active.my_rank}
@@ -312,7 +312,7 @@ export default async function MyGroupPage({ searchParams }: PageProps) {
 
               <div className="px-2 py-3 text-center sm:px-4 sm:py-4">
                 <p className="text-[10px] font-semibold uppercase tracking-wide text-mb-muted sm:text-xs">
-                  Yig‘gan tanga
+                  Yiğgan tanga
                 </p>
                 <p className="mt-1 text-lg font-bold text-amber-600 sm:text-2xl">
                   {active.my_coins}
@@ -424,9 +424,9 @@ export default async function MyGroupPage({ searchParams }: PageProps) {
             </h2>
 
             {history.length === 0 ? (
-              <AppAlert variant="info" title="Hali dars yo‘q" className="mt-3">
-                Ustoz dars varaqasini to‘ldirgach, ballaringiz shu
-                yerda paydo bo‘ladi.
+              <AppAlert variant="info" title="Hali dars yöq" className="mt-3">
+                Ustoz dars varaqasini töldirgaç, ballaringiz şu
+                yerda paydo böladi.
               </AppAlert>
             ) : (
               <div className="mt-3">

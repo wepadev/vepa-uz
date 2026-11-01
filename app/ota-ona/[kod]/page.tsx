@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "O‘quvchi hisoboti",
+  title: "Öquvçi hisoboti",
   /* Shaxsiy ma'lumot — qidiruvga tushmasin */
   robots: { index: false, follow: false },
 };
@@ -36,7 +36,7 @@ type AssignmentRow = {
 
 const ATTENDANCE: Record<DailyRow["attendance"], { label: string; tone: string }> = {
   keldi: { label: "Keldi", tone: "bg-emerald-50 text-emerald-700" },
-  kechikdi: { label: "Kechikdi", tone: "bg-amber-50 text-amber-700" },
+  kechikdi: { label: "Keçikdi", tone: "bg-amber-50 text-amber-700" },
   sababli: { label: "Sababli", tone: "bg-slate-100 text-slate-600" },
   kelmadi: { label: "Kelmadi", tone: "bg-red-50 text-red-700" },
 };
@@ -176,13 +176,13 @@ export default async function ParentReportPage({ params }: PageProps) {
       icon: ClipboardList,
       label: "Uy vazifasi",
       value: days.length ? formatHomework(homeworkDone, homeworkTotal) : "—",
-      hint: "ishlangan masalalar",
+      hint: "işlangan masalalar",
     },
     {
       icon: Star,
       label: "Ball",
       value: String(totalPoints),
-      hint: "jami to‘plangan",
+      hint: "jami töplangan",
     },
   ];
 
@@ -193,7 +193,7 @@ export default async function ParentReportPage({ params }: PageProps) {
           <BrandMark size={36} className="h-9 w-9" />
           <div className="min-w-0">
             <p className="text-xs font-semibold text-mb-muted">
-              Vepa Ustoz · o‘quvchi hisoboti
+              Vepa Ustoz · öquvçi hisoboti
             </p>
             <h1 className="truncate text-lg font-bold">{student.full_name}</h1>
           </div>
@@ -273,7 +273,7 @@ export default async function ParentReportPage({ params }: PageProps) {
 
         {days.length === 0 ? (
           <p className="mt-2 rounded-2xl border border-dashed border-mb-line bg-white px-4 py-3 text-sm text-mb-muted">
-            Hali dars yozuvlari yo‘q.
+            Hali dars yozuvlari yöq.
           </p>
         ) : (
           <div className="mt-2 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
@@ -320,7 +320,7 @@ export default async function ParentReportPage({ params }: PageProps) {
         )}
 
         <p className="mt-6 text-center text-xs leading-5 text-mb-muted">
-          Bu havola faqat siz uchun. Savollar bo‘lsa, ustozga yozing.
+          Bu havola faqat siz uçun. Savollar bölsa, ustozga yozing.
         </p>
       </section>
     </main>

@@ -69,7 +69,7 @@ function readPositiveInteger(formData: FormData, name: string, label: string) {
   const value = Number(formData.get(name));
 
   if (!Number.isInteger(value) || value <= 0) {
-    throw new Error(`${label} 0 dan katta butun son bo‘lishi kerak.`);
+    throw new Error(`${label} 0 dan katta butun son bölişi kerak.`);
   }
 
   return value;
@@ -82,7 +82,7 @@ async function createSection(formData: FormData) {
   const examTypeId = readPositiveInteger(
     formData,
     "examTypeId",
-    "Yo‘nalish ID",
+    "Yönaliş ID",
   );
   const orderNumber = readPositiveInteger(
     formData,
@@ -93,7 +93,7 @@ async function createSection(formData: FormData) {
   const description = String(formData.get("description") ?? "").trim();
 
   if (title.length < 2) {
-    throw new Error("Bo‘lim nomi kamida 2 ta belgidan iborat bo‘lsin.");
+    throw new Error("Bölim nomi kamida 2 ta belgidan iborat bölsin.");
   }
 
   const { error } = await supabase.from("test_sections").insert({
@@ -106,7 +106,7 @@ async function createSection(formData: FormData) {
   });
 
   if (error) {
-    throw new Error(`Bo‘lim saqlanmadi: ${error.message}`);
+    throw new Error(`Bölim saqlanmadi: ${error.message}`);
   }
 
   revalidatePath("/admin/tests");
@@ -119,7 +119,7 @@ async function updateSection(formData: FormData) {
   "use server";
 
   const supabase = await getAdminClient();
-  const sectionId = readPositiveInteger(formData, "sectionId", "Bo‘lim ID");
+  const sectionId = readPositiveInteger(formData, "sectionId", "Bölim ID");
   const orderNumber = readPositiveInteger(
     formData,
     "orderNumber",
@@ -129,7 +129,7 @@ async function updateSection(formData: FormData) {
   const description = String(formData.get("description") ?? "").trim();
 
   if (title.length < 2) {
-    throw new Error("Bo‘lim nomi kamida 2 ta belgidan iborat bo‘lsin.");
+    throw new Error("Bölim nomi kamida 2 ta belgidan iborat bölsin.");
   }
 
   const { error } = await supabase
@@ -143,7 +143,7 @@ async function updateSection(formData: FormData) {
     .eq("id", sectionId);
 
   if (error) {
-    throw new Error(`Bo‘lim tahrirlanmadi: ${error.message}`);
+    throw new Error(`Bölim tahrirlanmadi: ${error.message}`);
   }
 
   revalidatePath("/admin/tests/sections");
@@ -155,7 +155,7 @@ async function changeSectionState(formData: FormData) {
   "use server";
 
   const supabase = await getAdminClient();
-  const sectionId = readPositiveInteger(formData, "sectionId", "Bo‘lim ID");
+  const sectionId = readPositiveInteger(formData, "sectionId", "Bölim ID");
   const nextState = String(formData.get("nextState")) === "true";
 
   const { error } = await supabase
@@ -167,7 +167,7 @@ async function changeSectionState(formData: FormData) {
     .eq("id", sectionId);
 
   if (error) {
-    throw new Error(`Bo‘lim holati o‘zgarmadi: ${error.message}`);
+    throw new Error(`Bölim holati özgarmadi: ${error.message}`);
   }
 
   revalidatePath("/admin/tests");
@@ -181,7 +181,7 @@ async function deleteSection(formData: FormData) {
   "use server";
 
   const supabase = await getAdminClient();
-  const sectionId = readPositiveInteger(formData, "sectionId", "Bo‘lim ID");
+  const sectionId = readPositiveInteger(formData, "sectionId", "Bölim ID");
 
   /*
    * Ichida test bo'lsa o'chirishga yo'l qo'ymaymiz.
@@ -195,12 +195,12 @@ async function deleteSection(formData: FormData) {
     .eq("section_id", sectionId);
 
   if (countError) {
-    throw new Error(`Bo‘lim tekshirilmadi: ${countError.message}`);
+    throw new Error(`Bölim tekşirilmadi: ${countError.message}`);
   }
 
   if ((count ?? 0) > 0) {
     throw new Error(
-      `Bo‘limda ${count} ta test bor. Avval testlarni o‘chiring, keyin bo‘limni o‘chirasiz.`,
+      `Bölimda ${count} ta test bor. Avval testlarni öçiring, keyin bölimni öçirasiz.`,
     );
   }
 
@@ -210,7 +210,7 @@ async function deleteSection(formData: FormData) {
     .eq("id", sectionId);
 
   if (error) {
-    throw new Error(`Bo‘lim o‘chirilmadi: ${error.message}`);
+    throw new Error(`Bölim öçirilmadi: ${error.message}`);
   }
 
   revalidatePath("/admin/tests");
@@ -235,7 +235,7 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
 
   if (examTypeError) {
     throw new Error(
-      `Test yo‘nalishi yuklanmadi: ${examTypeError.message}`,
+      `Test yönalişi yuklanmadi: ${examTypeError.message}`,
     );
   }
 
@@ -264,7 +264,7 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
 
   if (sectionsResult.error) {
     throw new Error(
-      `Bo‘limlar yuklanmadi: ${sectionsResult.error.message}`,
+      `Bölimlar yuklanmadi: ${sectionsResult.error.message}`,
     );
   }
 
@@ -298,11 +298,11 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
               href="/admin/tests"
               className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
             >
-              ← Test yo‘nalishlariga qaytish
+              ← Test yönalişlariga qaytiş
             </Link>
             <h1 className="text-xl font-bold sm:text-2xl">{examType.title}</h1>
             <p className="mt-1 text-sm text-slate-500">
-              Mavzular yoki bo‘limlarni yarating va tartiblang.
+              Mavzular yoki bölimlarni yarating va tartiblang.
             </p>
           </div>
 
@@ -310,25 +310,25 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
             href={`/tests/sections?exam=${encodeURIComponent(examType.code)}`}
             className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-700"
           >
-            Foydalanuvchi ko‘rinishi
+            Foydalanuvçi körinişi
           </Link>
         </div>
       </header>
 
       <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-8">
-        <CreatePanel label="Yangi bo‘lim" defaultOpen={sections.length === 0}>
+        <CreatePanel label="Yangi bölim" defaultOpen={sections.length === 0}>
           <form
             action={createSection}
             className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
           >
             <input type="hidden" name="examTypeId" value={examType.id} />
-            <h2 className="text-2xl font-bold">Yangi bo‘lim</h2>
+            <h2 className="text-2xl font-bold">Yangi bölim</h2>
             <p className="mt-2 text-sm leading-6 text-slate-500">
               Masalan: Algebra, Geometriya, Sonlar va amallar yoki Mock testlar.
             </p>
 
             <label className="mt-6 block text-sm font-bold text-slate-700">
-              Bo‘lim nomi
+              Bölim nomi
             </label>
             <input
               name="title"
@@ -339,12 +339,12 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
             />
 
             <label className="mt-5 block text-sm font-bold text-slate-700">
-              Qisqacha tavsif
+              Qisqaça tavsif
             </label>
             <textarea
               name="description"
               rows={4}
-              placeholder="Bo‘lim haqida qisqacha ma’lumot"
+              placeholder="Bölim haqida qisqaça ma’lumot"
               className={textareaClass}
             />
 
@@ -362,22 +362,22 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
             />
 
             <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-800">
-              Yangi bo‘lim avval qoralama holatda yaratiladi. Testlar tayyor
-              bo‘lgach nashr qilasiz.
+              Yangi bölim avval qoralama holatda yaratiladi. Testlar tayyor
+              bölgaç naşr qilasiz.
             </div>
 
             <SubmitButton
               className="mt-6 w-full rounded-xl bg-mb-brand px-5 py-3 font-bold text-white hover:bg-mb-brandDark"
             >
-              Bo‘limni yaratish
+              Bölimni yaratiş
             </SubmitButton>
           </form>
         </CreatePanel>
 
         <div className="mt-5">
           <p className="mb-3 text-xs text-mb-muted">
-            Birinchi nashr qilingan bo‘limning birinchi mavzusidagi testlar
-            bepul bo‘ladi.
+            Birinçi naşr qilingan bölimning birinçi mavzusidagi testlar
+            bepul böladi.
           </p>
 
           {sections.length > 0 && (
@@ -447,7 +447,7 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
                             value={String(!section.is_published)}
                           />
                           <SubmitButton className={rowMenuItem}>
-                            {section.is_published ? "Bo‘limni yopish" : "Nashr qilish"}
+                            {section.is_published ? "Bölimni yopiş" : "Naşr qiliş"}
                           </SubmitButton>
                         </form>
 
@@ -456,16 +456,16 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
                             <input type="hidden" name="sectionId" value={section.id} />
                             <ConfirmSubmitButton
                               className={rowMenuDanger}
-                              title="Bo‘lim o‘chirilsinmi?"
-                              description={`“${section.title}” bo‘limi butunlay o‘chiriladi. Bu amalni orqaga qaytarib bo‘lmaydi.`}
+                              title="Bölim öçirilsinmi?"
+                              description={`“${section.title}” bölimi butunlay öçiriladi. Bu amalni orqaga qaytarib bölmaydi.`}
                             >
-                              O‘chirish
+                              Öçiriş
                             </ConfirmSubmitButton>
                           </form>
                         ) : (
                           <p className="px-3 py-2 text-xs leading-5 text-mb-muted">
-                            O‘chirish uchun avval ichidagi {testCount} ta testni
-                            o‘chiring.
+                            Öçiriş uçun avval içidagi {testCount} ta testni
+                            öçiring.
                           </p>
                         )}
                       </RowMenu>
@@ -473,7 +473,7 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
 
                     <details className="group/edit ml-11 mt-1 rounded-xl open:border open:border-slate-200 open:bg-slate-50">
                       <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand group-open/edit:px-3">
-                        Tahrirlash
+                        Tahrirlaş
                       </summary>
                       <form
                         action={updateSection}
@@ -483,7 +483,7 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
                         <div className="grid gap-5 md:grid-cols-[1fr_160px]">
                           <div>
                             <label className="block text-sm font-bold text-slate-700">
-                              Bo‘lim nomi
+                              Bölim nomi
                             </label>
                             <input
                               name="title"
@@ -522,7 +522,7 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
                         <SubmitButton
                           className="mt-5 rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white hover:bg-blue-700"
                         >
-                          O‘zgarishlarni saqlash
+                          Özgarişlarni saqlaş
                         </SubmitButton>
                       </form>
                     </details>

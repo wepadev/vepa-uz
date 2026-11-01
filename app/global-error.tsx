@@ -76,7 +76,7 @@ export default function GlobalError({
             }}
           >
             Xabar administratorga yuborildi. Sahifani qayta yuklab
-            ko‘ring — muammo takrorlansa biroz kutib turing.
+            köring — muammo takrorlansa biroz kutib turing.
           </p>
 
           <button
@@ -97,7 +97,7 @@ export default function GlobalError({
               cursor: "pointer",
             }}
           >
-            Qayta urinish
+            Qayta uriniş
           </button>
         </main>
       </body>

@@ -38,7 +38,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Guruh",
-  description: "O‘quvchilar, ballar reytingi va ball qoidalari.",
+  description: "Öquvçilar, ballar reytingi va ball qoidalari.",
 };
 
 /**
@@ -310,7 +310,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
           href="/admin/crm"
           className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
         >
-          ← Guruhlarga qaytish
+          ← Guruhlarga qaytiş
         </Link>
 
         <h1 className="mt-2 text-2xl font-bold sm:text-3xl">
@@ -324,7 +324,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
             { href: tabHref("bugun"), label: "Bugun", icon: CalendarDays },
             {
               href: tabHref("oquvchilar"),
-              label: "O‘quvchilar",
+              label: "Öquvçilar",
               icon: Users,
               count: students.length,
             },
@@ -379,14 +379,14 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                 href={`/admin/crm/tahlil?guruh=${groupId}`}
                 icon={TrendingUp}
                 title="Ball tahlili"
-                hint="Qaysi kuni ball ko‘p bo‘lgan"
+                hint="Qaysi kuni ball köp bölgan"
               />
 
               <SideLink
                 href={`/admin/crm/dokon?guruh=${groupId}`}
                 icon={Coins}
-                title="Sovg‘a do‘koni"
-                hint="Tangani sovg‘aga almashtirish"
+                title="Sovğa dökoni"
+                hint="Tangani sovğaga almaştiriş"
               />
 
               {group.study_group_id && (
@@ -394,7 +394,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                   href={`/admin/groups/report?groupId=${group.study_group_id}`}
                   icon={BarChart3}
                   title="Hisobot"
-                  hint="O‘quvchilar bo‘yicha yakun"
+                  hint="Öquvçilar böyiça yakun"
                 />
               )}
             </div>
@@ -410,8 +410,8 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
             </h2>
 
             {ranking.length === 0 ? (
-              <AppAlert variant="info" title="O‘quvchi yo‘q" className="mt-3">
-                “O‘quvchilar” tabida o‘quvchilarni qo‘shing.
+              <AppAlert variant="info" title="Öquvçi yöq" className="mt-3">
+                “Öquvçilar” tabida öquvçilarni qöşing.
               </AppAlert>
             ) : (
               <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
@@ -449,7 +449,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                               <Link2
                                 className="ml-1.5 inline h-3.5 w-3.5 text-mb-brand"
                                 strokeWidth={2.2}
-                                aria-label="Sayt hisobiga bog‘langan"
+                                aria-label="Sayt hisobiga boğlangan"
                               />
                             )}
                           </p>
@@ -509,9 +509,9 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                 </span>
 
                 <span className="text-xs leading-5 text-mb-muted">
-                  O‘quvchi <b>Guruhim</b> bo‘limida shu kodni kiritsa
-                  o‘zi qo‘shiladi. Bitta kod bilan uy vazifalari ham,
-                  dars ballari ham ochiladi.
+                  Öquvçi <b>Guruhim</b> bölimida şu kodni kiritsa
+                  özi qöşiladi. Bitta kod bilan uy vazifalari ham,
+                  dars ballari ham oçiladi.
                 </span>
               </div>
             )}
@@ -523,7 +523,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                   strokeWidth={2}
                   aria-hidden="true"
                 />
-                O‘quvchi qo‘shish
+                Öquvçi qöşiş
               </h2>
 
               <form
@@ -552,7 +552,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                   />
 
                   <SubmitButton className="min-h-12 rounded-xl bg-mb-brand px-6 font-semibold text-white transition hover:bg-mb-brandDark">
-                    Qo‘shish
+                    Qöşiş
                   </SubmitButton>
                 </div>
               </form>
@@ -575,7 +575,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                         </span>
                       ) : (
                         <span className="ml-2 rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-500">
-                          faqat ro‘yxatda
+                          faqat röyxatda
                         </span>
                       )}
                     </summary>
@@ -630,7 +630,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                             htmlFor={`email-${student.id}`}
                             className="block text-xs font-semibold text-slate-600"
                           >
-                            Sayt hisobiga bog‘lash (email)
+                            Sayt hisobiga boğlaş (email)
                           </label>
 
                           <input
@@ -639,22 +639,22 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                             type="email"
                             placeholder={
                               student.user_id
-                                ? "Bog‘langan — o‘zgartirish uchun yangi email yozing"
-                                : "O‘quvchining vepa.uz dagi emaili"
+                                ? "Boğlangan — özgartiriş uçun yangi email yozing"
+                                : "Öquvçining vepa.uz dagi emaili"
                             }
                             className="mt-1 min-h-11 w-full rounded-xl border border-slate-300 bg-white px-3 outline-none transition focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
                           />
 
                           <p className="mt-1 text-[11px] leading-4 text-mb-muted">
-                            Bo‘sh qoldirsangiz bog‘lanish o‘zgarmaydi.
-                            O‘quvchining saytda hisobi bo‘lmasa, bu joyni
-                            umuman tashlab keting.
+                            Böş qoldirsangiz boğlaniş özgarmaydi.
+                            Öquvçining saytda hisobi bölmasa, bu joyni
+                            umuman taşlab keting.
                           </p>
                         </div>
 
                         <div className="flex flex-wrap gap-2">
                           <SubmitButton className="min-h-11 rounded-xl bg-mb-brand px-5 text-sm font-semibold text-white transition hover:bg-mb-brandDark">
-                            Saqlash
+                            Saqlaş
                           </SubmitButton>
                         </div>
                       </form>
@@ -675,8 +675,8 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                         />
 
                         <p className="mt-1 text-[11px] leading-4 text-mb-muted">
-                          Nusxalab Telegram&apos;da yuboring. Ota-ona kirishsiz
-                          davomat, ball va uy vazifasi natijalarini ko‘radi.
+                          Nusxalab Telegram&apos;da yuboring. Ota-ona kirişsiz
+                          davomat, ball va uy vazifasi natijalarini köradi.
                         </p>
 
                         <a
@@ -685,7 +685,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                           rel="noopener noreferrer"
                           className="mt-1.5 inline-flex min-h-8 items-center text-xs font-semibold text-mb-brand hover:text-mb-brandDark"
                         >
-                          Hisobotni ochish ›
+                          Hisobotni oçiş ›
                         </a>
                       </div>
 
@@ -704,12 +704,12 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                             strokeWidth={2}
                             aria-hidden="true"
                           />
-                          Guruhdan chiqarish
+                          Guruhdan çiqariş
                         </SubmitButton>
 
                         <p className="mt-1.5 text-[11px] leading-4 text-mb-muted">
-                          Ballar tarixi saqlanadi — o‘quvchi shunchaki
-                          ro‘yxatdan yashiriladi.
+                          Ballar tarixi saqlanadi — öquvçi şunçaki
+                          röyxatdan yaşiriladi.
                         </p>
                       </form>
                     </div>
@@ -728,16 +728,16 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                       strokeWidth={2}
                       aria-hidden="true"
                     />
-                    Ikkita yozuvni birlashtirish
+                    Ikkita yozuvni birlaştiriş
                   </span>
                 </summary>
 
                 <div className="border-t border-mb-line px-4 py-4">
                   <p className="text-sm leading-6 text-mb-muted">
-                    O‘quvchini qo‘lda kiritgan bo‘lsangiz va u keyin kod
-                    bilan o‘zi qo‘shilgan bo‘lsa, ikkita yozuv paydo
-                    bo‘ladi. Bu yerda ularni bittaga qo‘shasiz: darslar,
-                    ballar va sovg‘alar saqlanadigan yozuvga ko‘chadi.
+                    Öquvçini qölda kiritgan bölsangiz va u keyin kod
+                    bilan özi qöşilgan bölsa, ikkita yozuv paydo
+                    böladi. Bu yerda ularni bittaga qöşasiz: darslar,
+                    ballar va sovğalar saqlanadigan yozuvga köçadi.
                   </p>
 
                   <form action={mergeCrmStudents} className="mt-3">
@@ -775,7 +775,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                           htmlFor="removeId"
                           className="block text-xs font-semibold text-slate-600"
                         >
-                          Qaysi biri unga qo‘shilsin
+                          Qaysi biri unga qöşilsin
                         </label>
 
                         <select
@@ -797,12 +797,12 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                     </div>
 
                     <p className="mt-2 text-[11px] leading-4 text-mb-muted">
-                      Ikkinchi yozuv butunlay o‘chadi. Bir kunda ikkalasida
-                      ham yozuv bo‘lsa, qoladiganiniki ustun turadi.
+                      Ikkinçi yozuv butunlay öçadi. Bir kunda ikkalasida
+                      ham yozuv bölsa, qoladiganiniki ustun turadi.
                     </p>
 
                     <SubmitButton className="mt-3 min-h-11 rounded-xl border border-slate-300 bg-white px-5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
-                      Birlashtirish
+                      Birlaştiriş
                     </SubmitButton>
                   </form>
                 </div>
@@ -833,9 +833,9 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
             <div className="mt-3 rounded-2xl border border-mb-line bg-white px-4 py-4 shadow-sm">
               <div className="border-t border-mb-line px-4 py-4">
                 <p className="text-sm leading-6 text-mb-muted">
-                  Qoida o‘zgartirilsa faqat <b>keyingi</b> darslarga
-                  qo‘llanadi. O‘tgan kunlarning ballari o‘zgarmaydi — aks
-                  holda reyting to‘satdan qayta hisoblanib ketardi.
+                  Qoida özgartirilsa faqat <b>keyingi</b> darslarga
+                  qöllanadi. Ötgan kunlarning ballari özgarmaydi — aks
+                  holda reyting tösatdan qayta hisoblanib ketardi.
                 </p>
 
                 <form action={saveCrmRules} className="mt-4">
@@ -850,7 +850,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                     />
                     <RuleField
                       name="latePoints"
-                      label="Kechikdi"
+                      label="Keçikdi"
                       value={rules.late_points}
                     />
                     <RuleField
@@ -870,7 +870,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                       name="behaviorPoints"
                       label="Xulq"
                       value={rules.behavior_points}
-                      hint="Baho shu songa ko‘paytiriladi"
+                      hint="Baho şu songa köpaytiriladi"
                     />
                     <RuleField
                       name="homeworkItemPoints"
@@ -881,12 +881,12 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                       name="coinsPerPoints"
                       label="1 tanga = ball"
                       value={rules.coins_per_points}
-                      hint="Necha ballga bitta tanga"
+                      hint="Neça ballga bitta tanga"
                     />
                   </div>
 
                   <SubmitButton className="mt-4 min-h-11 rounded-xl bg-mb-brand px-5 text-sm font-semibold text-white transition hover:bg-mb-brandDark">
-                    Qoidalarni saqlash
+                    Qoidalarni saqlaş
                   </SubmitButton>
                 </form>
               </div>
@@ -930,7 +930,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                   </label>
 
                   <SubmitButton className="min-h-11 rounded-xl bg-mb-brand px-5 text-sm font-semibold text-white transition hover:bg-mb-brandDark">
-                    Saqlash
+                    Saqlaş
                   </SubmitButton>
                 </form>
 
@@ -942,24 +942,24 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                   <input type="hidden" name="tab" value="sozlamalar" />
 
                   <p className="text-sm font-semibold text-red-700">
-                    Guruhni butunlay o‘chirish
+                    Guruhni butunlay öçiriş
                   </p>
 
                   <p className="mt-1 text-xs leading-5 text-mb-muted">
-                    O‘quvchilar, darslar va barcha ballar birga o‘chadi.
-                    Tasdiqlash uchun guruh nomini aynan yozing.
+                    Öquvçilar, darslar va barça ballar birga öçadi.
+                    Tasdiqlaş uçun guruh nomini aynan yozing.
                   </p>
 
                   <div className="mt-2 flex flex-col gap-2 sm:flex-row">
                     <input
                       name="confirmTitle"
                       placeholder={group.title}
-                      aria-label="Tasdiqlash uchun guruh nomi"
+                      aria-label="Tasdiqlaş uçun guruh nomi"
                       className="min-h-11 flex-1 rounded-xl border border-red-200 bg-white px-3 outline-none transition focus:border-red-400 focus:ring-4 focus:ring-red-100"
                     />
 
                     <SubmitButton className="min-h-11 rounded-xl border border-red-300 bg-white px-5 text-sm font-semibold text-red-700 transition hover:bg-red-50">
-                      O‘chirish
+                      Öçiriş
                     </SubmitButton>
                   </div>
                 </form>

@@ -17,7 +17,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Ball tahlili",
-  description: "Qaysi kuni ball ko‘p bo‘lgan va nega — bitta ekranda.",
+  description: "Qaysi kuni ball köp bölgan va nega — bitta ekranda.",
 };
 
 type PageProps = {
@@ -304,11 +304,11 @@ export default async function CrmAnalysisPage({ searchParams }: PageProps) {
       }
 
       if (row.bonus_points > 20) {
-        reasons.push(`qo‘shimcha ball ${row.bonus_points}`);
+        reasons.push(`qöşimça ball ${row.bonus_points}`);
       }
 
       if (reasons.length === 0) {
-        reasons.push("davomat va xulq balli yig‘ilgan");
+        reasons.push("davomat va xulq balli yiğilgan");
       }
 
       return {
@@ -357,7 +357,7 @@ export default async function CrmAnalysisPage({ searchParams }: PageProps) {
         backLabel="Guruh"
         title="Ball tahlili"
         subtitle={group.title}
-        chips={[`${days.length} ta dars`, `${students.length} ta o‘quvchi`]}
+        chips={[`${days.length} ta dars`, `${students.length} ta öquvçi`]}
       />
 
       <section className={pageSection}>
@@ -376,10 +376,10 @@ export default async function CrmAnalysisPage({ searchParams }: PageProps) {
             />
 
             <p className="text-sm leading-6 text-red-900">
-              Shu onlayn guruhga yana{" "}
-              <b>{twins.map((row) => row.title).join(", ")}</b> bog‘langan.
-              Uy vazifasi balli ikkala guruhda ham sanaladi — tanga shuning
-              uchun ko‘payadi. Guruhlardan birining bog‘lanishini uzing.
+              Şu onlayn guruhga yana{" "}
+              <b>{twins.map((row) => row.title).join(", ")}</b> boğlangan.
+              Uy vazifasi balli ikkala guruhda ham sanaladi — tanga şuning
+              uçun köpayadi. Guruhlardan birining boğlanişini uzing.
             </p>
           </div>
         )}
@@ -400,7 +400,7 @@ export default async function CrmAnalysisPage({ searchParams }: PageProps) {
                   strokeWidth={2.2}
                   aria-hidden="true"
                 />
-                Eng ko‘p ball yozilgan kun
+                Eng köp ball yozilgan kun
               </p>
 
               {topDay && (
@@ -410,7 +410,7 @@ export default async function CrmAnalysisPage({ searchParams }: PageProps) {
                   </p>
 
                   <p className="mt-1 text-sm text-white/90">
-                    {topDay.total} ball · {topDay.count} o‘quvchi · odatdagi
+                    {topDay.total} ball · {topDay.count} öquvçi · odatdagi
                     kun {Math.round(dayMedian)} ball
                   </p>
 
@@ -419,7 +419,7 @@ export default async function CrmAnalysisPage({ searchParams }: PageProps) {
                       { label: "Davomat", value: topDay.basePoints },
                       { label: "Xulq", value: topDay.behaviorPoints },
                       { label: "Uy vazifasi", value: topDay.homeworkPoints },
-                      { label: "Qo‘shimcha", value: topDay.bonusPoints },
+                      { label: "Qöşimça", value: topDay.bonusPoints },
                     ].map((item) => (
                       <div
                         key={item.label}
@@ -435,7 +435,7 @@ export default async function CrmAnalysisPage({ searchParams }: PageProps) {
                     href={`/admin/crm/dars?guruh=${groupId}&sana=${topDay.date}`}
                     className="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-blue-700 transition hover:bg-blue-50"
                   >
-                    Shu kunni ochish
+                    Şu kunni oçiş
                   </Link>
                 </>
               )}
@@ -458,15 +458,15 @@ export default async function CrmAnalysisPage({ searchParams }: PageProps) {
                 <p className="text-sm leading-6 text-blue-900">
                   Hamma kun bir xil — <b>{days[0].total} ball</b>.{" "}
                   {nothingButAttendance
-                    ? "Dars varag‘ida faqat davomat belgilangan: xulq bahosi va uy vazifasi bo‘sh qolgan, shuning uchun ball faqat “keldi” ballidan iborat."
-                    : "Ballar bir xil chiqishi uchun har kuni bir xil qiymat kiritilgan bo‘lishi kerak."}
+                    ? "Dars varağida faqat davomat belgilangan: xulq bahosi va uy vazifasi böş qolgan, şuning uçun ball faqat “keldi” ballidan iborat."
+                    : "Ballar bir xil çiqişi uçun har kuni bir xil qiymat kiritilgan bölişi kerak."}
                 </p>
               </div>
             )}
 
             {/* Shubhali yozuvlar */}
             <div className="mt-6">
-              <h2 className={sectionTitle}>Tekshirish kerak</h2>
+              <h2 className={sectionTitle}>Tekşiriş kerak</h2>
 
               {suspicious.length === 0 ? (
                 <div
@@ -483,13 +483,13 @@ export default async function CrmAnalysisPage({ searchParams }: PageProps) {
                   />
 
                   <p className="text-sm text-emerald-800">
-                    G‘alati yozuv topilmadi. Ballar bir tekis taqsimlangan.
+                    Ğalati yozuv topilmadi. Ballar bir tekis taqsimlangan.
                   </p>
                 </div>
               ) : (
                 <>
                   <p className="mt-1 text-sm text-mb-muted">
-                    Bitta kunda {threshold} balldan oshgan yozuvlar. Odatdagi
+                    Bitta kunda {threshold} balldan oşgan yozuvlar. Odatdagi
                     kun — {Math.round(recordMedian)} ball.
                   </p>
 
@@ -521,7 +521,7 @@ export default async function CrmAnalysisPage({ searchParams }: PageProps) {
                           href={`/admin/crm/dars?guruh=${groupId}&sana=${row.date}`}
                           className="shrink-0 rounded-xl border border-amber-300 bg-white px-3 py-2 text-xs font-bold text-amber-800 transition hover:bg-amber-100"
                         >
-                          Tuzatish
+                          Tuzatiş
                         </Link>
                       </li>
                     ))}
@@ -536,8 +536,8 @@ export default async function CrmAnalysisPage({ searchParams }: PageProps) {
                 <h2 className={sectionTitle}>Bir ism ikki marta</h2>
 
                 <p className="mt-1 text-sm text-mb-muted">
-                  Ikki yozuvga ham ball tushadi — tanga shuning uchun
-                  ko‘payib ketadi. Guruh sahifasida birlashtiring.
+                  Ikki yozuvga ham ball tuşadi — tanga şuning uçun
+                  köpayib ketadi. Guruh sahifasida birlaştiring.
                 </p>
 
                 <ul className="mt-3 grid gap-2">
@@ -566,7 +566,7 @@ export default async function CrmAnalysisPage({ searchParams }: PageProps) {
                         href={`/admin/crm/guruh?id=${groupId}`}
                         className="shrink-0 rounded-xl border border-red-300 bg-white px-3 py-2 text-xs font-bold text-red-800 transition hover:bg-red-100"
                       >
-                        Birlashtirish
+                        Birlaştiriş
                       </Link>
                     </li>
                   ))}

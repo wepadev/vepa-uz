@@ -80,19 +80,19 @@ async function createCategory(
 
   if (title.length < 2) {
     errors.title =
-      "Bo‘lim nomini kiriting.";
+      "Bölim nomini kiriting.";
   }
 
   if (title.length > 100) {
     errors.title =
-      "Bo‘lim nomi 100 ta belgidan oshmasin.";
+      "Bölim nomi 100 ta belgidan oşmasin.";
   }
 
   if (Object.keys(errors).length > 0) {
     return {
       status: "error",
       message:
-        "Qizil bilan ko‘rsatilgan joylarni to‘g‘rilang.",
+        "Qizil bilan körsatilgan joylarni töğrilang.",
       errors,
     };
   }
@@ -111,7 +111,7 @@ async function createCategory(
     return {
       status: "error",
       message:
-        "Bo‘lim nomini tekshirib bo‘lmadi. Qayta urinib ko‘ring.",
+        "Bölim nomini tekşirib bölmadi. Qayta urinib köring.",
       errors: {},
     };
   }
@@ -120,10 +120,10 @@ async function createCategory(
     return {
       status: "error",
       message:
-        "Bunday nomli dars bo‘limi avval yaratilgan.",
+        "Bunday nomli dars bölimi avval yaratilgan.",
       errors: {
         title:
-          "Boshqa bo‘lim nomini kiriting.",
+          "Boşqa bölim nomini kiriting.",
       },
     };
   }
@@ -144,7 +144,7 @@ async function createCategory(
     return {
       status: "error",
       message:
-        "Bo‘limlar tartibini aniqlab bo‘lmadi.",
+        "Bölimlar tartibini aniqlab bölmadi.",
       errors: {},
     };
   }
@@ -168,7 +168,7 @@ async function createCategory(
     return {
       status: "error",
       message:
-        "Dars bo‘limini yaratib bo‘lmadi. Qayta urinib ko‘ring.",
+        "Dars bölimini yaratib bölmadi. Qayta urinib köring.",
       errors: {},
     };
   }
@@ -198,7 +198,7 @@ async function changeCategoryState(
     categoryId <= 0
   ) {
     throw new Error(
-      "Dars bo‘limi ma’lumotlari noto‘g‘ri.",
+      "Dars bölimi ma’lumotlari notöğri.",
     );
   }
 
@@ -211,7 +211,7 @@ async function changeCategoryState(
 
   if (error) {
     throw new Error(
-      "Bo‘lim holatini o‘zgartirib bo‘lmadi.",
+      "Bölim holatini özgartirib bölmadi.",
     );
   }
 
@@ -252,7 +252,7 @@ export default async function AdminLessonsPage() {
 
   if (categoriesResult.error) {
     throw new Error(
-      `Dars bo‘limlari yuklanmadi: ${categoriesResult.error.message}`,
+      `Dars bölimlari yuklanmadi: ${categoriesResult.error.message}`,
     );
   }
 
@@ -313,7 +313,7 @@ export default async function AdminLessonsPage() {
               href="/admin"
               className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
             >
-              ← Admin panelga qaytish
+              ← Admin panelga qaytiş
             </Link>
 
             <h1 className="text-xl font-bold sm:text-2xl">Darslar</h1>
@@ -323,21 +323,21 @@ export default async function AdminLessonsPage() {
               active="/admin/lessons"
               tabs={[
               { href: "/admin/lessons", label: "Videodarslar" },
-              { href: "/admin/textbooks", label: "Darslik yechimlari" },
+              { href: "/admin/textbooks", label: "Darslik yeçimlari" },
             ]}
             />
           </div>
 
           <div className="flex flex-wrap gap-3">
             <div className="rounded-xl bg-blue-50 px-4 py-2 text-sm text-blue-800">
-              Bo‘limlar:{" "}
+              Bölimlar:{" "}
               <strong>
                 {categories.length}
               </strong>
             </div>
 
             <div className="rounded-xl bg-emerald-50 px-4 py-2 text-sm text-emerald-800">
-              Nashr qilingan:{" "}
+              Naşr qilingan:{" "}
               <strong>
                 {publishedCount}
               </strong>
@@ -348,7 +348,7 @@ export default async function AdminLessonsPage() {
 
       <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-8">
         <CreatePanel
-          label="Yangi dars bo‘limi"
+          label="Yangi dars bölimi"
           defaultOpen={categories.length === 0}
         >
           <CreateLessonCategoryForm action={createCategory} />
@@ -397,7 +397,7 @@ export default async function AdminLessonsPage() {
                         value={String(!category.is_published)}
                       />
                       <SubmitButton className={rowMenuItem}>
-                        {category.is_published ? "Bo‘limni yopish" : "Nashr qilish"}
+                        {category.is_published ? "Bölimni yopiş" : "Naşr qiliş"}
                       </SubmitButton>
                     </form>
                   </RowMenu>

@@ -43,11 +43,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
   title: {
     default:
-      "Vepa Ustoz — matematika testlari, videodarslar va darslik yechimlari",
+      "Vepa Ustoz — matematika testlari, videodarslar va darslik yeçimlari",
     template: "%s | Vepa Ustoz",
   },
   description:
-    "Vepa Ustoz (vepa.uz) — Attestatsiya, Milliy sertifikat va SAT testlari, videodarslar hamda darslik yechimlari. Onlayn test ishlang, natijangizni ko‘ring.",
+    "Vepa Ustoz (vepa.uz) — Attestatsiya, Milliy sertifikat va SAT testlari, videodarslar hamda darslik yeçimlari. Onlayn test işlang, natijangizni köring.",
   applicationName: "Vepa Ustoz",
 
   // Google qaysi manzilni asosiy deb bilishini aniq aytamiz
@@ -68,16 +68,17 @@ export const metadata: Metadata = {
   keywords: [
     "vepa.uz",
     "vepa ustoz",
+    "Vepa Kurbankliçev",
     "Vepa Kurbanklichev",
     "matematika",
     "attestatsiya",
     "milliy sertifikat",
     "SAT",
     "videodars",
-    "darslik yechimlari",
+    "darslik yeçimlari",
     "Vepa Ustoz",
   ],
-  authors: [{ name: "Vepa Kurbanklichev" }],
+  authors: [{ name: "Vepa Kurbankliçev" }],
   openGraph: {
     type: "website",
     locale: "uz_UZ",
@@ -85,13 +86,13 @@ export const metadata: Metadata = {
     siteName: "Vepa Ustoz",
     title: "Vepa Ustoz — matematika testlari va videodarslar",
     description:
-      "Testlar, videodarslar va darslik yechimlari — barchasi bir joyda.",
+      "Testlar, videodarslar va darslik yeçimlari — barçasi bir joyda.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Vepa Ustoz — matematika platformasi",
     description:
-      "Testlar, videodarslar va darslik yechimlari — barchasi bir joyda.",
+      "Testlar, videodarslar va darslik yeçimlari — barçasi bir joyda.",
   },
   icons: {
     icon: [

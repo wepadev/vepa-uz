@@ -27,11 +27,11 @@ export default function CreateStudentForm({
       className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
     >
       <h2 className="text-2xl font-bold">
-        Yangi foydalanuvchi
+        Yangi foydalanuvçi
       </h2>
 
       <p className="mt-2 text-sm leading-6 text-slate-500">
-        O‘quvchiga email va vaqtinchalik
+        Öquvçiga email va vaqtinçalik
         parol beriladi.
       </p>
 
@@ -99,7 +99,7 @@ export default function CreateStudentForm({
         htmlFor="password"
         className="mt-5 block text-sm font-semibold"
       >
-        Vaqtinchalik parol
+        Vaqtinçalik parol
       </label>
 
       <input
@@ -141,7 +141,7 @@ export default function CreateStudentForm({
       >
         {pending
           ? "Yaratilmoqda..."
-          : "Foydalanuvchini yaratish"}
+          : "Foydalanuvçini yaratiş"}
       </SubmitButton>
     </form>
   );

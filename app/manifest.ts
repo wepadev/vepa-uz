@@ -19,7 +19,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Vepa Ustoz — matematika platformasi",
     short_name: "Vepa Ustoz",
     description:
-      "Attestatsiya, Milliy sertifikat va SAT testlari, videodarslar hamda darslik yechimlari.",
+      "Attestatsiya, Milliy sertifikat va SAT testlari, videodarslar hamda darslik yeçimlari.",
     lang: "uz",
     dir: "ltr",
     start_url: "/",

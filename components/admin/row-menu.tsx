@@ -21,8 +21,8 @@ export default function RowMenu({ children }: { children: ReactNode }) {
   return (
     <details className="relative">
       <summary
-        aria-label="Boshqa amallar"
-        title="Boshqa amallar"
+        aria-label="Boşqa amallar"
+        title="Boşqa amallar"
         className="grid h-10 w-10 cursor-pointer list-none place-items-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50"
       >
         <MoreHorizontal className="h-5 w-5" strokeWidth={2} aria-hidden="true" />

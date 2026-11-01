@@ -94,7 +94,7 @@ async function updateQuestion(
     return {
       status: "error",
       message:
-        "Savol ma’lumotlari noto‘g‘ri. Sahifani yangilang.",
+        "Savol ma’lumotlari notöğri. Sahifani yangilang.",
       errors: {},
     };
   }
@@ -132,7 +132,7 @@ async function updateQuestion(
     )
   ) {
     errors.correctAnswer =
-      "To‘g‘ri javobni tanlang.";
+      "Töğri javobni tanlang.";
   }
 
   if (
@@ -142,14 +142,14 @@ async function updateQuestion(
     )
   ) {
     errors.solutionVideoUrl =
-      "Video havolasini https:// bilan to‘liq kiriting.";
+      "Video havolasini https:// bilan töliq kiriting.";
   }
 
   if (Object.keys(errors).length > 0) {
     return {
       status: "error",
       message:
-        "Qizil bilan ko‘rsatilgan joylarni to‘g‘rilang.",
+        "Qizil bilan körsatilgan joylarni töğrilang.",
       errors,
     };
   }
@@ -193,7 +193,7 @@ async function updateQuestion(
     return {
       status: "error",
       message:
-        "Savol matnini yangilab bo‘lmadi.",
+        "Savol matnini yangilab bölmadi.",
       errors: {},
     };
   }
@@ -219,7 +219,7 @@ async function updateQuestion(
     return {
       status: "error",
       message:
-        "To‘g‘ri javob yoki yechimni yangilab bo‘lmadi.",
+        "Töğri javob yoki yeçimni yangilab bölmadi.",
       errors: {},
     };
   }
@@ -306,7 +306,7 @@ export default async function EditQuestionPage({
 
   if (answerError) {
     throw new Error(
-      "Savol javobini yuklab bo‘lmadi.",
+      "Savol javobini yuklab bölmadi.",
     );
   }
 
@@ -318,16 +318,16 @@ export default async function EditQuestionPage({
             href={`/admin/tests/manage?testId=${testId}`}
             className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
           >
-            ← Savollar ro‘yxatiga qaytish
+            ← Savollar röyxatiga qaytiş
           </Link>
 
           <h1 className="text-xl font-bold sm:text-2xl">
             {question.order_number}-savolni
-            tahrirlash
+            tahrirlaş
           </h1>
 
           <p className="mt-1 text-sm text-slate-500">
-            Savol raqami o‘zgarmaydi.
+            Savol raqami özgarmaydi.
           </p>
         </div>
       </header>

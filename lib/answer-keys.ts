@@ -48,7 +48,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 2,
-    title: "Bo’linish belgilari",
+    title: "Böliniş belgilari",
     variants: [
       { label: "1-variant", answers: "ACBCABDBCBAD" },
       { label: "2-variant / 1-TEST", answers: "BCADCDBACDBC" },
@@ -58,7 +58,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 3,
-    title: "Tub va murakkab sonlar. Bo’linish belgilari 2-qism",
+    title: "Tub va murakkab sonlar. Böliniş belgilari 2-qism",
     variants: [
       { label: "1-variant", answers: "CBDADBADCCDBACABD" },
       { label: "2-variant / 1-TEST", answers: "CABDACBDDCBBCAADB" },
@@ -68,7 +68,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 4,
-    title: "Sonlarning natural bo’luvchilari soni va yig’indisi. EKUB va",
+    title: "Sonlarning natural böluvçilari soni va yiğindisi. EKUB va",
     variants: [
       { label: "1-variant", answers: "BACDCCDBABDADCD" },
       { label: "2-variant / 1-TEST", answers: "DAABBDCBDCACDBA" },
@@ -78,7 +78,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 5,
-    title: "Sonning natural bo’luvchilari soni va yig’indisi",
+    title: "Sonning natural böluvçilari soni va yiğindisi",
     variants: [
       { label: "1-variant", answers: "CABBDDACCBABDCADBACD" },
       { label: "2-variant / 1-TEST", answers: "ABDCBDCABADCABDCBDAC" },
@@ -88,7 +88,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 6,
-    title: "Qoldiqli bo’lish",
+    title: "Qoldiqli böliş",
     variants: [
       { label: "1-variant", answers: "BADACBACDDCBCADCBB" },
       { label: "2-variant / 1-TEST", answers: "DACBDCDBACDBAACABD" },
@@ -128,7 +128,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 10,
-    title: "O’nli kasrlar",
+    title: "Önli kasrlar",
     variants: [
       { label: "1-variant", answers: "DCABDACCDBBADCBADBCA" },
       { label: "2-variant / 1-TEST", answers: "DCADBCABDACBAABDCDBB" },
@@ -188,7 +188,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 16,
-    title: "O’lchov birliklar. Birhadlar va algebraik ifodalar",
+    title: "Ölçov birliklar. Birhadlar va algebraik ifodalar",
     variants: [
       { label: "1-variant", answers: "DACBACCBADBDCB" },
       { label: "2-variant / 1-TEST", answers: "DCCDBACBADACBD" },
@@ -198,7 +198,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 17,
-    title: "Ko’phadlar va ular ustida amallar",
+    title: "Köphadlar va ular ustida amallar",
     variants: [
       { label: "1-variant", answers: "ADCDBCADBCABAD" },
       { label: "2-variant / 1-TEST", answers: "DCABBDCAADCBCC" },
@@ -208,7 +208,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 18,
-    title: "Qisqa ko’paytirish formulalari 1-qism",
+    title: "Qisqa köpaytiriş formulalari 1-qism",
     variants: [
       { label: "1-variant", answers: "BCADDACBADCBABDDCABDCB" },
       { label: "2-variant / 1-TEST", answers: "BDCADCABDBCADCABBADCAB" },
@@ -218,7 +218,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 19,
-    title: "Qisqa ko’paytirish formulalari 2-qism",
+    title: "Qisqa köpaytiriş formulalari 2-qism",
     variants: [
       { label: "1-variant", answers: "CDCBDAACADBDAC" },
       { label: "2-variant / 1-TEST", answers: "ADDACCBDACBABB" },
@@ -228,7 +228,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 20,
-    title: "Qisqa ko’paytirish formulalari 3-qism",
+    title: "Qisqa köpaytiriş formulalari 3-qism",
     variants: [
       { label: "1-variant", answers: "ABDCBDCABDAACC" },
       { label: "2-variant / 1-TEST", answers: "BCBDCDBACABDAC" },
@@ -238,7 +238,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 21,
-    title: "Ko’paytuvchilarga ajratish 1-qism",
+    title: "Köpaytuvçilarga ajratiş 1-qism",
     variants: [
       { label: "1-variant", answers: "DBCCBADAACDBDADBCB" },
       { label: "2-variant / 1-TEST", answers: "ABDCADCADBDCBCACBA" },
@@ -248,7 +248,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 22,
-    title: "Ko’paytuvchilarga ajratish 2-qism",
+    title: "Köpaytuvçilarga ajratiş 2-qism",
     variants: [
       { label: "1-variant", answers: "BDACBCCADCBADBA" },
       { label: "2-variant / 1-TEST", answers: "DCBDACBABDACAAB" },
@@ -278,7 +278,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 25,
-    title: "Chiziqli tenglamalar",
+    title: "Çiziqli tenglamalar",
     variants: [
       { label: "1-variant", answers: "DCABDBAACCBDCACBABDACDBA" },
       { label: "2-variant / 1-TEST", answers: "ADBCCADDBCABDADCBCABDACD" },
@@ -288,7 +288,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 26,
-    title: "Chiziqli tenglamalar sistemasi",
+    title: "Çiziqli tenglamalar sistemasi",
     variants: [
       { label: "1-variant", answers: "ADCBDBADBACDCCA" },
       { label: "2-variant / 1-TEST", answers: "BADCBDCABDCDBAC" },
@@ -298,7 +298,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 27,
-    title: "Chiziqli tengsizlik va tengsizliklar sistemasi",
+    title: "Çiziqli tengsizlik va tengsizliklar sistemasi",
     variants: [
       { label: "1-variant", answers: "BACBDCCDCABDACADBADBCADC" },
       { label: "2-variant / 1-TEST", answers: "ACDACCDBACDACBBADBDADBCB" },
@@ -308,7 +308,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 28,
-    title: "Tenglama va tenglamalar sistemasi orqali yechiladigan matnli",
+    title: "Tenglama va tenglamalar sistemasi orqali yeçiladigan matnli",
     variants: [
       { label: "1-variant", answers: "CBDACCAABBDCDDADBBCAA" },
       { label: "2-variant / 1-TEST", answers: "CDBADBCACBDBADDCABDAA" },
@@ -318,7 +318,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 29,
-    title: "Chiziqli funksiya 1-qism",
+    title: "Çiziqli funksiya 1-qism",
     variants: [
       { label: "1-variant", answers: "??BADAC????BADB" },
       { label: "2-variant / 1-TEST", answers: "??DADCA????BDBC" },
@@ -328,7 +328,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 30,
-    title: "Chiziqli funksiya 2-qism",
+    title: "Çiziqli funksiya 2-qism",
     variants: [
       { label: "1-variant", answers: "DCDBACBCAABBDC" },
       { label: "2-variant / 1-TEST", answers: "DBACCBADCBDACA" },
@@ -418,7 +418,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 39,
-    title: "Ikkinchi va yuqori darajali tenglamalar",
+    title: "Ikkinçi va yuqori darajali tenglamalar",
     variants: [
       { label: "1-variant", answers: "DCBDCACBDACCBAD" },
       { label: "2-variant / 1-TEST", answers: "BBCBCAADCACABCC" },
@@ -428,7 +428,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 40,
-    title: "Ko’phadlar",
+    title: "Köphadlar",
     variants: [
       { label: "1-variant", answers: "BDCBACDDAABDCBCADCBA" },
       { label: "2-variant / 1-TEST", answers: "CACDBAABDCBDACDBCADA" },
@@ -498,7 +498,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 47,
-    title: "Ratsional ko’rsatkichli daraja va uning xossalari",
+    title: "Ratsional körsatkiçli daraja va uning xossalari",
     variants: [
       { label: "1-variant", answers: "ABCADCABDADBCADCBCADABDCB" },
       { label: "2-variant / 1-TEST", answers: "CCDBDAABADBBCBDCADCABCADB" },
@@ -538,7 +538,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 51,
-    title: "Arifmetik progressiya yig’indisi",
+    title: "Arifmetik progressiya yiğindisi",
     variants: [
       { label: "1-variant", answers: "CCAABDADCBCCBBDDBADC" },
       { label: "2-variant / 1-TEST", answers: "DADCBCACBDACBDACDBAC" },
@@ -618,7 +618,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 59,
-    title: "Ko‘rsatkichli tenglama -  javoblari",
+    title: "Körsatkiçli tenglama -  javoblari",
     variants: [
       { label: "1-variant", answers: "ACADCDBDDAABACCBDCBBADBCAABDDC" },
       { label: "2-variant / 1-TEST", answers: "BDCCABDAADBACBACDCBBDACCDBADCA" },
@@ -628,7 +628,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 60,
-    title: "Ko’rsatkichli tengsizlik",
+    title: "Körsatkiçli tengsizlik",
     variants: [
       { label: "1-variant", answers: "ABACBDCDDACDCBABBDAC" },
       { label: "2-variant / 1-TEST", answers: "ADBDCABACBCCADBDCBAD" },
@@ -648,7 +648,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 62,
-    title: "Logarifmik shakl almashtirishlar",
+    title: "Logarifmik şakl almaştirişlar",
     variants: [
       { label: "1-variant", answers: "BACBADDCBDDBACDCAA" },
       { label: "2-variant / 1-TEST", answers: "CBDDCABDAACBCACDBA" },
@@ -688,7 +688,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 66,
-    title: "Trigonometriya. Asosiy tushunchalar",
+    title: "Trigonometriya. Asosiy tuşunçalar",
     variants: [
       { label: "1-variant", answers: "BBDCADBBDCACDC" },
       { label: "1-TEST", answers: "ACBCADBDABBDAD" },
@@ -718,7 +718,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 69,
-    title: "Keltirish formulalari.           Sinuslar va kosinuslar teoremasi",
+    title: "Keltiriş formulalari.           Sinuslar va kosinuslar teoremasi",
     variants: [
       { label: "1-variant", answers: "BDABACDCCDCADCABBCABACDBCBBABD" },
       { label: "1-TEST / 2-variant", answers: "CADABDBBDBCBDCACDCADCDBADABADB" },
@@ -728,7 +728,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 70,
-    title: "Qo‘shish formulalari",
+    title: "Qöşiş formulalari",
     variants: [
       { label: "1-variant", answers: "CACDABAACADABDBADCDBCCBCCADBCB" },
       { label: "1-TEST / 2-variant", answers: "DABAADBDABADABACBDADCCBDADCCBC" },
@@ -738,7 +738,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 71,
-    title: "Ikkilangan burchak formulalari",
+    title: "Ikkilangan burçak formulalari",
     variants: [
       { label: "1-variant", answers: "DACABDADBADDCADBCACBDCCBCADABD" },
       { label: "1-TEST / 2-variant", answers: "ACADCABADBDCABDCDBCABDCABBDBAC" },
@@ -748,7 +748,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 72,
-    title: "Yig‘indi va ko‘paytma uchun formulalar",
+    title: "Yiğindi va köpaytma uçun formulalar",
     variants: [
       { label: "1-variant", answers: "ACABDACBBACCDADBDABDADCDBBCBDC" },
       { label: "1-TEST / 2-variant", answers: "BDADCADABDADCABBCBDCCABACCABAC" },
@@ -758,7 +758,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 73,
-    title: "Yarim burchak formulalari",
+    title: "Yarim burçak formulalari",
     variants: [
       { label: "1-variant", answers: "ACBBAACADCDDBADCABDA" },
       { label: "1-TEST / 2-variant", answers: "CDACCABAADCCBDBCADBD" },
@@ -848,7 +848,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 82,
-    title: "Funksiyani tekshirish",
+    title: "Funksiyani tekşiriş",
     variants: [
       { label: "1-variant", answers: "ACDADCDADABBADCBAACBBDBDCBABCC" },
       { label: "1-TEST / 2-variant", answers: "BADCAADCDCBADCCBCBCDAABDBDDCBA" },
@@ -868,7 +868,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 84,
-    title: "Boshlang‘ich funksiya va integral (1-qism)",
+    title: "Boşlanğiç funksiya va integral (1-qism)",
     variants: [
       { label: "1-variant", answers: "BDACCBBACDAABCDAABBDDCCDA" },
       { label: "1-TEST / 2-variant", answers: "DABAADBCADABABBCCBCDBCDDC" },
@@ -878,7 +878,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 85,
-    title: "Boshlang‘ich funksiya va integral (2-qism)",
+    title: "Boşlanğiç funksiya va integral (2-qism)",
     variants: [
       { label: "1-variant", answers: "BCADBCBCCBCAADAADBADBADCCABDBD" },
       { label: "1-TEST / 2-variant", answers: "CCABDDBADACDBBCCADADBCBABCCADD" },
@@ -888,7 +888,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 86,
-    title: "Aniq integral va egri chiziqli trapetsiya yuzi",
+    title: "Aniq integral va egri çiziqli trapetsiya yuzi",
     variants: [
       { label: "1-variant", answers: "AACABBABADBDDCBDABDCBCCBCDACDA" },
       { label: "1-TEST / 2-variant", answers: "DBCAACCBDDCAABDADBCACDCBCABDDB" },
@@ -918,7 +918,7 @@ export const ANSWER_TOPICS: AnswerTopic[] = [
   },
   {
     n: 89,
-    title: "To‘plamlar va ehtimollar nazariyasi",
+    title: "Töplamlar va ehtimollar nazariyasi",
     variants: [
       { label: "1-variant", answers: "ACDACCBADDACDBBABBCDABACBBDDCA" },
       { label: "1-TEST / 2-variant", answers: "BDACCDBBACDBDCACBCADADACDBABBC" },

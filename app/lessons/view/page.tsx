@@ -21,7 +21,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Videodars",
   description:
-    "Dars videosi va unga tegishli test.",
+    "Dars videosi va unga tegişli test.",
 };
 
 type PageProps = {
@@ -452,7 +452,7 @@ export default async function LessonViewPage({
               </p>
 
               <p className="text-sm font-semibold text-blue-800">
-                O‘rtacha:{" "}
+                Örtaça:{" "}
                 <span
                   className={
                     currentCompleted
@@ -492,7 +492,7 @@ export default async function LessonViewPage({
                         href={`/tests/take?testId=${test.id}&lessonId=${currentLesson.id}`}
                         className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-xl bg-blue-600 px-4 text-sm font-bold text-white hover:bg-blue-700"
                       >
-                        {score > 0 ? "Qayta ishlash" : "Boshlash"}
+                        {score > 0 ? "Qayta işlaş" : "Boşlaş"}
                       </a>
                     ) : (
                       <span className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-xl bg-slate-100 px-4 text-sm font-bold text-slate-500">
@@ -519,7 +519,7 @@ export default async function LessonViewPage({
               href={`/lessons/category?categoryId=${currentLesson.category_id}`}
               className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 py-3 text-center font-semibold text-slate-700 hover:bg-slate-50"
             >
-              Darslar ro‘yxati
+              Darslar röyxati
             </a>
           )}
 
@@ -548,7 +548,7 @@ export default async function LessonViewPage({
               href="/lessons"
               className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-emerald-600 px-5 py-3 text-center font-bold text-white hover:bg-emerald-700"
             >
-              Barcha dars bo‘limlari
+              Barça dars bölimlari
             </Link>
           )}
         </div>

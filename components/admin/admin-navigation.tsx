@@ -43,7 +43,7 @@ export default function AdminNavigation() {
             href="/"
             className="inline-flex min-h-10 items-center justify-center rounded-xl border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 sm:px-4"
           >
-            Saytni ko‘rish
+            Saytni köriş
           </Link>
         </div>
       </div>

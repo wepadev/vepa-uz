@@ -16,9 +16,9 @@ export const dynamic =
   "force-dynamic";
 
 export const metadata = {
-  title: "To‘lov kutilmoqda",
+  title: "Tölov kutilmoqda",
   description:
-    "Buyurtmangiz tekshirilmoqda.",
+    "Buyurtmangiz tekşirilmoqda.",
 };
 
 type PageProps = {
@@ -167,30 +167,30 @@ export default async function PaymentPendingPage({
         ?.full_name ??
       user.user_metadata?.name ??
       user.email?.split("@")[0] ??
-      "Foydalanuvchi",
+      "Foydalanuvçi",
     ).trim();
 
   const telegramMessage = [
     "Assalomu alaykum!",
     "",
-    "Vepa Ustoz Premium sotib olmoqchiman.",
+    "Vepa Ustoz Premium sotib olmoqçiman.",
     "",
     `Buyurtma: #${order.order_number}`,
-    `Foydalanuvchi: ${fullName}`,
-    `Email: ${user.email ?? "koʼrsatilmagan"}`,
+    `Foydalanuvçi: ${fullName}`,
+    `Email: ${user.email ?? "körsatilmagan"}`,
     `Tarif: ${plan?.name ?? "Premium tarif"}`,
     `Muddat: ${plan?.duration_months ?? "—"} oy`,
     `Asl narx: ${formatMoney(
       order.original_amount_uzs,
-    )} soʼm`,
+    )} söm`,
     order.promo_code_snapshot
       ? `Promo-kod: ${order.promo_code_snapshot}`
-      : "Promo-kod: yoʼq",
-    `Toʼlov summasi: ${formatMoney(
+      : "Promo-kod: yöq",
+    `Tölov summasi: ${formatMoney(
       order.final_amount_uzs,
-    )} soʼm`,
+    )} söm`,
     "",
-    "Toʼlov tartibini yuboring. Toʼlov chekini shu chatga joʼnataman.",
+    "Tölov tartibini yuboring. Tölov çekini şu çatga jönataman.",
   ].join("\n");
 
   const telegramHref =
@@ -227,7 +227,7 @@ export default async function PaymentPendingPage({
                 : "shrink-0 rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-bold text-amber-700"
             }
           >
-            {isPaid ? "To‘langan" : "Kutilmoqda"}
+            {isPaid ? "Tölangan" : "Kutilmoqda"}
           </span>
         </div>
       </header>
@@ -261,7 +261,7 @@ export default async function PaymentPendingPage({
             <p className="mt-1 text-4xl font-bold leading-none sm:text-5xl">
               {formatMoney(order.final_amount_uzs)}
               <span className="ml-1.5 text-base font-bold text-white/85">
-                so‘m
+                söm
               </span>
             </p>
 
@@ -270,7 +270,7 @@ export default async function PaymentPendingPage({
                 <span className="line-through">
                   {formatMoney(order.original_amount_uzs)}
                 </span>{" "}
-                · chegirma {formatMoney(order.discount_amount_uzs)} so‘m
+                · çegirma {formatMoney(order.discount_amount_uzs)} söm
               </p>
             )}
 
@@ -293,13 +293,13 @@ export default async function PaymentPendingPage({
                   strokeWidth={2.2}
                   aria-hidden="true"
                 />
-                Telegramda to‘lash
+                Telegramda tölaş
               </a>
             )}
 
             {!isPaid && (
               <p className="mt-2 text-center text-xs text-white/80">
-                Tugma admin bilan chatni tayyor xabar bilan ochadi ·
+                Tugma admin bilan çatni tayyor xabar bilan oçadi ·
                 @{username}
               </p>
             )}
@@ -314,9 +314,9 @@ export default async function PaymentPendingPage({
 
             <div className="mt-2.5 grid gap-2">
               {[
-                "Tugmani bosing — chat tayyor xabar bilan ochiladi",
-                "Admin yuborgan rekvizit orqali to‘laysiz",
-                "Chek rasmini o‘sha chatga tashlaysiz",
+                "Tugmani bosing — çat tayyor xabar bilan oçiladi",
+                "Admin yuborgan rekvizit orqali tölaysiz",
+                "Çek rasmini öşa çatga taşlaysiz",
                 "Admin tasdiqlaydi, Premium darrov yoqiladi",
               ].map((step, index) => (
                 <p
@@ -389,7 +389,7 @@ export default async function PaymentPendingPage({
             href="/profile/payments"
             className="inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-300 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50"
           >
-            To‘lovlarim
+            Tölovlarim
           </Link>
 
           <Link

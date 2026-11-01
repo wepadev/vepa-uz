@@ -52,8 +52,8 @@ export async function joinGroupAction(formData: FormData) {
     back(
       "/guruhim",
       error.message.includes("topilmadi")
-        ? "Bunday kod topilmadi. Ustozingizdan qayta so‘rang."
-        : "Qo‘shilib bo‘lmadi. Qaytadan urinib ko‘ring.",
+        ? "Bunday kod topilmadi. Ustozingizdan qayta sörang."
+        : "Qöşilib bölmadi. Qaytadan urinib köring.",
     );
   }
 
@@ -67,8 +67,8 @@ export async function joinGroupAction(formData: FormData) {
   back(
     "/guruhim",
     row?.already
-      ? `Siz allaqachon “${row.group_title}” guruhidasiz.`
-      : `“${row?.group_title ?? "Guruh"}” guruhiga qo‘shildingiz.`,
+      ? `Siz allaqaçon “${row.group_title}” guruhidasiz.`
+      : `“${row?.group_title ?? "Guruh"}” guruhiga qöşildingiz.`,
     "xabar",
   );
 }
@@ -77,7 +77,7 @@ export async function requestRewardAction(formData: FormData) {
   const rewardId = Number(text(formData, "rewardId"));
 
   if (!Number.isInteger(rewardId) || rewardId <= 0) {
-    back("/dokon", "Sovg‘a tanlanmadi.");
+    back("/dokon", "Sovğa tanlanmadi.");
   }
 
   const supabase = await createClient();
@@ -123,13 +123,13 @@ export async function requestRewardAction(formData: FormData) {
     .maybeSingle();
 
   await notifyAdmin(
-    "🎁 Yangi sovg‘a so‘rovi",
+    "🎁 Yangi sovğa sörovi",
     [
-      `O‘quvchi: ${profile?.full_name?.trim() || user.email || "noma’lum"}`,
-      `Sovg‘a: ${reward?.title ?? "—"}`,
+      `Öquvçi: ${profile?.full_name?.trim() || user.email || "noma’lum"}`,
+      `Sovğa: ${reward?.title ?? "—"}`,
       `Narxi: ${reward?.cost_coins ?? "—"} tanga`,
       "",
-      "Admin panel → Guruhlar → Sovg‘a do‘koni bo‘limida tasdiqlang.",
+      "Admin panel → Guruhlar → Sovğa dökoni bölimida tasdiqlang.",
     ].join("\n"),
   );
 
@@ -138,7 +138,7 @@ export async function requestRewardAction(formData: FormData) {
 
   back(
     "/dokon",
-    "So‘rovingiz yuborildi. Ustoz sovg‘ani topshirganda tasdiqlaydi.",
+    "Sörovingiz yuborildi. Ustoz sovğani topşirganda tasdiqlaydi.",
     "xabar",
   );
 }

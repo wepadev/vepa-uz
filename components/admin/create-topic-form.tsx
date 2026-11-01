@@ -76,7 +76,7 @@ export default function CreateTopicForm({
       </h2>
 
       <p className="mt-2 text-sm leading-6 text-slate-500">
-        Darslik ichiga yangi mavzu qo‘shing.
+        Darslik içiga yangi mavzu qöşing.
       </p>
 
       <label
@@ -116,7 +116,7 @@ export default function CreateTopicForm({
             htmlFor="videoUrl"
             className="mt-6 block text-sm font-semibold"
           >
-            Videoyechim havolasi{" "}
+            Videoyeçim havolasi{" "}
             <span className="font-normal text-slate-500">
               (ixtiyoriy)
             </span>
@@ -134,7 +134,7 @@ export default function CreateTopicForm({
           />
 
           <p className="mt-1.5 text-xs leading-5 text-slate-500">
-            Bitta video — mavzudagi barcha misollar uchun.
+            Bitta video — mavzudagi barça misollar uçun.
           </p>
 
           {state.errors.videoUrl && (
@@ -175,8 +175,8 @@ export default function CreateTopicForm({
         className="mt-6 w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {pending
-          ? "Mavzu qo‘shilmoqda..."
-          : "Mavzuni qo‘shish"}
+          ? "Mavzu qöşilmoqda..."
+          : "Mavzuni qöşiş"}
       </SubmitButton>
     </form>
   );

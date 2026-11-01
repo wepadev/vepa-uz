@@ -32,8 +32,8 @@ import {
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Sovg‘a do‘koni",
-  description: "Tangalarni sovg‘aga almashtirish va balanslar.",
+  title: "Sovğa dökoni",
+  description: "Tangalarni sovğaga almaştiriş va balanslar.",
 };
 
 type PageProps = {
@@ -156,22 +156,22 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
             strokeWidth={2}
             aria-hidden="true"
           />
-          Sovg‘a do‘koni
+          Sovğa dökoni
         </h1>
 
         <p className="mt-2 text-sm leading-6 text-mb-muted">
-          Tanga sarflanadi, ball esa kamaymaydi — reytingdagi o‘rin
-          o‘zgarmaydi.
+          Tanga sarflanadi, ball esa kamaymaydi — reytingdagi örin
+          özgarmaydi.
         </p>
 
         {migrationMissing && (
           <AppAlert
             variant="warning"
-            title="Do‘kon tayyor emas"
+            title="Dökon tayyor emas"
             className="mt-5"
           >
-            Supabase’da <b>db/18-crm-dokon.sql</b> faylini ishga
-            tushiring.
+            Supabase’da <b>db/18-crm-dokon.sql</b> faylini işga
+            tuşiring.
           </AppAlert>
         )}
 
@@ -191,12 +191,12 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                   strokeWidth={2.2}
                   aria-hidden="true"
                 />
-                Topshirishni kutmoqda ({pending.length})
+                Topşirişni kutmoqda ({pending.length})
               </p>
 
               <p className="mt-0.5 text-xs leading-5 text-amber-700">
-                O‘quvchi sovg‘ani tanladi, tangasi ushlab qolindi.
-                Qo‘lga topshirganingizda tasdiqlang.
+                Öquvçi sovğani tanladi, tangasi uşlab qolindi.
+                Qölga topşirganingizda tasdiqlang.
               </p>
             </div>
 
@@ -235,7 +235,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                         strokeWidth={2.2}
                         aria-hidden="true"
                       />
-                      Topshirdim
+                      Topşirdim
                     </SubmitButton>
                   </form>
 
@@ -248,7 +248,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                     />
 
                     <SubmitButton
-                      title="Bekor qilish — tanga qaytadi"
+                      title="Bekor qiliş — tanga qaytadi"
                       className="min-h-10 rounded-xl border border-slate-200 px-3 text-xs font-semibold text-slate-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600"
                     >
                       Bekor
@@ -269,7 +269,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
             <input type="hidden" name="groupId" value={groupId} />
 
             <p className="font-bold text-amber-900">
-              Sovg‘a berish
+              Sovğa beriş
             </p>
 
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -278,7 +278,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                   htmlFor="studentId"
                   className="block text-xs font-semibold text-amber-900"
                 >
-                  O‘quvchi
+                  Öquvçi
                 </label>
 
                 <select
@@ -302,7 +302,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                   htmlFor="rewardId"
                   className="block text-xs font-semibold text-amber-900"
                 >
-                  Sovg‘a
+                  Sovğa
                 </label>
 
                 <select
@@ -324,7 +324,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
             </div>
 
             <SubmitButton className="mt-3 min-h-11 rounded-xl bg-amber-600 px-5 text-sm font-bold text-white transition hover:bg-amber-700">
-              Berish
+              Beriş
             </SubmitButton>
           </form>
         )}
@@ -333,8 +333,8 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
         <h2 className="mt-8 text-lg font-bold">Tanga balanslari</h2>
 
         {balances.length === 0 ? (
-          <AppAlert variant="info" title="O‘quvchi yo‘q" className="mt-3">
-            Bu guruhda faol o‘quvchi yo‘q.
+          <AppAlert variant="info" title="Öquvçi yöq" className="mt-3">
+            Bu guruhda faol öquvçi yöq.
           </AppAlert>
         ) : (
           <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
@@ -352,7 +352,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                   </p>
 
                   <p className="mt-0.5 text-xs text-mb-muted">
-                    Yig‘di {row.earned_coins} · sarfladi{" "}
+                    Yiğdi {row.earned_coins} · sarfladi{" "}
                     {row.spent_coins}
                   </p>
                 </div>
@@ -372,7 +372,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
             strokeWidth={2}
             aria-hidden="true"
           />
-          Sovg‘alar
+          Sovğalar
         </h2>
 
         {rewards.length > 0 && (
@@ -405,7 +405,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
 
                         {reward.group_id === null && (
                           <span className="ml-2 rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-500">
-                            barcha guruhlar
+                            barça guruhlar
                           </span>
                         )}
                       </p>
@@ -413,7 +413,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                       <p className="mt-0.5 text-xs text-mb-muted">
                         {reward.cost_coins} tanga
                         {reward.stock === null
-                          ? " · cheklanmagan"
+                          ? " · çeklanmagan"
                           : ` · ${reward.stock} ta qoldi`}
                         {reward.description && ` · ${reward.description}`}
                       </p>
@@ -433,7 +433,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                       />
 
                       <SubmitButton className="min-h-10 rounded-xl border border-slate-200 px-3 text-xs font-semibold text-slate-600 transition hover:bg-slate-50">
-                        {reward.is_active ? "Yashirish" : "Qaytarish"}
+                        {reward.is_active ? "Yaşiriş" : "Qaytariş"}
                       </SubmitButton>
                     </form>
                   </div>
@@ -445,7 +445,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                         strokeWidth={2.2}
                         aria-hidden="true"
                       />
-                      Tahrirlash
+                      Tahrirlaş
                     </summary>
 
                     <form
@@ -502,7 +502,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                             htmlFor={`edit-stock-${reward.id}`}
                             className="block text-xs font-semibold text-slate-600"
                           >
-                            Nechta bor
+                            Neçta bor
                           </label>
 
                           <input
@@ -510,7 +510,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                             name="stock"
                             type="number"
                             min={0}
-                            placeholder="Bo‘sh = cheklanmagan"
+                            placeholder="Böş = çeklanmagan"
                             defaultValue={reward.stock ?? ""}
                             className="mt-1 min-h-11 w-full rounded-xl border border-slate-300 bg-white px-3 outline-none transition focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
                           />
@@ -546,11 +546,11 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                           defaultChecked={reward.group_id === null}
                           className="h-4 w-4 accent-blue-600"
                         />
-                        Barcha guruhlar uchun
+                        Barça guruhlar uçun
                       </label>
 
                       <SubmitButton className="mt-3 min-h-11 rounded-xl bg-mb-brand px-5 text-sm font-semibold text-white transition hover:bg-mb-brandDark">
-                        Saqlash
+                        Saqlaş
                       </SubmitButton>
                     </form>
 
@@ -566,8 +566,8 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                       />
 
                       <p className="text-xs leading-5 text-mb-muted">
-                        Sovg‘ani butunlay o‘chirsangiz ro‘yxatdan
-                        yo‘qoladi. Avval berilgan sovg‘alar tarixi
+                        Sovğani butunlay öçirsangiz röyxatdan
+                        yöqoladi. Avval berilgan sovğalar tarixi
                         joyida qoladi.
                       </p>
 
@@ -579,7 +579,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                             value="1"
                             className="h-4 w-4 accent-red-600"
                           />
-                          Ha, o‘chirilsin
+                          Ha, öçirilsin
                         </label>
 
                         <SubmitButton className="inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-red-300 bg-white px-4 text-sm font-semibold text-red-700 transition hover:bg-red-50">
@@ -588,7 +588,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                             strokeWidth={2.2}
                             aria-hidden="true"
                           />
-                          O‘chirish
+                          Öçiriş
                         </SubmitButton>
                       </div>
                     </form>
@@ -606,7 +606,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
           <input type="hidden" name="groupId" value={groupId} />
 
           <p className="text-sm font-semibold text-slate-700">
-            Yangi sovg‘a
+            Yangi sovğa
           </p>
 
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -652,7 +652,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                 htmlFor="reward-stock"
                 className="block text-xs font-semibold text-slate-600"
               >
-                Nechta bor
+                Neçta bor
               </label>
 
               <input
@@ -660,7 +660,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                 name="stock"
                 type="number"
                 min={0}
-                placeholder="Bo‘sh = cheklanmagan"
+                placeholder="Böş = çeklanmagan"
                 className="mt-1 min-h-11 w-full rounded-xl border border-slate-300 bg-white px-3 outline-none transition focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               />
             </div>
@@ -693,11 +693,11 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
               value="1"
               className="h-4 w-4 accent-blue-600"
             />
-            Barcha guruhlar uchun
+            Barça guruhlar uçun
           </label>
 
           <SubmitButton className="mt-3 min-h-11 rounded-xl bg-mb-brand px-5 text-sm font-semibold text-white transition hover:bg-mb-brandDark">
-            Qo‘shish
+            Qöşiş
           </SubmitButton>
         </form>
 
@@ -710,7 +710,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                 strokeWidth={2}
                 aria-hidden="true"
               />
-              Oxirgi almashtirishlar
+              Oxirgi almaştirişlar
             </h2>
 
             <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
@@ -745,7 +745,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                     />
 
                     <SubmitButton
-                      title="Bekor qilish — tanga qaytadi"
+                      title="Bekor qiliş — tanga qaytadi"
                       className="inline-flex min-h-10 items-center gap-1.5 rounded-xl border border-slate-200 px-3 text-xs font-semibold text-slate-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600"
                     >
                       <Undo2

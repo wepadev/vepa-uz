@@ -18,7 +18,7 @@ type StartTestButtonProps = {
  * sessiya ochishga urinib xato berardi.
  */
 export default function StartTestButton({
-  label = "Boshlash",
+  label = "Boşlaş",
 }: StartTestButtonProps) {
   const { pending } = useFormStatus();
 

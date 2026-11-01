@@ -27,24 +27,24 @@ function translateUpdateError(message: string) {
     normalized.includes("same password") ||
     normalized.includes("different from the old")
   ) {
-    return "Yangi parol oldingi paroldan farq qilishi kerak.";
+    return "Yangi parol oldingi paroldan farq qilişi kerak.";
   }
 
   if (
     normalized.includes("password") &&
     normalized.includes("at least")
   ) {
-    return "Parol kamida 8 ta belgidan iborat bo‘lishi kerak.";
+    return "Parol kamida 8 ta belgidan iborat bölişi kerak.";
   }
 
   if (
     normalized.includes("session") ||
     normalized.includes("jwt")
   ) {
-    return "Tiklash havolasi eskirgan yoki noto‘g‘ri.";
+    return "Tiklaş havolasi eskirgan yoki notöğri.";
   }
 
-  return "Parolni yangilab bo‘lmadi. Qayta urinib ko‘ring.";
+  return "Parolni yangilab bölmadi. Qayta urinib köring.";
 }
 
 export function UpdatePasswordForm({
@@ -111,14 +111,14 @@ export function UpdatePasswordForm({
 
     if (sessionState !== "ready") {
       setError(
-        "Tiklash havolasi eskirgan yoki noto‘g‘ri.",
+        "Tiklaş havolasi eskirgan yoki notöğri.",
       );
       return;
     }
 
     if (password.length < 8) {
       setError(
-        "Parol kamida 8 ta belgidan iborat bo‘lishi kerak.",
+        "Parol kamida 8 ta belgidan iborat bölişi kerak.",
       );
       return;
     }
@@ -143,7 +143,7 @@ export function UpdatePasswordForm({
       }
 
       setSuccess(
-        "Parolingiz muvaffaqiyatli yangilandi. Kirish sahifasiga o‘tilmoqda...",
+        "Parolingiz muvaffaqiyatli yangilandi. Kiriş sahifasiga ötilmoqda...",
       );
 
       await supabase.auth.signOut();
@@ -180,19 +180,19 @@ export function UpdatePasswordForm({
       </h1>
 
       <p className="mt-2 leading-6 text-slate-500">
-        Akkauntingiz uchun yangi parolni ikki marta
+        Akkauntingiz uçun yangi parolni ikki marta
         kiriting.
       </p>
 
       {sessionState === "checking" && (
         <AppAlert
           variant="info"
-          title="Havola tekshirilmoqda"
+          title="Havola tekşirilmoqda"
           className="mt-7"
         >
           <span className="inline-flex items-center gap-2">
             <Spinner size="sm" />
-            Tiklash havolasi tekshirilmoqda...
+            Tiklaş havolasi tekşirilmoqda...
           </span>
         </AppAlert>
       )}
@@ -201,24 +201,24 @@ export function UpdatePasswordForm({
         <div className="mt-7 space-y-4">
           <AppAlert
             variant="error"
-            title="Tiklash havolasi ishlamaydi"
+            title="Tiklaş havolasi işlamaydi"
           >
-            Tiklash havolasi eskirgan, ishlatilgan yoki
-            noto‘g‘ri.
+            Tiklaş havolasi eskirgan, işlatilgan yoki
+            notöğri.
           </AppAlert>
 
           <a
             href="/auth/forgot-password"
             className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-center font-bold text-white transition hover:bg-blue-700"
           >
-            Yangi havola olish
+            Yangi havola oliş
           </a>
 
           <a
             href="/auth/login"
             className="inline-flex min-h-11 w-full items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
           >
-            Kirish sahifasiga qaytish
+            Kiriş sahifasiga qaytiş
           </a>
         </div>
       )}
@@ -267,8 +267,8 @@ export function UpdatePasswordForm({
                 className="absolute inset-y-0 right-3 my-auto h-fit rounded-lg px-2 py-1 text-xs font-bold text-slate-500 hover:bg-slate-100 hover:text-slate-800"
               >
                 {showPassword
-                  ? "Yashirish"
-                  : "Ko‘rsatish"}
+                  ? "Yaşiriş"
+                  : "Körsatiş"}
               </button>
             </div>
           </div>
@@ -278,7 +278,7 @@ export function UpdatePasswordForm({
               htmlFor="confirm-new-password"
               className="text-sm font-semibold text-slate-700"
             >
-              Yangi parolni tasdiqlash
+              Yangi parolni tasdiqlaş
             </label>
 
             <input
@@ -330,7 +330,7 @@ export function UpdatePasswordForm({
                 Parol yangilanmoqda...
               </LoadingLabel>
             ) : (
-              "Yangi parolni saqlash"
+              "Yangi parolni saqlaş"
             )}
           </button>
         </form>

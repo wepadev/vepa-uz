@@ -11,7 +11,7 @@ import { paintStroke } from "./ink-page";
 export const PEN_KINDS: { kind: PenKind; label: string; icon: LucideIcon }[] = [
   { kind: "felt", label: "Flomaster", icon: Pen },
   { kind: "fountain", label: "Pero", icon: PenTool },
-  { kind: "brush", label: "Mo‘yqalam", icon: Brush },
+  { kind: "brush", label: "Möyqalam", icon: Brush },
 ];
 
 /** Qalam o'lchamlari, punktda — Nebo'dagi kabi oltita */
@@ -129,7 +129,7 @@ export default function PenPanel({ pen, size, color, onPen, onSize, onClose }: P
             <button
               key={value}
               type="button"
-              aria-label={`O‘lcham ${i + 1}`}
+              aria-label={`Ölçam ${i + 1}`}
               aria-pressed={value === size}
               onClick={() => onSize(value)}
               className={cn(
@@ -190,13 +190,13 @@ export default function PenPanel({ pen, size, color, onPen, onSize, onClose }: P
 
           {strokes.length === 0 ? (
             <span className="pointer-events-none absolute inset-x-0 bottom-2 text-center text-sm text-slate-400">
-              Shu yerda sinab ko‘ring
+              Şu yerda sinab köring
             </span>
           ) : (
             <button
               type="button"
-              aria-label="Sinov yozuvini tozalash"
-              title="Tozalash"
+              aria-label="Sinov yozuvini tozalaş"
+              title="Tozalaş"
               onClick={() => setStrokes([])}
               className="absolute bottom-2 right-2 grid h-8 w-8 place-items-center rounded-lg text-slate-500 hover:bg-slate-100"
             >

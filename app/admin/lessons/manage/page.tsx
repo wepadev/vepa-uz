@@ -148,7 +148,7 @@ async function createLesson(
     return {
       status: "error",
       message:
-        "Dars bo‘limi ma’lumotlari noto‘g‘ri.",
+        "Dars bölimi ma’lumotlari notöğri.",
       errors: {},
     };
   }
@@ -160,7 +160,7 @@ async function createLesson(
 
   if (title.length > 150) {
     errors.title =
-      "Dars nomi 150 ta belgidan oshmasin.";
+      "Dars nomi 150 ta belgidan oşmasin.";
   }
 
   if (!videoUrl) {
@@ -168,19 +168,19 @@ async function createLesson(
       "YouTube video havolasini kiriting.";
   } else if (!isValidVideoUrl(videoUrl)) {
     errors.videoUrl =
-      "Video havolasini to‘liq kiriting.";
+      "Video havolasini töliq kiriting.";
   }
 
   if (orderNumber === undefined) {
     errors.orderNumber =
-      "Tartib raqami 1 yoki undan katta butun son bo‘lsin.";
+      "Tartib raqami 1 yoki undan katta butun son bölsin.";
   }
 
   if (Object.keys(errors).length > 0) {
     return {
       status: "error",
       message:
-        "Qizil bilan ko‘rsatilgan joylarni to‘g‘rilang.",
+        "Qizil bilan körsatilgan joylarni töğrilang.",
       errors,
     };
   }
@@ -201,7 +201,7 @@ async function createLesson(
     return {
       status: "error",
       message:
-        "Dars bo‘limi topilmadi.",
+        "Dars bölimi topilmadi.",
       errors: {},
     };
   }
@@ -245,7 +245,7 @@ async function createLesson(
     return {
       status: "error",
       message:
-        "Darslar tartibini aniqlab bo‘lmadi.",
+        "Darslar tartibini aniqlab bölmadi.",
       errors: {},
     };
   }
@@ -275,7 +275,7 @@ async function createLesson(
     return {
       status: "error",
       message:
-        "Videodarsni saqlab bo‘lmadi.",
+        "Videodarsni saqlab bölmadi.",
       errors: {},
     };
   }
@@ -294,7 +294,7 @@ async function createLesson(
     if (moveError) {
       return {
         status: "error",
-        message: `Dars saqlandi, lekin tartib raqami qo‘yilmadi: ${moveError}`,
+        message: `Dars saqlandi, lekin tartib raqami qöyilmadi: ${moveError}`,
         errors: {},
       };
     }
@@ -652,7 +652,7 @@ export default async function ManageLessonsPage({
               href="/admin/lessons"
               className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
             >
-              ← Dars bo‘limlariga qaytish
+              ← Dars bölimlariga qaytiş
             </Link>
 
             <h1 className="text-xl font-bold sm:text-2xl">
@@ -667,7 +667,7 @@ export default async function ManageLessonsPage({
           </div>
 
           <p className="text-sm text-slate-500">
-            {lessons.length} dars · {publishedLessons} nashrda · {freeLessons}{" "}
+            {lessons.length} dars · {publishedLessons} naşrda · {freeLessons}{" "}
             bepul
           </p>
         </div>
@@ -716,7 +716,7 @@ export default async function ManageLessonsPage({
                       href={lesson.video_url ?? undefined}
                       target="_blank"
                       rel="noopener noreferrer"
-                      title="Videoni YouTube'da ochish"
+                      title="Videoni YouTube'da oçiş"
                       className="hidden shrink-0 overflow-hidden rounded-lg sm:block"
                     >
                       <img
@@ -728,7 +728,7 @@ export default async function ManageLessonsPage({
                     </a>
                   ) : (
                     <span className="hidden h-[54px] w-24 shrink-0 place-items-center rounded-lg bg-slate-100 text-[11px] text-slate-400 sm:grid">
-                      video yo‘q
+                      video yöq
                     </span>
                   )}
 
@@ -773,7 +773,7 @@ export default async function ManageLessonsPage({
                           ))}
                         </span>
                       ) : (
-                        <span>test yo‘q</span>
+                        <span>test yöq</span>
                       )}
                     </p>
                   </div>
@@ -783,7 +783,7 @@ export default async function ManageLessonsPage({
                       href={`/admin/lessons/edit?categoryId=${categoryId}&lessonId=${lesson.id}`}
                       className="hidden min-h-10 items-center rounded-xl bg-blue-50 px-3 text-sm font-semibold text-blue-700 hover:bg-blue-100 sm:inline-flex"
                     >
-                      Tahrirlash
+                      Tahrirlaş
                     </Link>
 
                     <RowMenu>
@@ -791,7 +791,7 @@ export default async function ManageLessonsPage({
                         href={`/admin/lessons/edit?categoryId=${categoryId}&lessonId=${lesson.id}`}
                         className={`${rowMenuItem} sm:hidden`}
                       >
-                        Tahrirlash
+                        Tahrirlaş
                       </Link>
 
                       <form action={changeLessonState}>
@@ -803,7 +803,7 @@ export default async function ManageLessonsPage({
                           value={String(!lesson.is_published)}
                         />
                         <SubmitButton className={rowMenuItem}>
-                          {lesson.is_published ? "Yopish" : "Nashr qilish"}
+                          {lesson.is_published ? "Yopiş" : "Naşr qiliş"}
                         </SubmitButton>
                       </form>
 
@@ -816,7 +816,7 @@ export default async function ManageLessonsPage({
                           value={String(!lesson.is_free)}
                         />
                         <SubmitButton className={rowMenuItem}>
-                          {lesson.is_free ? "Premium qilish" : "Bepul qilish"}
+                          {lesson.is_free ? "Premium qiliş" : "Bepul qiliş"}
                         </SubmitButton>
                       </form>
 
@@ -825,10 +825,10 @@ export default async function ManageLessonsPage({
                         <input type="hidden" name="lessonId" value={lesson.id} />
                         <ConfirmSubmitButton
                           className={rowMenuDanger}
-                          title="Videodars o‘chirilsinmi?"
-                          description={`“${lesson.title}” butunlay o‘chiriladi. Bu amalni orqaga qaytarib bo‘lmaydi.`}
+                          title="Videodars öçirilsinmi?"
+                          description={`“${lesson.title}” butunlay öçiriladi. Bu amalni orqaga qaytarib bölmaydi.`}
                         >
-                          O‘chirish
+                          Öçiriş
                         </ConfirmSubmitButton>
                       </form>
                     </RowMenu>

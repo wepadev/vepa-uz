@@ -106,7 +106,7 @@ function readPositiveInteger(formData: FormData, name: string, label: string) {
   const value = Number(formData.get(name));
 
   if (!Number.isInteger(value) || value <= 0) {
-    throw new Error(`${label} 0 dan katta butun son bo‘lishi kerak.`);
+    throw new Error(`${label} 0 dan katta butun son bölişi kerak.`);
   }
 
   return value;
@@ -116,7 +116,7 @@ function readTimeLimit(formData: FormData) {
   const value = Number(formData.get("timeLimitMinutes"));
 
   if (!Number.isFinite(value) || value <= 0) {
-    throw new Error("Test vaqti 0 dan katta son bo‘lishi kerak.");
+    throw new Error("Test vaqti 0 dan katta son bölişi kerak.");
   }
 
   return value;
@@ -126,7 +126,7 @@ async function createTest(formData: FormData) {
   "use server";
 
   const supabase = await getAdminClient();
-  const sectionId = readPositiveInteger(formData, "sectionId", "Bo‘lim ID");
+  const sectionId = readPositiveInteger(formData, "sectionId", "Bölim ID");
   const topicId = readPositiveInteger(formData, "topicId", "Mavzu ID");
   const orderNumber = readPositiveInteger(
     formData,
@@ -138,7 +138,7 @@ async function createTest(formData: FormData) {
   const timeLimitMinutes = readTimeLimit(formData);
 
   if (title.length < 3) {
-    throw new Error("Test nomi kamida 3 ta belgidan iborat bo‘lsin.");
+    throw new Error("Test nomi kamida 3 ta belgidan iborat bölsin.");
   }
 
   /*
@@ -179,7 +179,7 @@ async function updateTest(formData: FormData) {
   const timeLimitMinutes = readTimeLimit(formData);
 
   if (title.length < 3) {
-    throw new Error("Test nomi kamida 3 ta belgidan iborat bo‘lsin.");
+    throw new Error("Test nomi kamida 3 ta belgidan iborat bölsin.");
   }
 
   const { error } = await supabase
@@ -230,11 +230,11 @@ async function moveTest(formData: FormData) {
     .maybeSingle();
 
   if (testError || !test) {
-    throw new Error("Ko‘chiriladigan test topilmadi.");
+    throw new Error("Köçiriladigan test topilmadi.");
   }
 
   if (test.topic_id === targetTopicId) {
-    throw new Error("Test allaqachon shu mavzuda turibdi.");
+    throw new Error("Test allaqaçon şu mavzuda turibdi.");
   }
 
   const { data: targetTopic, error: targetError } = await supabase
@@ -254,7 +254,7 @@ async function moveTest(formData: FormData) {
     .in("id", [test.section_id, targetTopic.section_id]);
 
   if (sectionsError) {
-    throw new Error(`Bo‘limlar tekshirilmadi: ${sectionsError.message}`);
+    throw new Error(`Bölimlar tekşirilmadi: ${sectionsError.message}`);
   }
 
   const sectionRows = (sections ?? []) as Array<{
@@ -280,7 +280,7 @@ async function moveTest(formData: FormData) {
     );
 
   if (examTypesError) {
-    throw new Error(`Yo‘nalish tekshirilmadi: ${examTypesError.message}`);
+    throw new Error(`Yönaliş tekşirilmadi: ${examTypesError.message}`);
   }
 
   const codeById = new Map(
@@ -314,7 +314,7 @@ async function moveTest(formData: FormData) {
     .eq("id", testId);
 
   if (error) {
-    throw new Error(`Test ko‘chirilmadi: ${error.message}`);
+    throw new Error(`Test köçirilmadi: ${error.message}`);
   }
 
   revalidateCatalog();
@@ -343,7 +343,7 @@ async function toggleTestFree(formData: FormData) {
     .eq("id", testId);
 
   if (error) {
-    throw new Error(`Bepullik o‘zgarmadi: ${error.message}`);
+    throw new Error(`Bepullik özgarmadi: ${error.message}`);
   }
 
   revalidateCatalog();
@@ -362,7 +362,7 @@ async function changeTestState(formData: FormData) {
     .eq("id", testId);
 
   if (error) {
-    throw new Error(`Test holati o‘zgarmadi: ${error.message}`);
+    throw new Error(`Test holati özgarmadi: ${error.message}`);
   }
 
   revalidateCatalog();
@@ -544,7 +544,7 @@ async function deleteTest(formData: FormData) {
 
   if (formData.get("confirm") !== "1") {
     throw new Error(
-      "O‘chirishdan oldin tasdiqlash katakchasini belgilang.",
+      "Öçirişdan oldin tasdiqlaş katakçasini belgilang.",
     );
   }
 
@@ -560,11 +560,11 @@ async function deleteTest(formData: FormData) {
   if (error) {
     if (error.code === "PGRST202" || error.code === "42883") {
       throw new Error(
-        "Supabase’da db/27-testni-ochirish.sql faylini ishga tushiring.",
+        "Supabase’da db/27-testni-oçiriş.sql faylini işga tuşiring.",
       );
     }
 
-    throw new Error(`Test o‘chirilmadi: ${error.message}`);
+    throw new Error(`Test öçirilmadi: ${error.message}`);
   }
 
   revalidateCatalog();
@@ -613,7 +613,7 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
     .maybeSingle();
 
   if (sectionError) {
-    throw new Error(`Bo‘lim yuklanmadi: ${sectionError.message}`);
+    throw new Error(`Bölim yuklanmadi: ${sectionError.message}`);
   }
 
   if (!sectionData) notFound();
@@ -628,7 +628,7 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
 
   if (examTypeError) {
     throw new Error(
-      `Test yo‘nalishi yuklanmadi: ${examTypeError.message}`,
+      `Test yönalişi yuklanmadi: ${examTypeError.message}`,
     );
   }
 
@@ -713,13 +713,13 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
 
   if (firstSectionResult.error) {
     throw new Error(
-      `Bepul bo‘lim aniqlanmadi: ${firstSectionResult.error.message}`,
+      `Bepul bölim aniqlanmadi: ${firstSectionResult.error.message}`,
     );
   }
 
   if (lessonTestsResult.error) {
     throw new Error(
-      `Dars testlari tekshirilmadi: ${lessonTestsResult.error.message}`,
+      `Dars testlari tekşirilmadi: ${lessonTestsResult.error.message}`,
     );
   }
 
@@ -735,7 +735,7 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
     allTopicsResult.error
   ) {
     throw new Error(
-      `Ro‘yxatlar yuklanmadi: ${
+      `Röyxatlar yuklanmadi: ${
         allSectionsResult.error?.message ??
         allExamTypesResult.error?.message ??
         allTopicsResult.error?.message
@@ -809,12 +809,12 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
               href={`/admin/tests/section?sectionId=${section.id}`}
               className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
             >
-              ← {section.title} mavzulariga qaytish
+              ← {section.title} mavzulariga qaytiş
             </Link>
             <h1 className="text-xl font-bold sm:text-2xl">{topic.title}</h1>
             <p className="mt-1 text-sm text-slate-500">
               {examType.title} · {section.title} — testlarni yarating, savollar
-              qo‘shing va nashr holatini boshqaring.
+              qöşing va naşr holatini boşqaring.
             </p>
           </div>
 
@@ -822,7 +822,7 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
             href={`/tests/list?topicId=${topic.id}`}
             className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-700"
           >
-            Foydalanuvchi ko‘rinishi
+            Foydalanuvçi körinişi
           </Link>
         </div>
       </header>
@@ -837,8 +837,8 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
             <input type="hidden" name="topicId" value={topic.id} />
             <h2 className="text-2xl font-bold">Yangi test</h2>
             <p className="mt-2 text-sm leading-6 text-slate-500">
-              Test yaratilgach, “Savollarni boshqarish” orqali savollarni
-              qo‘shasiz.
+              Test yaratilgaç, “Savollarni boşqariş” orqali savollarni
+              qöşasiz.
             </p>
 
             <label className="mt-6 block text-sm font-bold text-slate-700">
@@ -907,17 +907,17 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
                 }
               >
                 {isAutoFreeTopic
-                  ? "Bu yo‘nalishning birinchi mavzusi — bu yerdagi barcha testlar avtomatik bepul bo‘ladi."
+                  ? "Bu yönalişning birinçi mavzusi — bu yerdagi barça testlar avtomatik bepul böladi."
                   : topic.is_free
-                    ? "Bu mavzu qo‘lda bepul qilingan — bu yerdagi barcha testlar ochiq bo‘ladi."
-                    : "Bu mavzudagi testlar Premium bo‘ladi. Bepul testlar yo‘nalishning birinchi bo‘limidagi birinchi mavzuda turadi."}
+                    ? "Bu mavzu qölda bepul qilingan — bu yerdagi barça testlar oçiq böladi."
+                    : "Bu mavzudagi testlar Premium böladi. Bepul testlar yönalişning birinçi bölimidagi birinçi mavzuda turadi."}
               </div>
             )}
 
             <SubmitButton
               className="mt-6 w-full rounded-xl bg-mb-brand px-5 py-3 font-bold text-white hover:bg-mb-brandDark"
             >
-              Testni yaratish
+              Testni yaratiş
             </SubmitButton>
           </form>
         </CreatePanel>
@@ -979,7 +979,7 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
                             value={String(!test.is_published)}
                           />
                           <SubmitButton className={rowMenuItem}>
-                            {test.is_published ? "Testni yopish" : "Nashr qilish"}
+                            {test.is_published ? "Testni yopiş" : "Naşr qiliş"}
                           </SubmitButton>
                         </form>
 
@@ -997,7 +997,7 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
                               value={String(!test.is_free)}
                             />
                             <SubmitButton className={rowMenuItem}>
-                              {test.is_free ? "Premium qilish" : "Bepul qilish"}
+                              {test.is_free ? "Premium qiliş" : "Bepul qiliş"}
                             </SubmitButton>
                           </form>
                         )}
@@ -1005,7 +1005,7 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
                         <form action={duplicateTest}>
                           <input type="hidden" name="testId" value={test.id} />
                           <SubmitButton className={rowMenuItem}>
-                            Nusxa olish
+                            Nusxa oliş
                           </SubmitButton>
                         </form>
 
@@ -1014,10 +1014,10 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
                           <input type="hidden" name="confirm" value="1" />
                           <ConfirmSubmitButton
                             className={rowMenuDanger}
-                            title="Test natijalari bilan o‘chirilsinmi?"
-                            description={`“${test.title}” testi butunlay o‘chiriladi: savollari, o‘quvchilar natijalari, reytingdagi va uy vazifasidagi ball va tangasi ham. Natijalar kerak bo‘lsa o‘chirmang — “Testni yopish”ni tanlang.`}
+                            title="Test natijalari bilan öçirilsinmi?"
+                            description={`“${test.title}” testi butunlay öçiriladi: savollari, öquvçilar natijalari, reytingdagi va uy vazifasidagi ball va tangasi ham. Natijalar kerak bölsa öçirmang — “Testni yopiş”ni tanlang.`}
                           >
-                            O‘chirish
+                            Öçiriş
                           </ConfirmSubmitButton>
                         </form>
                       </RowMenu>
@@ -1027,7 +1027,7 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
                     {moveGroups.length > 0 && (
                       <details className="group/move rounded-xl open:basis-full open:border open:border-slate-200 open:bg-slate-50">
                         <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand group-open/move:px-3">
-                          Boshqa mavzuga ko‘chirish
+                          Boşqa mavzuga köçiriş
                         </summary>
 
                         <form
@@ -1042,17 +1042,17 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
 
                           <p className="text-sm leading-6 text-slate-600">
                             Savollari, natijalari va berilgan uy
-                            vazifalari test bilan birga ko‘chadi —
-                            hech narsa yo‘qolmaydi. Test yangi
-                            mavzuning oxiriga qo‘yiladi.
+                            vazifalari test bilan birga köçadi —
+                            heç narsa yöqolmaydi. Test yangi
+                            mavzuning oxiriga qöyiladi.
                           </p>
 
                           {examType.code === GROUP_EXAM_CODE && (
                             <p className="mt-2 text-sm leading-6 text-amber-700">
-                              Diqqat: guruh testini ochiq bo‘limga
-                              ko‘chirsangiz u katalogda o‘quvchilarga
-                              ko‘rinadi va bepul belgisi olib
-                              tashlanadi.
+                              Diqqat: guruh testini oçiq bölimga
+                              köçirsangiz u katalogda öquvçilarga
+                              körinadi va bepul belgisi olib
+                              taşlanadi.
                             </p>
                           )}
 
@@ -1084,7 +1084,7 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
                           </select>
 
                           <SubmitButton className="mt-4 min-h-11 rounded-xl bg-blue-600 px-5 text-sm font-bold text-white hover:bg-blue-700">
-                            Ko‘chirish
+                            Köçiriş
                           </SubmitButton>
                         </form>
                       </details>
@@ -1092,7 +1092,7 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
 
                     <details className="group/edit order-first rounded-xl open:basis-full open:border open:border-slate-200 open:bg-slate-50">
                       <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand group-open/edit:px-3">
-                        Tahrirlash
+                        Tahrirlaş
                       </summary>
                       <form
                         action={updateTest}
@@ -1154,7 +1154,7 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
                         <SubmitButton
                           className="mt-5 rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white hover:bg-blue-700"
                         >
-                          O‘zgarishlarni saqlash
+                          Özgarişlarni saqlaş
                         </SubmitButton>
                       </form>
                     </details>

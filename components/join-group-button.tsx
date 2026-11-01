@@ -14,7 +14,7 @@ import SubmitButton from "@/components/ui/submit-button";
  */
 export default function JoinGroupButton({
   action,
-  label = "Boshqa guruhga ham qo‘shilish",
+  label = "Boşqa guruhga ham qöşiliş",
 }: {
   action: (formData: FormData) => void | Promise<void>;
   label?: string;
@@ -64,7 +64,7 @@ export default function JoinGroupButton({
         </div>
 
         <SubmitButton className="min-h-12 rounded-xl bg-mb-brand px-6 font-semibold text-white transition hover:bg-mb-brandDark">
-          Qo‘shilish
+          Qöşiliş
         </SubmitButton>
 
         <button

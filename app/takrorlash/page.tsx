@@ -17,7 +17,7 @@ import { createClient } from "@/lib/supabase/server";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Haftalik takrorlash",
+  title: "Haftalik takrorlaş",
   description:
     "Hafta davomida xato qilgan savollaringiz haftada bir marta qaytadi.",
 };
@@ -168,8 +168,8 @@ export default async function ReviewPage() {
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <PageHeader
         backHref="/"
-        backLabel="Bosh sahifa"
-        title="Haftalik takrorlash"
+        backLabel="Boş sahifa"
+        title="Haftalik takrorlaş"
         subtitle="Hafta davomidagi xatolaringiz"
       />
 
@@ -178,11 +178,11 @@ export default async function ReviewPage() {
         {migrationMissing && (
           <AppAlert
             variant="warning"
-            title="Bo‘lim tayyor emas"
+            title="Bölim tayyor emas"
             className="mt-5"
           >
-            Supabase’da <b>db/15</b> va <b>db/23</b> fayllarini ishga
-            tushiring — shundan keyin savollar chiqa boshlaydi.
+            Supabase’da <b>db/15</b> va <b>db/23</b> fayllarini işga
+            tuşiring — şundan keyin savollar çiqa boşlaydi.
           </AppAlert>
         )}
 
@@ -228,20 +228,20 @@ export default async function ReviewPage() {
                 />
 
                 <h2 className="mt-4 text-lg font-bold">
-                  Takrorlash uchun savol yo‘q
+                  Takrorlaş uçun savol yöq
                 </h2>
 
                 <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-mb-muted">
-                  Test ishlaganingizdan keyin xato qilgan savollaringiz
-                  shu yerga tushadi va keyingi dushanbadan takrorlashga
-                  chiqadi.
+                  Test işlaganingizdan keyin xato qilgan savollaringiz
+                  şu yerga tuşadi va keyingi duşanbadan takrorlaşga
+                  çiqadi.
                 </p>
 
                 <Link
                   href="/tests"
                   className="mt-6 inline-flex min-h-12 items-center justify-center rounded-2xl bg-mb-brand px-6 font-bold text-white transition hover:bg-mb-brandDark"
                 >
-                  Testlarni ko‘rish
+                  Testlarni köriş
                 </Link>
               </>
             ) : (
@@ -253,7 +253,7 @@ export default async function ReviewPage() {
                 />
 
                 <h2 className="mt-4 text-lg font-bold">
-                  Bugungi takrorlash tugadi
+                  Bugungi takrorlaş tugadi
                 </h2>
 
                 <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-mb-muted">
@@ -266,7 +266,7 @@ export default async function ReviewPage() {
                     strokeWidth={2}
                     aria-hidden="true"
                   />
-                  Keyingi takrorlash — dushanba
+                  Keyingi takrorlaş — duşanba
                 </p>
               </>
             )}

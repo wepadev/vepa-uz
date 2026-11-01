@@ -37,8 +37,8 @@ export default function TestLockedScreen({
           </h1>
 
           <p className="mt-2 text-sm leading-6 text-mb-muted">
-            “{title}” testini ochish uchun Premium tarif kerak.
-            “Bepul” belgisi bor testlarni esa hoziroq ishlashingiz
+            “{title}” testini oçiş uçun Premium tarif kerak.
+            “Bepul” belgisi bor testlarni esa hoziroq işlaşingiz
             mumkin.
           </p>
 
@@ -48,7 +48,7 @@ export default function TestLockedScreen({
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 font-bold text-white transition hover:bg-blue-700"
             >
               <Crown className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
-              Premium olish
+              Premium oliş
             </Link>
 
             <Link

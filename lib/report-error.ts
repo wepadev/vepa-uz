@@ -101,7 +101,7 @@ export async function reportError(
   if (isDuplicate(`${report.where}:${report.message}`)) {
     return {
       delivered: false,
-      reason: "Bu xato yaqinda yuborilgan (10 daqiqalik to‘siq)",
+      reason: "Bu xato yaqinda yuborilgan (10 daqiqalik tösiq)",
     };
   }
 

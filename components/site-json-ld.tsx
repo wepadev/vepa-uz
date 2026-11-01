@@ -41,12 +41,12 @@ export default function SiteJsonLd({ siteUrl }: { siteUrl: string }) {
         logo: `${siteUrl}/icon-512.png`,
         image: `${siteUrl}/icon-512.png`,
         description:
-          "Matematika bo‘yicha onlayn testlar, videodarslar va darslik yechimlari platformasi.",
+          "Matematika böyiça onlayn testlar, videodarslar va darslik yeçimlari platformasi.",
         areaServed: "UZ",
         sameAs: SOCIAL_LINKS,
         founder: {
           "@type": "Person",
-          name: "Vepa Kurbanklichev",
+          name: "Vepa Kurbankliçev",
         },
       },
     ],

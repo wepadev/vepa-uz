@@ -33,7 +33,7 @@ export default function AdminTabs({
 }) {
   return (
     <nav
-      aria-label="Bo‘limlar"
+      aria-label="Bölimlar"
       className={cn(
         "-mx-3 overflow-x-auto px-3 sm:mx-0 sm:px-0",
         className,

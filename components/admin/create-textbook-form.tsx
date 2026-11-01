@@ -46,7 +46,7 @@ function SubmitButton() {
           Darslik yaratilmoqda...
         </span>
       ) : (
-        "Darslik yaratish"
+        "Darslik yaratiş"
       )}
     </button>
   );
@@ -74,13 +74,13 @@ export default function CreateTextbookForm({
       </p>
 
       <h2 className="mt-2 text-2xl font-bold text-slate-950">
-        Darslik qo‘shish
+        Darslik qöşiş
       </h2>
 
       <p className="mt-2 text-sm leading-6 text-slate-500">
-        Avval turini tanlang. Maktab darsligi uchun
-        sinf majburiy, mashhur darslik uchun muallifni
-        yozish mumkin.
+        Avval turini tanlang. Maktab darsligi uçun
+        sinf majburiy, maşhur darslik uçun muallifni
+        yoziş mumkin.
       </p>
 
       <form
@@ -116,7 +116,7 @@ export default function CreateTextbookForm({
               </span>
 
               <span className="mt-1 block text-xs leading-5 text-slate-500">
-                Sinflar bo‘yicha darsliklar
+                Sinflar böyiça darsliklar
               </span>
             </label>
 
@@ -139,7 +139,7 @@ export default function CreateTextbookForm({
               />
 
               <span className="block font-bold text-slate-900">
-                Mashhur darslik
+                Maşhur darslik
               </span>
 
               <span className="mt-1 block text-xs leading-5 text-slate-500">
@@ -171,7 +171,7 @@ export default function CreateTextbookForm({
             placeholder={
               bookType === "school"
                 ? "Masalan: 8-sinf Algebra"
-                : "Masalan: Matematikadan masalalar to‘plami"
+                : "Masalan: Matematikadan masalalar töplami"
             }
             className={
               state.errors.title
@@ -285,8 +285,8 @@ export default function CreateTextbookForm({
           />
 
           <p className="mt-1.5 text-xs leading-5 text-slate-500">
-            PNG, JPG yoki WEBP; 2.5 MB gacha. Kitob suratini
-            to‘g‘ridan-to‘g‘ri yuklashingiz mumkin — havola shart
+            PNG, JPG yoki WEBP; 2.5 MB gaça. Kitob suratini
+            töğridan-töğri yuklaşingiz mumkin — havola şart
             emas.
           </p>
 
@@ -298,7 +298,7 @@ export default function CreateTextbookForm({
 
           <details className="mt-2">
             <summary className="cursor-pointer list-none text-xs font-semibold text-mb-brand">
-              Yoki tayyor havola qo‘yish
+              Yoki tayyor havola qöyiş
             </summary>
 
             <input

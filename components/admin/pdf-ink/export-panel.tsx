@@ -64,10 +64,10 @@ export default function ExportPanel({
 
       <div
         role="dialog"
-        aria-label="PDF saqlash"
+        aria-label="PDF saqlaş"
         className="absolute right-2 top-full z-40 mt-1 w-[min(24rem,calc(100vw-1rem))] rounded-2xl border border-mb-line bg-white p-4 shadow-xl"
       >
-        <p className="text-base font-bold text-mb-ink">PDF saqlash</p>
+        <p className="text-base font-bold text-mb-ink">PDF saqlaş</p>
 
         <div className="mt-3 grid grid-cols-2 gap-2 text-sm font-semibold">
           {(
@@ -117,7 +117,7 @@ export default function ExportPanel({
                 </button>
               )}
               <button type="button" className={quick} onClick={() => choose([])}>
-                Tozalash
+                Tozalaş
               </button>
             </div>
 
@@ -166,7 +166,7 @@ export default function ExportPanel({
           )}
           {indexes.length === 0
             ? "Bet tanlanmagan"
-            : `${indexes.length} ta betni saqlash`}
+            : `${indexes.length} ta betni saqlaş`}
         </button>
       </div>
     </>

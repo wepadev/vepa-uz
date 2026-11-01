@@ -86,7 +86,7 @@ export default async function HomePage() {
   const fullName =
     profile?.full_name?.trim() ||
     user?.email?.split("@")[0] ||
-    "Oʼquvchi";
+    "Öquvçi";
 
   const testsHref = isAuthenticated
     ? "/tests"
@@ -167,7 +167,7 @@ export default async function HomePage() {
           {
             href: "/dokon",
             icon: Coins,
-            label: "Do‘kon",
+            label: "Dökon",
             tone: accents.content.tile,
           },
         ]
@@ -213,7 +213,7 @@ export default async function HomePage() {
                   type="submit"
                   className="inline-flex min-h-10 items-center rounded-xl px-3 text-sm font-semibold text-slate-500 hover:text-slate-800"
                 >
-                  Chiqish
+                  Çiqiş
                 </button>
               </form>
             </div>
@@ -222,7 +222,7 @@ export default async function HomePage() {
               href="/auth/login"
               className="inline-flex min-h-10 shrink-0 items-center justify-center rounded-xl bg-mb-brand px-4 text-sm font-semibold text-white hover:bg-mb-brandDark"
             >
-              Kirish
+              Kiriş
             </Link>
           )}
         </div>
@@ -271,7 +271,7 @@ export default async function HomePage() {
                         className="inline-flex min-h-12 items-center gap-2 rounded-2xl bg-white px-5 font-bold text-blue-700 shadow-sm transition hover:bg-blue-50"
                       >
                         <Play className="h-4 w-4" strokeWidth={2.6} aria-hidden="true" />
-                        Vazifani boshlash
+                        Vazifani boşlaş
                       </Link>
 
                       <Link
@@ -279,7 +279,7 @@ export default async function HomePage() {
                         className="inline-flex min-h-12 items-center rounded-2xl bg-white/15 px-5 font-bold text-white ring-1 ring-white/25 transition hover:bg-white/25"
                       >
                         {pendingCount > 1
-                          ? `Barcha vazifalar (${pendingCount})`
+                          ? `Barça vazifalar (${pendingCount})`
                           : "Vazifalarim"}
                       </Link>
                     </div>
@@ -288,14 +288,14 @@ export default async function HomePage() {
                   <>
                     <h1 className="mt-1.5 text-2xl font-bold leading-tight sm:text-4xl">
                       {isInGroup
-                        ? "Hozircha uy vazifasi yo‘q"
-                        : "Bugun nimadan boshlaymiz?"}
+                        ? "Hozirça uy vazifasi yöq"
+                        : "Bugun nimadan boşlaymiz?"}
                     </h1>
 
                     <p className="mt-2 max-w-lg text-sm leading-6 text-blue-100">
                       {isInGroup
-                        ? "Yangi vazifa berilsa shu yerda chiqadi. Bo‘sh vaqtda test ishlab, mashq qiling."
-                        : "Test ishlang yoki ustozingiz bergan kod bilan guruhga qo‘shiling."}
+                        ? "Yangi vazifa berilsa şu yerda çiqadi. Böş vaqtda test işlab, maşq qiling."
+                        : "Test işlang yoki ustozingiz bergan kod bilan guruhga qöşiling."}
                     </p>
 
                     <div className="mt-5 flex flex-wrap gap-2.5">
@@ -304,7 +304,7 @@ export default async function HomePage() {
                         className="inline-flex min-h-12 items-center gap-2 rounded-2xl bg-white px-5 font-bold text-blue-700 shadow-sm transition hover:bg-blue-50"
                       >
                         <Play className="h-4 w-4" strokeWidth={2.6} aria-hidden="true" />
-                        Test ishlash
+                        Test işlaş
                       </Link>
 
                       {!isInGroup && (
@@ -312,7 +312,7 @@ export default async function HomePage() {
                           href="/guruhim"
                           className="inline-flex min-h-12 items-center rounded-2xl bg-white/15 px-5 font-bold text-white ring-1 ring-white/25 transition hover:bg-white/25"
                         >
-                          Guruhga qo‘shilish
+                          Guruhga qöşiliş
                         </Link>
                       )}
                     </div>
@@ -326,12 +326,12 @@ export default async function HomePage() {
                 </p>
 
                 <h1 className="mt-1.5 text-2xl font-bold leading-tight sm:text-4xl">
-                  Matematikani tushunib o‘rganing
+                  Matematikani tuşunib örganing
                 </h1>
 
                 <p className="mt-2 max-w-lg text-sm leading-6 text-blue-100 sm:text-base">
                   Videodarslar, onlayn testlar va darslik masalalarining
-                  batafsil yechimlari — bir joyda.
+                  batafsil yeçimlari — bir joyda.
                 </p>
 
                 <div className="mt-5 flex flex-col gap-2.5 sm:flex-row">
@@ -339,7 +339,7 @@ export default async function HomePage() {
                     href="/auth/login"
                     className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-white px-6 font-bold text-blue-700 shadow-sm transition hover:bg-blue-50"
                   >
-                    Bepul boshlash
+                    Bepul boşlaş
                   </Link>
 
                   <div className="sm:w-64">
@@ -372,7 +372,7 @@ export default async function HomePage() {
 
             <span className="min-w-0 flex-1">
               <span className="block text-xs font-bold uppercase tracking-wide text-amber-700">
-                Haftalik takrorlash
+                Haftalik takrorlaş
               </span>
 
               <span className="mt-0.5 block text-lg font-bold leading-6 text-amber-950 sm:text-xl">
@@ -440,7 +440,7 @@ export default async function HomePage() {
               href: testsHref,
               icon: ClipboardCheck,
               title: "Testlar",
-              text: "Ishlang — natija darrov chiqadi.",
+              text: "Işlang — natija darrov çiqadi.",
               tone: accents.tests.tile,
               hover: "sm:hover:border-blue-300",
             },
@@ -448,14 +448,14 @@ export default async function HomePage() {
               href: lessonsHref,
               icon: MonitorPlay,
               title: "Videodarslar",
-              text: "Mavzular bo‘yicha ketma-ket.",
+              text: "Mavzular böyiça ketma-ket.",
               tone: accents.content.tile,
               hover: "sm:hover:border-amber-300",
             },
             {
               href: textbooksHref,
               icon: BookOpen,
-              title: "Darslik yechimlari",
+              title: "Darslik yeçimlari",
               text: "5–11-sinf va TOP kitoblar.",
               tone: accents.content.tile,
               hover: "sm:hover:border-amber-300",
@@ -510,16 +510,16 @@ export default async function HomePage() {
 
                 <div className="min-w-0">
                   <h2 className="text-[17px] font-bold text-mb-ink">
-                    Vepa Kurbanklichev
+                    Vepa Kurbankliçev
                   </h2>
                   <p className="text-sm text-mb-muted">Matematika ustozi</p>
                 </div>
               </div>
 
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                Platformadagi har bir videodars, test va yechimni ustozning
-                o‘zi tayyorlaydi. Guruh o‘quvchilari shu yerda uy vazifasini
-                bajaradi, xatolarini ko‘radi va reytingda bellashadi.
+                Platformadagi har bir videodars, test va yeçimni ustozning
+                özi tayyorlaydi. Guruh öquvçilari şu yerda uy vazifasini
+                bajaradi, xatolarini köradi va reytingda bellaşadi.
               </p>
 
               <a
@@ -564,7 +564,7 @@ export default async function HomePage() {
                   <p className="mt-1 text-sm leading-6 text-slate-600">
                     <b className="text-mb-ink">Videodarslar:</b>{" "}
                     {catalog.lessonCategories.slice(0, 8).join(", ")}
-                    {catalog.lessonCategories.length > 8 ? " va boshqalar" : ""}.
+                    {catalog.lessonCategories.length > 8 ? " va boşqalar" : ""}.
                   </p>
                 )}
 
@@ -591,7 +591,7 @@ export default async function HomePage() {
               </span>
 
               <span className="mt-0.5 block text-sm text-blue-700">
-                Testlar, darslar, guruhlar va yechimlarni boshqarish.
+                Testlar, darslar, guruhlar va yeçimlarni boşqariş.
               </span>
             </span>
 

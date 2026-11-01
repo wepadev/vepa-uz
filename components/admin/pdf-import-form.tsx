@@ -174,18 +174,18 @@ function describeNonJsonResponse(status: number, body: string) {
 
   if (status === 504 || /timed? ?out|FUNCTION_INVOCATION_TIMEOUT/i.test(body)) {
     return (
-      "Vaqt tugadi: server javob bermadi. PDF juda katta bo‘lishi " +
-      "mumkin — uni kichikroq bo‘laklarga bo‘lib yuklab ko‘ring."
+      "Vaqt tugadi: server javob bermadi. PDF juda katta bölişi " +
+      "mumkin — uni kiçikroq bölaklarga bölib yuklab köring."
     );
   }
 
   if (status === 413 || /PAYLOAD_TOO_LARGE/i.test(body)) {
-    return "Fayl juda katta. 4 MB dan kichik PDF yuklang.";
+    return "Fayl juda katta. 4 MB dan kiçik PDF yuklang.";
   }
 
   return (
     `Server kutilmagan javob qaytardi (${status}). ` +
-    (snippet ? snippet.slice(0, 200) : "Javob bo‘sh.")
+    (snippet ? snippet.slice(0, 200) : "Javob böş.")
   );
 }
 
@@ -203,7 +203,7 @@ function describeNonJsonResponse(status: number, body: string) {
 
     if (!answersFile) {
       setErrors([
-        "Javoblar faylini ham tanlang \u2014 to\u2018g\u2018ri javobsiz test saqlanmaydi.",
+        "Javoblar faylini ham tanlang \u2014 töğri javobsiz test saqlanmaydi.",
       ]);
       return;
     }
@@ -267,7 +267,7 @@ function describeNonJsonResponse(status: number, body: string) {
       setErrors(payload.errors ?? []);
     } catch (error) {
       setErrors([
-        `So‘rov yuborilmadi: ${
+        `Sörov yuborilmadi: ${
           error instanceof Error ? error.message : String(error)
         }`,
       ]);
@@ -333,7 +333,7 @@ function describeNonJsonResponse(status: number, body: string) {
         <p className="mt-2 text-xs leading-5 text-mb-muted">
           <strong className="font-semibold text-slate-700">.tex</strong> yoki
           <strong className="font-semibold text-slate-700"> .pdf</strong>.
-          Ichida bir nechta test bo‘lsa, tizim ularni ajratib, har
+          Içida bir neçta test bölsa, tizim ularni ajratib, har
           birini alohida test qilib beradi.
         </p>
 
@@ -342,7 +342,7 @@ function describeNonJsonResponse(status: number, body: string) {
           className="mt-5 block text-sm font-semibold text-slate-700"
         >
           Javoblar fayli{" "}
-          <span className="font-normal text-mb-muted">(shart)</span>
+          <span className="font-normal text-mb-muted">(şart)</span>
         </label>
 
         <input
@@ -357,14 +357,14 @@ function describeNonJsonResponse(status: number, body: string) {
         <p className="mt-2 text-xs leading-5 text-mb-muted">
           <strong className="font-semibold text-slate-700">.tex</strong> yoki
           <strong className="font-semibold text-slate-700"> .pdf</strong> —
-          savol fayli bilan bir xil bo‘lishi shart emas. Savol
-          faylining ichida to‘g‘ri javob yo‘q, javobsiz esa savol
+          savol fayli bilan bir xil bölişi şart emas. Savol
+          faylining içida töğri javob yöq, javobsiz esa savol
           saqlanmaydi.
           <br />
           <strong className="font-semibold text-slate-700">.tex</strong> dan
-          o‘qilsa formula aynan ko‘chiriladi — model ham, token ham
+          öqilsa formula aynan köçiriladi — model ham, token ham
           sarflanmaydi. <strong className="font-semibold text-slate-700">.pdf</strong>{" "}
-          dan o‘qilsa ko‘p qismi qoidalar bilan ajratiladi, faqat
+          dan öqilsa köp qismi qoidalar bilan ajratiladi, faqat
           ajratilmagan savollar Claude’ga yuboriladi.
         </p>
 
@@ -381,14 +381,14 @@ function describeNonJsonResponse(status: number, body: string) {
           ) : (
             <>
               <FileUp className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-              Tahlil qilish
+              Tahlil qiliş
             </>
           )}
         </button>
 
         {loading && (
           <p className="mt-2 text-xs leading-5 text-mb-muted">
-            Katta fayl bir daqiqagacha vaqt olishi mumkin. Sahifani yopmang.
+            Katta fayl bir daqiqagaça vaqt olişi mumkin. Sahifani yopmang.
           </p>
         )}
       </form>
@@ -416,8 +416,8 @@ function describeNonJsonResponse(status: number, body: string) {
           </p>
 
           <p className="mt-1 text-xs leading-5 text-mb-muted">
-            Har birini alohida ko‘rib chiqib saqlaysiz. Saqlangani
-            keyin ro‘yxatda belgilanadi.
+            Har birini alohida körib çiqib saqlaysiz. Saqlangani
+            keyin röyxatda belgilanadi.
           </p>
 
           <div className="mt-3 flex flex-wrap gap-2">
@@ -471,7 +471,7 @@ function describeNonJsonResponse(status: number, body: string) {
       )}
 
       {active && active.notes.length > 0 && (
-        <AppAlert variant="warning" title="Shubhali joylar" className="mt-4">
+        <AppAlert variant="warning" title="Şubhali joylar" className="mt-4">
           <ul className="grid gap-1">
             {active.notes.map((note, i) => (
               <li key={i}>{note}</li>
@@ -622,8 +622,8 @@ function describeNonJsonResponse(status: number, body: string) {
               className="mt-5"
             >
               {single
-                ? "Test saqlandi. Hozir test boshqaruv sahifasi ochiladi."
-                : "Bu variant saqlandi. Qolganlarini yuqoridagi ro‘yxatdan tanlab davom eting."}
+                ? "Test saqlandi. Hozir test boşqaruv sahifasi oçiladi."
+                : "Bu variant saqlandi. Qolganlarini yuqoridagi röyxatdan tanlab davom eting."}
             </AppAlert>
           )}
 
@@ -642,15 +642,15 @@ function describeNonJsonResponse(status: number, body: string) {
             saved={Boolean(active.savedTestId)}
             label={
               single
-                ? "Qoralama sifatida saqlash"
-                : `${activeIndex + 1}-variantni saqlash`
+                ? "Qoralama sifatida saqlaş"
+                : `${activeIndex + 1}-variantni saqlaş`
             }
           />
 
           <p className="mt-2 text-xs leading-5 text-mb-muted">
             {single
-              ? "Saqlash vaqtida tugma bloklanadi. Saqlangach test boshqaruv sahifasi avtomatik ochiladi."
-              : "Har bir variant alohida qoralama bo‘lib saqlanadi. Mavzu va vaqt hammasiga bir xil."}
+              ? "Saqlaş vaqtida tugma bloklanadi. Saqlangaç test boşqaruv sahifasi avtomatik oçiladi."
+              : "Har bir variant alohida qoralama bölib saqlanadi. Mavzu va vaqt hammasiga bir xil."}
           </p>
         </form>
       )}
@@ -722,11 +722,11 @@ function QuestionEditor({
         <button
           type="button"
           onClick={onRemove}
-          aria-label="Savolni o‘chirish"
+          aria-label="Savolni öçiriş"
           className="inline-flex min-h-9 items-center gap-1.5 rounded-xl border border-slate-200 px-2.5 text-xs font-semibold text-slate-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600"
         >
           <Trash2 className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-          O‘chirish
+          Öçiriş
         </button>
       </div>
 
@@ -742,7 +742,7 @@ function QuestionEditor({
        */}
       <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
         <p className="text-[11px] font-semibold uppercase tracking-wide text-mb-muted">
-          Ko‘rinishi
+          Körinişi
         </p>
 
         <div className="mt-1.5 text-sm text-mb-ink">
@@ -828,7 +828,7 @@ function QuestionEditor({
           </div>
 
           <label className="mt-3 block text-xs font-semibold text-slate-600">
-            Yechim
+            Yeçim
             <textarea
               rows={3}
               value={question.solution ?? ""}
@@ -842,7 +842,7 @@ function QuestionEditor({
           <label className="mt-3 block text-xs font-semibold text-slate-600">
             <span className="inline-flex items-center gap-1.5">
               <Youtube className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-              Yechim videosi
+              Yeçim videosi
             </span>
 
             <input
@@ -907,7 +907,7 @@ function QuestionEditor({
                 <input
                   type="url"
                   inputMode="url"
-                  placeholder="Yechim videosi (ixtiyoriy)"
+                  placeholder="Yeçim videosi (ixtiyoriy)"
                   value={part.solutionVideo ?? ""}
                   onChange={(e) =>
                     onChange({
@@ -929,8 +929,8 @@ function QuestionEditor({
 
       <p className="mt-2 inline-flex items-start gap-1.5 text-[11px] leading-5 text-mb-muted">
         <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" strokeWidth={2} aria-hidden="true" />
-        Formulalar KaTeX ko‘rinishida: <code>$x^2$</code>. Saqlagandan keyin
-        test sahifasida qanday chiqishini ko‘rasiz.
+        Formulalar KaTeX körinişida: <code>$x^2$</code>. Saqlagandan keyin
+        test sahifasida qanday çiqişini körasiz.
       </p>
     </article>
   );

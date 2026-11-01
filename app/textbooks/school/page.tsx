@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Maktab darsliklari",
   description:
-    "5–11-sinf maktab darsliklari: misollarning yozma yechimi va mavzu videolari.",
+    "5–11-sinf maktab darsliklari: misollarning yozma yeçimi va mavzu videolari.",
 };
 
 type TextbookRow = {
@@ -112,7 +112,7 @@ export default async function TextbookSectionPage() {
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <TextbooksHeader
         backHref="/textbooks"
-        backLabel="Darslik yechimlari"
+        backLabel="Darslik yeçimlari"
         title="Maktab darsliklari"
         subtitle="Sinfingizni tanlang"
         chips={[
@@ -125,9 +125,9 @@ export default async function TextbookSectionPage() {
         {textbooks.length === 0 ? (
           <AppAlert
             variant="info"
-            title="Hozircha darslik mavjud emas"
+            title="Hozirça darslik mavjud emas"
           >
-            Ustozingiz darslik qo‘shgach shu yerda ko‘rinadi.
+            Ustozingiz darslik qöşgaç şu yerda körinadi.
           </AppAlert>
         ) : (
           <div className="space-y-7">
@@ -135,7 +135,7 @@ export default async function TextbookSectionPage() {
               <div key={grade ?? "boshqa"}>
                 <div className="flex items-center gap-3">
                   <h2 className="text-sm font-bold uppercase tracking-wide text-mb-muted">
-                    {grade ? `${grade}-sinf` : "Boshqa"}
+                    {grade ? `${grade}-sinf` : "Boşqa"}
                   </h2>
 
                   <span className="h-px flex-1 bg-slate-200" />
@@ -190,7 +190,7 @@ export default async function TextbookSectionPage() {
 
                             <span className="mt-auto pt-2 text-sm font-semibold text-mb-muted">
                               {empty
-                                ? "Mavzu qo‘shilmagan"
+                                ? "Mavzu qöşilmagan"
                                 : `${topicCount} ta mavzu`}
                             </span>
                           </span>

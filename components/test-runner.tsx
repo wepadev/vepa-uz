@@ -123,7 +123,7 @@ function SubmitButton({
           Yuborilmoqda...
         </span>
       ) : (
-        "Testni yakunlash"
+        "Testni yakunlaş"
       )}
     </button>
   );
@@ -151,7 +151,7 @@ function FormPendingOverlay() {
         </p>
 
         <p className="mt-1 text-sm leading-6 text-slate-500">
-          Javoblaringiz tekshirilmoqda. Sahifani yopmang.
+          Javoblaringiz tekşirilmoqda. Sahifani yopmang.
         </p>
       </div>
     </div>
@@ -627,7 +627,7 @@ export default function TestRunner({
 
             <p className="mt-1 text-sm leading-6 text-slate-500">
               Sahifani yopmang va orqaga qaytmang — natija bir
-              necha soniyada ochiladi.
+              neça soniyada oçiladi.
             </p>
           </div>
         </div>
@@ -843,7 +843,7 @@ export default function TestRunner({
                     src={
                       currentItem.imageUrl
                     }
-                    alt={`${currentItem.navNumber}-savol chizmasi`}
+                    alt={`${currentItem.navNumber}-savol çizmasi`}
                     className="mx-auto max-h-[45vh] w-auto max-w-full rounded-xl object-contain sm:max-h-[560px]"
                   />
                 </div>
@@ -1046,7 +1046,7 @@ export default function TestRunner({
         >
           <button
             type="button"
-            aria-label="Yopish"
+            aria-label="Yopiş"
             onClick={() => setSheetOpen(false)}
             className="absolute inset-0 h-full w-full bg-slate-950/45 backdrop-blur-sm"
           />
@@ -1155,7 +1155,7 @@ export default function TestRunner({
               {items.length}
             </span>
             <span className="text-[11px] font-medium text-slate-500">
-              Savollar ro‘yxati
+              Savollar röyxati
             </span>
           </button>
 
@@ -1168,7 +1168,7 @@ export default function TestRunner({
               }
               className="h-12 shrink-0 rounded-2xl bg-emerald-600 px-4 text-sm font-bold text-white transition active:bg-emerald-700"
             >
-              Yakunlash
+              Yakunlaş
             </button>
           ) : (
             <button
@@ -1193,11 +1193,11 @@ export default function TestRunner({
         }
         description={
           unansweredCount > 0
-            ? `${unansweredCount} ta qism javobsiz qolgan. Testni baribir yakunlasangiz, keyin javoblarni o‘zgartirib bo‘lmaydi.`
-            : "Test yuborilgandan keyin javoblarni o‘zgartirib bo‘lmaydi."
+            ? `${unansweredCount} ta qism javobsiz qolgan. Testni baribir yakunlasangiz, keyin javoblarni özgartirib bölmaydi.`
+            : "Test yuborilgandan keyin javoblarni özgartirib bölmaydi."
         }
-        confirmLabel="Testni yakunlash"
-        cancelLabel="Davom etish"
+        confirmLabel="Testni yakunlaş"
+        cancelLabel="Davom etiş"
         variant={
           unansweredCount > 0
             ? "warning"

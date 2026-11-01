@@ -351,7 +351,7 @@ export default async function AdminAnalyticsPage({
 
   if (topStudentsResult.error) {
     throw new Error(
-      `Oʼquvchilar analitikasi yuklanmadi: ${topStudentsResult.error.message}`,
+      `Öquvçilar analitikasi yuklanmadi: ${topStudentsResult.error.message}`,
     );
   }
 
@@ -428,7 +428,7 @@ export default async function AdminAnalyticsPage({
           href="/admin"
           className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
         >
-          ← Admin panelga qaytish
+          ← Admin panelga qaytiş
         </Link>
 
         <h1 className="text-xl font-bold sm:text-2xl">Natijalar</h1>
@@ -437,20 +437,20 @@ export default async function AdminAnalyticsPage({
           className="mt-2"
           active="/admin/analytics"
           tabs={[
-            { href: "/admin/results", label: "Barcha natijalar" },
+            { href: "/admin/results", label: "Barça natijalar" },
             { href: "/admin/analytics", label: "Tahlil" },
           ]}
         />
 
         <p className="mt-4 max-w-3xl text-sm leading-6 text-slate-500">
-          Barcha urinishlar asosida testlarning qiyinligi, yakunlanish
-          darajasi va o‘quvchilar reytingi.
+          Barça urinişlar asosida testlarning qiyinligi, yakunlaniş
+          darajasi va öquvçilar reytingi.
         </p>
 
         <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <p className="text-sm font-semibold text-slate-500">
-              Tugallangan urinishlar
+              Tugallangan urinişlar
             </p>
 
             <p className="mt-2 text-3xl font-bold text-red-600">
@@ -458,14 +458,14 @@ export default async function AdminAnalyticsPage({
             </p>
 
             <p className="mt-2 text-xs text-slate-400">
-              Jami boshlangan:{" "}
+              Jami boşlangan:{" "}
               {attempts.length}
             </p>
           </article>
 
           <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <p className="text-sm font-semibold text-slate-500">
-              Faol o‘quvchilar
+              Faol öquvçilar
             </p>
 
             <p className="mt-2 text-3xl font-bold text-blue-600">
@@ -480,7 +480,7 @@ export default async function AdminAnalyticsPage({
 
           <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <p className="text-sm font-semibold text-slate-500">
-              O‘rtacha natija
+              Örtaça natija
             </p>
 
             <p
@@ -495,8 +495,8 @@ export default async function AdminAnalyticsPage({
             </p>
 
             <p className="mt-2 text-xs text-slate-400">
-              Barcha tugallangan
-              urinishlar
+              Barça tugallangan
+              urinişlar
             </p>
           </article>
 
@@ -511,7 +511,7 @@ export default async function AdminAnalyticsPage({
 
             <p className="mt-2 text-xs text-slate-400">
               Yuqori natijali
-              urinishlar
+              urinişlar
             </p>
           </article>
         </div>
@@ -525,7 +525,7 @@ export default async function AdminAnalyticsPage({
                 </h2>
 
                 <p className="mt-1 text-sm text-slate-500">
-                  O‘rtacha natijasi eng
+                  Örtaça natijasi eng
                   past 5 ta test
                 </p>
               </div>
@@ -533,8 +533,8 @@ export default async function AdminAnalyticsPage({
 
             {hardestTests.length === 0 ? (
               <p className="mt-6 rounded-2xl bg-slate-50 px-4 py-8 text-center text-sm text-slate-500">
-                Tahlil qilish uchun
-                tugallangan urinish yo‘q.
+                Tahlil qiliş uçun
+                tugallangan uriniş yöq.
               </p>
             ) : (
               <div className="mt-5 space-y-4">
@@ -590,7 +590,7 @@ export default async function AdminAnalyticsPage({
                           <p className="mt-2 text-xs text-slate-500">
                             {item.completedCount}{" "}
                             ta tugallangan
-                            urinish · eng yuqori{" "}
+                            uriniş · eng yuqori{" "}
                             {percentageText(
                               item.highestPercentage,
                             )}
@@ -608,19 +608,19 @@ export default async function AdminAnalyticsPage({
           <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
             <div>
               <h2 className="text-xl font-bold text-slate-950">
-                O‘quvchilar reytingi
+                Öquvçilar reytingi
               </h2>
 
               <p className="mt-1 text-sm text-slate-500">
-                O‘rtacha natija bo‘yicha
-                eng yaxshi 10 o‘quvchi
+                Örtaça natija böyiça
+                eng yaxşi 10 öquvçi
               </p>
             </div>
 
             {topStudents.length === 0 ? (
               <p className="mt-6 rounded-2xl bg-slate-50 px-4 py-8 text-center text-sm text-slate-500">
-                Reyting uchun
-                tugallangan urinish yo‘q.
+                Reyting uçun
+                tugallangan uriniş yöq.
               </p>
             ) : (
               <div className="mt-5 space-y-3">
@@ -705,8 +705,8 @@ export default async function AdminAnalyticsPage({
 
               <p className="mt-1 text-sm text-slate-500">
                 Har bir testning
-                urinishlari, o‘rtacha
-                natijasi va yakunlanish
+                urinişlari, örtaça
+                natijasi va yakunlaniş
                 darajasi
               </p>
             </div>
@@ -720,7 +720,7 @@ export default async function AdminAnalyticsPage({
                 defaultValue={
                   single(params.q) ?? ""
                 }
-                placeholder="Test nomini qidirish"
+                placeholder="Test nomini qidiriş"
                 className="min-h-11 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-800 outline-none transition placeholder:font-normal placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
               />
 
@@ -732,7 +732,7 @@ export default async function AdminAnalyticsPage({
                 className="min-h-11 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
               >
                 <option value="attempts">
-                  Eng ko‘p ishlangan
+                  Eng köp işlangan
                 </option>
 
                 <option value="average_desc">
@@ -751,7 +751,7 @@ export default async function AdminAnalyticsPage({
               <SubmitButton
                 className="min-h-11 rounded-xl bg-blue-600 px-5 text-sm font-bold text-white hover:bg-blue-700"
               >
-                Qo‘llash
+                Qöllaş
               </SubmitButton>
             </form>
           </div>
@@ -764,8 +764,8 @@ export default async function AdminAnalyticsPage({
               </p>
 
               <p className="mt-2 text-sm text-slate-500">
-                Qidiruv so‘zini
-                o‘zgartirib ko‘ring.
+                Qidiruv sözini
+                özgartirib köring.
               </p>
             </div>
           ) : (
@@ -779,7 +779,7 @@ export default async function AdminAnalyticsPage({
                       </th>
 
                       <th className="px-5 py-4 text-center font-bold">
-                        Boshlangan
+                        Boşlangan
                       </th>
 
                       <th className="px-5 py-4 text-center font-bold">
@@ -787,11 +787,11 @@ export default async function AdminAnalyticsPage({
                       </th>
 
                       <th className="px-5 py-4 text-center font-bold">
-                        O‘quvchilar
+                        Öquvçilar
                       </th>
 
                       <th className="px-5 py-4 text-center font-bold">
-                        O‘rtacha
+                        Örtaça
                       </th>
 
                       <th className="px-5 py-4 text-center font-bold">
@@ -803,7 +803,7 @@ export default async function AdminAnalyticsPage({
                       </th>
 
                       <th className="px-5 py-4 text-center font-bold">
-                        Yakunlash
+                        Yakunlaş
                       </th>
 
                       <th className="px-5 py-4 font-bold">
@@ -826,7 +826,7 @@ export default async function AdminAnalyticsPage({
 
                             <p className="mt-1 text-xs text-slate-400">
                               Qiyinlik
-                              ko‘rsatkichi:{" "}
+                              körsatkiçi:{" "}
                               {percentageText(
                                 item.difficultyScore,
                               )}
@@ -906,7 +906,7 @@ export default async function AdminAnalyticsPage({
                               href={`/admin/results?testId=${item.testId}`}
                               className="inline-flex min-h-10 items-center justify-center rounded-xl bg-blue-50 px-4 py-2 text-sm font-bold text-blue-700 hover:bg-blue-100"
                             >
-                              Urinishlar
+                              Urinişlar
                             </Link>
                           </td>
                         </tr>
@@ -926,11 +926,11 @@ export default async function AdminAnalyticsPage({
             </h2>
 
             <p className="mt-2 text-sm leading-6 text-slate-500">
-              Reyting o‘quvchining
+              Reyting öquvçining
               tugallangan testlaridagi
-              o‘rtacha foizi bo‘yicha
+              örtaça foizi böyiça
               tuziladi. Natijalar teng
-              bo‘lsa, eng yuqori foiz va
+              bölsa, eng yuqori foiz va
               tugallangan testlar soni
               hisobga olinadi. Oxirgi
               natija sanasi:{" "}

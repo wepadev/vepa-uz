@@ -16,7 +16,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Reyting",
   description:
-    "Eng yaxshi natijalar va umumiy reyting jadvali.",
+    "Eng yaxşi natijalar va umumiy reyting jadvali.",
 };
 
 /*
@@ -142,7 +142,7 @@ function Medal({
   return (
     <span
       className={`inline-flex h-10 min-w-10 items-center justify-center rounded-2xl px-2 text-lg font-bold ${className}`}
-      aria-label={`${rank}-oʼrin`}
+      aria-label={`${rank}-örin`}
     >
       {rank === 1
         ? "🥇"
@@ -301,7 +301,7 @@ export default async function LeaderboardPage({
 
   if (summaryResult.error) {
     throw new Error(
-      `Shaxsiy reyting yuklanmadi: ${summaryResult.error.message}`,
+      `Şaxsiy reyting yuklanmadi: ${summaryResult.error.message}`,
     );
   }
 
@@ -463,7 +463,7 @@ export default async function LeaderboardPage({
               href="/"
               className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
             >
-              ← Bosh sahifa
+              ← Boş sahifa
             </Link>
 
             <p className="truncate text-lg font-bold sm:text-xl">
@@ -496,7 +496,7 @@ export default async function LeaderboardPage({
                   strokeWidth={2.2}
                   aria-hidden="true"
                 />
-                Sizning o‘rningiz
+                Sizning örningiz
               </p>
 
               {isAdmin ? (
@@ -507,14 +507,14 @@ export default async function LeaderboardPage({
                 <>
                   <p className="mt-1 text-4xl font-bold leading-none sm:text-5xl">
                     {formatNumber(currentSummary?.overall_rank)}
-                    <span className="text-2xl font-bold">-o‘rin</span>
+                    <span className="text-2xl font-bold">-örin</span>
                   </p>
 
                   <p className="mt-1.5 text-sm text-blue-100">
                     {formatNumber(
                       currentSummary?.overall_participants,
                     )}{" "}
-                    o‘quvchi ichida ·{" "}
+                    öquvçi içida ·{" "}
                     {formatNumber(currentSummary?.rating_points)} ball
                   </p>
                 </>
@@ -525,8 +525,8 @@ export default async function LeaderboardPage({
                   </p>
 
                   <p className="mt-1.5 text-sm text-blue-100">
-                    Testlar bo‘limidan bitta test ishlang — o‘rningiz
-                    shu yerda chiqadi.
+                    Testlar bölimidan bitta test işlang — örningiz
+                    şu yerda çiqadi.
                   </p>
                 </>
               )}
@@ -536,7 +536,7 @@ export default async function LeaderboardPage({
               href="/tests"
               className="inline-flex min-h-11 items-center rounded-2xl bg-white px-5 text-sm font-bold text-blue-700 shadow-sm transition hover:bg-blue-50"
             >
-              Test ishlash
+              Test işlaş
             </Link>
           </div>
         </div>
@@ -592,7 +592,7 @@ export default async function LeaderboardPage({
 
                     <div>
                       <p className="font-medium text-slate-500">
-                        Oʼrtacha
+                        Örtaça
                       </p>
 
                       <p className="mt-1 font-bold">
@@ -623,7 +623,7 @@ export default async function LeaderboardPage({
                     currentSummary
                       ?.overall_rank,
                   )}
-                  -oʼrin
+                  -örin
                 </h2>
               </div>
 
@@ -680,16 +680,16 @@ export default async function LeaderboardPage({
 
               <p className="mt-1 text-sm text-slate-500">
                 Har testdagi eng
-                yaxshi foizlar
-                yigʼindisi
+                yaxşi foizlar
+                yiğindisi
               </p>
             </div>
 
             {overallRows.length ===
             0 ? (
               <div className="px-5 py-14 text-center text-sm font-medium text-slate-500">
-                Hozircha reyting
-                natijasi yoʼq.
+                Hozirça reyting
+                natijasi yöq.
               </div>
             ) : (
               <>
@@ -732,7 +732,7 @@ export default async function LeaderboardPage({
                           {formatNumber(
                             row.average_percentage,
                           )}
-                          % o‘rtacha
+                          % örtaça
                         </p>
                       </div>
 
@@ -756,11 +756,11 @@ export default async function LeaderboardPage({
                   <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
                     <tr>
                       <th className="px-5 py-4 font-bold">
-                        Oʼrin
+                        Örin
                       </th>
 
                       <th className="px-5 py-4 font-bold">
-                        Oʼquvchi
+                        Öquvçi
                       </th>
 
                       <th className="px-5 py-4 text-center font-bold">
@@ -768,7 +768,7 @@ export default async function LeaderboardPage({
                       </th>
 
                       <th className="px-5 py-4 text-center font-bold">
-                        Oʼrtacha
+                        Örtaça
                       </th>
 
                       <th className="px-5 py-4 text-right font-bold">
@@ -865,7 +865,7 @@ export default async function LeaderboardPage({
 
                   <p className="mt-1 text-sm text-slate-500">
                     Testni tanlab TOP
-                    natijalarni koʼring
+                    natijalarni köring
                   </p>
                 </div>
 
@@ -916,7 +916,7 @@ export default async function LeaderboardPage({
                       type="submit"
                       className="min-h-11 rounded-xl bg-blue-600 px-4 py-2 text-sm font-bold text-white hover:bg-blue-700"
                     >
-                      Koʼrish
+                      Köriş
                     </button>
                   </form>
                 )}
@@ -927,7 +927,7 @@ export default async function LeaderboardPage({
               <div className="px-5 py-14 text-center">
                 <p className="font-bold text-slate-800">
                   Faol reyting testi
-                  yoʼq
+                  yöq
                 </p>
               </div>
             ) : testRows.length ===
@@ -938,7 +938,7 @@ export default async function LeaderboardPage({
                 </p>
 
                 <p className="mt-2 text-sm text-slate-500">
-                  Bu testni hali hech
+                  Bu testni hali heç
                   kim tugatmagan.
                 </p>
               </div>
@@ -956,7 +956,7 @@ export default async function LeaderboardPage({
                           currentTestStatistics
                             .test_rank,
                         )}
-                        -oʼrin ·{" "}
+                        -örin ·{" "}
                         {formatNumber(
                           currentTestStatistics
                             .best_percentage,
@@ -1011,7 +1011,7 @@ export default async function LeaderboardPage({
                             {formatNumber(
                               row.attempts_count,
                             )}{" "}
-                            urinish ·{" "}
+                            uriniş ·{" "}
                             {formatDate(
                               row.completed_at,
                             )}
@@ -1034,11 +1034,11 @@ export default async function LeaderboardPage({
                     <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
                       <tr>
                         <th className="px-5 py-4 font-bold">
-                          Oʼrin
+                          Örin
                         </th>
 
                         <th className="px-5 py-4 font-bold">
-                          Oʼquvchi
+                          Öquvçi
                         </th>
 
                         <th className="px-5 py-4 text-center font-bold">
@@ -1050,7 +1050,7 @@ export default async function LeaderboardPage({
                         </th>
 
                         <th className="px-5 py-4 text-center font-bold">
-                          Urinish
+                          Uriniş
                         </th>
 
                         <th className="px-5 py-4 text-right font-bold">
@@ -1153,20 +1153,20 @@ export default async function LeaderboardPage({
 
           <p className="mt-2 text-sm leading-6 text-blue-900">
             Har bir testda faqat
-            eng yaxshi urinish
+            eng yaxşi uriniş
             olinadi. Teng foizda
             testni tezroq tugatgan
-            oʼquvchi yuqorida
+            öquvçi yuqorida
             turadi. Umumiy
-            reytingda barcha
+            reytingda barça
             reyting testlaridagi
-            eng yaxshi foizlar
-            qoʼshiladi.
+            eng yaxşi foizlar
+            qöşiladi.
           </p>
 
           <p className="mt-2 text-sm font-bold leading-6 text-blue-950">
             Dars testlari reytingga
-            mutlaqo qoʼshilmaydi.
+            mutlaqo qöşilmaydi.
           </p>
         </section>
       </section>

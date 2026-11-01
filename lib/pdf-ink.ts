@@ -109,7 +109,7 @@ export function invertMatrix(m: Matrix): Matrix {
   const det = a * d - b * c;
 
   if (det === 0) {
-    throw new Error("Matritsani teskarisi yo'q");
+    throw new Error("Matritsani teskarisi yöq");
   }
 
   return [

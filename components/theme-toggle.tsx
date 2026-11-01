@@ -45,9 +45,9 @@ export default function ThemeToggle({
         aria-label={
           mounted
             ? isDark
-              ? "Kun rejimiga o‘tish"
-              : "Tun rejimiga o‘tish"
-            : "Rejimni almashtirish"
+              ? "Kun rejimiga ötiş"
+              : "Tun rejimiga ötiş"
+            : "Rejimni almaştiriş"
         }
         className={cn(
           "inline-grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600 transition sm:hover:bg-slate-50",

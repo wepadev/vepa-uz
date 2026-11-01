@@ -72,14 +72,14 @@ function ManageLink({ href, label }: { href: string; label: string }) {
       className="inline-flex min-h-8 shrink-0 items-center gap-1 rounded-lg px-2 text-xs font-semibold text-mb-brand hover:bg-blue-50"
     >
       <Settings2 className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-      <span className="hidden sm:inline">Boshqarish</span>
+      <span className="hidden sm:inline">Boşqariş</span>
     </Link>
   );
 }
 
 function TestLinks({ tests }: { tests: TestRow[] }) {
   if (tests.length === 0) {
-    return <p className="px-3 py-2 text-xs text-mb-muted">Test yo‘q</p>;
+    return <p className="px-3 py-2 text-xs text-mb-muted">Test yöq</p>;
   }
 
   return (
@@ -155,13 +155,13 @@ export default async function AdminTestsPage() {
 
   if (examTypesResult.error) {
     throw new Error(
-      `Test yo‘nalishlari yuklanmadi: ${examTypesResult.error.message}`,
+      `Test yönalişlari yuklanmadi: ${examTypesResult.error.message}`,
     );
   }
 
   if (sectionsResult.error) {
     throw new Error(
-      `Test bo‘limlari yuklanmadi: ${sectionsResult.error.message}`,
+      `Test bölimlari yuklanmadi: ${sectionsResult.error.message}`,
     );
   }
 
@@ -185,11 +185,11 @@ export default async function AdminTestsPage() {
               href="/admin"
               className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
             >
-              ← Admin panelga qaytish
+              ← Admin panelga qaytiş
             </Link>
             <h1 className="text-xl font-bold sm:text-2xl">Testlar</h1>
             <p className="mt-1 text-sm text-slate-500">
-              Yo‘nalish → bo‘lim → mavzu → test. Ochish uchun bosing.
+              Yönaliş → bölim → mavzu → test. Oçiş uçun bosing.
             </p>
           </div>
 
@@ -199,14 +199,14 @@ export default async function AdminTestsPage() {
               className="inline-flex items-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-5 py-3 text-sm font-bold text-blue-700 hover:bg-blue-100"
             >
               <FileUp className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-              PDF’dan test yaratish
+              PDF’dan test yaratiş
             </Link>
 
             <Link
               href="/tests"
               className="inline-flex items-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50"
             >
-              O‘quvchi ko‘rinishi
+              Öquvçi körinişi
             </Link>
           </div>
         </div>
@@ -216,7 +216,7 @@ export default async function AdminTestsPage() {
         {!examTypes.length ? (
           <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
             <p className="text-lg font-bold text-slate-700">
-              Katalog migratsiyasi hali ishlatilmagan
+              Katalog migratsiyasi hali işlatilmagan
             </p>
             <p className="mt-2 text-sm text-slate-500">
               Avval 25_test_catalog_hierarchy.sql faylini Supabase’da Run qiling.
@@ -251,7 +251,7 @@ export default async function AdminTestsPage() {
 
                         {isGroupExam ? (
                           <span
-                            title="Bu yo‘nalish o‘quvchiga ko‘rinmaydi — testlari faqat uy vazifasi bo‘lib ochiladi"
+                            title="Bu yönaliş öquvçiga körinmaydi — testlari faqat uy vazifasi bölib oçiladi"
                             className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[11px] font-bold text-blue-700"
                           >
                             <EyeOff className="h-3 w-3" strokeWidth={2.2} aria-hidden="true" />
@@ -263,13 +263,13 @@ export default async function AdminTestsPage() {
                       </span>
 
                       <span className="block text-xs text-mb-muted">
-                        {examSections.length} bo‘lim · {testCount} test
+                        {examSections.length} bölim · {testCount} test
                       </span>
                     </span>
 
                     <ManageLink
                       href={`/admin/tests/sections?exam=${encodeURIComponent(examType.code)}`}
-                      label="Bo‘limlarni boshqarish"
+                      label="Bölimlarni boşqariş"
                     />
 
                     <ChevronRight
@@ -282,12 +282,12 @@ export default async function AdminTestsPage() {
                   <div className="space-y-2 border-t border-mb-line bg-slate-50/60 p-3">
                     {examSections.length === 0 && (
                       <p className="px-2 py-2 text-sm text-mb-muted">
-                        Bo‘lim yo‘q.{" "}
+                        Bölim yöq.{" "}
                         <Link
                           href={`/admin/tests/sections?exam=${encodeURIComponent(examType.code)}`}
                           className="font-semibold text-mb-brand"
                         >
-                          Bo‘lim yaratish
+                          Bölim yaratiş
                         </Link>
                       </p>
                     )}
@@ -324,7 +324,7 @@ export default async function AdminTestsPage() {
                             <DraftBadge published={section.is_published} />
                             <ManageLink
                               href={`/admin/tests/section?sectionId=${section.id}`}
-                              label="Mavzularni boshqarish"
+                              label="Mavzularni boşqariş"
                             />
                           </summary>
 
@@ -338,7 +338,7 @@ export default async function AdminTestsPage() {
                                   <DraftBadge published={topic.is_published} />
                                   <ManageLink
                                     href={`/admin/tests/topic?topicId=${topic.id}`}
-                                    label="Mavzu testlarini boshqarish"
+                                    label="Mavzu testlarini boşqariş"
                                   />
                                 </div>
 
@@ -363,7 +363,7 @@ export default async function AdminTestsPage() {
 
                             {sectionTopics.length === 0 && looseTests.length === 0 && (
                               <p className="px-3 py-2 text-xs text-mb-muted">
-                                Hali mavzu yoki test yo‘q.
+                                Hali mavzu yoki test yöq.
                               </p>
                             )}
                           </div>

@@ -120,7 +120,7 @@ async function updateLesson(
     return {
       status: "error",
       message:
-        "Videodars ma’lumotlari noto‘g‘ri.",
+        "Videodars ma’lumotlari notöğri.",
       errors: {},
     };
   }
@@ -134,7 +134,7 @@ async function updateLesson(
 
   if (title.length > 150) {
     errors.title =
-      "Dars nomi 150 ta belgidan oshmasin.";
+      "Dars nomi 150 ta belgidan oşmasin.";
   }
 
   if (!videoUrl) {
@@ -142,19 +142,19 @@ async function updateLesson(
       "YouTube video havolasini kiriting.";
   } else if (!isValidUrl(videoUrl)) {
     errors.videoUrl =
-      "Video havolasini to‘liq kiriting.";
+      "Video havolasini töliq kiriting.";
   }
 
   if (orderNumber === undefined) {
     errors.orderNumber =
-      "Tartib raqami 1 yoki undan katta butun son bo‘lsin.";
+      "Tartib raqami 1 yoki undan katta butun son bölsin.";
   }
 
   if (Object.keys(errors).length > 0) {
     return {
       status: "error",
       message:
-        "Qizil bilan ko‘rsatilgan joylarni to‘g‘rilang.",
+        "Qizil bilan körsatilgan joylarni töğrilang.",
       errors,
     };
   }
@@ -199,7 +199,7 @@ async function updateLesson(
         message:
           "Tanlangan testlardan biri topilmadi.",
         errors: {
-          testIds: "Ro‘yxatni qayta tekshiring.",
+          testIds: "Röyxatni qayta tekşiring.",
         },
       };
     }
@@ -223,7 +223,7 @@ async function updateLesson(
     return {
       status: "error",
       message:
-        "Videodarsni yangilab bo‘lmadi.",
+        "Videodarsni yangilab bölmadi.",
       errors: {},
     };
   }
@@ -242,7 +242,7 @@ async function updateLesson(
     if (moveError) {
       return {
         status: "error",
-        message: `Tartib raqami o‘zgarmadi: ${moveError}`,
+        message: `Tartib raqami özgarmadi: ${moveError}`,
         errors: {},
       };
     }
@@ -407,16 +407,16 @@ export default async function EditLessonPage({
             href={`/admin/lessons/manage?categoryId=${categoryId}`}
             className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
           >
-            ← Videodarslarga qaytish
+            ← Videodarslarga qaytiş
           </Link>
 
           <h1 className="text-xl font-bold sm:text-2xl">
             {lesson.order_number}-darsni
-            tahrirlash
+            tahrirlaş
           </h1>
 
           <p className="mt-1 text-sm text-slate-500">
-            Bo‘lim: {category.title}
+            Bölim: {category.title}
           </p>
         </div>
       </header>

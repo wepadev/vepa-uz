@@ -160,7 +160,7 @@ export default function EditQuestionForm({
         htmlFor="correctAnswer"
         className="mt-5 block text-sm font-semibold"
       >
-        To‘g‘ri javob
+        Töğri javob
       </label>
 
       <select
@@ -185,7 +185,7 @@ export default function EditQuestionForm({
         htmlFor="solutionText"
         className="mt-5 block text-sm font-semibold"
       >
-        Yozma yechim
+        Yozma yeçim
       </label>
 
       <textarea
@@ -201,7 +201,7 @@ export default function EditQuestionForm({
         htmlFor="solutionVideoUrl"
         className="mt-5 block text-sm font-semibold"
       >
-        Videoyechim havolasi
+        Videoyeçim havolasi
       </label>
 
       <input
@@ -236,7 +236,7 @@ export default function EditQuestionForm({
       >
         {pending
           ? "Saqlanmoqda..."
-          : "O‘zgarishlarni saqlash"}
+          : "Özgarişlarni saqlaş"}
       </SubmitButton>
     </form>
   );

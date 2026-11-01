@@ -10,9 +10,9 @@ import { requireSectionAccess } from "@/lib/require-section-access";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata = {
-  title: "Test ishlash",
+  title: "Test işlaş",
   description:
-    "Test topshirish sahifasi.",
+    "Test topşiriş sahifasi.",
 };
 
 const QUESTION_IMAGE_BUCKET = "question-images";
@@ -76,11 +76,11 @@ function parseSubmittedAnswers(value: string) {
   try {
     parsed = JSON.parse(value);
   } catch {
-    throw new Error("Javoblar formati noto‘g‘ri.");
+    throw new Error("Javoblar formati notöğri.");
   }
 
   if (!Array.isArray(parsed)) {
-    throw new Error("Javoblar ro‘yxati noto‘g‘ri.");
+    throw new Error("Javoblar röyxati notöğri.");
   }
 
   return parsed.map((entry) => {
@@ -90,14 +90,14 @@ function parseSubmittedAnswers(value: string) {
       !("question_id" in entry) ||
       !("answer" in entry)
     ) {
-      throw new Error("Javoblardan biri noto‘g‘ri.");
+      throw new Error("Javoblardan biri notöğri.");
     }
 
     const questionId = Number(entry.question_id);
     const answer = String(entry.answer ?? "").trim();
 
     if (!Number.isInteger(questionId) || questionId <= 0) {
-      throw new Error("Savol raqami noto‘g‘ri.");
+      throw new Error("Savol raqami notöğri.");
     }
 
     return {
@@ -157,7 +157,7 @@ async function beginTest(
         access === "overdue"
           ? "Bu vazifaning muddati tugagan."
           : access === "done"
-            ? "Bu vazifani allaqachon ishlagansiz."
+            ? "Bu vazifani allaqaçon işlagansiz."
             : access === "not_member"
               ? "Siz bu guruhda emassiz."
               : "Vazifa topilmadi.";
@@ -173,7 +173,7 @@ async function beginTest(
     if (groupOnly === true) {
       redirect(
         `/homework?xato=${encodeURIComponent(
-          "Bu test faqat uy vazifasi sifatida ochiladi.",
+          "Bu test faqat uy vazifasi sifatida oçiladi.",
         )}`,
       );
     }
@@ -231,7 +231,7 @@ async function submitTimedTest(
   );
 
   if (error) {
-    throw new Error(`Test tekshirilmadi: ${error.message}`);
+    throw new Error(`Test tekşirilmadi: ${error.message}`);
   }
 
   if (typeof attemptId !== "string") {
@@ -251,7 +251,7 @@ async function submitTimedTest(
 
     if (linkError) {
       console.error(
-        "Urinish vazifaga bog'lanmadi:",
+        "Uriniş vazifaga boğlanmadi:",
         linkError.message,
       );
     }
@@ -433,7 +433,7 @@ export default async function TakeTestPage({
     if (groupOnlyResult.data === true) {
       redirect(
         `/homework?xato=${encodeURIComponent(
-          "Bu test faqat uy vazifasi sifatida ochiladi.",
+          "Bu test faqat uy vazifasi sifatida oçiladi.",
         )}`,
       );
     }
@@ -461,7 +461,7 @@ export default async function TakeTestPage({
 
     if (lessonContextError) {
       throw new Error(
-        `Dars ma’lumoti tekshirilmadi: ${lessonContextError.message}`,
+        `Dars ma’lumoti tekşirilmadi: ${lessonContextError.message}`,
       );
     }
 
@@ -488,7 +488,7 @@ export default async function TakeTestPage({
 
     if (accessError) {
       throw new Error(
-        `Vazifa tekshirilmadi: ${accessError.message}`,
+        `Vazifa tekşirilmadi: ${accessError.message}`,
       );
     }
 
@@ -497,7 +497,7 @@ export default async function TakeTestPage({
         access === "overdue"
           ? "Bu vazifaning muddati tugagan."
           : access === "done"
-            ? "Bu vazifani allaqachon ishlagansiz."
+            ? "Bu vazifani allaqaçon işlagansiz."
             : access === "not_member"
               ? "Siz bu guruhda emassiz."
               : "Vazifa topilmadi.";
@@ -611,7 +611,7 @@ export default async function TakeTestPage({
       assignmentId !== null
         ? "Uy vazifalarim"
         : validatedLessonId !== null
-          ? "Darsga qaytish"
+          ? "Darsga qaytiş"
           : "Testlar";
 
     return (
@@ -742,7 +742,7 @@ export default async function TakeTestPage({
           </h1>
 
           <p className="mt-3 text-slate-500">
-            Bu testga hali savollar qo‘shilmagan.
+            Bu testga hali savollar qöşilmagan.
           </p>
         </div>
       </main>

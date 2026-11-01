@@ -14,7 +14,7 @@ function getSectionInformation(
     return {
       title: "Testlarga ruxsat kerak",
       description:
-        "Onlayn testlardan foydalanish uchun administrator ruxsati kerak.",
+        "Onlayn testlardan foydalaniş uçun administrator ruxsati kerak.",
     };
   }
 
@@ -22,23 +22,23 @@ function getSectionInformation(
     return {
       title: "Darslarga ruxsat kerak",
       description:
-        "Videodarslar va nazariy materiallardan foydalanish uchun administrator ruxsati kerak.",
+        "Videodarslar va nazariy materiallardan foydalaniş uçun administrator ruxsati kerak.",
     };
   }
 
   if (section === "textbooks") {
     return {
       title:
-        "Darslik yechimlariga ruxsat kerak",
+        "Darslik yeçimlariga ruxsat kerak",
       description:
-        "Darslik yechimlaridan foydalanish uchun administrator ruxsati kerak.",
+        "Darslik yeçimlaridan foydalaniş uçun administrator ruxsati kerak.",
     };
   }
 
   return {
-    title: "Bu bo‘limga ruxsat kerak",
+    title: "Bu bölimga ruxsat kerak",
     description:
-      "Mazkur bo‘limdan foydalanish uchun administrator ruxsati talab qilinadi.",
+      "Mazkur bölimdan foydalaniş uçun administrator ruxsati talab qilinadi.",
   };
 }
 
@@ -70,7 +70,7 @@ export default async function AccessRequiredPage({
 
         <p className="mt-4 leading-7 text-slate-600">
           {isInactive
-            ? "Hisobingiz administrator tomonidan vaqtincha bloklangan. Saytdan foydalanish uchun administrator bilan bog‘laning."
+            ? "Hisobingiz administrator tomonidan vaqtinça bloklangan. Saytdan foydalaniş uçun administrator bilan boğlaning."
             : information.description}
         </p>
 
@@ -82,11 +82,11 @@ export default async function AccessRequiredPage({
 
             <p className="mt-2 text-sm leading-6 text-blue-700">
               Administrator
-              foydalanuvchilar bo‘limidan
-              hisobingizga ushbu bo‘lim
-              uchun ruxsat beradi. Ruxsat
-              berilgach, sahifani qayta
-              ochishingiz mumkin.
+              foydalanuvçilar bölimidan
+              hisobingizga uşbu bölim
+              uçun ruxsat beradi. Ruxsat
+              berilgaç, sahifani qayta
+              oçişingiz mumkin.
             </p>
           </div>
         )}
@@ -96,7 +96,7 @@ export default async function AccessRequiredPage({
             href="/"
             className="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
           >
-            Bosh sahifaga qaytish
+            Boş sahifaga qaytiş
           </Link>
 
           {!isInactive && (
@@ -104,7 +104,7 @@ export default async function AccessRequiredPage({
               href="/textbooks"
               className="rounded-xl border border-slate-300 bg-white px-6 py-3 font-semibold text-slate-700 transition hover:bg-slate-50"
             >
-              Darslik yechimlari
+              Darslik yeçimlari
             </Link>
           )}
         </div>

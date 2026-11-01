@@ -16,7 +16,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Mavzu videosi",
-  description: "Mavzudagi misollarning videoyechimi.",
+  description: "Mavzudagi misollarning videoyeçimi.",
 };
 
 type PageProps = {
@@ -199,7 +199,7 @@ export default async function TextbookSolutionsPage({
                 />
 
                 <p className="text-sm font-bold text-blue-800">
-                  Videoyechim
+                  Videoyeçim
                 </p>
               </div>
 
@@ -208,9 +208,9 @@ export default async function TextbookSolutionsPage({
               </div>
             </div>
           ) : (
-            <AppAlert variant="info" title="Video hali qo‘shilmagan">
-              Ustozingiz shu mavzuning videoyechimini qo‘shgach, u shu
-              yerda ochiladi.
+            <AppAlert variant="info" title="Video hali qöşilmagan">
+              Ustozingiz şu mavzuning videoyeçimini qöşgaç, u şu
+              yerda oçiladi.
             </AppAlert>
           ))}
 
@@ -223,7 +223,7 @@ export default async function TextbookSolutionsPage({
                 </h2>
 
                 <p className="shrink-0 text-xs font-semibold text-mb-muted">
-                  {withVideo} ta videoyechim
+                  {withVideo} ta videoyeçim
                 </p>
               </div>
 
@@ -234,10 +234,10 @@ export default async function TextbookSolutionsPage({
           ) : (
             <AppAlert
               variant="info"
-              title="Misollar hali qo‘shilmagan"
+              title="Misollar hali qöşilmagan"
             >
-              Ustozingiz shu mavzuning misollarini qo‘shgach, har
-              birining videoyechimi shu yerda ochiladi.
+              Ustozingiz şu mavzuning misollarini qöşgaç, har
+              birining videoyeçimi şu yerda oçiladi.
             </AppAlert>
           ))}
 

@@ -83,7 +83,7 @@ async function reopenForStudent(formData: FormData) {
   const supabase = await requireAdmin();
 
   if (!Number.isInteger(assignmentId) || !userId) {
-    fail(assignmentId, "Ma\u2019lumot noto\u2018g\u2018ri.");
+    fail(assignmentId, "Ma\u2019lumot notöğri.");
   }
 
   const { error } = await supabase.rpc("reopen_assignment_for_student", {
@@ -92,7 +92,7 @@ async function reopenForStudent(formData: FormData) {
   });
 
   if (error) {
-    fail(assignmentId, `Qayta ochilmadi: ${error.message}`);
+    fail(assignmentId, `Qayta oçilmadi: ${error.message}`);
   }
 
   revalidatePath("/admin/assignments/view");
@@ -176,7 +176,7 @@ export default async function AdminAssignmentViewPage({
     .map((member) => ({
       userId: member.user_id,
       name:
-        member.profiles?.full_name?.trim() || "Ism ko‘rsatilmagan",
+        member.profiles?.full_name?.trim() || "Ism körsatilmagan",
       attempt: attemptByUser.get(member.user_id) ?? null,
     }))
     .sort((a, b) => {
@@ -211,7 +211,7 @@ export default async function AdminAssignmentViewPage({
           href={`/admin/groups/view?groupId=${assignment.group_id}`}
           className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
         >
-          ← {group?.title ?? "Guruhga qaytish"}
+          ← {group?.title ?? "Guruhga qaytiş"}
         </Link>
 
         <h1 className="mt-2 text-2xl font-bold sm:text-3xl">
@@ -236,21 +236,21 @@ export default async function AdminAssignmentViewPage({
 
         <div className="mt-5 grid grid-cols-3 gap-3">
           <div className="rounded-2xl border border-mb-line bg-white p-4 text-center shadow-sm">
-            <p className="text-xs font-semibold text-mb-muted">Ishladi</p>
+            <p className="text-xs font-semibold text-mb-muted">Işladi</p>
             <p className="mt-1 text-2xl font-bold text-emerald-600">
               {doneCount}
             </p>
           </div>
 
           <div className="rounded-2xl border border-mb-line bg-white p-4 text-center shadow-sm">
-            <p className="text-xs font-semibold text-mb-muted">Ishlamadi</p>
+            <p className="text-xs font-semibold text-mb-muted">Işlamadi</p>
             <p className="mt-1 text-2xl font-bold text-red-600">
               {rows.length - doneCount}
             </p>
           </div>
 
           <div className="rounded-2xl border border-mb-line bg-white p-4 text-center shadow-sm">
-            <p className="text-xs font-semibold text-mb-muted">O‘rtacha</p>
+            <p className="text-xs font-semibold text-mb-muted">Örtaça</p>
             <p className="mt-1 text-2xl font-bold text-mb-brand">
               {averagePercentage}%
             </p>
@@ -258,8 +258,8 @@ export default async function AdminAssignmentViewPage({
         </div>
 
         {rows.length === 0 ? (
-          <AppAlert variant="info" title="Guruhda o‘quvchi yo‘q" className="mt-6">
-            Avval o‘quvchilarni guruhga qo‘shing.
+          <AppAlert variant="info" title="Guruhda öquvçi yöq" className="mt-6">
+            Avval öquvçilarni guruhga qöşing.
           </AppAlert>
         ) : (
           <div className="mt-6 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
@@ -307,18 +307,18 @@ export default async function AdminAssignmentViewPage({
                       <input type="hidden" name="assignmentId" value={assignmentId} />
                       <input type="hidden" name="userId" value={row.userId} />
                       <SubmitButton
-                        title="Vazifani shu o\u2018quvchi uchun qayta ochish"
+                        title="Vazifani şu öquvçi uçun qayta oçiş"
                         className="inline-flex min-h-9 items-center gap-1.5 rounded-xl border border-slate-200 px-2.5 text-xs font-semibold text-slate-600 transition hover:border-mb-brand hover:text-mb-brand"
                       >
                         <RotateCcw className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-                        Qayta ochish
+                        Qayta oçiş
                       </SubmitButton>
                     </form>
                   </div>
                 ) : (
                   <span className="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-red-600">
                     <XCircle className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
-                    Ishlamadi
+                    Işlamadi
                   </span>
                 )}
               </div>
@@ -335,8 +335,8 @@ export default async function AdminAssignmentViewPage({
             </h2>
 
             <p className="mt-1 text-sm leading-6 text-mb-muted">
-              Eng ko‘p xato qilingan savollar tepada. Keyingi darsda
-              shu mavzularni takrorlang.
+              Eng köp xato qilingan savollar tepada. Keyingi darsda
+              şu mavzularni takrorlang.
             </p>
 
             <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
@@ -365,7 +365,7 @@ export default async function AdminAssignmentViewPage({
                           {stat.order_number}-savol
                           {stat.part_label ? ` (${stat.part_label})` : ""}
                           {stat.correct_answer
-                            ? ` · to‘g‘ri javob: ${stat.correct_answer}`
+                            ? ` · töğri javob: ${stat.correct_answer}`
                             : ""}
                         </p>
 

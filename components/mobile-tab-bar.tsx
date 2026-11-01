@@ -80,7 +80,7 @@ export default function MobileTabBar({
   const primary = primaryLinks(user);
 
   const tabs = [
-    { key: "/", label: "Bosh", href: "/", match: "/", icon: House },
+    { key: "/", label: "Boş", href: "/", match: "/", icon: House },
     ...primary.slice(0, TAB_SLOTS).map((link) => {
       const match = link.match ?? link.href;
 
@@ -98,7 +98,7 @@ export default function MobileTabBar({
 
   const sections: NavSection[] = [
     ...(overflow.length > 0
-      ? [{ title: "Bo‘limlar", links: overflow }]
+      ? [{ title: "Bölimlar", links: overflow }]
       : []),
     ...menuSections(user),
   ];
@@ -115,7 +115,7 @@ export default function MobileTabBar({
         <div className="fixed inset-0 z-50 md:hidden" role="dialog" aria-modal="true">
           <button
             type="button"
-            aria-label="Menyuni yopish"
+            aria-label="Menyuni yopiş"
             onClick={() => setMenuOpen(false)}
             className="absolute inset-0 h-full w-full bg-slate-950/40 backdrop-blur-sm"
           />
@@ -131,7 +131,7 @@ export default function MobileTabBar({
                 {isAuthenticated
                   ? isAdmin
                     ? "Administrator"
-                    : "O‘quvchi"
+                    : "Öquvçi"
                   : "Tizimga kirmagansiz"}
               </p>
             </div>
@@ -178,7 +178,7 @@ export default function MobileTabBar({
                 onClick={() => setMenuOpen(false)}
                 className="mt-1 min-h-[52px] w-full rounded-2xl border border-slate-200 text-[15px] font-semibold text-slate-600 active:bg-slate-50"
               >
-                Yopish
+                Yopiş
               </button>
 
               {isAuthenticated && (
@@ -192,7 +192,7 @@ export default function MobileTabBar({
                      */
                     className="min-h-[52px] w-full rounded-2xl border border-blue-200 bg-mb-tint px-4 text-[15px] font-semibold text-mb-brandDark active:bg-blue-200"
                   >
-                    Chiqish
+                    Çiqiş
                   </button>
                 </form>
               )}

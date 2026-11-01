@@ -63,7 +63,7 @@ export default function TestStartScreen({
         {errorMessage && (
           <AppAlert
             variant="error"
-            title="Test boshlanmadi"
+            title="Test boşlanmadi"
             className="mt-3"
           >
             {errorMessage}
@@ -110,7 +110,7 @@ export default function TestStartScreen({
             <div className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
               <p className="inline-flex items-center gap-2 font-semibold text-emerald-800">
                 <CheckCircle2 className="h-5 w-5" strokeWidth={2.2} aria-hidden="true" />
-                Siz bu testni hozirgina topshirdingiz
+                Siz bu testni hozirgina topşirdingiz
               </p>
 
               <p className="mt-1 text-sm leading-6 text-emerald-700">
@@ -121,7 +121,7 @@ export default function TestStartScreen({
                 href={`/results/view?attemptId=${recentAttempt.attemptId}`}
                 className="mt-3 inline-flex min-h-11 items-center justify-center rounded-xl bg-emerald-600 px-5 text-sm font-bold text-white transition hover:bg-emerald-700"
               >
-                Natijani ko‘rish
+                Natijani köriş
               </Link>
             </div>
           ) : (
@@ -129,15 +129,15 @@ export default function TestStartScreen({
               <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4">
                 <p className="inline-flex items-center gap-2 text-sm font-semibold text-amber-800">
                   <AlertTriangle className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
-                  Boshlashdan oldin
+                  Boşlaşdan oldin
                 </p>
 
                 <ul className="mt-2 grid gap-1 text-sm leading-6 text-amber-900">
-                  <li>Tugmani bosganingizda vaqt hisobi boshlanadi.</li>
+                  <li>Tugmani bosganingizda vaqt hisobi boşlanadi.</li>
                   <li>Javoblaringiz avtomatik saqlanib boradi.</li>
                   {isAssignment && (
                     <li className="font-semibold">
-                      Bu uy vazifasi — faqat bir marta ishlanadi.
+                      Bu uy vazifasi — faqat bir marta işlanadi.
                     </li>
                   )}
                 </ul>
@@ -146,16 +146,16 @@ export default function TestStartScreen({
               {hasWrittenQuestions && (
                 <div className="mt-3 rounded-xl border border-mb-line bg-mb-tintSoft p-4">
                   <p className="text-sm font-semibold text-mb-ink">
-                    Yozma javoblarni qanday yozish kerak
+                    Yozma javoblarni qanday yoziş kerak
                   </p>
 
                   <ul className="mt-2 grid gap-1.5 text-sm leading-6 text-mb-muted">
                     <li>
-                      Faqat javobning o‘zini yozing — “javob”, “=” yoki
-                      o‘lchov birligini yozmang.
+                      Faqat javobning özini yozing — “javob”, “=” yoki
+                      ölçov birligini yozmang.
                     </li>
                     <li>
-                      Kasrni ikki xil yozish mumkin:{" "}
+                      Kasrni ikki xil yoziş mumkin:{" "}
                       <span className="font-semibold text-mb-ink">0.5</span> yoki{" "}
                       <span className="font-semibold text-mb-ink">0,5</span> —
                       ikkalasi ham qabul qilinadi.
@@ -163,20 +163,20 @@ export default function TestStartScreen({
                     <li>
                       Oddiy kasrni{" "}
                       <span className="font-semibold text-mb-ink">1/2</span>{" "}
-                      ko‘rinishida yozing.
+                      körinişida yozing.
                     </li>
                     <li>
-                      Manfiy son oldiga minus qo‘ying:{" "}
+                      Manfiy son oldiga minus qöying:{" "}
                       <span className="font-semibold text-mb-ink">-3</span>
                     </li>
-                    <li>Bo‘sh joy va ortiqcha belgilar hisobga olinmaydi.</li>
+                    <li>Böş joy va ortiqça belgilar hisobga olinmaydi.</li>
                   </ul>
                 </div>
               )}
 
               <form action={startAction}>
                 <StartTestButton
-                  label={errorMessage ? "Qayta urinish" : "Boshlash"}
+                  label={errorMessage ? "Qayta uriniş" : "Boşlaş"}
                 />
               </form>
             </>
