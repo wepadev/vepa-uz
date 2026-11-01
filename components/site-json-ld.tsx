@@ -46,7 +46,7 @@ export default function SiteJsonLd({ siteUrl }: { siteUrl: string }) {
         sameAs: SOCIAL_LINKS,
         founder: {
           "@type": "Person",
-          name: "Vepa Kurbanklichev",
+          name: "Vepa Kurbankliçev",
         },
       },
     ],

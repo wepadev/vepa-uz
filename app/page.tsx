@@ -510,7 +510,7 @@ export default async function HomePage() {
 
                 <div className="min-w-0">
                   <h2 className="text-[17px] font-bold text-mb-ink">
-                    Vepa Kurbanklichev
+                    Vepa Kurbankliçev
                   </h2>
                   <p className="text-sm text-mb-muted">Matematika ustozi</p>
                 </div>

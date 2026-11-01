@@ -68,7 +68,7 @@ export const metadata: Metadata = {
   keywords: [
     "vepa.uz",
     "vepa ustoz",
-    "Vepa Kurbanklichev",
+    "Vepa Kurbankliçev",
     "matematika",
     "attestatsiya",
     "milliy sertifikat",
@@ -77,7 +77,7 @@ export const metadata: Metadata = {
     "darslik yeçimlari",
     "Vepa Ustoz",
   ],
-  authors: [{ name: "Vepa Kurbanklichev" }],
+  authors: [{ name: "Vepa Kurbankliçev" }],
   openGraph: {
     type: "website",
     locale: "uz_UZ",
