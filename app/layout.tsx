@@ -69,6 +69,7 @@ export const metadata: Metadata = {
     "vepa.uz",
     "vepa ustoz",
     "Vepa Kurbankliçev",
+    "Vepa Kurbanklichev",
     "matematika",
     "attestatsiya",
     "milliy sertifikat",
