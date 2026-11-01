@@ -495,7 +495,7 @@ export default async function AdminResultsPage({
                 href="/admin"
                 className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
               >
-                ← Admin panelga qaytish
+                ← Admin panelga qaytiş
               </Link>
 
               <h1 className="text-xl font-bold sm:text-2xl">Natijalar</h1>
@@ -504,7 +504,7 @@ export default async function AdminResultsPage({
                 className="mt-2"
                 active="/admin/results"
                 tabs={[
-                { href: "/admin/results", label: "Barcha natijalar" },
+                { href: "/admin/results", label: "Barça natijalar" },
                 { href: "/admin/analytics", label: "Tahlil" },
               ]}
               />
@@ -515,7 +515,7 @@ export default async function AdminResultsPage({
                 href="/admin/tests"
                 className="inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-bold text-slate-700 hover:bg-slate-50"
               >
-                Testlarni boshqarish
+                Testlarni boşqariş
               </Link>
             </div>
           </div>
@@ -526,7 +526,7 @@ export default async function AdminResultsPage({
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <p className="text-sm font-semibold text-slate-500">
-              Tugallangan urinishlar
+              Tugallangan urinişlar
             </p>
 
             <p className="mt-2 text-3xl font-bold text-slate-950">
@@ -541,7 +541,7 @@ export default async function AdminResultsPage({
 
           <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <p className="text-sm font-semibold text-slate-500">
-              Oʼquvchilar
+              Öquvçilar
             </p>
 
             <p className="mt-2 text-3xl font-bold text-blue-600">
@@ -550,13 +550,13 @@ export default async function AdminResultsPage({
 
             <p className="mt-2 text-xs text-slate-400">
               Tugallangan natijalar
-              boʼyicha
+              böyiça
             </p>
           </article>
 
           <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <p className="text-sm font-semibold text-slate-500">
-              Oʼrtacha natija
+              Örtaça natija
             </p>
 
             <p className="mt-2 text-3xl font-bold text-blue-600">
@@ -567,7 +567,7 @@ export default async function AdminResultsPage({
             </p>
 
             <p className="mt-2 text-xs text-slate-400">
-              Joriy filtr boʼyicha
+              Joriy filtr böyiça
             </p>
           </article>
 
@@ -584,7 +584,7 @@ export default async function AdminResultsPage({
             </p>
 
             <p className="mt-2 text-xs text-slate-400">
-              Joriy filtr boʼyicha
+              Joriy filtr böyiça
             </p>
           </article>
         </div>
@@ -599,7 +599,7 @@ export default async function AdminResultsPage({
                 htmlFor="results-q"
                 className="text-sm font-bold text-slate-700"
               >
-                Qidirish
+                Qidiriş
               </label>
 
               <input
@@ -635,7 +635,7 @@ export default async function AdminResultsPage({
                 className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
               >
                 <option value="all">
-                  Barcha testlar
+                  Barça testlar
                 </option>
 
                 {tests.map((test) => (
@@ -664,7 +664,7 @@ export default async function AdminResultsPage({
                 className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
               >
                 <option value="all">
-                  Barchasi
+                  Barçasi
                 </option>
 
                 <option value="completed">
@@ -682,7 +682,7 @@ export default async function AdminResultsPage({
                 htmlFor="results-sort"
                 className="text-sm font-bold text-slate-700"
               >
-                Saralash
+                Saralaş
               </label>
 
               <select
@@ -714,7 +714,7 @@ export default async function AdminResultsPage({
                 htmlFor="results-date-from"
                 className="text-sm font-bold text-slate-700"
               >
-                Boshlanish sanasi
+                Boşlaniş sanasi
               </label>
 
               <input
@@ -731,7 +731,7 @@ export default async function AdminResultsPage({
                 htmlFor="results-date-to"
                 className="text-sm font-bold text-slate-700"
               >
-                Tugash sanasi
+                Tugaş sanasi
               </label>
 
               <input
@@ -750,14 +750,14 @@ export default async function AdminResultsPage({
                 href="/admin/results"
                 className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-slate-300 bg-white px-6 py-3 font-bold text-slate-700 hover:bg-slate-50"
               >
-                Filtrlarni tozalash
+                Filtrlarni tozalaş
               </Link>
             )}
 
             <SubmitButton
               className="min-h-12 rounded-2xl bg-blue-600 px-7 py-3 font-bold text-white hover:bg-blue-700"
             >
-              Qoʼllash
+              Qöllaş
             </SubmitButton>
           </div>
         </form>
@@ -772,7 +772,7 @@ export default async function AdminResultsPage({
               <p className="mt-1 text-sm text-slate-500">
                 {totalRows} ta natijadan{" "}
                 {firstVisible}–{lastVisible}
-                tasi koʼrsatilmoqda
+                tasi körsatilmoqda
               </p>
             </div>
 
@@ -790,7 +790,7 @@ export default async function AdminResultsPage({
 
               <p className="mt-2 text-sm text-slate-500">
                 Qidiruv yoki filtr
-                qiymatlarini oʼzgartiring.
+                qiymatlarini özgartiring.
               </p>
             </div>
           ) : (
@@ -800,7 +800,7 @@ export default async function AdminResultsPage({
                   <thead className="border-b border-slate-200 bg-slate-50 text-sm text-slate-600">
                     <tr>
                       <th className="px-5 py-4 font-bold">
-                        Oʼquvchi
+                        Öquvçi
                       </th>
 
                       <th className="px-5 py-4 font-bold">

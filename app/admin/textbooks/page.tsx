@@ -110,7 +110,7 @@ async function uploadCover(
   }
 
   if (image.size > MAX_COVER_BYTES) {
-    throw new Error("Rasm hajmi 2.5 MB dan oshmasin.");
+    throw new Error("Rasm hajmi 2.5 MB dan oşmasin.");
   }
 
   const path = `${crypto.randomUUID()}.${coverExtension(image)}`;
@@ -129,7 +129,7 @@ async function uploadCover(
 
     throw new Error(
       missingBucket
-        ? "Rasm ombori topilmadi. Supabase’da db/31-muqova-rasmlari.sql faylini ishga tushiring."
+        ? "Rasm ombori topilmadi. Supabase’da db/31-muqova-rasmlari.sql faylini işga tuşiring."
         : `Rasm yuklanmadi: ${error.message}`,
     );
   }
@@ -236,19 +236,19 @@ async function createTextbook(
 
   if (title.length > 150) {
     errors.title =
-      "Darslik nomi 150 ta belgidan oshmasin.";
+      "Darslik nomi 150 ta belgidan oşmasin.";
   }
 
   if (
     bookType === "school" &&
     !isValidGrade(grade)
   ) {
-    errors.grade = `Maktab darsligi uchun sinfni tanlang (${MIN_GRADE}–${MAX_GRADE}).`;
+    errors.grade = `Maktab darsligi uçun sinfni tanlang (${MIN_GRADE}–${MAX_GRADE}).`;
   }
 
   if (authorName.length > 150) {
     errors.authorName =
-      "Muallif nomi 150 ta belgidan oshmasin.";
+      "Muallif nomi 150 ta belgidan oşmasin.";
   }
 
   if (
@@ -256,14 +256,14 @@ async function createTextbook(
     !isValidUrl(coverUrl)
   ) {
     errors.coverUrl =
-      "Rasm havolasini to‘liq kiriting.";
+      "Rasm havolasini töliq kiriting.";
   }
 
   if (Object.keys(errors).length > 0) {
     return {
       status: "error",
       message:
-        "Qizil bilan ko‘rsatilgan joylarni to‘g‘rilang.",
+        "Qizil bilan körsatilgan joylarni töğrilang.",
       errors,
     };
   }
@@ -290,7 +290,7 @@ async function createTextbook(
     return {
       status: "error",
       message:
-        "Darslik ma’lumotlarini tekshirib bo‘lmadi.",
+        "Darslik ma’lumotlarini tekşirib bölmadi.",
       errors: {},
     };
   }
@@ -302,7 +302,7 @@ async function createTextbook(
         "Bu darslik avval yaratilgan.",
       errors: {
         title:
-          "Boshqa darslik nomini kiriting.",
+          "Boşqa darslik nomini kiriting.",
       },
     };
   }
@@ -320,7 +320,7 @@ async function createTextbook(
         coverImage:
           error instanceof Error
             ? error.message
-            : "Rasmni yuklab bo‘lmadi.",
+            : "Rasmni yuklab bölmadi.",
       },
     };
   }
@@ -346,7 +346,7 @@ async function createTextbook(
     return {
       status: "error",
       message:
-        `Darslikni yaratib bo‘lmadi: ${insertError.message}`,
+        `Darslikni yaratib bölmadi: ${insertError.message}`,
       errors: {},
     };
   }
@@ -394,7 +394,7 @@ async function changePublishedState(
 
   if (error) {
     throw new Error(
-      "Darslik holatini o‘zgartirib bo‘lmadi.",
+      "Darslik holatini özgartirib bölmadi.",
     );
   }
 
@@ -519,7 +519,7 @@ async function updateTextbook(formData: FormData) {
   }
 
   if (title.length < 2 || title.length > 150) {
-    fail("Darslik nomi 2–150 ta belgidan iborat bo‘lsin.");
+    fail("Darslik nomi 2–150 ta belgidan iborat bölsin.");
   }
 
   const { data: current, error: readError } = await supabase
@@ -538,7 +538,7 @@ async function updateTextbook(formData: FormData) {
   const grade = isSchool && gradeValue ? Number(gradeValue) : null;
 
   if (isSchool && !isValidGrade(grade)) {
-    fail(`Maktab darsligi uchun sinfni tanlang (${MIN_GRADE}–${MAX_GRADE}).`);
+    fail(`Maktab darsligi uçun sinfni tanlang (${MIN_GRADE}–${MAX_GRADE}).`);
   }
 
   const { error } = await supabase
@@ -593,13 +593,13 @@ async function deleteTextbook(
 
   if (countError) {
     throw new Error(
-      "Darslik mavzularini tekshirib bo‘lmadi.",
+      "Darslik mavzularini tekşirib bölmadi.",
     );
   }
 
   if (count && count > 0) {
     throw new Error(
-      "Mavzulari mavjud darslikni o‘chirib bo‘lmaydi.",
+      "Mavzulari mavjud darslikni öçirib bölmaydi.",
     );
   }
 
@@ -611,7 +611,7 @@ async function deleteTextbook(
 
   if (deleteError) {
     throw new Error(
-      "Darslikni o‘chirib bo‘lmadi.",
+      "Darslikni öçirib bölmadi.",
     );
   }
 
@@ -677,7 +677,7 @@ function TextbookCard({
               value={String(!textbook.is_published)}
             />
             <SubmitButton className={rowMenuItem}>
-              {textbook.is_published ? "Yopish" : "Nashr qilish"}
+              {textbook.is_published ? "Yopiş" : "Naşr qiliş"}
             </SubmitButton>
           </form>
 
@@ -686,10 +686,10 @@ function TextbookCard({
               <input type="hidden" name="textbookId" value={textbook.id} />
               <ConfirmSubmitButton
                 className={rowMenuDanger}
-                title="Darslik o‘chirilsinmi?"
-                description={`“${textbook.title}” butunlay o‘chiriladi.`}
+                title="Darslik öçirilsinmi?"
+                description={`“${textbook.title}” butunlay öçiriladi.`}
               >
-                O‘chirish
+                Öçiriş
               </ConfirmSubmitButton>
             </form>
           )}
@@ -700,7 +700,7 @@ function TextbookCard({
         {/* Ma'lumotlarni tahrirlash */}
         <details className="rounded-xl open:mt-2 open:border open:border-slate-200 open:bg-slate-50 open:p-3">
           <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand">
-            Nomi va muallifini tahrirlash
+            Nomi va muallifini tahrirlaş
           </summary>
 
           <form action={updateTextbook} className="mt-3 grid gap-3">
@@ -769,7 +769,7 @@ function TextbookCard({
             )}
 
             <SubmitButton className="min-h-11 rounded-xl bg-mb-brand px-4 text-sm font-bold text-white hover:bg-mb-brandDark">
-              Saqlash
+              Saqlaş
             </SubmitButton>
           </form>
         </details>
@@ -778,8 +778,8 @@ function TextbookCard({
         <details className="rounded-xl open:mt-2 open:border open:border-slate-200 open:bg-slate-50 open:p-3">
           <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand">
             {textbook.cover_url
-              ? "Muqovani almashtirish"
-              : "Muqova qo‘yish"}
+              ? "Muqovani almaştiriş"
+              : "Muqova qöyiş"}
           </summary>
 
           <form action={updateCover} className="mt-3">
@@ -797,12 +797,12 @@ function TextbookCard({
             />
 
             <p className="mt-1.5 text-xs leading-5 text-slate-500">
-              PNG, JPG yoki WEBP; 2.5 MB gacha. Kitob surati oq
-              yoki shaffof fonda bo‘lsa chiroyli tushadi.
+              PNG, JPG yoki WEBP; 2.5 MB gaça. Kitob surati oq
+              yoki şaffof fonda bölsa çiroyli tuşadi.
             </p>
 
             <SubmitButton className="mt-3 rounded-xl bg-mb-brand px-4 py-2.5 text-sm font-bold text-white hover:bg-mb-brandDark">
-              Saqlash
+              Saqlaş
             </SubmitButton>
           </form>
 
@@ -817,7 +817,7 @@ function TextbookCard({
               <input type="hidden" name="remove" value="1" />
 
               <SubmitButton className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100">
-                Muqovani olib tashlash
+                Muqovani olib taşlaş
               </SubmitButton>
             </form>
           )}
@@ -938,7 +938,7 @@ export default async function AdminTextbooksPage({
                 href="/admin"
                 className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
               >
-                ← Admin panelga qaytish
+                ← Admin panelga qaytiş
               </Link>
 
               <h1 className="text-xl font-bold sm:text-2xl">Darslar</h1>
@@ -948,7 +948,7 @@ export default async function AdminTextbooksPage({
                 active="/admin/textbooks"
                 tabs={[
                 { href: "/admin/lessons", label: "Videodarslar" },
-                { href: "/admin/textbooks", label: "Darslik yechimlari" },
+                { href: "/admin/textbooks", label: "Darslik yeçimlari" },
               ]}
               />
             </div>
@@ -959,11 +959,11 @@ export default async function AdminTextbooksPage({
               </span>
 
               <span className="rounded-xl bg-blue-50 px-4 py-2 font-semibold text-blue-800">
-                Mashhur: {popularBooks.length}
+                Maşhur: {popularBooks.length}
               </span>
 
               <span className="rounded-xl bg-emerald-50 px-4 py-2 font-semibold text-emerald-800">
-                Nashrda: {publishedCount}
+                Naşrda: {publishedCount}
               </span>
             </div>
           </div>
@@ -1031,7 +1031,7 @@ export default async function AdminTextbooksPage({
             <div className="mb-3 flex items-end justify-between gap-4">
               <div>
                 <h2 className="text-lg font-bold">
-                  Mashhur darslik yechimlari
+                  Maşhur darslik yeçimlari
                 </h2>
               </div>
 
@@ -1042,7 +1042,7 @@ export default async function AdminTextbooksPage({
 
             {popularBooks.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-4 py-3 text-sm text-slate-500">
-                Mashhur darslik hali yaratilmagan.
+                Maşhur darslik hali yaratilmagan.
               </div>
             ) : (
               <div className="space-y-2">

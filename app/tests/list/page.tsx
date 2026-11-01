@@ -7,9 +7,9 @@ import { requireSectionAccess } from "@/lib/require-section-access";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Testlar ro‘yxati",
+  title: "Testlar röyxati",
   description:
-    "Mavzudagi barcha testlar.",
+    "Mavzudagi barça testlar.",
 };
 
 const PASS_PERCENTAGE = 90;
@@ -100,7 +100,7 @@ function formatTimeLimit(value: number | string) {
   const minutes = Number(value);
 
   if (!Number.isFinite(minutes) || minutes <= 0) {
-    return "Vaqt ko‘rsatilmagan";
+    return "Vaqt körsatilmagan";
   }
 
   const totalSeconds = Math.round(minutes * 60);
@@ -173,7 +173,7 @@ export default async function TestListPage({ searchParams }: PageProps) {
     .maybeSingle();
 
   if (sectionError) {
-    throw new Error(`Bo‘lim yuklanmadi: ${sectionError.message}`);
+    throw new Error(`Bölim yuklanmadi: ${sectionError.message}`);
   }
 
   if (!sectionData) {
@@ -191,7 +191,7 @@ export default async function TestListPage({ searchParams }: PageProps) {
 
   if (examTypeError) {
     throw new Error(
-      `Test yo‘nalishi yuklanmadi: ${examTypeError.message}`,
+      `Test yönalişi yuklanmadi: ${examTypeError.message}`,
     );
   }
 
@@ -264,7 +264,7 @@ export default async function TestListPage({ searchParams }: PageProps) {
 
   if (firstSectionResult.error) {
     throw new Error(
-      `Bepul bo‘lim aniqlanmadi: ${firstSectionResult.error.message}`,
+      `Bepul bölim aniqlanmadi: ${firstSectionResult.error.message}`,
     );
   }
 
@@ -280,13 +280,13 @@ export default async function TestListPage({ searchParams }: PageProps) {
 
   if (lessonTestsResult.error) {
     throw new Error(
-      `Dars testlari tekshirilmadi: ${lessonTestsResult.error.message}`,
+      `Dars testlari tekşirilmadi: ${lessonTestsResult.error.message}`,
     );
   }
 
   if (statisticsResult.error) {
     throw new Error(
-      `Shaxsiy statistika yuklanmadi: ${statisticsResult.error.message}`,
+      `Şaxsiy statistika yuklanmadi: ${statisticsResult.error.message}`,
     );
   }
 
@@ -393,13 +393,13 @@ export default async function TestListPage({ searchParams }: PageProps) {
               href={`/tests/topics?sectionId=${section.id}`}
               className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
             >
-              ← {section.title} mavzulariga qaytish
+              ← {section.title} mavzulariga qaytiş
             </Link>
             <h1 className="text-xl font-bold sm:text-2xl">
               {topic.title}
             </h1>
             <p className="mt-1 max-w-2xl text-sm text-slate-500">
-              {topic.description || "Testni tanlang va ishlashni boshlang."}
+              {topic.description || "Testni tanlang va işlaşni boşlang."}
             </p>
           </div>
 
@@ -431,20 +431,20 @@ export default async function TestListPage({ searchParams }: PageProps) {
           <h2 className="mt-2 text-3xl font-bold">{topic.title} testlari</h2>
           <p className="mt-3 max-w-3xl text-sm leading-6 text-blue-100">
             {isAutoFreeTopic
-              ? "Bu yo‘nalishning birinchi mavzusi — undagi barcha testlar bepul."
+              ? "Bu yönalişning birinçi mavzusi — undagi barça testlar bepul."
               : topic.is_free
-                ? "Bu mavzudagi barcha testlar bepul ochilgan."
-                : "Ushbu mavzudagi testlar Premium tarifga kiradi."}
+                ? "Bu mavzudagi barça testlar bepul oçilgan."
+                : "Uşbu mavzudagi testlar Premium tarifga kiradi."}
           </p>
         </div>
 
         {!tests.length ? (
           <div className="mt-7 rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
             <p className="text-lg font-bold text-slate-700">
-              Hozircha faol test yo‘q
+              Hozirça faol test yöq
             </p>
             <p className="mt-2 text-sm text-slate-500">
-              Administrator testni nashr qilganda shu yerda ko‘rinadi.
+              Administrator testni naşr qilganda şu yerda körinadi.
             </p>
           </div>
         ) : (
@@ -548,7 +548,7 @@ export default async function TestListPage({ searchParams }: PageProps) {
                         <div className="flex items-end justify-between gap-3">
                           <div>
                             <p className="text-[10px] font-semibold uppercase tracking-wide text-blue-600 sm:text-[11px]">
-                              Eng yaxshi natija
+                              Eng yaxşi natija
                             </p>
                             <p
                               className={
@@ -573,14 +573,14 @@ export default async function TestListPage({ searchParams }: PageProps) {
                         href={`/tests/take?testId=${test.id}`}
                         className="mt-3 inline-flex min-h-11 items-center justify-center rounded-xl bg-mb-brand px-5 text-center text-sm font-bold text-white transition hover:bg-mb-brandDark sm:mt-5 sm:min-h-12 sm:rounded-2xl sm:text-base"
                       >
-                        {bestAttemptId ? "Qayta ishlash" : "Testni boshlash"}
+                        {bestAttemptId ? "Qayta işlaş" : "Testni boşlaş"}
                       </Link>
                     ) : (
                       <Link
                         href="/pricing"
                         className="mt-3 inline-flex min-h-11 items-center justify-center rounded-xl bg-blue-600 px-5 text-center text-sm font-bold text-white transition hover:bg-blue-700 sm:mt-5 sm:min-h-12 sm:rounded-2xl sm:text-base"
                       >
-                        Premium orqali ochish
+                        Premium orqali oçiş
                       </Link>
                     )}
 
@@ -600,7 +600,7 @@ export default async function TestListPage({ searchParams }: PageProps) {
                         </Link>
                       ) : (
                         <span className="inline-flex min-h-11 items-center justify-center rounded-xl bg-slate-100 px-3 py-2.5 text-center text-sm font-bold text-slate-500">
-                          Urinish: {toNumber(stats?.attempts_count)}
+                          Uriniş: {toNumber(stats?.attempts_count)}
                         </span>
                       )}
                     </div>

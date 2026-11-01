@@ -142,7 +142,7 @@ export async function checkClaudeKey(): Promise<{
       ok: false,
       message:
         "ANTHROPIC_API_KEY topilmadi. U faqat PDF'dagi qiyin " +
-        "savollarni tiklash uchun kerak; `.tex` dan o'qishda ishlatilmaydi.",
+        "savollarni tiklaş uçun kerak; `.tex` dan öqişda işlatilmaydi.",
     };
   }
 
@@ -153,7 +153,7 @@ export async function checkClaudeKey(): Promise<{
     });
 
     if (res.status === 401) {
-      return { ok: false, message: "ANTHROPIC_API_KEY noto'g'ri yoki eskirgan." };
+      return { ok: false, message: "ANTHROPIC_API_KEY notöğri yoki eskirgan." };
     }
 
     if (!res.ok) {
@@ -162,7 +162,7 @@ export async function checkClaudeKey(): Promise<{
 
     const model = await pickModel(key);
 
-    return { ok: true, message: "Kalit ishlayapti.", model };
+    return { ok: true, message: "Kalit işlayapti.", model };
   } catch (error) {
     return {
       ok: false,
@@ -188,7 +188,7 @@ export async function fixWithClaude(
     return {
       ...empty,
       notes: [
-        "ANTHROPIC_API_KEY topilmadi — ajratilmagan savollar qo'lda kiritiladi.",
+        "ANTHROPIC_API_KEY topilmadi — ajratilmagan savollar qölda kiritiladi.",
       ],
     };
   }
@@ -249,7 +249,7 @@ export async function fixWithClaude(
       ...empty,
       notes: [
         reply.status === 401
-          ? "ANTHROPIC_API_KEY noto'g'ri."
+          ? "ANTHROPIC_API_KEY notöğri."
           : reply.status === 400 && /model/i.test(message)
             ? `Model nomi yaramadi (${model}). .env.local ga ANTHROPIC_MODEL=... yozing.`
             : `Model xatosi: ${message}`,
@@ -287,7 +287,7 @@ export async function fixWithClaude(
     const filled = Object.values(options).filter(Boolean).length;
 
     if (!text(row.text) || filled !== 4) {
-      notes.push(`${item.number}-savol: model to'liq javob bermadi.`);
+      notes.push(`${item.number}-savol: model töliq javob bermadi.`);
       continue;
     }
 

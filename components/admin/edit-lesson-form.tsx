@@ -136,8 +136,8 @@ export default function EditLessonForm({
       />
 
       <p className="mt-1 text-xs leading-5 text-slate-500">
-        Dars aynan shu raqam bilan chiqadi. Raqam band bo‘lsa,
-        o‘sha dars bir pog‘ona suriladi.
+        Dars aynan şu raqam bilan çiqadi. Raqam band bölsa,
+        öşa dars bir poğona suriladi.
       </p>
 
       <FieldError
@@ -148,7 +148,7 @@ export default function EditLessonForm({
         htmlFor="description"
         className="mt-5 block text-sm font-semibold"
       >
-        Qisqacha tavsif
+        Qisqaça tavsif
       </label>
 
       <textarea
@@ -192,7 +192,7 @@ export default function EditLessonForm({
         name="content"
         rows={9}
         defaultValue={content}
-        placeholder="Formulalarni $...$ shaklida yozing."
+        placeholder="Formulalarni $...$ şaklida yozing."
         className={`${fieldClass()} resize-y`}
       />
 
@@ -210,7 +210,7 @@ export default function EditLessonForm({
           </span>
 
           <span className="block text-xs leading-5 text-slate-500">
-            Belgilanmasa dars Premium bo‘ladi.
+            Belgilanmasa dars Premium böladi.
           </span>
         </span>
       </label>
@@ -220,8 +220,8 @@ export default function EditLessonForm({
       </p>
 
       <p className="mt-1 text-xs leading-5 text-slate-500">
-        Keyingi dars belgilangan testlarning o‘rtacha natijasi
-        90% ga yetganda ochiladi.
+        Keyingi dars belgilangan testlarning örtaça natijasi
+        90% ga yetganda oçiladi.
       </p>
 
       <div className="mt-2 max-h-56 space-y-1 overflow-y-auto rounded-xl border border-slate-300 p-2">
@@ -280,7 +280,7 @@ export default function EditLessonForm({
       >
         {pending
           ? "Saqlanmoqda..."
-          : "O‘zgarishlarni saqlash"}
+          : "Özgarişlarni saqlaş"}
       </SubmitButton>
     </form>
   );

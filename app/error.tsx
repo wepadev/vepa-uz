@@ -40,7 +40,7 @@ export default function ErrorPage({
         </p>
 
         <h1 className="mt-3 text-2xl font-bold text-slate-950 sm:text-3xl">
-          Sahifani ochib bo‘lmadi
+          Sahifani oçib bölmadi
         </h1>
 
         {/*
@@ -54,11 +54,11 @@ export default function ErrorPage({
         */}
         <AppAlert
           variant="error"
-          title="Nimadir noto‘g‘ri ketdi"
+          title="Nimadir notöğri ketdi"
           className="mt-6"
         >
-          Ma’lumotlarni yuklab bo‘lmadi. Internet aloqangizni
-          tekshirib, qayta urinib ko‘ring. Muammo takrorlansa
+          Ma’lumotlarni yuklab bölmadi. Internet aloqangizni
+          tekşirib, qayta urinib köring. Muammo takrorlansa
           administrator xabardor qilindi.
         </AppAlert>
 
@@ -90,7 +90,7 @@ export default function ErrorPage({
                 Qayta yuklanmoqda...
               </LoadingLabel>
             ) : (
-              "Qayta urinish"
+              "Qayta uriniş"
             )}
           </button>
         </div>

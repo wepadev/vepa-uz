@@ -39,7 +39,7 @@ export async function GET() {
 
   if (!profile || profile.role !== "admin" || profile.is_active !== true) {
     return NextResponse.json(
-      { ok: false, message: "Bu amal faqat administrator uchun." },
+      { ok: false, message: "Bu amal faqat administrator uçun." },
       { status: 403 },
     );
   }

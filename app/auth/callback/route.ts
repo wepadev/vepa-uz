@@ -27,7 +27,7 @@ function getFullName(user: {
     fullName ||
     name ||
     user.email?.split("@")[0] ||
-    "O‘quvchi"
+    "Öquvçi"
   );
 }
 
@@ -117,7 +117,7 @@ export async function GET(
 
   if (profileCheckError) {
     console.error(
-      "Profilni tekshirishda xato:",
+      "Profilni tekşirişda xato:",
       profileCheckError,
     );
 
@@ -150,7 +150,7 @@ export async function GET(
 
     if (profileInsertError) {
       console.error(
-        "Profil yaratishda xato:",
+        "Profil yaratişda xato:",
         profileInsertError,
       );
 

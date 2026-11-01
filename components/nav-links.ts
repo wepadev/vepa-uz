@@ -55,12 +55,12 @@ export function primaryLinks(user: NavUser): NavLink[] {
       href: authHref(user, "/lessons"),
       match: "/lessons",
       label: "Darslar",
-      hint: "Mavzular bo‘yicha videodarslar",
+      hint: "Mavzular böyiça videodarslar",
     },
     {
       href: authHref(user, "/textbooks"),
       match: "/textbooks",
-      label: "Yechimlar",
+      label: "Yeçimlar",
       hint: "5–11-sinf va TOP kitoblar",
     },
   ];
@@ -76,11 +76,11 @@ export function menuSections(user: NavUser): NavSection[] {
       {
         title: "Hisob",
         links: [
-          { href: "/auth/login", label: "Kirish", hint: "Email yoki Google orqali" },
+          { href: "/auth/login", label: "Kiriş", hint: "Email yoki Google orqali" },
           {
             href: "/auth/login?mode=signup",
-            label: "Ro‘yxatdan o‘tish",
-            hint: "Yangi hisob yaratish",
+            label: "Röyxatdan ötiş",
+            hint: "Yangi hisob yaratiş",
           },
           { href: "/pricing", label: "Premium", hint: "Tarif va narxlar" },
         ],
@@ -97,40 +97,40 @@ export function menuSections(user: NavUser): NavSection[] {
           label: "Guruhim",
           hint: user.isInGroup
             ? "Ballar, tangalar va guruh reytingi"
-            : "Guruh kodini kiritib qo‘shilish",
+            : "Guruh kodini kiritib qöşiliş",
         },
         ...(user.isInGroup
           ? [
               {
                 href: "/dokon",
-                label: "Do‘kon",
-                hint: "Tangani sovg‘aga almashtirish",
+                label: "Dökon",
+                hint: "Tangani sovğaga almaştiriş",
               },
             ]
           : []),
-        { href: "/leaderboard", label: "Reyting", hint: "Eng faol o‘quvchilar" },
+        { href: "/leaderboard", label: "Reyting", hint: "Eng faol öquvçilar" },
       ],
     },
     {
       title: "Men",
       links: [
-        { href: "/results", label: "Natijalarim", hint: "Ishlangan testlar tahlili" },
+        { href: "/results", label: "Natijalarim", hint: "Işlangan testlar tahlili" },
         {
           href: "/takrorlash",
-          label: "Haftalik takrorlash",
+          label: "Haftalik takrorlaş",
           hint: "Hafta davomidagi xatolar",
         },
-        { href: "/profile", label: "Profilim", hint: "Shaxsiy ma’lumotlar" },
-        { href: "/pricing", label: "Premium", hint: "Tarif va to‘lovlar" },
+        { href: "/profile", label: "Profilim", hint: "Şaxsiy ma’lumotlar" },
+        { href: "/pricing", label: "Premium", hint: "Tarif va tölovlar" },
       ],
     },
   ];
 
   if (user.isAdmin) {
     sections.push({
-      title: "Boshqaruv",
+      title: "Boşqaruv",
       links: [
-        { href: "/admin", label: "Admin panel", hint: "Platformani boshqarish" },
+        { href: "/admin", label: "Admin panel", hint: "Platformani boşqariş" },
       ],
     });
   }

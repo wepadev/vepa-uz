@@ -82,10 +82,10 @@ export default function TestChecker({
         action={formAction}
         className="rounded-2xl border border-mb-line bg-white p-5 shadow-sm"
       >
-        <h2 className="text-lg font-bold text-mb-ink">Tekshirish</h2>
+        <h2 className="text-lg font-bold text-mb-ink">Tekşiriş</h2>
 
         <p className="mt-1 text-sm text-mb-muted">
-          Mavzu va testni tanlang, so‘ng belgilagan javoblaringizni
+          Mavzu va testni tanlang, söng belgilagan javoblaringizni
           ketma-ket yozing.
         </p>
 
@@ -181,10 +181,10 @@ export default function TestChecker({
         />
 
         <p className="mt-1.5 text-xs leading-5 text-mb-muted">
-          Faqat A, B, C, D harflari olinadi — raqam, nuqta va bo‘sh joy
-          yozsangiz ham bo‘ladi. Bir savolni o‘tkazib yuborgan bo‘lsangiz
-          o‘rniga <code className="rounded bg-slate-100 px-1">?</code>{" "}
-          qo‘ying.
+          Faqat A, B, C, D harflari olinadi — raqam, nuqta va böş joy
+          yozsangiz ham böladi. Bir savolni ötkazib yuborgan bölsangiz
+          örniga <code className="rounded bg-slate-100 px-1">?</code>{" "}
+          qöying.
         </p>
 
         {state.status === "error" && (
@@ -200,7 +200,7 @@ export default function TestChecker({
           disabled={pending}
           className="mt-5 min-h-11 w-full rounded-xl bg-mb-brand px-4 text-sm font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {pending ? "Tekshirilmoqda..." : "Tekshirish"}
+          {pending ? "Tekşirilmoqda..." : "Tekşiriş"}
         </SubmitButton>
       </form>
 
@@ -211,11 +211,11 @@ export default function TestChecker({
         ) : (
           <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
             <h3 className="text-base font-bold text-mb-ink">
-              Natija shu yerda chiqadi
+              Natija şu yerda çiqadi
             </h3>
 
             <p className="mt-1.5 text-sm text-mb-muted">
-              Javoblarni kiritib “Tekshirish” tugmasini bosing.
+              Javoblarni kiritib “Tekşiriş” tugmasini bosing.
             </p>
           </div>
         )}
@@ -298,29 +298,29 @@ function CheckReport({
             {result.percent}%
           </p>
           <p className="mt-1 text-xs font-semibold text-mb-muted">
-            {result.correct} / {result.total} to‘g‘ri
+            {result.correct} / {result.total} töğri
           </p>
         </div>
       </div>
 
       {/* Ko'rsatkichlar */}
       <div className="mt-5 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-        <StatTile label="To‘g‘ri" value={result.correct} tone="correct" />
+        <StatTile label="Töğri" value={result.correct} tone="correct" />
         <StatTile label="Xato" value={result.wrong} tone="wrong" />
-        <StatTile label="Bo‘sh" value={result.blank} tone="blank" />
-        <StatTile label="Kaliti yo‘q" value={result.noKey} tone="nokey" />
+        <StatTile label="Böş" value={result.blank} tone="blank" />
+        <StatTile label="Kaliti yöq" value={result.noKey} tone="nokey" />
       </div>
 
       {result.extraCount > 0 && (
         <p className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-800">
-          {result.extraCount} ta ortiqcha javob yozilgan — testda{" "}
-          {result.expectedCount} ta savol bor, ortiqchasi hisobga olinmadi.
+          {result.extraCount} ta ortiqça javob yozilgan — testda{" "}
+          {result.expectedCount} ta savol bor, ortiqçasi hisobga olinmadi.
         </p>
       )}
 
       {/* Savollar bo'yicha */}
       <h3 className="mt-6 text-sm font-bold text-mb-ink">
-        Savollar bo‘yicha
+        Savollar böyiça
       </h3>
 
       <ol className="mt-2.5 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -363,13 +363,13 @@ function CheckReport({
 
                 {row.mark === "blank" && (
                   <span className="font-semibold text-amber-800">
-                    bo‘sh → <span className="font-bold">{row.key}</span>
+                    böş → <span className="font-bold">{row.key}</span>
                   </span>
                 )}
 
                 {row.mark === "nokey" && (
                   <span className="text-xs font-semibold text-slate-600">
-                    kalit yo‘q
+                    kalit yöq
                   </span>
                 )}
               </span>

@@ -120,7 +120,7 @@ async function updateUserAccess(
     return {
       status: "error",
       message:
-        "Foydalanuvchi ma’lumotlari noto‘g‘ri.",
+        "Foydalanuvçi ma’lumotlari notöğri.",
       errors: {},
     };
   }
@@ -150,7 +150,7 @@ async function updateUserAccess(
     return {
       status: "error",
       message:
-        "O‘z akkauntingizni faol bo‘lmagan holatga o‘tkaza olmaysiz.",
+        "Öz akkauntingizni faol bölmagan holatga ötkaza olmaysiz.",
       errors: {},
     };
   }
@@ -174,7 +174,7 @@ async function updateUserAccess(
     return {
       status: "error",
       message:
-        "Foydalanuvchi topilmadi.",
+        "Foydalanuvçi topilmadi.",
       errors: {},
     };
   }
@@ -183,7 +183,7 @@ async function updateUserAccess(
     return {
       status: "error",
       message:
-        "Admin akkaunti ruxsatlarini bu sahifada o‘zgartirib bo‘lmaydi.",
+        "Admin akkaunti ruxsatlarini bu sahifada özgartirib bölmaydi.",
       errors: {},
     };
   }
@@ -214,7 +214,7 @@ async function updateUserAccess(
   return {
     status: "success",
     message:
-      "Foydalanuvchi ruxsatlari muvaffaqiyatli yangilandi.",
+      "Foydalanuvçi ruxsatlari muvaffaqiyatli yangilandi.",
     errors: {},
   };
 }
@@ -242,7 +242,7 @@ async function manageUserPremium(
     return {
       status: "error",
       message:
-        "Foydalanuvchi tanlanmagan.",
+        "Foydalanuvçi tanlanmagan.",
       errors: {},
     };
   }
@@ -277,7 +277,7 @@ async function manageUserPremium(
     return {
       status: "success",
       message:
-        "Premium bekor qilindi. Foydalanuvchida bepul kontent ochiq qoladi.",
+        "Premium bekor qilindi. Foydalanuvçida bepul kontent oçiq qoladi.",
       errors: {},
     };
   }
@@ -293,7 +293,7 @@ async function manageUserPremium(
     return {
       status: "error",
       message:
-        "Premium muddati notoʼgʼri.",
+        "Premium muddati notöğri.",
       errors: {},
     };
   }
@@ -307,7 +307,7 @@ async function manageUserPremium(
       p_user_id: userId,
       p_plan_code: operation,
       p_note:
-        "Telegram orqali toʼlov admin tomonidan tasdiqlandi.",
+        "Telegram orqali tölov admin tomonidan tasdiqlandi.",
     },
   );
 
@@ -367,8 +367,8 @@ async function manageUserPremium(
     status: "success",
     message:
       row?.matched_order
-        ? `Premium ${expiry} gacha berildi. Buyurtma #${row.order_number ?? "—"} toʼlangan deb belgilandi.`
-        : `Premium ${expiry} gacha berildi. Mos pending buyurtma topilmadi, muddat qoʼlda qoʼshildi.`,
+        ? `Premium ${expiry} gaça berildi. Buyurtma #${row.order_number ?? "—"} tölangan deb belgilandi.`
+        : `Premium ${expiry} gaça berildi. Mos pending buyurtma topilmadi, muddat qölda qöşildi.`,
     errors: {},
   };
 }
@@ -446,7 +446,7 @@ export default async function AdminUsersPage({
 
   if (profilesResult.error) {
     throw new Error(
-      `Foydalanuvchilar yuklanmadi: ${profilesResult.error.message}`,
+      `Foydalanuvçilar yuklanmadi: ${profilesResult.error.message}`,
     );
   }
 
@@ -458,7 +458,7 @@ export default async function AdminUsersPage({
 
   if (pendingOrdersResult.error) {
     throw new Error(
-      `Kutilayotgan toʼlovlar yuklanmadi: ${pendingOrdersResult.error.message}`,
+      `Kutilayotgan tölovlar yuklanmadi: ${pendingOrdersResult.error.message}`,
     );
   }
 
@@ -675,16 +675,16 @@ for (
                 href="/admin"
                 className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
               >
-                ← Admin panelga qaytish
+                ← Admin panelga qaytiş
               </Link>
 
               <h1 className="text-xl font-bold sm:text-2xl">
-                Foydalanuvchilar
+                Foydalanuvçilar
               </h1>
 
               <p className="mt-1 text-sm text-slate-500">
                 Akkaunt, Premium muddati va
-                boʼlim ruxsatlarini boshqarish
+                bölim ruxsatlarini boşqariş
               </p>
             </div>
 
@@ -724,7 +724,7 @@ for (
                 htmlFor="users-search"
                 className="text-sm font-semibold text-slate-700"
               >
-                Ism yoki email orqali qidirish
+                Ism yoki email orqali qidiriş
               </label>
 
               <input
@@ -751,7 +751,7 @@ for (
                 className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
               >
                 <option value="all">
-                  Barchasi
+                  Barçasi
                 </option>
 
                 <option value="active">
@@ -763,7 +763,7 @@ for (
                 </option>
 
                 <option value="student">
-                  O‘quvchilar
+                  Öquvçilar
                 </option>
 
                 <option value="admin">
@@ -784,7 +784,7 @@ for (
 
               className="min-h-12 self-end rounded-2xl bg-blue-600 px-6 py-3 font-bold text-white hover:bg-blue-700"
             >
-              Qidirish
+              Qidiriş
             </SubmitButton>
           </div>
         </form>
@@ -792,11 +792,11 @@ for (
         {filteredProfiles.length === 0 ? (
           <AppAlert
             variant="info"
-            title="Foydalanuvchi topilmadi"
+            title="Foydalanuvçi topilmadi"
             className="mt-6"
           >
             Qidiruv yoki filtr qiymatini
-            o‘zgartirib ko‘ring.
+            özgartirib köring.
           </AppAlert>
         ) : (
           <div className="mt-6 grid gap-6 lg:grid-cols-2">

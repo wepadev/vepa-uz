@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Mavzular",
-  description: "Tanlangan bo‘limdagi test mavzulari.",
+  description: "Tanlangan bölimdagi test mavzulari.",
 };
 
 type PageProps = {
@@ -71,7 +71,7 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
     .maybeSingle();
 
   if (sectionError) {
-    throw new Error(`Bo‘lim yuklanmadi: ${sectionError.message}`);
+    throw new Error(`Bölim yuklanmadi: ${sectionError.message}`);
   }
 
   if (!sectionData) notFound();
@@ -86,7 +86,7 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
     .maybeSingle();
 
   if (examTypeError) {
-    throw new Error(`Test yo‘nalishi yuklanmadi: ${examTypeError.message}`);
+    throw new Error(`Test yönalişi yuklanmadi: ${examTypeError.message}`);
   }
 
   if (!examTypeData) notFound();
@@ -134,7 +134,7 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
 
   if (firstSectionResult.error) {
     throw new Error(
-      `Bepul bo‘lim aniqlanmadi: ${firstSectionResult.error.message}`,
+      `Bepul bölim aniqlanmadi: ${firstSectionResult.error.message}`,
     );
   }
 
@@ -144,7 +144,7 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
 
   if (lessonTestsResult.error) {
     throw new Error(
-      `Dars testlari tekshirilmadi: ${lessonTestsResult.error.message}`,
+      `Dars testlari tekşirilmadi: ${lessonTestsResult.error.message}`,
     );
   }
 
@@ -188,7 +188,7 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
               href={`/admin/tests/section?sectionId=${section.id}`}
               className="inline-flex min-h-10 items-center rounded-xl border border-blue-200 bg-blue-50 px-3 text-sm font-semibold text-blue-700 hover:bg-blue-100"
             >
-              Boshqarish
+              Boşqariş
             </Link>
           ) : (
             <Link
@@ -214,10 +214,10 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
         {!topics.length ? (
           <div className="mt-7 rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
             <p className="text-lg font-bold text-slate-700">
-              Hozircha mavzu qo‘shilmagan
+              Hozirça mavzu qöşilmagan
             </p>
             <p className="mt-2 text-sm text-slate-500">
-              Administrator mavzu yaratib, nashr qilganda shu yerda ko‘rinadi.
+              Administrator mavzu yaratib, naşr qilganda şu yerda körinadi.
             </p>
           </div>
         ) : (
@@ -312,7 +312,7 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
                       {topic.title}
                     </h3>
                     <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">
-                      {topic.description || "Ushbu mavzudagi testlar."}
+                      {topic.description || "Uşbu mavzudagi testlar."}
                     </p>
 
                     <div className="mt-5 rounded-2xl bg-slate-50 p-4">
@@ -328,7 +328,7 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
                       href={`/tests/list?topicId=${topic.id}`}
                       className="mt-5 inline-flex min-h-12 items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-center font-bold text-white hover:bg-blue-700"
                     >
-                      Testlarni ko‘rish
+                      Testlarni köriş
                     </Link>
                   </article>
                 );

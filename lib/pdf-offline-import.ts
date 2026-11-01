@@ -69,7 +69,7 @@ export async function parsePdfOffline(
       tests: [],
       numbers: [],
       pending: [],
-      errors: ["PDF ichida matn qatlami yo'q (skanerdan olingan bo'lishi mumkin)."],
+      errors: ["PDF içida matn qatlami yöq (skanerdan olingan bölişi mumkin)."],
       total: 0,
       clean: 0,
     };
@@ -103,8 +103,8 @@ export async function parsePdfOffline(
         numbers: [],
         pending: [],
         errors: [
-          `Testlar chegarasi aniqlanmadi: "${test.title}" ichida ` +
-            `${twice.join(", ")} raqamli savol ikki marta uchraydi.`,
+          `Testlar çegarasi aniqlanmadi: "${test.title}" içida ` +
+            `${twice.join(", ")} raqamli savol ikki marta uçraydi.`,
         ],
         total: parsed.total,
         clean: parsed.clean,
@@ -118,8 +118,8 @@ export async function parsePdfOffline(
 
   if (variants.length === 0) {
     errors.push(
-      "Javoblar fayli berilmadi yoki undan kalit o‘qilmadi — " +
-        "to‘g‘ri javoblarsiz test saqlanmaydi.",
+      "Javoblar fayli berilmadi yoki undan kalit öqilmadi — " +
+        "töğri javoblarsiz test saqlanmaydi.",
     );
   }
 
@@ -133,7 +133,7 @@ export async function parsePdfOffline(
     const notes: string[] = [];
 
     if (!key) {
-      notes.push(`"${test.title}" uchun javoblar kaliti topilmadi.`);
+      notes.push(`"${test.title}" uçun javoblar kaliti topilmadi.`);
     }
 
     /*
@@ -170,7 +170,7 @@ export async function parsePdfOffline(
         }
 
         if (!answer) {
-          notes.push(`${question.number}-savol: javob kalitida yo'q.`);
+          notes.push(`${question.number}-savol: javob kalitida yöq.`);
           return false;
         }
 
@@ -255,8 +255,8 @@ export async function answerKeyFromPdf(
 
   if (tests.size === 0) {
     errors.push(
-      "Javoblar PDF'idan kalit o'qilmadi " +
-        "(\"2-variant (1-TEST)\" ko'rinishidagi sarlavha topilmadi).",
+      "Javoblar PDF'idan kalit öqilmadi " +
+        "(\"2-variant (1-TEST)\" körinişidagi sarlavha topilmadi).",
     );
   }
 

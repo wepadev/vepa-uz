@@ -31,13 +31,13 @@ export default function ForgotPasswordPage() {
 
             <p className="mt-5 max-w-lg text-lg leading-8 text-blue-100">
               Email manzilingizni kiriting. Sizga yangi
-              parol o‘rnatish uchun maxsus havola yuboriladi.
+              parol örnatiş uçun maxsus havola yuboriladi.
             </p>
 
             <div className="mt-9 space-y-3">
               {[
-                "Emailingizga tiklash havolasi yuboriladi",
-                "Havola orqali yangi parol o‘rnatasiz",
+                "Emailingizga tiklaş havolasi yuboriladi",
+                "Havola orqali yangi parol örnatasiz",
                 "Yangi parol bilan qayta kirasiz",
               ].map((text, index) => (
                 <div

@@ -9,21 +9,21 @@ type PageProps = {
 const sectionContent = {
   tests: {
     label: "Testlar",
-    title: "Testlarga kirish yopiq",
+    title: "Testlarga kiriş yopiq",
     description:
-      "Sizning akkauntingiz uchun umumiy testlar bo‘limiga kirish ruxsati hozircha yoqilmagan.",
+      "Sizning akkauntingiz uçun umumiy testlar bölimiga kiriş ruxsati hozirça yoqilmagan.",
   },
   lessons: {
     label: "Videodarslar",
-    title: "Videodarslarga kirish yopiq",
+    title: "Videodarslarga kiriş yopiq",
     description:
-      "Sizning akkauntingiz uchun videodarslar va ularga biriktirilgan testlarga kirish ruxsati hozircha yoqilmagan.",
+      "Sizning akkauntingiz uçun videodarslar va ularga biriktirilgan testlarga kiriş ruxsati hozirça yoqilmagan.",
   },
   textbooks: {
-    label: "Darslik yechimlari",
-    title: "Darslik yechimlariga kirish yopiq",
+    label: "Darslik yeçimlari",
+    title: "Darslik yeçimlariga kiriş yopiq",
     description:
-      "Sizning akkauntingiz uchun maktab va mashhur darslik yechimlariga kirish ruxsati hozircha yoqilmagan.",
+      "Sizning akkauntingiz uçun maktab va maşhur darslik yeçimlariga kiriş ruxsati hozirça yoqilmagan.",
   },
 } as const;
 
@@ -68,9 +68,9 @@ export default async function AccessDeniedPage({
         </p>
 
         <div className="mt-7 rounded-2xl border border-blue-200 bg-blue-50 p-4 text-sm leading-6 text-blue-800">
-          Kirish ruxsatini platforma administratori
-          yoqadi. Ruxsat berilgach, sahifani qayta
-          ochishingiz mumkin.
+          Kiriş ruxsatini platforma administratori
+          yoqadi. Ruxsat berilgaç, sahifani qayta
+          oçişingiz mumkin.
         </div>
 
         <div className="mt-7 grid gap-3 sm:grid-cols-2">
@@ -78,14 +78,14 @@ export default async function AccessDeniedPage({
             href="/"
             className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 font-bold text-white hover:bg-blue-700"
           >
-            Bosh sahifaga qaytish
+            Boş sahifaga qaytiş
           </Link>
 
           <Link
             href="/profile"
             className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 py-3 font-bold text-slate-700 hover:bg-slate-50"
           >
-            Profilni ochish
+            Profilni oçiş
           </Link>
         </div>
       </section>

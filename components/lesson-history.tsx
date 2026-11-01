@@ -25,7 +25,7 @@ export type LessonHistoryRow = {
 
 const ATTENDANCE_LABEL: Record<string, string> = {
   keldi: "Keldi",
-  kechikdi: "Kechikdi",
+  kechikdi: "Keçikdi",
   sababli: "Sababli",
   kelmadi: "Kelmadi",
 };

@@ -55,7 +55,7 @@ export async function createAssignment(formData: FormData) {
   const dueAt = new Date(`${dueAtRaw}:00+05:00`);
 
   if (Number.isNaN(dueAt.getTime())) {
-    fail(crmGroupId, "Muddat noto‘g‘ri.");
+    fail(crmGroupId, "Muddat notöğri.");
   }
 
   /*
@@ -68,7 +68,7 @@ export async function createAssignment(formData: FormData) {
   });
 
   if (!allowedResult.error && allowedResult.data !== true) {
-    fail(crmGroupId, "Bu testni vazifa qilib berib bo‘lmaydi.");
+    fail(crmGroupId, "Bu testni vazifa qilib berib bölmaydi.");
   }
 
   const { error } = await supabase.from("assignments").insert({
@@ -81,7 +81,7 @@ export async function createAssignment(formData: FormData) {
     fail(
       crmGroupId,
       error.code === "23505"
-        ? "Bu test shu guruhga allaqachon berilgan. Avval eskisini yoping."
+        ? "Bu test şu guruhga allaqaçon berilgan. Avval eskisini yoping."
         : `Vazifa berilmadi: ${error.message}`,
     );
   }
@@ -131,15 +131,15 @@ export async function deleteAssignment(formData: FormData) {
     .maybeSingle();
 
   if (readError) {
-    fail(crmGroupId, `Vazifa tekshirilmadi: ${readError.message}`);
+    fail(crmGroupId, `Vazifa tekşirilmadi: ${readError.message}`);
   }
 
   if (!assignment) {
-    fail(crmGroupId, "Vazifa allaqachon o‘chirilgan.");
+    fail(crmGroupId, "Vazifa allaqaçon öçirilgan.");
   }
 
   if (assignment.is_active) {
-    fail(crmGroupId, "Avval vazifani yoping, keyin o‘chirish mumkin bo‘ladi.");
+    fail(crmGroupId, "Avval vazifani yoping, keyin öçiriş mumkin böladi.");
   }
 
   const { error } = await supabase
@@ -148,7 +148,7 @@ export async function deleteAssignment(formData: FormData) {
     .eq("id", assignmentId);
 
   if (error) {
-    fail(crmGroupId, `Vazifa o‘chirilmadi: ${error.message}`);
+    fail(crmGroupId, `Vazifa öçirilmadi: ${error.message}`);
   }
 
   done(crmGroupId);

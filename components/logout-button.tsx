@@ -12,7 +12,7 @@ type LogoutButtonProps = {
 };
 
 export function LogoutButton({
-  label = "Chiqish",
+  label = "Çiqiş",
   className,
 }: LogoutButtonProps) {
   const router = useRouter();
@@ -46,7 +46,7 @@ export function LogoutButton({
         className,
       )}
     >
-      {isLoading ? "Chiqilmoqda..." : label}
+      {isLoading ? "Çiqilmoqda..." : label}
     </button>
   );
 }

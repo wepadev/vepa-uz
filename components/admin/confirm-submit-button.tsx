@@ -15,7 +15,7 @@ export default function ConfirmSubmitButton({
   children,
   title,
   description,
-  confirmLabel = "Ha, o‘chirilsin",
+  confirmLabel = "Ha, öçirilsin",
   className,
 }: {
   children: ReactNode;

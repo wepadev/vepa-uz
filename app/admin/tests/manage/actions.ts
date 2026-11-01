@@ -43,11 +43,11 @@ export async function addMultipleChoiceQuestion(formData: FormData) {
   validateTestId(testId);
 
   if (!questionText || !optionA || !optionB || !optionC || !optionD) {
-    throw new Error("Savol va barcha A–D javob variantlarini kiriting.");
+    throw new Error("Savol va barça A–D javob variantlarini kiriting.");
   }
 
   if (!["A", "B", "C", "D"].includes(correctAnswer)) {
-    throw new Error("To‘g‘ri javobni tanlang.");
+    throw new Error("Töğri javobni tanlang.");
   }
 
   const imagePath = await uploadImage(
@@ -129,12 +129,12 @@ export async function addWrittenPartsBlock(formData: FormData) {
   validateTestId(testId);
 
   if (!stimulusText && !blockImage) {
-    throw new Error("Umumiy savol matni yoki chizmani kiriting.");
+    throw new Error("Umumiy savol matni yoki çizmani kiriting.");
   }
 
   if (!partAText || !partAAnswer || !partBText || !partBAnswer) {
     throw new Error(
-      "a) va b) qismlarining savoli hamda to‘g‘ri javobini kiriting.",
+      "a) va b) qismlarining savoli hamda töğri javobini kiriting.",
     );
   }
 
@@ -310,15 +310,15 @@ export async function addSharedOptionsBlock(formData: FormData) {
   validateTestId(testId);
 
   if (!stimulusText && !blockImage) {
-    throw new Error("Umumiy matn yoki chizmani kiriting.");
+    throw new Error("Umumiy matn yoki çizmani kiriting.");
   }
 
   if (Object.values(options).some((option) => !option)) {
-    throw new Error("A, B, C, D, E va F variantlarining barchasini kiriting.");
+    throw new Error("A, B, C, D, E va F variantlarining barçasini kiriting.");
   }
 
   if (questionTexts.some((text) => !text)) {
-    throw new Error("Uchta savol matnini kiriting.");
+    throw new Error("Uçta savol matnini kiriting.");
   }
 
   if (
@@ -327,7 +327,7 @@ export async function addSharedOptionsBlock(formData: FormData) {
     )
   ) {
     throw new Error(
-      "Uchta savol uchun A–F oralig‘idagi to‘g‘ri javoblarni tanlang.",
+      "Uçta savol uçun A–F oraliğidagi töğri javoblarni tanlang.",
     );
   }
 
@@ -392,7 +392,7 @@ export async function addSharedOptionsBlock(formData: FormData) {
 
     if (questionsError || !createdQuestions || createdQuestions.length !== 3) {
       throw new Error(
-        `Uchta savol saqlanmadi: ${questionsError?.message ?? "Noma’lum xato"}`,
+        `Uçta savol saqlanmadi: ${questionsError?.message ?? "Noma’lum xato"}`,
       );
     }
 
@@ -413,7 +413,7 @@ export async function addSharedOptionsBlock(formData: FormData) {
       .insert(answerRows);
 
     if (answersError) {
-      throw new Error(`Uchta savol javobi saqlanmadi: ${answersError.message}`);
+      throw new Error(`Uçta savol javobi saqlanmadi: ${answersError.message}`);
     }
   } catch (error) {
     if (blockId) {
@@ -486,15 +486,15 @@ export async function updateStandaloneQuestion(formData: FormData) {
   validateTestId(testId);
 
   if (!Number.isInteger(questionId) || questionId <= 0) {
-    throw new Error("Savol ID noto‘g‘ri.");
+    throw new Error("Savol ID notöğri.");
   }
 
   if (!questionText || !optionA || !optionB || !optionC || !optionD) {
-    throw new Error("Savol va barcha A–D variantlarini kiriting.");
+    throw new Error("Savol va barça A–D variantlarini kiriting.");
   }
 
   if (!["A", "B", "C", "D"].includes(correctAnswer)) {
-    throw new Error("To‘g‘ri javobni tanlang.");
+    throw new Error("Töğri javobni tanlang.");
   }
 
   const { data: currentQuestion, error: lookupError } = await supabase
@@ -594,11 +594,11 @@ export async function updateQuestionBlock(formData: FormData) {
   validateTestId(testId);
 
   if (!Number.isInteger(blockId) || blockId <= 0) {
-    throw new Error("Savol bloki ID noto‘g‘ri.");
+    throw new Error("Savol bloki ID notöğri.");
   }
 
   if (!["written_parts", "shared_options"].includes(blockType)) {
-    throw new Error("Savol bloki turi noto‘g‘ri.");
+    throw new Error("Savol bloki turi notöğri.");
   }
 
   const { data: currentBlock, error: blockLookupError } = await supabase
@@ -624,11 +624,11 @@ export async function updateQuestionBlock(formData: FormData) {
     .order("order_number", { ascending: true });
 
   if (questionsError) {
-    throw new Error(`Ichki savollar yuklanmadi: ${questionsError.message}`);
+    throw new Error(`Içki savollar yuklanmadi: ${questionsError.message}`);
   }
 
   if (!blockQuestions) {
-    throw new Error("Ichki savollar topilmadi.");
+    throw new Error("Içki savollar topilmadi.");
   }
 
   const newImagePath = await uploadImage(
@@ -646,7 +646,7 @@ export async function updateQuestionBlock(formData: FormData) {
 
   try {
     if (!stimulusText && !finalImagePath) {
-      throw new Error("Umumiy matn yoki chizmani kiriting.");
+      throw new Error("Umumiy matn yoki çizmani kiriting.");
     }
 
     if (blockType === "written_parts") {
@@ -716,7 +716,7 @@ export async function updateQuestionBlock(formData: FormData) {
           .eq("block_id", blockId);
 
         if (questionError) {
-          throw new Error(`Ichki savol tahrirlanmadi: ${questionError.message}`);
+          throw new Error(`Içki savol tahrirlanmadi: ${questionError.message}`);
         }
 
         const { error: answerError } = await supabase
@@ -736,12 +736,12 @@ export async function updateQuestionBlock(formData: FormData) {
           );
 
         if (answerError) {
-          throw new Error(`Ichki javob tahrirlanmadi: ${answerError.message}`);
+          throw new Error(`Içki javob tahrirlanmadi: ${answerError.message}`);
         }
       }
     } else {
       if (blockQuestions.length !== 3) {
-        throw new Error("A–F blokida aynan 3 ta savol bo‘lishi kerak.");
+        throw new Error("A–F blokida aynan 3 ta savol bölişi kerak.");
       }
 
       const options = {
@@ -754,7 +754,7 @@ export async function updateQuestionBlock(formData: FormData) {
       };
 
       if (Object.values(options).some((option) => !option)) {
-        throw new Error("A–F variantlarining barchasini kiriting.");
+        throw new Error("A–F variantlarining barçasini kiriting.");
       }
 
       const sharedUpdates = blockQuestions.map((question, index) => ({
@@ -766,7 +766,7 @@ export async function updateQuestionBlock(formData: FormData) {
       }));
 
       if (sharedUpdates.some((item) => !item.text)) {
-        throw new Error("Uchta savol matnini kiriting.");
+        throw new Error("Uçta savol matnini kiriting.");
       }
 
       if (
@@ -774,7 +774,7 @@ export async function updateQuestionBlock(formData: FormData) {
           (item) => !["A", "B", "C", "D", "E", "F"].includes(item.answer),
         )
       ) {
-        throw new Error("Har bir savol uchun A–F javobini tanlang.");
+        throw new Error("Har bir savol uçun A–F javobini tanlang.");
       }
 
       const { error: blockError } = await supabase
@@ -800,7 +800,7 @@ export async function updateQuestionBlock(formData: FormData) {
           .eq("block_id", blockId);
 
         if (questionError) {
-          throw new Error(`Ichki savol tahrirlanmadi: ${questionError.message}`);
+          throw new Error(`Içki savol tahrirlanmadi: ${questionError.message}`);
         }
 
         const { error: answerError } = await supabase
@@ -817,7 +817,7 @@ export async function updateQuestionBlock(formData: FormData) {
           );
 
         if (answerError) {
-          throw new Error(`Ichki javob tahrirlanmadi: ${answerError.message}`);
+          throw new Error(`Içki javob tahrirlanmadi: ${answerError.message}`);
         }
       }
     }
@@ -858,7 +858,7 @@ export async function changePublishedState(formData: FormData) {
 
     if (!count || count < 1) {
       throw new Error(
-        "Testni faollashtirishdan oldin kamida bitta savol qo‘shing.",
+        "Testni faollaştirişdan oldin kamida bitta savol qöşing.",
       );
     }
   }
@@ -869,7 +869,7 @@ export async function changePublishedState(formData: FormData) {
     .eq("id", testId);
 
   if (error) {
-    throw new Error(`Test holati o‘zgarmadi: ${error.message}`);
+    throw new Error(`Test holati özgarmadi: ${error.message}`);
   }
 
   revalidatePath("/admin/tests");
@@ -899,7 +899,7 @@ export async function deleteStandaloneQuestion(formData: FormData) {
   validateTestId(testId);
 
   if (!Number.isInteger(questionId) || questionId <= 0) {
-    throw new Error("Savol ID noto‘g‘ri.");
+    throw new Error("Savol ID notöğri.");
   }
 
   const { data: question, error: lookupError } = await supabase
@@ -918,7 +918,7 @@ export async function deleteStandaloneQuestion(formData: FormData) {
   }
 
   if (question.block_id !== null) {
-    throw new Error("Bu savol blok tarkibida. Blokni to‘liq o‘chiring.");
+    throw new Error("Bu savol blok tarkibida. Blokni töliq öçiring.");
   }
 
   const { error } = await supabase
@@ -928,7 +928,7 @@ export async function deleteStandaloneQuestion(formData: FormData) {
     .eq("test_id", testId);
 
   if (error) {
-    throw new Error(`Savol o‘chirilmadi: ${error.message}`);
+    throw new Error(`Savol öçirilmadi: ${error.message}`);
   }
 
   await renumberTestQuestions(supabase, testId);
@@ -949,7 +949,7 @@ export async function deleteQuestionBlock(formData: FormData) {
   validateTestId(testId);
 
   if (!Number.isInteger(blockId) || blockId <= 0) {
-    throw new Error("Savol bloki ID noto‘g‘ri.");
+    throw new Error("Savol bloki ID notöğri.");
   }
 
   const { data: block, error: lookupError } = await supabase
@@ -974,7 +974,7 @@ export async function deleteQuestionBlock(formData: FormData) {
     .eq("test_id", testId);
 
   if (error) {
-    throw new Error(`Savol bloki o‘chirilmadi: ${error.message}`);
+    throw new Error(`Savol bloki öçirilmadi: ${error.message}`);
   }
 
   await renumberTestQuestions(supabase, testId);

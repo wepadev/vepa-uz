@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
 
   if (!profile || profile.role !== "admin" || profile.is_active !== true) {
     return NextResponse.json(
-      { xato: "Bu sahifa faqat administrator uchun." },
+      { xato: "Bu sahifa faqat administrator uçun." },
       { status: 403 },
     );
   }
@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
    */
   if (request.nextUrl.searchParams.get("throw") === "1") {
     throw new Error(
-      `Sinov xatosi — ataylab tashlandi (${new Date().toISOString()})`,
+      `Sinov xatosi — ataylab taşlandi (${new Date().toISOString()})`,
     );
   }
 
@@ -72,21 +72,21 @@ export async function GET(request: NextRequest) {
     where: "sinov",
     message: `Sinov xabari — ${new Date().toISOString()}`,
     url: "/api/admin/test-error",
-    detail: "Bu haqiqiy xato emas. Xabarnoma ishlayotganini tekshirish.",
+    detail: "Bu haqiqiy xato emas. Xabarnoma işlayotganini tekşiriş.",
   });
 
   return NextResponse.json({
     sozlamalar: {
-      TELEGRAM_BOT_TOKEN: hasSharedToken ? "bor" : "YO‘Q",
-      TELEGRAM_ERROR_BOT_TOKEN: hasErrorToken ? "bor" : "yo‘q (ixtiyoriy)",
-      TELEGRAM_ERROR_CHAT_ID: hasChatId ? "bor" : "YO‘Q",
+      TELEGRAM_BOT_TOKEN: hasSharedToken ? "bor" : "YÖQ",
+      TELEGRAM_ERROR_BOT_TOKEN: hasErrorToken ? "bor" : "yöq (ixtiyoriy)",
+      TELEGRAM_ERROR_CHAT_ID: hasChatId ? "bor" : "YÖQ",
     },
     natija: result.delivered
-      ? "Xabar yuborildi — Telegramni tekshiring."
+      ? "Xabar yuborildi — Telegramni tekşiring."
       : "Yuborilmadi.",
     sabab: result.reason ?? null,
     maslahat: result.delivered
       ? null
-      : "Xabar kelmasa: botga Telegramda bir marta /start yozganingizni va chat id to‘g‘riligini tekshiring.",
+      : "Xabar kelmasa: botga Telegramda bir marta /start yozganingizni va çat id töğriligini tekşiring.",
   });
 }

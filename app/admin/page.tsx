@@ -187,7 +187,7 @@ export default async function AdminPage() {
   const mainCards: MainCard[] = [
     {
       title: "Guruhlar",
-      description: "Davomat, ball, o‘quvchilar va uy vazifalari.",
+      description: "Davomat, ball, öquvçilar va uy vazifalari.",
       href: "/admin/crm",
       count: activeGroups.length,
       icon: UsersRound,
@@ -195,7 +195,7 @@ export default async function AdminPage() {
     },
     {
       title: "Testlar",
-      description: "Test yaratish va savollarni kiritish.",
+      description: "Test yaratiş va savollarni kiritiş.",
       href: "/admin/tests",
       count: testsResult.count ?? null,
       icon: ClipboardCheck,
@@ -203,7 +203,7 @@ export default async function AdminPage() {
     },
     {
       title: "Darslar",
-      description: "Videodarslar va darslik yechimlari.",
+      description: "Videodarslar va darslik yeçimlari.",
       href: "/admin/lessons",
       count:
         lessonsResult.count !== null || textbooksResult.count !== null
@@ -223,8 +223,8 @@ export default async function AdminPage() {
   ];
 
   const tools: ToolLink[] = [
-    { title: "Foydalanuvchilar", href: "/admin/users", icon: Users },
-    { title: "Test tekshirish", href: "/admin/test-tekshirish", icon: ListChecks },
+    { title: "Foydalanuvçilar", href: "/admin/users", icon: Users },
+    { title: "Test tekşiriş", href: "/admin/test-tekshirish", icon: ListChecks },
     { title: "Imtihon taymeri", href: "/admin/taymer", icon: Timer },
     { title: "PDF yozuv", href: "/admin/pdf-yozuv", icon: NotebookPen },
     { title: "Texnik xizmat", href: "/admin/xizmat", icon: Database },
@@ -259,7 +259,7 @@ export default async function AdminPage() {
               className="flex items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900 transition hover:bg-amber-100"
             >
               <Gift className="h-5 w-5 shrink-0" strokeWidth={2} aria-hidden="true" />
-              {pendingCount} ta sovg‘a so‘rovi tasdiqlashni kutmoqda
+              {pendingCount} ta sovğa sörovi tasdiqlaşni kutmoqda
             </Link>
           )}
 
@@ -278,7 +278,7 @@ export default async function AdminPage() {
                       {group.title}
                     </span>
                     <span className="block text-xs text-mb-muted">
-                      {group.student_count} ta o‘quvchi
+                      {group.student_count} ta öquvçi
                     </span>
                   </Link>
 
@@ -326,14 +326,14 @@ export default async function AdminPage() {
 
           {nothingToday && (
             <p className="rounded-2xl border border-dashed border-mb-line bg-white px-4 py-3 text-sm text-mb-muted">
-              Bugun uchun shoshilinch ish yo‘q.
+              Bugun uçun şoşilinç iş yöq.
             </p>
           )}
         </div>
 
         {/* 2. Asosiy bo'limlar */}
         <h2 className="mt-8 text-[13px] font-bold uppercase tracking-wide text-mb-muted">
-          Bo‘limlar
+          Bölimlar
         </h2>
 
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -344,7 +344,7 @@ export default async function AdminPage() {
 
         {/* 3. Boshqa asboblar */}
         <h2 className="mt-8 text-[13px] font-bold uppercase tracking-wide text-mb-muted">
-          Boshqa
+          Boşqa
         </h2>
 
         <div className="mt-3 flex flex-wrap gap-2">

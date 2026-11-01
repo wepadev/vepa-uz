@@ -26,8 +26,8 @@ export default function NotFound() {
         </h1>
 
         <p className="mt-3 text-sm leading-6 text-mb-muted sm:text-base">
-          Havola eskirgan bo‘lishi mumkin yoki qidirgan narsangiz
-          o‘chirilgan. Quyidagi bo‘limlardan davom eting.
+          Havola eskirgan bölişi mumkin yoki qidirgan narsangiz
+          öçirilgan. Quyidagi bölimlardan davom eting.
         </p>
 
         <div className="mt-6 grid gap-2 sm:grid-cols-2">
@@ -36,7 +36,7 @@ export default function NotFound() {
             className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-mb-brand px-5 font-bold text-white transition hover:bg-mb-brandDark"
           >
             <House className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
-            Bosh sahifa
+            Boş sahifa
           </Link>
 
           <Link
@@ -54,7 +54,7 @@ export default function NotFound() {
           </Link>
 
           <Link href="/textbooks" className="hover:underline">
-            Darslik yechimlari
+            Darslik yeçimlari
           </Link>
 
           <Link href="/results" className="hover:underline">

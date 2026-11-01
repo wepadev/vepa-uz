@@ -88,7 +88,7 @@ export default function InstallAppButton({
         )}
       >
         <Download className="h-[18px] w-[18px]" strokeWidth={2} aria-hidden="true" />
-        Ilovani o‘rnatish
+        Ilovani örnatiş
       </button>
     );
   }
@@ -103,7 +103,7 @@ export default function InstallAppButton({
       )}
     >
       <Download className="h-[18px] w-[18px]" strokeWidth={2} aria-hidden="true" />
-      Ilovani o‘rnatish
+      Ilovani örnatiş
     </button>
   );
 }

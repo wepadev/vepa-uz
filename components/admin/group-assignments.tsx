@@ -91,31 +91,31 @@ export default async function GroupAssignments({
 
   return (
     <>
-      <h2 className="mt-6 text-lg font-bold">Yangi vazifa berish</h2>
+      <h2 className="mt-6 text-lg font-bold">Yangi vazifa beriş</h2>
 
       {tests.length === 0 ? (
         <AppAlert
           variant={testsUnavailable ? "warning" : "info"}
           title={
-            testsUnavailable ? "Ro‘yxat yuklanmadi" : "Tanlash uchun test yo‘q"
+            testsUnavailable ? "Röyxat yuklanmadi" : "Tanlaş uçun test yöq"
           }
           className="mt-3"
         >
           {testsUnavailable ? (
             <>
-              Supabase’da <b>db/26-vazifa-balli.sql</b> faylini ishga
-              tushiring — vazifa uchun testlar shundan keyin ko‘rinadi.
+              Supabase’da <b>db/26-vazifa-balli.sql</b> faylini işga
+              tuşiring — vazifa uçun testlar şundan keyin körinadi.
             </>
           ) : (
             <>
-              Avval test yarating va nashr qiling.{" "}
+              Avval test yarating va naşr qiling.{" "}
               <Link
                 href={`/admin/tests/sections?exam=${GROUP_EXAM_CODE}`}
                 className="font-semibold text-mb-brand underline underline-offset-2"
               >
                 {GROUP_EXAM_TITLE}
               </Link>{" "}
-              yo‘nalishi shu uchun mo‘ljallangan.
+              yönalişi şu uçun möljallangan.
             </>
           )}
         </AppAlert>
@@ -152,7 +152,7 @@ export default async function GroupAssignments({
                 )}
 
                 {catalogTests.length > 0 && (
-                  <optgroup label="Testlar bo‘limi">
+                  <optgroup label="Testlar bölimi">
                     {catalogTests.map((test) => (
                       <option key={test.test_id} value={test.test_id}>
                         {test.section_title} — {test.test_title} (
@@ -184,12 +184,12 @@ export default async function GroupAssignments({
           </div>
 
           <SubmitButton className="mt-3 min-h-12 w-full rounded-xl bg-mb-brand px-6 font-semibold text-white transition hover:bg-mb-brandDark sm:w-auto">
-            Vazifa berish
+            Vazifa beriş
           </SubmitButton>
 
           <p className="mt-2 text-xs leading-5 text-mb-muted">
-            O‘quvchi vazifani faqat bir marta ishlaydi. Natija guruh balliga
-            va tangaga qo‘shiladi.
+            Öquvçi vazifani faqat bir marta işlaydi. Natija guruh balliga
+            va tangaga qöşiladi.
           </p>
         </form>
       )}
@@ -241,7 +241,7 @@ export default async function GroupAssignments({
                     />
 
                     <SubmitButton className="inline-flex min-h-10 items-center rounded-xl border border-slate-200 px-3 text-sm font-semibold text-slate-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600">
-                      Yopish
+                      Yopiş
                     </SubmitButton>
                   </form>
                 ) : (
@@ -254,7 +254,7 @@ export default async function GroupAssignments({
                     />
 
                     <SubmitButton
-                      title="Vazifani ro‘yxatdan o‘chirish (natijalar saqlanadi)"
+                      title="Vazifani röyxatdan öçiriş (natijalar saqlanadi)"
                       className="inline-flex min-h-10 items-center gap-1.5 rounded-xl border border-slate-200 px-3 text-sm font-semibold text-slate-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600"
                     >
                       <Trash2
@@ -262,7 +262,7 @@ export default async function GroupAssignments({
                         strokeWidth={2}
                         aria-hidden="true"
                       />
-                      O‘chirish
+                      Öçiriş
                     </SubmitButton>
                   </form>
                 )}

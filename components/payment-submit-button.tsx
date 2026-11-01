@@ -35,8 +35,8 @@ export default function PaymentSubmitButton({
           ? "Kuting…"
           : "Buyurtma yaratilmoqda…"
         : compact
-          ? "Olish"
-          : "Sotib olish"}
+          ? "Oliş"
+          : "Sotib oliş"}
     </button>
   );
 }

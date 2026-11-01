@@ -20,7 +20,7 @@ type GoogleSignInButtonProps = {
 export default function GoogleSignInButton({
   compact = false,
   fullWidth = false,
-  label = "Google orqali kirish",
+  label = "Google orqali kiriş",
   className,
   next = "/",
 }: GoogleSignInButtonProps) {
@@ -50,7 +50,7 @@ export default function GoogleSignInButton({
 
     if (error) {
       setErrorMessage(
-        "Google orqali kirib bo‘lmadi. Qayta urinib ko‘ring.",
+        "Google orqali kirib bölmadi. Qayta urinib köring.",
       );
 
       setIsLoading(false);
@@ -77,7 +77,7 @@ export default function GoogleSignInButton({
           <Spinner
             size="sm"
             className="text-blue-600"
-            label="Google ochilmoqda"
+            label="Google oçilmoqda"
           />
         ) : (
           <svg
@@ -105,14 +105,14 @@ export default function GoogleSignInButton({
         )}
 
         {isLoading
-          ? "Google ochilmoqda..."
+          ? "Google oçilmoqda..."
           : label}
       </button>
 
       {errorMessage && (
         <AppAlert
           variant="error"
-          title="Google orqali kirish amalga oshmadi"
+          title="Google orqali kiriş amalga oşmadi"
           className="mt-3"
           compact
         >

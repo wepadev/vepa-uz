@@ -31,7 +31,7 @@ export default function AnswerCorrection({
   return (
     <div className="mt-3 rounded-xl border border-dashed border-mb-line bg-white/70 p-3">
       <p className="text-[11px] font-semibold uppercase tracking-wide text-mb-muted">
-        O‘qituvchi tuzatishi
+        Öqituvçi tuzatişi
       </p>
 
       <div className="mt-2 flex flex-wrap gap-2">
@@ -54,12 +54,12 @@ export default function AnswerCorrection({
             {isCorrect ? (
               <>
                 <XCircle className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-                Xato deb belgilash
+                Xato deb belgilaş
               </>
             ) : (
               <>
                 <CheckCircle2 className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-                To‘g‘ri deb hisoblash
+                Töğri deb hisoblaş
               </>
             )}
           </SubmitButton>
@@ -72,20 +72,20 @@ export default function AnswerCorrection({
             <input type="hidden" name="attemptId" value={attemptId} />
 
             <SubmitButton
-              title="Bu javob keyingi o‘quvchilarda ham to‘g‘ri sanaladi"
+              title="Bu javob keyingi öquvçilarda ham töğri sanaladi"
               className="inline-flex min-h-10 items-center gap-1.5 rounded-xl border border-slate-200 px-3 text-xs font-semibold text-slate-600 transition hover:border-mb-brand hover:text-mb-brand"
             >
               <KeyRound className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-              Kalitga qo‘shish
+              Kalitga qöşiş
             </SubmitButton>
           </form>
         )}
       </div>
 
       <p className="mt-2 text-[11px] leading-5 text-mb-muted">
-        Baho o‘zgarsa, ball va foiz avtomatik qayta hisoblanadi.
-        “Kalitga qo‘shish” esa bu javobni barcha o‘quvchilar uchun
-        to‘g‘ri deb belgilaydi.
+        Baho özgarsa, ball va foiz avtomatik qayta hisoblanadi.
+        “Kalitga qöşiş” esa bu javobni barça öquvçilar uçun
+        töğri deb belgilaydi.
       </p>
     </div>
   );

@@ -106,7 +106,7 @@ test("to'liqsiz variant va bo'sh kasr belgilanadi", () => {
   const flags = result.tests[0].questions[0].flags.join(" | ");
 
   assert.equal(result.clean, 0);
-  assert.match(flags, /kasr bo'lishi mumkin/);
+  assert.match(flags, /kasr bölişi mumkin/);
 });
 
 test("javoblar kaliti variantlar bo'yicha ajratiladi", () => {

@@ -23,7 +23,7 @@ export default function TextbookLockedScreen({
           href="/textbooks"
           className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
         >
-          ← Darslik yechimlari
+          ← Darslik yeçimlari
         </Link>
 
         <div className="mt-3 rounded-2xl border border-blue-200 bg-white p-6 text-center shadow-sm sm:p-8">
@@ -32,14 +32,14 @@ export default function TextbookLockedScreen({
           </span>
 
           <h1 className="mt-5 text-xl font-bold leading-snug text-mb-ink sm:text-2xl">
-            TOP kitoblar yechimlari Premium tarifda
+            TOP kitoblar yeçimlari Premium tarifda
           </h1>
 
           <p className="mt-2 text-sm leading-6 text-mb-muted">
             {title
-              ? `“${title}” yechimlarini ochish uchun Premium kerak.`
-              : "Bu kitob yechimlarini ochish uchun Premium kerak."}{" "}
-            Maktab darsliklari yechimlari esa hamma uchun bepul.
+              ? `“${title}” yeçimlarini oçiş uçun Premium kerak.`
+              : "Bu kitob yeçimlarini oçiş uçun Premium kerak."}{" "}
+            Maktab darsliklari yeçimlari esa hamma uçun bepul.
           </p>
 
           <div className="mt-6 grid gap-2 sm:grid-cols-2">
@@ -48,7 +48,7 @@ export default function TextbookLockedScreen({
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 font-bold text-white transition hover:bg-blue-700"
             >
               <Crown className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
-              Premium olish
+              Premium oliş
             </Link>
 
             <Link

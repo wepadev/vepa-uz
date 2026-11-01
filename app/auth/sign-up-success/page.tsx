@@ -9,19 +9,19 @@ export default function Page() {
         </div>
 
         <h1 className="mt-5 text-2xl font-bold text-slate-950 sm:text-3xl">
-          Ro‘yxatdan o‘tdingiz
+          Röyxatdan ötdingiz
         </h1>
 
         <p className="mt-2 text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
-          Emailingizga tasdiqlash havolasi
+          Emailingizga tasdiqlaş havolasi
           yuborildi. Havolani bosib akkauntingizni
-          tasdiqlang, so‘ng tizimga kiring.
+          tasdiqlang, söng tizimga kiring.
         </p>
 
         <div className="mt-5 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3">
           <p className="text-sm leading-6 text-blue-900">
             Xat kelmadimi? “Spam” yoki “Promotions”
-            papkasini ham tekshiring.
+            papkasini ham tekşiring.
           </p>
         </div>
 
@@ -29,14 +29,14 @@ export default function Page() {
           href="/auth/login"
           className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 font-bold text-white transition hover:bg-blue-700"
         >
-          Kirish sahifasiga o‘tish
+          Kiriş sahifasiga ötiş
         </Link>
 
         <Link
           href="/"
           className="mt-3 inline-flex min-h-12 w-full items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 py-3 font-semibold text-slate-700 transition hover:bg-slate-50"
         >
-          Bosh sahifa
+          Boş sahifa
         </Link>
       </div>
     </main>

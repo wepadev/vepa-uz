@@ -40,7 +40,7 @@ type SheetRow = {
 
 const ATTENDANCE = [
   { value: "keldi", label: "Keldi" },
-  { value: "kechikdi", label: "Kechikdi" },
+  { value: "kechikdi", label: "Keçikdi" },
   { value: "sababli", label: "Sababli" },
   { value: "kelmadi", label: "Kelmadi" },
 ] as const;
@@ -193,7 +193,7 @@ export default async function CrmLessonPage({ searchParams }: PageProps) {
             />
 
             <SubmitButton className="min-h-11 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
-              Ochish
+              Oçiş
             </SubmitButton>
           </form>
 
@@ -227,13 +227,13 @@ export default async function CrmLessonPage({ searchParams }: PageProps) {
         {dayIsSaved && !justSaved && (
           <p className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-800">
             Bu kunga ball yozilgan. Saqlasangiz ustiga yoziladi —
-            ball qo‘shilib ketmaydi.
+            ball qöşilib ketmaydi.
           </p>
         )}
 
         {justSaved && (
           <AppAlert variant="success" title="Saqlandi" className="mt-4">
-            {savedCount} ta o‘quvchining ballari yozildi.
+            {savedCount} ta öquvçining ballari yozildi.
           </AppAlert>
         )}
 
@@ -244,13 +244,13 @@ export default async function CrmLessonPage({ searchParams }: PageProps) {
         )}
 
         {rows.length === 0 ? (
-          <AppAlert variant="info" title="O‘quvchi yo‘q" className="mt-5">
-            Bu guruhda faol o‘quvchi yo‘q.{" "}
+          <AppAlert variant="info" title="Öquvçi yöq" className="mt-5">
+            Bu guruhda faol öquvçi yöq.{" "}
             <Link
               href={`/admin/crm/guruh?id=${groupId}`}
               className="font-semibold text-mb-brand hover:underline"
             >
-              O‘quvchi qo‘shish
+              Öquvçi qöşiş
             </Link>
           </AppAlert>
         ) : (
@@ -345,8 +345,8 @@ export default async function CrmLessonPage({ searchParams }: PageProps) {
                       >
                         <option value="">—</option>
                         <option value="5">5 — a’lo</option>
-                        <option value="4">4 — yaxshi</option>
-                        <option value="3">3 — o‘rtacha</option>
+                        <option value="4">4 — yaxşi</option>
+                        <option value="3">3 — örtaça</option>
                         <option value="2">2 — sust</option>
                         <option value="1">1 — yomon</option>
                       </select>
@@ -357,7 +357,7 @@ export default async function CrmLessonPage({ searchParams }: PageProps) {
                         htmlFor={`vazifa_${row.student_id}`}
                         className="block text-xs font-semibold text-slate-600"
                       >
-                        Uy vazifasi — nechta ishladi
+                        Uy vazifasi — neçta işladi
                       </label>
 
                       <input
@@ -376,7 +376,7 @@ export default async function CrmLessonPage({ searchParams }: PageProps) {
 
                   <details className="mt-3">
                     <summary className="cursor-pointer list-none text-xs font-semibold text-mb-brand">
-                      Qo‘shimcha ball va izoh
+                      Qöşimça ball va izoh
                     </summary>
 
                     <div className="mt-2 grid gap-3 sm:grid-cols-3">
@@ -385,7 +385,7 @@ export default async function CrmLessonPage({ searchParams }: PageProps) {
                           htmlFor={`bonus_${row.student_id}`}
                           className="block text-xs font-semibold text-slate-600"
                         >
-                          Qo‘shimcha ball
+                          Qöşimça ball
                         </label>
 
                         <input
@@ -412,7 +412,7 @@ export default async function CrmLessonPage({ searchParams }: PageProps) {
                           name={`izoh_${row.student_id}`}
                           defaultValue={row.note ?? ""}
                           maxLength={200}
-                          placeholder="Doskaga chiqdi, yordam berdi..."
+                          placeholder="Doskaga çiqdi, yordam berdi..."
                           className="mt-1 min-h-11 w-full rounded-xl border border-slate-300 bg-white px-3 outline-none transition focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
                         />
                       </div>
@@ -436,7 +436,7 @@ export default async function CrmLessonPage({ searchParams }: PageProps) {
                   strokeWidth={2.2}
                   aria-hidden="true"
                 />
-                Kunni saqlash ({rows.length} o‘quvchi)
+                Kunni saqlaş ({rows.length} öquvçi)
               </SubmitButton>
             </div>
           </form>

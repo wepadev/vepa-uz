@@ -29,7 +29,7 @@ export function normalizeVideoUrl(
     return {
       value: null,
       error:
-        "Havola to‘liq bo‘lishi kerak: https:// bilan boshlansin.",
+        "Havola töliq bölişi kerak: https:// bilan boşlansin.",
     };
   }
 
@@ -56,7 +56,7 @@ export function normalizeVideoUrl(
   if (!allowed.includes(host)) {
     return {
       value: null,
-      error: "Hozircha faqat YouTube havolasi qo‘llab-quvvatlanadi.",
+      error: "Hozirça faqat YouTube havolasi qöllab-quvvatlanadi.",
     };
   }
 

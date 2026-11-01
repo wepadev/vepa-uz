@@ -47,17 +47,17 @@ export default async function Page({
 
           <div className="max-w-xl">
             <p className="inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-semibold ring-1 ring-white/20">
-              Matematika — aniq va tushunarli
+              Matematika — aniq va tuşunarli
             </p>
 
             <h1 className="mt-6 text-5xl font-bold leading-tight">
-              Darslar, testlar va natijalar — barchasi bir joyda.
+              Darslar, testlar va natijalar — barçasi bir joyda.
             </h1>
 
             <p className="mt-5 max-w-lg text-lg leading-8 text-blue-100">
               Email yoki Google hisobingiz orqali kiring. Yangi
-              foydalanuvchilar shu sahifaning o‘zida ro‘yxatdan
-              o‘tishi mumkin.
+              foydalanuvçilar şu sahifaning özida röyxatdan
+              ötişi mumkin.
             </p>
 
             <div className="mt-9 grid gap-4 sm:grid-cols-3">

@@ -39,7 +39,7 @@ export default function CreateLessonCategoryForm({
       className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
     >
       <h2 className="text-2xl font-bold">
-        Yangi dars bo‘limi
+        Yangi dars bölimi
       </h2>
 
       <p className="mt-2 text-sm leading-6 text-slate-500">
@@ -51,7 +51,7 @@ export default function CreateLessonCategoryForm({
         htmlFor="title"
         className="mt-6 block text-sm font-semibold"
       >
-        Bo‘lim nomi
+        Bölim nomi
       </label>
 
       <input
@@ -86,14 +86,14 @@ export default function CreateLessonCategoryForm({
         htmlFor="description"
         className="mt-5 block text-sm font-semibold"
       >
-        Qisqacha tavsif
+        Qisqaça tavsif
       </label>
 
       <textarea
         id="description"
         name="description"
         rows={4}
-        placeholder="Bu bo‘limda qanday mavzular o‘rgatiladi?"
+        placeholder="Bu bölimda qanday mavzular örgatiladi?"
         className={`${fieldClass()} resize-y`}
       />
 
@@ -113,8 +113,8 @@ export default function CreateLessonCategoryForm({
         className="mt-6 w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {pending
-          ? "Bo‘lim yaratilmoqda..."
-          : "Bo‘limni yaratish"}
+          ? "Bölim yaratilmoqda..."
+          : "Bölimni yaratiş"}
       </SubmitButton>
     </form>
   );

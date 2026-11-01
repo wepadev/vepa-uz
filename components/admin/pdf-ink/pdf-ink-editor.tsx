@@ -437,11 +437,11 @@ export default function PdfInkEditor() {
 
     const isPdfName = /\.pdf$/i.test(file.name) || file.type === "application/pdf";
     if (!isPdfName) {
-      setError("Faqat PDF fayl ochiladi.");
+      setError("Faqat PDF fayl oçiladi.");
       return;
     }
 
-    if (dirty && !window.confirm("Saqlanmagan yozuvlar o'chib ketadi. Yangi PDF ochilsinmi?")) {
+    if (dirty && !window.confirm("Saqlanmagan yozuvlar öçib ketadi. Yangi PDF oçilsinmi?")) {
       return;
     }
 
@@ -493,7 +493,7 @@ export default function PdfInkEditor() {
           ? "Bu fayl PDF emas yoki buzilgan."
           : /password/i.test(message)
             ? "PDF parol bilan himoyalangan. Avval parolsiz nusxasini oling."
-            : "PDF ochilmadi. Fayl buzilgan bo'lishi mumkin.",
+            : "PDF oçilmadi. Fayl buzilgan bölişi mumkin.",
       );
     } finally {
       setLoading(false);
@@ -525,7 +525,7 @@ export default function PdfInkEditor() {
         setNotice(whole ? "PDF saqlandi." : `${chosen.length} ta bet PDF qilib saqlandi.`);
       }
     } catch {
-      setError("PDF saqlanmadi. Qaytadan urinib ko'ring.");
+      setError("PDF saqlanmadi. Qaytadan urinib köring.");
     } finally {
       setSaving(false);
     }
@@ -571,7 +571,7 @@ export default function PdfInkEditor() {
   function deletePage() {
     const current = pagesRef.current;
     if (current.length <= 1) return;
-    if (!window.confirm(`${currentPage + 1}-sahifa olib tashlansinmi?`)) return;
+    if (!window.confirm(`${currentPage + 1}-sahifa olib taşlansinmi?`)) return;
     commit(current.filter((_, i) => i !== currentPage));
     setCurrentPage((i) => Math.min(i, current.length - 2));
   }
@@ -941,11 +941,11 @@ export default function PdfInkEditor() {
             <FileUp className="h-10 w-10 text-mb-brand" strokeWidth={1.8} aria-hidden="true" />
           )}
           <span className="text-lg font-bold text-mb-ink">
-            {loading ? "PDF ochilmoqda…" : "PDF faylni tanlang"}
+            {loading ? "PDF oçilmoqda…" : "PDF faylni tanlang"}
           </span>
           <span className="max-w-md text-sm leading-6 text-mb-muted">
-            yoki shu yerga sudrab tashlang. Faqat PDF ochiladi. Fayl serverga
-            yuborilmaydi — hammasi shu kompyuterda qoladi.
+            yoki şu yerga sudrab taşlang. Faqat PDF oçiladi. Fayl serverga
+            yuborilmaydi — hammasi şu kompyuterda qoladi.
           </span>
         </button>
 
@@ -956,9 +956,9 @@ export default function PdfInkEditor() {
         )}
 
         <ul className="mt-6 space-y-1.5 text-sm text-mb-muted">
-          <li>Qalam (P), Marker (M), To‘g‘ri chiziq (L), O‘chirg‘ich (E), Surish (H).</li>
-          <li>Ctrl+Z — orqaga, Ctrl+Y — oldinga, Ctrl+S — PDF saqlash.</li>
-          <li>Kattalashtirish — ekranda ikki barmoq bilan yoki Ctrl + sichqoncha g‘ildiragi.</li>
+          <li>Qalam (P), Marker (M), Töğri çiziq (L), Öçirğiç (E), Suriş (H).</li>
+          <li>Ctrl+Z — orqaga, Ctrl+Y — oldinga, Ctrl+S — PDF saqlaş.</li>
+          <li>Kattalaştiriş — ekranda ikki barmoq bilan yoki Ctrl + siçqonça ğildiragi.</li>
         </ul>
       </div>
     );
@@ -991,7 +991,7 @@ export default function PdfInkEditor() {
           <div className="scroll-x flex min-w-0 flex-1 items-center gap-1 overflow-x-auto py-1.5 pl-2 sm:pl-3">
             <ToolButton
               icon={FileUp}
-              label="Boshqa PDF ochish"
+              label="Boşqa PDF oçiş"
               onClick={() => fileInputRef.current?.click()}
             />
             <span
@@ -1006,7 +1006,7 @@ export default function PdfInkEditor() {
 
             <ToolButton
               icon={PenIcon}
-              label="Qalam (P) — qayta bosing: qalam turi va o‘lchami"
+              label="Qalam (P) — qayta bosing: qalam turi va ölçami"
               active={tool === "pen"}
               onClick={() => pickPenLike("pen")}
             />
@@ -1018,17 +1018,17 @@ export default function PdfInkEditor() {
             />
             <ToolButton
               icon={Minus}
-              label="To‘g‘ri chiziq (L)"
+              label="Töğri çiziq (L)"
               active={tool === "line"}
               onClick={() => pickPenLike("line")}
             />
             <ToolButton
               icon={Eraser}
-              label="O‘chirg‘ich (E)"
+              label="Öçirğiç (E)"
               active={tool === "eraser"}
               onClick={() => setTool("eraser")}
             />
-            <ToolButton icon={Hand} label="Surish (H)" active={tool === "hand"} onClick={() => setTool("hand")} />
+            <ToolButton icon={Hand} label="Suriş (H)" active={tool === "hand"} onClick={() => setTool("hand")} />
 
             {showStyle && (
               <>
@@ -1055,7 +1055,7 @@ export default function PdfInkEditor() {
 
                 {!isMarker && (
                   <label
-                    title="Boshqa rang"
+                    title="Boşqa rang"
                     className="relative grid h-10 w-8 shrink-0 cursor-pointer place-items-center"
                   >
                     <span className="grid h-6 w-6 place-items-center rounded-full border border-dashed border-slate-400 text-slate-600">
@@ -1063,7 +1063,7 @@ export default function PdfInkEditor() {
                     </span>
                     <input
                       type="color"
-                      aria-label="Boshqa rang"
+                      aria-label="Boşqa rang"
                       value={penColor}
                       onChange={(event) => {
                         const value = event.target.value.toUpperCase();
@@ -1084,8 +1084,8 @@ export default function PdfInkEditor() {
                   <button
                     key={w}
                     type="button"
-                    title={["Ingichka", "O‘rtacha", "Qalin"][i]}
-                    aria-label={["Ingichka", "O‘rtacha", "Qalin"][i]}
+                    title={["Ingiçka", "Örtaça", "Qalin"][i]}
+                    aria-label={["Ingiçka", "Örtaça", "Qalin"][i]}
                     aria-pressed={w === width}
                     onClick={() => setMarkerWidth(w)}
                     className={cn(
@@ -1117,7 +1117,7 @@ export default function PdfInkEditor() {
             {/* Kattalik ikki barmoq / Ctrl + g'ildirak bilan; bu yerda faqat foiz */}
             <button
               type="button"
-              title="Ikki barmoq bilan kattalashtiring. Bosilsa — sahifa kengligiga moslanadi"
+              title="Ikki barmoq bilan kattalaştiring. Bosilsa — sahifa kengligiga moslanadi"
               onClick={() => {
                 const box = scrollRef.current?.clientWidth ?? window.innerWidth;
                 const widest = Math.max(...pages.map((page) => page.width), 1);
@@ -1133,20 +1133,20 @@ export default function PdfInkEditor() {
             <div className="relative shrink-0">
               <ToolButton
                 icon={FilePlus}
-                label="Bo‘sh sahifa qo‘shish"
+                label="Böş sahifa qöşiş"
                 active={blankMenu}
                 onClick={() => setBlankMenu((open) => !open)}
               />
             </div>
             <ToolButton
               icon={Trash2}
-              label="Shu sahifadagi yozuvni tozalash"
+              label="Şu sahifadagi yozuvni tozalaş"
               disabled={!pages[currentPage]?.strokes.length}
               onClick={clearPage}
             />
             <ToolButton
               icon={X}
-              label="Shu sahifani olib tashlash"
+              label="Şu sahifani olib taşlaş"
               disabled={pages.length <= 1}
               onClick={deletePage}
             />
@@ -1155,7 +1155,7 @@ export default function PdfInkEditor() {
 
             <button
               type="button"
-              title="Yoqilsa, barmoq yozmaydi — sahifani suradi. Planshet qalami uchun."
+              title="Yoqilsa, barmoq yozmaydi — sahifani suradi. Planşet qalami uçun."
               aria-label="Faqat qalam"
               aria-pressed={penOnly}
               onClick={() => setPenOnly((on) => !on)}
@@ -1176,8 +1176,8 @@ export default function PdfInkEditor() {
           <button
             type="button"
             onClick={() => setExportPanel((open) => !open)}
-            title="PDF saqlash (Ctrl+S — hamma betlar)"
-            aria-label="PDF saqlash"
+            title="PDF saqlaş (Ctrl+S — hamma betlar)"
+            aria-label="PDF saqlaş"
             disabled={saving}
             className="inline-flex h-10 shrink-0 items-center gap-2 rounded-xl bg-mb-brand px-4 text-sm font-semibold text-white transition hover:bg-mb-brandDark disabled:opacity-60"
           >
@@ -1186,7 +1186,7 @@ export default function PdfInkEditor() {
             ) : (
               <Download className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
             )}
-            <span className="hidden sm:inline">PDF saqlash</span>
+            <span className="hidden sm:inline">PDF saqlaş</span>
           </button>
         </div>
 
@@ -1232,7 +1232,7 @@ export default function PdfInkEditor() {
 
         {blankMenu && (
           <div className="flex flex-wrap items-center gap-2 border-t border-mb-line px-3 py-2 text-sm">
-            <span className="text-mb-muted">{currentPage + 1}-sahifadan keyin qo‘shish:</span>
+            <span className="text-mb-muted">{currentPage + 1}-sahifadan keyin qöşiş:</span>
             <button
               type="button"
               onClick={() => addBlankPage("blank")}

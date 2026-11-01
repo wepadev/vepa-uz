@@ -255,7 +255,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
               href="/admin/tests"
               className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
             >
-              ← Testlarga qaytish
+              ← Testlarga qaytiş
             </Link>
 
             <h1 className="text-xl font-bold sm:text-2xl">{test.title}</h1>
@@ -294,7 +294,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                     : "min-h-10 rounded-xl bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700"
                 }
               >
-                {test.is_published ? "Testni yopish" : "Nashr qilish"}
+                {test.is_published ? "Testni yopiş" : "Naşr qiliş"}
               </SubmitButton>
             </form>
 
@@ -302,7 +302,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
               <form action={renumberQuestionNumbers}>
                 <input type="hidden" name="testId" value={test.id} />
                 <SubmitButton className={rowMenuItem}>
-                  Raqamlarni tartiblash
+                  Raqamlarni tartiblaş
                 </SubmitButton>
               </form>
             </RowMenu>
@@ -313,7 +313,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
       <section className="mx-auto max-w-4xl px-3 py-5 sm:px-6 sm:py-6">
         <details className="group/edit mb-4 rounded-2xl open:border open:border-mb-line open:bg-white open:shadow-sm">
           <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand group-open/edit:px-4">
-            Test nomi, vaqti va tavsifini tahrirlash
+            Test nomi, vaqti va tavsifini tahrirlaş
           </summary>
 
           <form
@@ -370,7 +370,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
             <SubmitButton
               className="mt-6 rounded-xl bg-slate-900 px-6 py-3 font-semibold text-white hover:bg-slate-800"
             >
-              O‘zgarishlarni saqlash
+              Özgarişlarni saqlaş
             </SubmitButton>
           </form>
         </details>
@@ -379,25 +379,25 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
           {usedByStudents && (
             <div className="mb-4 rounded-2xl border border-amber-300 bg-amber-50 p-4 sm:p-5">
               <p className="font-bold text-amber-900">
-                Diqqat: bu testni {attemptCount} ta o‘quvchi ishlagan
+                Diqqat: bu testni {attemptCount} ta öquvçi işlagan
               </p>
 
               <p className="mt-1 text-sm leading-6 text-amber-800">
-                Savolni tahrirlasangiz yoki o‘chirsangiz, eski natijalar
-                yangi savolga ishora qila boshlaydi — o‘quvchining
-                “Batafsil” sahifasida javoblar noto‘g‘ri ko‘rinadi.
+                Savolni tahrirlasangiz yoki öçirsangiz, eski natijalar
+                yangi savolga işora qila boşlaydi — öquvçining
+                “Batafsil” sahifasida javoblar notöğri körinadi.
                 Reyting ballari ham qayta hisoblanmaydi.
               </p>
 
               <p className="mt-2 text-sm leading-6 text-amber-800">
-                Xato topgan bo‘lsangiz, tahrirlash o‘rniga yangi test
+                Xato topgan bölsangiz, tahrirlaş örniga yangi test
                 yaratib, eskisini yopgan ma’qul.
               </p>
             </div>
           )}
 
           <CreatePanel
-            label="Savol qo‘shish"
+            label="Savol qöşiş"
             defaultOpen={displayItems.length === 0 || Boolean(turValue)}
           >
             <div className="p-4 sm:p-5">
@@ -440,12 +440,12 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                   name="questionText"
                   required
                   rows={4}
-                  placeholder="Masalan: 2 + 3 nechaga teng?"
+                  placeholder="Masalan: 2 + 3 neçaga teng?"
                   className={textareaClass}
                 />
 
                 <label className="mt-5 block text-sm font-semibold">
-                  Savol rasmi yoki chizmasi
+                  Savol rasmi yoki çizmasi
                   <span className="ml-1 font-normal text-slate-500">
                     (ixtiyoriy)
                   </span>
@@ -480,7 +480,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                 </div>
 
                 <label className="mt-5 block text-sm font-semibold">
-                  To‘g‘ri javob
+                  Töğri javob
                 </label>
 
                 <select
@@ -501,7 +501,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                 <div className="mt-5 grid gap-4 md:grid-cols-2">
                   <div>
                     <label className="block text-sm font-semibold">
-                      Yozma yechim
+                      Yozma yeçim
                     </label>
 
                     <textarea
@@ -514,7 +514,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
 
                   <div>
                     <label className="block text-sm font-semibold">
-                      Videoyechim havolasi
+                      Videoyeçim havolasi
                     </label>
 
                     <input
@@ -529,7 +529,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                 <SubmitButton
                   className="mt-6 rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
                 >
-                  Oddiy savolni qo‘shish
+                  Oddiy savolni qöşiş
                 </SubmitButton>
               </form>
             </div>
@@ -551,14 +551,14 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                 <textarea
                   name="writtenStimulusText"
                   rows={4}
-                  placeholder="a) va b) qismlariga tegishli umumiy shart"
+                  placeholder="a) va b) qismlariga tegişli umumiy şart"
                   className={textareaClass}
                 />
 
                 <label className="mt-5 block text-sm font-semibold">
-                  Umumiy chizma yoki rasm
+                  Umumiy çizma yoki rasm
                   <span className="ml-1 font-normal text-slate-500">
-                    (matn bo‘lmasa majburiy)
+                    (matn bölmasa majburiy)
                   </span>
                 </label>
 
@@ -594,12 +594,12 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                         name={`${part.prefix}Text`}
                         required
                         rows={3}
-                        placeholder={`${part.label}) topshiriq`}
+                        placeholder={`${part.label}) topşiriq`}
                         className={textareaClass}
                       />
 
                       <label className="mt-4 block text-sm font-semibold">
-                        Asosiy to‘g‘ri javob
+                        Asosiy töğri javob
                       </label>
 
                       <input
@@ -610,7 +610,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                       />
 
                       <label className="mt-4 block text-sm font-semibold">
-                        Boshqa qabul qilinadigan javoblar
+                        Boşqa qabul qilinadigan javoblar
                       </label>
 
                       <textarea
@@ -625,7 +625,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                       </p>
 
                       <label className="mt-4 block text-sm font-semibold">
-                        Yechim
+                        Yeçim
                       </label>
 
                       <textarea
@@ -636,7 +636,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                       />
 
                       <label className="mt-4 block text-sm font-semibold">
-                        Videoyechim
+                        Videoyeçim
                       </label>
 
                       <input
@@ -652,7 +652,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                 <SubmitButton
                   className="mt-6 rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
                 >
-                  a)–b) yozma savolni qo‘shish
+                  a)–b) yozma savolni qöşiş
                 </SubmitButton>
               </form>
             </div>
@@ -668,20 +668,20 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                 <input type="hidden" name="testId" value={test.id} />
 
                 <label className="block text-sm font-semibold">
-                  Uchta savol uchun umumiy matn
+                  Uçta savol uçun umumiy matn
                 </label>
 
                 <textarea
                   name="sharedStimulusText"
                   rows={4}
-                  placeholder="33–35-savollar uchun umumiy shart"
+                  placeholder="33–35-savollar uçun umumiy şart"
                   className={textareaClass}
                 />
 
                 <label className="mt-5 block text-sm font-semibold">
-                  Umumiy chizma yoki rasm
+                  Umumiy çizma yoki rasm
                   <span className="ml-1 font-normal text-slate-500">
-                    (matn bo‘lmasa majburiy)
+                    (matn bölmasa majburiy)
                   </span>
                 </label>
 
@@ -711,7 +711,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                   ))}
                 </div>
 
-                <h3 className="mt-7 text-lg font-bold">Uchta ichki savol</h3>
+                <h3 className="mt-7 text-lg font-bold">Uçta içki savol</h3>
 
                 <div className="mt-4 grid gap-5 lg:grid-cols-3">
                   {[1, 2, 3].map((number) => (
@@ -729,12 +729,12 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                         name={`sharedQuestion${number}Text`}
                         required
                         rows={3}
-                        placeholder={`${number}-ichki savol`}
+                        placeholder={`${number}-içki savol`}
                         className={textareaClass}
                       />
 
                       <label className="mt-4 block text-sm font-semibold">
-                        To‘g‘ri javob
+                        Töğri javob
                       </label>
 
                       <select
@@ -756,7 +756,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                       </select>
 
                       <label className="mt-4 block text-sm font-semibold">
-                        Yechim
+                        Yeçim
                       </label>
 
                       <textarea
@@ -767,7 +767,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                       />
 
                       <label className="mt-4 block text-sm font-semibold">
-                        Videoyechim
+                        Videoyeçim
                       </label>
 
                       <input
@@ -783,7 +783,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                 <SubmitButton
                   className="mt-6 rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white hover:bg-emerald-700"
                 >
-                  Umumiy A–F blokni qo‘shish
+                  Umumiy A–F blokni qöşiş
                 </SubmitButton>
               </form>
             </div>
@@ -834,10 +834,10 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                             />
                             <ConfirmSubmitButton
                               className={rowMenuDanger}
-                              title="Savol o‘chirilsinmi?"
-                              description={`${question.order_number}-savol butunlay o‘chiriladi.`}
+                              title="Savol öçirilsinmi?"
+                              description={`${question.order_number}-savol butunlay öçiriladi.`}
                             >
-                              O‘chirish
+                              Öçiriş
                             </ConfirmSubmitButton>
                           </form>
                         </RowMenu>
@@ -849,7 +849,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                             loading="lazy"
                             decoding="async"
                             src={imageUrl}
-                            alt={`${question.order_number}-savol chizmasi`}
+                            alt={`${question.order_number}-savol çizmasi`}
                             className="mx-auto max-h-[260px] w-auto max-w-full rounded-lg object-contain"
                           />
                         </div>
@@ -875,7 +875,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
 
                       {answer?.solution_text && (
                         <div className="mt-5 rounded-xl bg-blue-50 p-4 text-sm leading-6 text-blue-900">
-                          <strong>Yechim:</strong>
+                          <strong>Yeçim:</strong>
                           <div className="mt-2">
                             <MathValue value={answer.solution_text} />
                           </div>
@@ -889,7 +889,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                           rel="noreferrer"
                           className="mt-4 inline-block text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
                         >
-                          Videoyechimni ochish →
+                          Videoyeçimni oçiş →
                         </a>
                       )}
 
@@ -898,7 +898,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                         className="group/edit mt-2 rounded-xl open:border open:border-blue-200 open:bg-blue-50/40"
                       >
                         <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand group-open/edit:px-4">
-                          Tahrirlash
+                          Tahrirlaş
                         </summary>
 
                         <form
@@ -942,7 +942,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                           </div>
 
                           <label className="mt-5 block text-sm font-semibold">
-                            To‘g‘ri javob
+                            Töğri javob
                           </label>
 
                           <select
@@ -961,7 +961,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                           </select>
 
                           <label className="mt-5 block text-sm font-semibold">
-                            Rasmni almashtirish
+                            Rasmni almaştiriş
                             <span className="ml-1 font-normal text-slate-500">
                               (ixtiyoriy)
                             </span>
@@ -982,14 +982,14 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                                 value="true"
                                 className="h-4 w-4"
                               />
-                              Joriy rasmni o‘chirish
+                              Joriy rasmni öçiriş
                             </label>
                           )}
 
                           <div className="mt-5 grid gap-4 md:grid-cols-2">
                             <div>
                               <label className="block text-sm font-semibold">
-                                Yozma yechim
+                                Yozma yeçim
                               </label>
 
                               <textarea
@@ -1002,7 +1002,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
 
                             <div>
                               <label className="block text-sm font-semibold">
-                                Videoyechim havolasi
+                                Videoyeçim havolasi
                               </label>
 
                               <input
@@ -1019,7 +1019,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                           <SubmitButton
                             className="mt-6 rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
                           >
-                            O‘zgarishlarni saqlash
+                            Özgarişlarni saqlaş
                           </SubmitButton>
                         </form>
                       </details>
@@ -1067,10 +1067,10 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                           <input type="hidden" name="blockId" value={block.id} />
                           <ConfirmSubmitButton
                             className={rowMenuDanger}
-                            title="Blok o‘chirilsinmi?"
-                            description="Blok va uning ichidagi barcha savollar butunlay o‘chiriladi."
+                            title="Blok öçirilsinmi?"
+                            description="Blok va uning içidagi barça savollar butunlay öçiriladi."
                           >
-                            Blokni o‘chirish
+                            Blokni öçiriş
                           </ConfirmSubmitButton>
                         </form>
                       </RowMenu>
@@ -1088,7 +1088,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                           loading="lazy"
                           decoding="async"
                           src={imageUrl}
-                          alt="Umumiy savol chizmasi"
+                          alt="Umumiy savol çizmasi"
                           className="mx-auto max-h-[260px] w-auto max-w-full rounded-lg object-contain"
                         />
                       </div>
@@ -1145,7 +1145,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                               answer &&
                               answer.accepted_answers.length > 0 && (
                                 <div className="mt-3 text-sm text-slate-500">
-                                  <span>Qabul qilinadigan boshqa javoblar:</span>
+                                  <span>Qabul qilinadigan boşqa javoblar:</span>
                                   <div className="mt-1">
                                     <MathValue
                                       value={answer.accepted_answers.join(", ")}
@@ -1156,7 +1156,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
 
                             {answer?.solution_text && (
                               <div className="mt-4 rounded-xl bg-blue-50 p-4 text-sm leading-6 text-blue-900">
-                                <strong>Yechim:</strong>
+                                <strong>Yeçim:</strong>
                                 <div className="mt-2">
                                   <MathValue value={answer.solution_text} />
                                 </div>
@@ -1170,7 +1170,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                                 rel="noreferrer"
                                 className="mt-4 inline-block text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
                               >
-                                Videoyechimni ochish →
+                                Videoyeçimni oçiş →
                               </a>
                             )}
                           </div>
@@ -1180,7 +1180,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
 
                     <details className="group/edit mt-2 rounded-xl open:border open:border-slate-200 open:bg-slate-50">
                       <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand group-open/edit:px-4">
-                        Tahrirlash
+                        Tahrirlaş
                       </summary>
 
                       <form
@@ -1207,7 +1207,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                         />
 
                         <label className="mt-5 block text-sm font-semibold">
-                          Umumiy rasmni almashtirish
+                          Umumiy rasmni almaştiriş
                           <span className="ml-1 font-normal text-slate-500">
                             (ixtiyoriy)
                           </span>
@@ -1228,7 +1228,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                               value="true"
                               className="h-4 w-4"
                             />
-                            Joriy rasmni o‘chirish
+                            Joriy rasmni öçiriş
                           </label>
                         )}
 
@@ -1263,7 +1263,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                                   />
 
                                   <label className="mt-4 block text-sm font-semibold">
-                                    To‘g‘ri javob
+                                    Töğri javob
                                   </label>
 
                                   <input
@@ -1276,7 +1276,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                                   />
 
                                   <label className="mt-4 block text-sm font-semibold">
-                                    Boshqa qabul qilinadigan javoblar
+                                    Boşqa qabul qilinadigan javoblar
                                   </label>
 
                                   <textarea
@@ -1290,7 +1290,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                                   />
 
                                   <label className="mt-4 block text-sm font-semibold">
-                                    Yechim
+                                    Yeçim
                                   </label>
 
                                   <textarea
@@ -1303,7 +1303,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                                   />
 
                                   <label className="mt-4 block text-sm font-semibold">
-                                    Videoyechim
+                                    Videoyeçim
                                   </label>
 
                                   <input
@@ -1370,7 +1370,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                                     />
 
                                     <label className="mt-4 block text-sm font-semibold">
-                                      To‘g‘ri javob
+                                      Töğri javob
                                     </label>
 
                                     <select
@@ -1391,7 +1391,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                                     </select>
 
                                     <label className="mt-4 block text-sm font-semibold">
-                                      Yechim
+                                      Yeçim
                                     </label>
 
                                     <textarea
@@ -1404,7 +1404,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                                     />
 
                                     <label className="mt-4 block text-sm font-semibold">
-                                      Videoyechim
+                                      Videoyeçim
                                     </label>
 
                                     <input
@@ -1425,7 +1425,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                         <SubmitButton
                           className="mt-6 rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
                         >
-                          O‘zgarishlarni saqlash
+                          Özgarişlarni saqlaş
                         </SubmitButton>
                       </form>
                     </details>

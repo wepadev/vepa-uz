@@ -9,9 +9,9 @@ import { requireSectionAccess } from "@/lib/require-section-access";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Darslik yechimlari",
+  title: "Darslik yeçimlari",
   description:
-    "Maktab darsliklari va TOP kitoblar yechimlari: har bir misolning yozma yechimi va mavzu videosi.",
+    "Maktab darsliklari va TOP kitoblar yeçimlari: har bir misolning yozma yeçimi va mavzu videosi.",
 };
 
 type TextbookRow = {
@@ -81,8 +81,8 @@ export default async function TextbooksPage() {
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <TextbooksHeader
         backHref="/"
-        backLabel="Bosh sahifa"
-        title="Darslik yechimlari"
+        backLabel="Boş sahifa"
+        title="Darslik yeçimlari"
         subtitle="Maktab darsliklari va TOP kitoblar"
         chips={[
           `${textbooks.length} ta kitob`,
@@ -102,7 +102,7 @@ export default async function TextbooksPage() {
               href: "/textbooks/school",
               icon: School,
               title: "Maktab darsliklari",
-              text: "5–11-sinf darslik yechimlari.",
+              text: "5–11-sinf darslik yeçimlari.",
               meta: `${schoolCount} ta darslik`,
               tone: "bg-amber-50 text-amber-700",
               ghost: "text-amber-50",
@@ -112,7 +112,7 @@ export default async function TextbooksPage() {
               href: "/textbooks/popular",
               icon: BookMarked,
               title: "TOP kitoblar",
-              text: "Imtihonga tayyorlanish to‘plamlari.",
+              text: "Imtihonga tayyorlaniş töplamlari.",
               meta: `${popularCount} ta kitob`,
               tone: "bg-amber-50 text-amber-700",
               ghost: "text-amber-50",

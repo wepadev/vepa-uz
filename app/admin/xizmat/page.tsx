@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Texnik xizmat",
-  description: "Bazani tozalash va hajmini kuzatish.",
+  description: "Bazani tozalaş va hajmini kuzatiş.",
 };
 
 type PageProps = {
@@ -82,7 +82,7 @@ async function runCleanup(formData: FormData) {
   if (error) {
     const message =
       error.code === "PGRST202" || error.code === "42883"
-        ? "Supabase’da db/30-tozalash.sql faylini ishga tushiring."
+        ? "Supabase’da db/30-tozalaş.sql faylini işga tuşiring."
         : error.message;
 
     redirect(`/admin/xizmat?xato=${encodeURIComponent(message)}`);
@@ -135,15 +135,15 @@ export default async function AdminMaintenancePage({
         </h1>
 
         <p className="mt-2 text-sm leading-6 text-mb-muted">
-          Ish jarayonidan qolgan chiqindini o‘chiradi: yopilgan
-          sessiyalar, javob qoralamalari, tashlab ketilgan urinishlar
-          va yopilgan takrorlash savollari.
+          Iş jarayonidan qolgan çiqindini öçiradi: yopilgan
+          sessiyalar, javob qoralamalari, taşlab ketilgan urinişlar
+          va yopilgan takrorlaş savollari.
         </p>
 
         {migrationMissing && (
-          <AppAlert variant="warning" title="Fayl ishga tushirilmagan" className="mt-5">
-            Supabase’da <b>db/30-tozalash.sql</b> faylini ishga
-            tushiring.
+          <AppAlert variant="warning" title="Fayl işga tuşirilmagan" className="mt-5">
+            Supabase’da <b>db/30-tozalaş.sql</b> faylini işga
+            tuşiring.
           </AppAlert>
         )}
 
@@ -166,9 +166,9 @@ export default async function AdminMaintenancePage({
           </p>
 
           <p className="mt-1 text-sm leading-6 text-emerald-800">
-            Tugallangan urinishlar va javoblar, reyting, testlar va
-            savollar, darslar, darslik yechimlari, guruhlar, ballar,
-            tangalar hamda sovg‘a tarixi.
+            Tugallangan urinişlar va javoblar, reyting, testlar va
+            savollar, darslar, darslik yeçimlari, guruhlar, ballar,
+            tangalar hamda sovğa tarixi.
           </p>
         </div>
 
@@ -181,7 +181,7 @@ export default async function AdminMaintenancePage({
             htmlFor="days"
             className="text-sm font-semibold text-slate-700"
           >
-            Qanchadan eskisi o‘chsin
+            Qançadan eskisi öçsin
           </label>
 
           <div className="mt-2 flex flex-col gap-2 sm:flex-row">
@@ -207,13 +207,13 @@ export default async function AdminMaintenancePage({
                 strokeWidth={2.2}
                 aria-hidden="true"
               />
-              Tozalash
+              Tozalaş
             </SubmitButton>
           </div>
 
           <p className="mt-2 text-xs leading-5 text-mb-muted">
-            Oyda bir marta bosish yetarli. Bir necha marta bossangiz
-            ham hech narsa buzilmaydi.
+            Oyda bir marta bosiş yetarli. Bir neça marta bossangiz
+            ham heç narsa buzilmaydi.
           </p>
         </form>
 

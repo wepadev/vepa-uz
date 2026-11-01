@@ -26,12 +26,12 @@ export default function UpdatePasswordPage() {
             </p>
 
             <h1 className="mt-6 text-5xl font-bold leading-tight">
-              Akkauntingiz uchun yangi parol yarating.
+              Akkauntingiz uçun yangi parol yarating.
             </h1>
 
             <p className="mt-5 max-w-lg text-lg leading-8 text-blue-100">
-              Esda saqlash oson, lekin boshqalar topishi
-              qiyin bo‘lgan paroldan foydalaning.
+              Esda saqlaş oson, lekin boşqalar topişi
+              qiyin bölgan paroldan foydalaning.
             </p>
 
             <div className="mt-9 rounded-3xl bg-white/10 p-6 ring-1 ring-white/15">
@@ -40,8 +40,8 @@ export default function UpdatePasswordPage() {
               </p>
 
               <p className="mt-2 leading-7 text-blue-100">
-                Kamida 8 ta belgi, katta-kichik harf va
-                raqam aralashmasidan foydalaning.
+                Kamida 8 ta belgi, katta-kiçik harf va
+                raqam aralaşmasidan foydalaning.
               </p>
             </div>
           </div>

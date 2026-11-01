@@ -99,7 +99,7 @@ function readPositiveInteger(formData: FormData, name: string, label: string) {
   const value = Number(formData.get(name));
 
   if (!Number.isInteger(value) || value <= 0) {
-    throw new Error(`${label} 0 dan katta butun son bo‘lishi kerak.`);
+    throw new Error(`${label} 0 dan katta butun son bölişi kerak.`);
   }
 
   return value;
@@ -109,7 +109,7 @@ function readTitle(formData: FormData) {
   const title = String(formData.get("title") ?? "").trim();
 
   if (title.length < 2) {
-    throw new Error("Mavzu nomi kamida 2 ta belgidan iborat bo‘lsin.");
+    throw new Error("Mavzu nomi kamida 2 ta belgidan iborat bölsin.");
   }
 
   return title;
@@ -119,7 +119,7 @@ async function createTopic(formData: FormData) {
   "use server";
 
   const supabase = await getAdminClient();
-  const sectionId = readPositiveInteger(formData, "sectionId", "Bo‘lim ID");
+  const sectionId = readPositiveInteger(formData, "sectionId", "Bölim ID");
   const orderNumber = readPositiveInteger(
     formData,
     "orderNumber",
@@ -185,7 +185,7 @@ async function changeTopicState(formData: FormData) {
     .eq("id", topicId);
 
   if (error) {
-    throw new Error(`Mavzu holati o‘zgarmadi: ${error.message}`);
+    throw new Error(`Mavzu holati özgarmadi: ${error.message}`);
   }
 
   revalidateCatalog();
@@ -213,7 +213,7 @@ async function toggleTopicFree(formData: FormData) {
     .eq("id", topicId);
 
   if (error) {
-    throw new Error(`Bepullik o‘zgarmadi: ${error.message}`);
+    throw new Error(`Bepullik özgarmadi: ${error.message}`);
   }
 
   revalidateCatalog();
@@ -239,12 +239,12 @@ async function deleteTopic(formData: FormData) {
     .eq("topic_id", topicId);
 
   if (countError) {
-    throw new Error(`Testlar tekshirilmadi: ${countError.message}`);
+    throw new Error(`Testlar tekşirilmadi: ${countError.message}`);
   }
 
   if ((count ?? 0) > 0) {
     throw new Error(
-      `Mavzuda ${count} ta test bor. Avval ularni ko‘chiring yoki o‘chiring.`,
+      `Mavzuda ${count} ta test bor. Avval ularni köçiring yoki öçiring.`,
     );
   }
 
@@ -254,7 +254,7 @@ async function deleteTopic(formData: FormData) {
     .eq("id", topicId);
 
   if (error) {
-    throw new Error(`Mavzu o‘chirilmadi: ${error.message}`);
+    throw new Error(`Mavzu öçirilmadi: ${error.message}`);
   }
 
   revalidateCatalog();
@@ -279,7 +279,7 @@ export default async function AdminSectionTopicsPage({
     .maybeSingle();
 
   if (sectionError) {
-    throw new Error(`Bo‘lim yuklanmadi: ${sectionError.message}`);
+    throw new Error(`Bölim yuklanmadi: ${sectionError.message}`);
   }
 
   if (!sectionData) notFound();
@@ -293,7 +293,7 @@ export default async function AdminSectionTopicsPage({
     .maybeSingle();
 
   if (examTypeError) {
-    throw new Error(`Test yo‘nalishi yuklanmadi: ${examTypeError.message}`);
+    throw new Error(`Test yönalişi yuklanmadi: ${examTypeError.message}`);
   }
 
   if (!examTypeData) notFound();
@@ -333,7 +333,7 @@ export default async function AdminSectionTopicsPage({
 
   if (firstSectionResult.error) {
     throw new Error(
-      `Bepul bo‘lim aniqlanmadi: ${firstSectionResult.error.message}`,
+      `Bepul bölim aniqlanmadi: ${firstSectionResult.error.message}`,
     );
   }
 
@@ -407,11 +407,11 @@ export default async function AdminSectionTopicsPage({
               href={`/admin/tests/sections?exam=${encodeURIComponent(examType.code)}`}
               className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
             >
-              ← {examType.title} bo‘limlariga qaytish
+              ← {examType.title} bölimlariga qaytiş
             </Link>
             <h1 className="text-xl font-bold sm:text-2xl">{section.title}</h1>
             <p className="mt-1 text-sm text-slate-500">
-              Mavzularni yarating va tartiblang. Testlar mavzu ichida turadi.
+              Mavzularni yarating va tartiblang. Testlar mavzu içida turadi.
             </p>
           </div>
 
@@ -419,7 +419,7 @@ export default async function AdminSectionTopicsPage({
             href={`/tests/topics?sectionId=${section.id}`}
             className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-700"
           >
-            Foydalanuvchi ko‘rinishi
+            Foydalanuvçi körinişi
           </Link>
         </div>
       </header>
@@ -427,10 +427,10 @@ export default async function AdminSectionTopicsPage({
       <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-8">
         {orphanCount > 0 && (
           <div className="mb-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900">
-            Bu bo‘limda mavzuga biriktirilmagan{" "}
-            <strong>{orphanCount} ta test</strong> bor. Ular o‘quvchiga
-            ko‘rinmaydi. db/34 migratsiyasini Supabase’da ishga
-            tushirsangiz, ular “Umumiy” mavzusiga tushadi.
+            Bu bölimda mavzuga biriktirilmagan{" "}
+            <strong>{orphanCount} ta test</strong> bor. Ular öquvçiga
+            körinmaydi. db/34 migratsiyasini Supabase’da işga
+            tuşirsangiz, ular “Umumiy” mavzusiga tuşadi.
           </div>
         )}
 
@@ -443,7 +443,7 @@ export default async function AdminSectionTopicsPage({
             <h2 className="text-2xl font-bold">Yangi mavzu</h2>
             <p className="mt-2 text-sm leading-6 text-slate-500">
               Mavzu avval qoralama holatda yaratiladi. Testlar tayyor
-              bo‘lgach nashr qilasiz.
+              bölgaç naşr qilasiz.
             </p>
 
             <label className="mt-6 block text-sm font-bold text-slate-700">
@@ -463,7 +463,7 @@ export default async function AdminSectionTopicsPage({
             <textarea
               name="description"
               rows={3}
-              placeholder="Ixtiyoriy — mavzu haqida qisqacha"
+              placeholder="Ixtiyoriy — mavzu haqida qisqaça"
               className={textareaClass}
             />
 
@@ -489,13 +489,13 @@ export default async function AdminSectionTopicsPage({
                 }
               >
                 {isFirstPublishedSection
-                  ? "Bu yo‘nalishning birinchi bo‘limi. Tartib bo‘yicha birinchi nashr qilingan mavzudagi barcha testlar bepul bo‘ladi."
-                  : "Bu bo‘limdagi mavzular Premium bo‘ladi. Bepul mavzu yo‘nalishning birinchi bo‘limida turadi."}
+                  ? "Bu yönalişning birinçi bölimi. Tartib böyiça birinçi naşr qilingan mavzudagi barça testlar bepul böladi."
+                  : "Bu bölimdagi mavzular Premium böladi. Bepul mavzu yönalişning birinçi bölimida turadi."}
               </div>
             )}
 
             <SubmitButton className="mt-6 w-full rounded-xl bg-mb-brand px-5 py-3 font-bold text-white hover:bg-mb-brandDark">
-              Mavzuni yaratish
+              Mavzuni yaratiş
             </SubmitButton>
           </form>
         </CreatePanel>
@@ -505,40 +505,40 @@ export default async function AdminSectionTopicsPage({
             {!isGroupExam && (
               <details className="text-sm leading-6 text-slate-600">
                 <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand">
-                  Qaysi mavzu bepul bo‘ladi?
+                  Qaysi mavzu bepul böladi?
                 </summary>
                 <div className="mt-1 rounded-2xl border border-mb-line bg-white px-4 py-3">
                 {!section.is_published ? (
                   <>
-                    Bu bo‘lim hali <strong>qoralama</strong>. Avtomatik bepul
-                    mavzu faqat nashr qilingan bo‘limlarda aniqlanadi.
+                    Bu bölim hali <strong>qoralama</strong>. Avtomatik bepul
+                    mavzu faqat naşr qilingan bölimlarda aniqlanadi.
                   </>
                 ) : !isFirstPublishedSection ? (
                   <>
-                    Avtomatik bepul mavzu yo‘nalishning{" "}
-                    <strong>birinchi</strong> nashr qilingan bo‘limida
-                    turadi. Bu bo‘lim birinchi emas, shuning uchun bu yerdagi
+                    Avtomatik bepul mavzu yönalişning{" "}
+                    <strong>birinçi</strong> naşr qilingan bölimida
+                    turadi. Bu bölim birinçi emas, şuning uçun bu yerdagi
                     mavzular Premium.
                   </>
                 ) : freeTopicTitle ? (
                   <>
                     Hozir <strong>“{freeTopicTitle}”</strong> avtomatik bepul
-                    mavzu — bu bo‘limdagi birinchi nashr qilingan mavzu.
+                    mavzu — bu bölimdagi birinçi naşr qilingan mavzu.
                   </>
                 ) : (
                   <>
-                    Hozir avtomatik bepul mavzu yo‘q: bu bo‘limda nashr
-                    qilingan mavzu hali yo‘q. Qoralama mavzu o‘quvchiga
-                    ko‘rinmaydi, shuning uchun u bepul ham bo‘lmaydi.
+                    Hozir avtomatik bepul mavzu yöq: bu bölimda naşr
+                    qilingan mavzu hali yöq. Qoralama mavzu öquvçiga
+                    körinmaydi, şuning uçun u bepul ham bölmaydi.
                   </>
                 )}
 
                 <span className="mt-2 block">
-                  Undan tashqari istalgan mavzuni{" "}
-                  <strong>qo‘lda bepul</strong> qilib qo‘ysangiz bo‘ladi —
-                  bo‘lim Premium bo‘lsa ham o‘sha mavzu ochiq qoladi
+                  Undan taşqari istalgan mavzuni{" "}
+                  <strong>qölda bepul</strong> qilib qöysangiz böladi —
+                  bölim Premium bölsa ham öşa mavzu oçiq qoladi
                   {manualFreeCount > 0
-                    ? ` (hozir ${manualFreeCount} ta shunday mavzu bor).`
+                    ? ` (hozir ${manualFreeCount} ta şunday mavzu bor).`
                     : "."}
                 </span>
                 </div>
@@ -581,10 +581,10 @@ export default async function AdminSectionTopicsPage({
                           {!isGroupExam && (isFreeTopic || isPendingFree) && (
                             <span className="rounded-full bg-emerald-50 px-2 py-0.5 font-semibold text-emerald-700">
                               {topic.is_free
-                                ? "Qo‘lda bepul"
+                                ? "Qölda bepul"
                                 : isAutoFree
                                   ? "Bepul"
-                                  : "Nashr qilinsa bepul"}
+                                  : "Naşr qilinsa bepul"}
                             </span>
                           )}
                           <span>{testCount} test</span>
@@ -600,7 +600,7 @@ export default async function AdminSectionTopicsPage({
                             value={String(!topic.is_published)}
                           />
                           <SubmitButton className={rowMenuItem}>
-                            {topic.is_published ? "Yopish" : "Nashr qilish"}
+                            {topic.is_published ? "Yopiş" : "Naşr qiliş"}
                           </SubmitButton>
                         </form>
 
@@ -618,7 +618,7 @@ export default async function AdminSectionTopicsPage({
                               value={String(!topic.is_free)}
                             />
                             <SubmitButton className={rowMenuItem}>
-                              {topic.is_free ? "Premium qilish" : "Bepul qilish"}
+                              {topic.is_free ? "Premium qiliş" : "Bepul qiliş"}
                             </SubmitButton>
                           </form>
                         )}
@@ -628,16 +628,16 @@ export default async function AdminSectionTopicsPage({
                             <input type="hidden" name="topicId" value={topic.id} />
                             <ConfirmSubmitButton
                               className={rowMenuDanger}
-                              title="Mavzu o‘chirilsinmi?"
-                              description={`“${topic.title}” mavzusi o‘chiriladi. Ichida test yo‘q, hech qanday natija yo‘qolmaydi.`}
+                              title="Mavzu öçirilsinmi?"
+                              description={`“${topic.title}” mavzusi öçiriladi. Içida test yöq, heç qanday natija yöqolmaydi.`}
                             >
-                              O‘chirish
+                              Öçiriş
                             </ConfirmSubmitButton>
                           </form>
                         ) : (
                           <p className="px-3 py-2 text-xs leading-5 text-mb-muted">
-                            O‘chirish uchun avval ichidagi {testCount} ta testni
-                            ko‘chiring yoki o‘chiring.
+                            Öçiriş uçun avval içidagi {testCount} ta testni
+                            köçiring yoki öçiring.
                           </p>
                         )}
                       </RowMenu>
@@ -645,7 +645,7 @@ export default async function AdminSectionTopicsPage({
 
                     <details className="group/edit ml-11 mt-1 rounded-xl open:border open:border-slate-200 open:bg-slate-50">
                       <summary className="inline-flex min-h-8 cursor-pointer list-none items-center text-xs font-semibold text-mb-brand group-open/edit:px-3">
-                        Tahrirlash
+                        Tahrirlaş
                       </summary>
                       <form
                         action={updateTopic}
@@ -692,7 +692,7 @@ export default async function AdminSectionTopicsPage({
                         />
 
                         <SubmitButton className="mt-5 rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white hover:bg-blue-700">
-                          O‘zgarishlarni saqlash
+                          Özgarişlarni saqlaş
                         </SubmitButton>
                       </form>
                     </details>

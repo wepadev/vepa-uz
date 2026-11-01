@@ -9,7 +9,7 @@
  */
 export const GROUP_EXAM_CODE = "guruh-testlari";
 
-export const GROUP_EXAM_TITLE = "Guruhlar uchun maxsus testlar";
+export const GROUP_EXAM_TITLE = "Guruhlar uçun maxsus testlar";
 
 /** Guruh vazifasi uchun tanlanadigan test */
 export type GroupTestOption = {

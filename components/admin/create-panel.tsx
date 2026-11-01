@@ -30,7 +30,7 @@ export default function CreatePanel({
           aria-hidden="true"
         />
         <span className="group-open:hidden">{label}</span>
-        <span className="hidden text-slate-600 group-open:inline">Yopish</span>
+        <span className="hidden text-slate-600 group-open:inline">Yopiş</span>
       </summary>
 
       {/* Ichki formalar o'z ramkasi bilan keladi — bu yerda olib tashlanadi */}

@@ -139,7 +139,7 @@ export default function LessonCard({
             </Pill>
           ) : (
             <Pill tone={isOpen ? "blue" : "slate"}>
-              {isOpen ? "Ochiq" : "Yopiq"}
+              {isOpen ? "Oçiq" : "Yopiq"}
             </Pill>
           )}
 
@@ -194,7 +194,7 @@ export default function LessonCard({
               className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 text-sm font-bold text-white transition hover:bg-amber-600"
             >
               <Lock className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
-              Premiumga o‘tish
+              Premiumga ötiş
             </Link>
           ) : isSequenceUnlocked ? (
             <Link
@@ -207,7 +207,7 @@ export default function LessonCard({
               )}
             >
               <Play className="h-4 w-4" fill="currentColor" strokeWidth={0} aria-hidden="true" />
-              {isCompleted ? "Qayta ko‘rish" : "Ko‘rish"}
+              {isCompleted ? "Qayta köriş" : "Köriş"}
             </Link>
           ) : (
             <span className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-slate-100 px-4 text-sm font-bold text-slate-500">

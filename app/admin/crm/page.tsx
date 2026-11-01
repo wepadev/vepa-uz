@@ -19,7 +19,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Guruhlar",
   description:
-    "Uy vazifasi, davomat, ball va sovg'a do'koni — bitta joyda.",
+    "Uy vazifasi, davomat, ball va sovğa dökoni — bitta joyda.",
 };
 
 type PageProps = {
@@ -45,7 +45,7 @@ function single(value: string | string[] | undefined) {
 }
 
 function formatDate(value: string | null) {
-  if (!value) return "hali dars yo‘q";
+  if (!value) return "hali dars yöq";
 
   return new Intl.DateTimeFormat("uz-UZ", {
     day: "2-digit",
@@ -82,18 +82,18 @@ export default async function CrmPage({ searchParams }: PageProps) {
 
         <p className="mt-2 text-sm leading-6 text-mb-muted sm:text-base">
           Har bir guruh bitta joyda: saytdagi uy vazifalari, darsdagi
-          davomat va xulq, ball va sovg‘a do‘koni. O‘quvchi bitta kod
-          bilan qo‘shiladi.
+          davomat va xulq, ball va sovğa dökoni. Öquvçi bitta kod
+          bilan qöşiladi.
         </p>
 
         {migrationMissing && (
           <AppAlert
             variant="warning"
-            title="Bo‘lim tayyor emas"
+            title="Bölim tayyor emas"
             className="mt-5"
           >
-            Supabase’da <b>db/17</b> dan <b>db/21</b> gacha bo‘lgan
-            fayllarni ishga tushiring.
+            Supabase’da <b>db/17</b> dan <b>db/21</b> gaça bölgan
+            fayllarni işga tuşiring.
           </AppAlert>
         )}
 
@@ -122,11 +122,11 @@ export default async function CrmPage({ searchParams }: PageProps) {
                 strokeWidth={2.2}
                 aria-hidden="true"
               />
-              {pendingCount} ta sovg‘a so‘rovi topshirishni kutmoqda
+              {pendingCount} ta sovğa sörovi topşirişni kutmoqda
             </p>
 
             <span className="text-xs text-amber-700">
-              Guruhni ochib, <b>Sovg‘a do‘koni</b> bo‘limida
+              Guruhni oçib, <b>Sovğa dökoni</b> bölimida
               tasdiqlang.
             </span>
           </div>
@@ -154,7 +154,7 @@ export default async function CrmPage({ searchParams }: PageProps) {
             />
 
             <SubmitButton className="min-h-12 rounded-xl bg-mb-brand px-6 font-semibold text-white transition hover:bg-mb-brandDark">
-              Yaratish
+              Yaratiş
             </SubmitButton>
           </div>
         </form>
@@ -163,11 +163,11 @@ export default async function CrmPage({ searchParams }: PageProps) {
           !migrationMissing && (
             <AppAlert
               variant="info"
-              title="Hozircha guruh yo‘q"
+              title="Hozirça guruh yöq"
               className="mt-6"
             >
-              Birinchi guruhni yuqoridagi shakl orqali yarating, keyin
-              o‘quvchilarni qo‘shasiz.
+              Birinçi guruhni yuqoridagi şakl orqali yarating, keyin
+              öquvçilarni qöşasiz.
             </AppAlert>
           )
         ) : (
@@ -202,7 +202,7 @@ export default async function CrmPage({ searchParams }: PageProps) {
                       strokeWidth={2}
                       aria-hidden="true"
                     />
-                    {group.student_count} ta o‘quvchi
+                    {group.student_count} ta öquvçi
                   </span>
 
                   <span className="inline-flex items-center gap-1.5">
@@ -241,7 +241,7 @@ export default async function CrmPage({ searchParams }: PageProps) {
         {groups.length > 0 && (
           <p className="mt-6 inline-flex items-center gap-2 text-sm text-mb-muted">
             <Coins className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-            Sovg‘a do‘koni har bir guruh sahifasidan ochiladi.
+            Sovğa dökoni har bir guruh sahifasidan oçiladi.
           </p>
         )}
       </section>

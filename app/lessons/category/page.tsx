@@ -18,9 +18,9 @@ import { requireSectionAccess } from "@/lib/require-section-access";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Dars bo‘limi",
+  title: "Dars bölimi",
   description:
-    "Tanlangan bo‘limdagi videodarslar.",
+    "Tanlangan bölimdagi videodarslar.",
 };
 
 type PageProps = {
@@ -273,7 +273,7 @@ export default async function LessonCategoryPage({
                 href="/lessons"
                 className="text-sm font-semibold text-blue-600 hover:text-blue-700"
               >
-                ← Dars bo‘limlariga qaytish
+                ← Dars bölimlariga qaytiş
               </Link>
 
               <h1 className="mt-0.5 truncate text-lg font-bold sm:text-2xl">
@@ -329,7 +329,7 @@ export default async function LessonCategoryPage({
 
         {lessons.length === 0 ? (
           <div className="mt-6 rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-12 text-center">
-            <p className="text-lg font-bold">Hozircha dars yo‘q</p>
+            <p className="text-lg font-bold">Hozirça dars yöq</p>
           </div>
         ) : (
           <div className="mt-5 grid gap-3 sm:mt-7 sm:grid-cols-2 sm:gap-4 xl:grid-cols-3">

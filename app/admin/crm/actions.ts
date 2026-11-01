@@ -88,7 +88,7 @@ export async function createCrmGroup(formData: FormData) {
   const title = text(formData, "title");
 
   if (title.length < 2) {
-    back("/admin/crm", "Guruh nomi kamida 2 ta belgidan iborat bo‘lsin.");
+    back("/admin/crm", "Guruh nomi kamida 2 ta belgidan iborat bölsin.");
   }
 
   /*
@@ -128,7 +128,7 @@ export async function updateCrmGroup(formData: FormData) {
   const path = groupPath(formData, groupId);
 
   if (title.length < 2) {
-    back(path, "Guruh nomi kamida 2 ta belgidan iborat bo‘lsin.");
+    back(path, "Guruh nomi kamida 2 ta belgidan iborat bölsin.");
   }
 
   /* Nom ikkala tomonda birga o'zgaradi */
@@ -169,14 +169,14 @@ export async function deleteCrmGroup(formData: FormData) {
     .maybeSingle();
 
   if (!group) {
-    back("/admin/crm", "Guruh allaqachon o‘chirilgan.");
+    back("/admin/crm", "Guruh allaqaçon öçirilgan.");
   }
 
   // Nomni aynan yozish shart — tasodifiy bosishdan himoya
   if (confirmTitle !== group.title) {
     back(
       path,
-      `Tasdiqlash uchun guruh nomini aynan “${group.title}” deb yozing.`,
+      `Tasdiqlaş uçun guruh nomini aynan “${group.title}” deb yozing.`,
     );
   }
 
@@ -186,7 +186,7 @@ export async function deleteCrmGroup(formData: FormData) {
     .eq("id", groupId);
 
   if (error) {
-    back(path, `O‘chirilmadi: ${error.message}`);
+    back(path, `Öçirilmadi: ${error.message}`);
   }
 
   revalidatePath("/admin/crm");
@@ -206,7 +206,7 @@ export async function addCrmStudent(formData: FormData) {
   const path = groupPath(formData, groupId);
 
   if (fullName.length < 2) {
-    back(path, "O‘quvchi ismini kiriting.");
+    back(path, "Öquvçi ismini kiriting.");
   }
 
   const { error } = await supabase.from("crm_students").insert({
@@ -216,7 +216,7 @@ export async function addCrmStudent(formData: FormData) {
   });
 
   if (error) {
-    back(path, `Qo‘shilmadi: ${error.message}`);
+    back(path, `Qöşilmadi: ${error.message}`);
   }
 
   back(path);
@@ -233,7 +233,7 @@ export async function updateCrmStudent(formData: FormData) {
   const path = groupPath(formData, groupId);
 
   if (fullName.length < 2) {
-    back(path, "O‘quvchi ismini kiriting.");
+    back(path, "Öquvçi ismini kiriting.");
   }
 
   /*
@@ -256,7 +256,7 @@ export async function updateCrmStudent(formData: FormData) {
     if (row?.user_id) {
       userId = row.user_id;
     } else {
-      linkWarning = `“${email}” bo‘yicha sayt hisobi topilmadi — qolgan ma’lumot saqlandi.`;
+      linkWarning = `“${email}” böyiça sayt hisobi topilmadi — qolgan ma’lumot saqlandi.`;
     }
   }
 
@@ -299,7 +299,7 @@ export async function removeCrmStudent(formData: FormData) {
     .maybeSingle();
 
   if (error) {
-    back(path, `Chiqarilmadi: ${error.message}`);
+    back(path, `Çiqarilmadi: ${error.message}`);
   }
 
   /*
@@ -347,7 +347,7 @@ export async function saveCrmRules(formData: FormData) {
   const coinsPerPoints = number(formData, "coinsPerPoints");
 
   if (coinsPerPoints < 1) {
-    back(path, "Tanga uchun kerakli ball 1 dan kam bo‘lmasin.");
+    back(path, "Tanga uçun kerakli ball 1 dan kam bölmasin.");
   }
 
   const { error } = await supabase.from("crm_point_rules").upsert(
@@ -437,11 +437,11 @@ export async function createCrmReward(formData: FormData) {
   const path = `/admin/crm/dokon?guruh=${groupId}`;
 
   if (title.length < 2) {
-    back(path, "Sovg‘a nomini kiriting.");
+    back(path, "Sovğa nomini kiriting.");
   }
 
   if (cost < 1) {
-    back(path, "Narx kamida 1 tanga bo‘lsin.");
+    back(path, "Narx kamida 1 tanga bölsin.");
   }
 
   const { error } = await supabase.from("crm_rewards").insert({
@@ -454,7 +454,7 @@ export async function createCrmReward(formData: FormData) {
   });
 
   if (error) {
-    back(path, `Sovg‘a qo‘shilmadi: ${error.message}`);
+    back(path, `Sovğa qöşilmadi: ${error.message}`);
   }
 
   back(path);
@@ -473,15 +473,15 @@ export async function updateCrmReward(formData: FormData) {
   const path = `/admin/crm/dokon?guruh=${groupId}`;
 
   if (!rewardId) {
-    back(path, "Sovg‘a topilmadi.");
+    back(path, "Sovğa topilmadi.");
   }
 
   if (title.length < 2) {
-    back(path, "Sovg‘a nomini kiriting.");
+    back(path, "Sovğa nomini kiriting.");
   }
 
   if (cost < 1) {
-    back(path, "Narx kamida 1 tanga bo‘lsin.");
+    back(path, "Narx kamida 1 tanga bölsin.");
   }
 
   const { error } = await supabase
@@ -520,11 +520,11 @@ export async function deleteCrmReward(formData: FormData) {
   const path = `/admin/crm/dokon?guruh=${groupId}`;
 
   if (!rewardId) {
-    back(path, "Sovg‘a topilmadi.");
+    back(path, "Sovğa topilmadi.");
   }
 
   if (formData.get("confirm") !== "1") {
-    back(path, "O‘chirishdan oldin tasdiqlash katakchasini belgilang.");
+    back(path, "Öçirişdan oldin tasdiqlaş katakçasini belgilang.");
   }
 
   const { data: pending, error: pendingError } = await supabase
@@ -535,13 +535,13 @@ export async function deleteCrmReward(formData: FormData) {
     .limit(1);
 
   if (pendingError) {
-    back(path, `O‘chirilmadi: ${pendingError.message}`);
+    back(path, `Öçirilmadi: ${pendingError.message}`);
   }
 
   if ((pending ?? []).length > 0) {
     back(
       path,
-      "Bu sovg‘aga javob berilmagan so‘rov bor. Avval uni tasdiqlang yoki bekor qiling.",
+      "Bu sovğaga javob berilmagan sörov bor. Avval uni tasdiqlang yoki bekor qiling.",
     );
   }
 
@@ -551,7 +551,7 @@ export async function deleteCrmReward(formData: FormData) {
     .eq("id", rewardId);
 
   if (error) {
-    back(path, `O‘chirilmadi: ${error.message}`);
+    back(path, `Öçirilmadi: ${error.message}`);
   }
 
   back(path);
@@ -571,7 +571,7 @@ export async function toggleCrmReward(formData: FormData) {
     .eq("id", rewardId);
 
   if (error) {
-    back(path, `O‘zgartirilmadi: ${error.message}`);
+    back(path, `Özgartirilmadi: ${error.message}`);
   }
 
   back(path);
@@ -586,7 +586,7 @@ export async function redeemCrmReward(formData: FormData) {
   const path = `/admin/crm/dokon?guruh=${groupId}`;
 
   if (!studentId || !rewardId) {
-    back(path, "O‘quvchi va sovg‘ani tanlang.");
+    back(path, "Öquvçi va sovğani tanlang.");
   }
 
   const { error } = await supabase.rpc("crm_redeem", {
@@ -637,7 +637,7 @@ export async function mergeCrmStudents(formData: FormData) {
   const path = groupPath(formData, groupId);
 
   if (!keepId || !removeId) {
-    back(path, "Ikkala o‘quvchini ham tanlang.");
+    back(path, "Ikkala öquvçini ham tanlang.");
   }
 
   const { error } = await supabase.rpc("crm_merge_students", {

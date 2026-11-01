@@ -8,9 +8,9 @@ import { createClient } from "@/lib/supabase/server";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Guruh hisoboti — chop etish",
+  title: "Guruh hisoboti — çop etiş",
   description:
-    "Ota-onalar yig‘ilishiga tayyor hisobot: umumiy varaq va har bir o‘quvchi uchun alohida varaq.",
+    "Ota-onalar yiğilişiga tayyor hisobot: umumiy varaq va har bir öquvçi uçun alohida varaq.",
 };
 
 type PageProps = {
@@ -57,7 +57,7 @@ function formatDate(value: string | null) {
 /** Baho: 90+ a'lo, 70+ yaxshi, 50+ qoniqarli */
 function gradeLabel(percent: number) {
   if (percent >= 90) return "a’lo";
-  if (percent >= 70) return "yaxshi";
+  if (percent >= 70) return "yaxşi";
   if (percent >= 50) return "qoniqarli";
   return "past";
 }
@@ -197,27 +197,27 @@ export default async function GroupReportPrintPage({
             background: #ffffff !important;
           }
 
-          /* Admin menyusi va tugmalar qog'ozga tushmasin */
+          /* Admin menyusi va tugmalar qoğozga tuşmasin */
           .sticky:has(nav[aria-label="Administrator menyusi"]) {
             display: none !important;
           }
 
-          .hisobot-chop .chop-yashir {
+          .hisobot-çop .çop-yaşir {
             display: none !important;
           }
 
-          .hisobot-chop .varaq {
+          .hisobot-çop .varaq {
             break-inside: avoid;
             box-shadow: none !important;
             border-color: #cbd5e1 !important;
           }
 
-          /* Har bir o'quvchi yangi varaqdan boshlanadi */
-          .hisobot-chop .yangi-varaq {
+          /* Har bir öquvçi yangi varaqdan boşlanadi */
+          .hisobot-çop .yangi-varaq {
             break-before: page;
           }
 
-          .hisobot-chop table {
+          .hisobot-çop table {
             font-size: 11pt;
           }
         }
@@ -229,7 +229,7 @@ export default async function GroupReportPrintPage({
             href={`/admin/groups/report?groupId=${groupId}`}
             className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
           >
-            ← Hisobotga qaytish
+            ← Hisobotga qaytiş
           </Link>
 
           <PrintResultButton />
@@ -241,16 +241,16 @@ export default async function GroupReportPrintPage({
             title="Hisobot tayyor emas"
             className="chop-yashir mt-5"
           >
-            Supabase’da <b>db/16-hisobot-tafsiloti.sql</b> faylini ishga
-            tushiring — shundan keyin varaqlar to‘ladi.
+            Supabase’da <b>db/16-hisobot-tafsiloti.sql</b> faylini işga
+            tuşiring — şundan keyin varaqlar töladi.
           </AppAlert>
         )}
 
         <p className="chop-yashir mt-4 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm leading-6 text-blue-800">
-          <b>Chop etish / PDF</b> tugmasini bosing. Ochilgan oynada
-          printer o‘rniga <b>«PDF sifatida saqlash»</b> ni tanlasangiz
-          fayl yuklab olinadi. Birinchi varaq — umumiy jadval, keyin
-          har bir o‘quvchiga alohida varaq.
+          <b>Çop etiş / PDF</b> tugmasini bosing. Oçilgan oynada
+          printer örniga <b>«PDF sifatida saqlaş»</b> ni tanlasangiz
+          fayl yuklab olinadi. Birinçi varaq — umumiy jadval, keyin
+          har bir öquvçiga alohida varaq.
         </p>
 
         {/* ============ 1-varaq: umumiy ============ */}
@@ -261,11 +261,11 @@ export default async function GroupReportPrintPage({
             </p>
 
             <h1 className="text-xl font-bold sm:text-2xl">
-              {group.title} — o‘quv hisoboti
+              {group.title} — öquv hisoboti
             </h1>
 
             <p className="mt-1 text-sm text-mb-muted">
-              Tayyorlandi: {printedAt} · {sheets.length} ta o‘quvchi
+              Tayyorlandi: {printedAt} · {sheets.length} ta öquvçi
             </p>
           </header>
 
@@ -288,7 +288,7 @@ export default async function GroupReportPrintPage({
 
             <div className="rounded-xl border border-mb-line px-3 py-3">
               <p className="text-xs font-semibold text-mb-muted">
-                Guruh o‘rtachasi
+                Guruh örtaçasi
               </p>
               <p className="mt-1 text-xl font-bold text-mb-brand">
                 {groupAverage}%
@@ -297,20 +297,20 @@ export default async function GroupReportPrintPage({
           </div>
 
           {sheets.length === 0 ? (
-            <AppAlert variant="info" title="Ma’lumot yo‘q" className="mt-5">
-              Guruhda o‘quvchi yo‘q yoki hali vazifa berilmagan.
+            <AppAlert variant="info" title="Ma’lumot yöq" className="mt-5">
+              Guruhda öquvçi yöq yoki hali vazifa berilmagan.
             </AppAlert>
           ) : (
             <table className="mt-5 w-full text-left text-sm">
               <thead className="border-b border-slate-300 text-xs uppercase tracking-wide text-mb-muted">
                 <tr>
                   <th className="py-2 pr-2 font-semibold">№</th>
-                  <th className="py-2 pr-2 font-semibold">O‘quvchi</th>
+                  <th className="py-2 pr-2 font-semibold">Öquvçi</th>
                   <th className="py-2 pr-2 text-center font-semibold">
                     Bajardi
                   </th>
                   <th className="py-2 text-right font-semibold">
-                    O‘rtacha
+                    Örtaça
                   </th>
                 </tr>
               </thead>
@@ -361,7 +361,7 @@ export default async function GroupReportPrintPage({
               </h2>
 
               <p className="mt-1 text-sm text-mb-muted">
-                {printedAt} holatiga ko‘ra
+                {printedAt} holatiga köra
               </p>
             </header>
 
@@ -386,7 +386,7 @@ export default async function GroupReportPrintPage({
 
               <div className="rounded-xl border border-mb-line px-3 py-3">
                 <p className="text-xs font-semibold text-mb-muted">
-                  O‘rtacha
+                  Örtaça
                 </p>
                 <p className="mt-1 text-xl font-bold text-mb-brand">
                   {sheet.completedCount > 0
@@ -434,7 +434,7 @@ export default async function GroupReportPrintPage({
                           </span>
                         ) : (
                           <span className="font-semibold text-red-600">
-                            ishlamadi
+                            işlamadi
                           </span>
                         )}
                       </td>
@@ -447,13 +447,13 @@ export default async function GroupReportPrintPage({
             {/* Ota-ona uchun izoh joyi */}
             <div className="mt-6 border-t border-dashed border-slate-300 pt-4">
               <p className="text-xs font-semibold text-mb-muted">
-                O‘qituvchi izohi
+                Öqituvçi izohi
               </p>
 
               <div className="mt-2 h-16 rounded-lg border border-dashed border-slate-300" />
 
               <div className="mt-5 flex justify-between text-xs text-mb-muted">
-                <span>O‘qituvchi imzosi: ____________</span>
+                <span>Öqituvçi imzosi: ____________</span>
                 <span>Ota-ona imzosi: ____________</span>
               </div>
             </div>

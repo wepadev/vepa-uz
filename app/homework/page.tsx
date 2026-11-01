@@ -134,7 +134,7 @@ export default async function HomeworkPage({
             href="/"
             className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
           >
-            ← Bosh sahifa
+            ← Boş sahifa
           </Link>
 
           <h1 className="mt-1 text-base font-bold sm:mt-2 sm:text-2xl">
@@ -173,8 +173,8 @@ export default async function HomeworkPage({
             </span>
 
             <span className="mt-0.5 block text-sm leading-5 text-amber-700">
-              Vazifani bajarsangiz tanga yig‘asiz — sovg‘aga
-              almashtiring
+              Vazifani bajarsangiz tanga yiğasiz — sovğaga
+              almaştiring
             </span>
           </span>
 
@@ -245,14 +245,14 @@ export default async function HomeworkPage({
                         href={`/tests/take?testId=${item.test_id}&assignmentId=${item.assignment_id}`}
                         className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-mb-brand px-5 text-sm font-bold text-white transition hover:bg-mb-brandDark"
                       >
-                        Boshlash
+                        Boşlaş
                       </Link>
                     )}
                   </div>
 
                   {!locked && (
                     <p className="mt-2 text-xs text-mb-muted">
-                      Diqqat: vazifa faqat bir marta ishlanadi.
+                      Diqqat: vazifa faqat bir marta işlanadi.
                     </p>
                   )}
                 </article>
@@ -297,10 +297,10 @@ export default async function HomeworkPage({
         {memberships.length > 0 && assignments.length === 0 && (
           <AppAlert
             variant="info"
-            title="Hozircha vazifa yo‘q"
+            title="Hozirça vazifa yöq"
             className="mb-6"
           >
-            Ustozingiz vazifa berganda shu yerda ko‘rinadi.
+            Ustozingiz vazifa berganda şu yerda körinadi.
           </AppAlert>
         )}
 
@@ -320,19 +320,19 @@ export default async function HomeworkPage({
             />
 
             <h2 className="mt-4 text-lg font-bold">
-              Hali guruhga qo‘shilmagansiz
+              Hali guruhga qöşilmagansiz
             </h2>
 
             <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-mb-muted">
               Ustozingiz bergan kodni bir marta kiritsangiz yetarli —
-              uy vazifalari ham, ballaringiz ham ochiladi.
+              uy vazifalari ham, ballaringiz ham oçiladi.
             </p>
 
             <Link
               href="/guruhim"
               className="mt-6 inline-flex min-h-12 items-center justify-center rounded-2xl bg-mb-brand px-6 font-bold text-white transition hover:bg-mb-brandDark"
             >
-              Guruhga qo‘shilish
+              Guruhga qöşiliş
             </Link>
           </div>
         )}

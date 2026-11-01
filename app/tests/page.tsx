@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Testlar",
   description:
-    "Attestatsiya, Milliy sertifikat va SAT yo‘nalishlari bo‘yicha onlayn testlar.",
+    "Attestatsiya, Milliy sertifikat va SAT yönalişlari böyiça onlayn testlar.",
 };
 
 type ExamTypeRow = {
@@ -65,13 +65,13 @@ export default async function TestsPage() {
 
   if (examTypesResult.error) {
     throw new Error(
-      `Test yo‘nalishlari yuklanmadi: ${examTypesResult.error.message}`,
+      `Test yönalişlari yuklanmadi: ${examTypesResult.error.message}`,
     );
   }
 
   if (sectionsResult.error) {
     throw new Error(
-      `Test bo‘limlari yuklanmadi: ${sectionsResult.error.message}`,
+      `Test bölimlari yuklanmadi: ${sectionsResult.error.message}`,
     );
   }
 
@@ -83,7 +83,7 @@ export default async function TestsPage() {
 
   if (lessonTestsResult.error) {
     throw new Error(
-      `Dars testlari tekshirilmadi: ${lessonTestsResult.error.message}`,
+      `Dars testlari tekşirilmadi: ${lessonTestsResult.error.message}`,
     );
   }
 
@@ -120,7 +120,7 @@ export default async function TestsPage() {
   const fullName =
     profile.full_name?.trim() ||
     user.email?.split("@")[0] ||
-    "O‘quvchi";
+    "Öquvçi";
 
   const totalTests = [...testCountBySection.values()].reduce(
     (sum, value) => sum + value,
@@ -150,7 +150,7 @@ export default async function TestsPage() {
               href="/admin/tests"
               className="inline-flex min-h-10 shrink-0 items-center rounded-xl border border-blue-200 bg-blue-50 px-3 text-sm font-semibold text-blue-700 hover:bg-blue-100"
             >
-              Boshqarish
+              Boşqariş
             </Link>
           )}
         </div>
@@ -174,12 +174,12 @@ export default async function TestsPage() {
             </p>
 
             <h1 className="mt-1.5 text-2xl font-bold leading-tight sm:text-4xl">
-              Bilimingizni sinab ko‘ring
+              Bilimingizni sinab köring
             </h1>
 
             <p className="mt-2 max-w-lg text-sm leading-6 text-blue-100">
-              Yo‘nalishni tanlang, ichidan bo‘lim va testni oching.
-              Natija test tugagach darrov chiqadi.
+              Yönalişni tanlang, içidan bölim va testni oçing.
+              Natija test tugagaç darrov çiqadi.
             </p>
           </div>
         </div>
@@ -187,7 +187,7 @@ export default async function TestsPage() {
         {!examTypes.length ? (
           <div className="mt-5 rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-14 text-center">
             <p className="text-lg font-bold text-slate-700">
-              Hozircha test yo‘q
+              Hozirça test yöq
             </p>
           </div>
         ) : (
@@ -238,8 +238,8 @@ export default async function TestsPage() {
 
                     <span className="mt-1 block text-xs font-semibold text-mb-muted">
                       {empty
-                        ? "Test qo‘shilmagan"
-                        : `${sectionCountByExam.get(examType.id) ?? 0} bo‘lim · ${testCount} test`}
+                        ? "Test qöşilmagan"
+                        : `${sectionCountByExam.get(examType.id) ?? 0} bölim · ${testCount} test`}
                     </span>
                   </span>
 

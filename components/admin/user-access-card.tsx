@@ -61,7 +61,7 @@ function SaveButton() {
           Saqlanmoqda...
         </span>
       ) : (
-        "Ruxsatlarni saqlash"
+        "Ruxsatlarni saqlaş"
       )}
     </button>
   );
@@ -279,7 +279,7 @@ export default function UserAccessCard({
               >
                 {isAdmin
                   ? "Admin"
-                  : "Oʼquvchi"}
+                  : "Öquvçi"}
               </span>
 
               {!isAdmin &&
@@ -291,7 +291,7 @@ export default function UserAccessCard({
 
               {pendingOrder && (
                 <span className="rounded-full bg-blue-100 px-2.5 py-1 text-[11px] font-bold text-blue-700">
-                  Toʼlov kutilmoqda
+                  Tölov kutilmoqda
                 </span>
               )}
 
@@ -307,7 +307,7 @@ export default function UserAccessCard({
             </p>
 
             <p className="mt-2 text-xs font-medium text-slate-400">
-              Kirish usuli:{" "}
+              Kiriş usuli:{" "}
               {authProvider === "google"
                 ? "Google"
                 : authProvider === "email"
@@ -325,10 +325,10 @@ export default function UserAccessCard({
             variant="info"
             title="Admin akkaunti"
           >
-            Admin foydalanuvchi barcha
-            boʼlimlarga toʼliq kira oladi.
+            Admin foydalanuvçi barça
+            bölimlarga töliq kira oladi.
             Uning ruxsatlari bu sahifada
-            oʼzgartirilmaydi.
+            özgartirilmaydi.
           </AppAlert>
         </div>
       ) : (
@@ -362,8 +362,8 @@ export default function UserAccessCard({
                   {isPremiumActive
                     ? `${formatDate(
                         premiumUntil,
-                      )} gacha — ${daysRemaining} kun qoldi`
-                    : "Faqat bepul belgisi bor dars va testlar ochiq."}
+                      )} gaça — ${daysRemaining} kun qoldi`
+                    : "Faqat bepul belgisi bor dars va testlar oçiq."}
                 </p>
               </div>
 
@@ -382,7 +382,7 @@ export default function UserAccessCard({
                     {formatMoney(
                       pendingOrder.finalAmountUzs,
                     )}{" "}
-                    soʼm
+                    söm
                   </p>
 
                   {pendingOrder.promoCode && (
@@ -407,25 +407,25 @@ export default function UserAccessCard({
               <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
                 <PremiumButton
                   operation="monthly"
-                  label="1 oy berish"
+                  label="1 oy beriş"
                   className="bg-blue-600 text-white hover:bg-blue-700"
                 />
 
                 <PremiumButton
                   operation="quarterly"
-                  label="3 oy berish"
+                  label="3 oy beriş"
                   className="bg-blue-600 text-white hover:bg-blue-700"
                 />
 
                 <PremiumButton
                   operation="semiannual"
-                  label="6 oy berish"
+                  label="6 oy beriş"
                   className="bg-emerald-600 text-white hover:bg-emerald-700"
                 />
 
                 <PremiumButton
                   operation="full"
-                  label="12 oy berish"
+                  label="12 oy beriş"
                   className="bg-amber-500 text-white hover:bg-amber-600"
                 />
               </div>
@@ -434,7 +434,7 @@ export default function UserAccessCard({
                 <div className="mt-2">
                   <PremiumButton
                     operation="revoke"
-                    label="Premiumni bekor qilish"
+                    label="Premiumni bekor qiliş"
                     className="w-full border border-red-200 bg-red-50 text-red-700 hover:bg-red-100"
                   />
                 </div>
@@ -447,7 +447,7 @@ export default function UserAccessCard({
                 <div className="mt-4">
                   <AppAlert
                     variant="error"
-                    title="Premium oʼzgarmadi"
+                    title="Premium özgarmadi"
                   >
                     {premiumState.message}
                   </AppAlert>
@@ -483,8 +483,8 @@ export default function UserAccessCard({
               label="Akkaunt faol"
               description={
                 isCurrentUser
-                  ? "Oʼz akkauntingizni oʼchira olmaysiz."
-                  : "Oʼchirilsa, foydalanuvchi platformaga kira olmaydi."
+                  ? "Öz akkauntingizni öçira olmaysiz."
+                  : "Öçirilsa, foydalanuvçi platformaga kira olmaydi."
               }
               defaultChecked={isActive}
               disabled={isCurrentUser}
@@ -500,8 +500,8 @@ export default function UserAccessCard({
 
             <AccessSwitch
               name="canAccessTextbooks"
-              label="Darslik yechimlari"
-              description="Barcha faol foydalanuvchilar uchun doim bepul."
+              label="Darslik yeçimlari"
+              description="Barça faol foydalanuvçilar uçun doim bepul."
               defaultChecked={true}
               disabled
             />
@@ -515,7 +515,7 @@ export default function UserAccessCard({
             <AccessSwitch
               name="canAccessLessons"
               label="Videodarslar"
-              description="Darslar boʼlimiga kirish. Premium kontent muddati alohida tekshiriladi."
+              description="Darslar bölimiga kiriş. Premium kontent muddati alohida tekşiriladi."
               defaultChecked={
                 canAccessLessons
               }
@@ -524,7 +524,7 @@ export default function UserAccessCard({
             <AccessSwitch
               name="canAccessTests"
               label="Testlar"
-              description="Testlar boʼlimiga kirish. Premium testlar muddati alohida tekshiriladi."
+              description="Testlar bölimiga kiriş. Premium testlar muddati alohida tekşiriladi."
               defaultChecked={
                 canAccessTests
               }

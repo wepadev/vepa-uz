@@ -57,8 +57,8 @@ type AnswerRow = {
 /** Javobdan keyingi izoh */
 function nextLabel(isMastered: boolean) {
   return isMastered
-    ? "To‘g‘ri yechdingiz — bu savol boshqa chiqmaydi"
-    : "Keyingi haftada yana chiqadi";
+    ? "Töğri yeçdingiz — bu savol boşqa çiqmaydi"
+    : "Keyingi haftada yana çiqadi";
 }
 
 function MathValue({ value }: { value: string | null | undefined }) {
@@ -152,8 +152,8 @@ export default function ReviewSession({
         <h2 className="mt-4 text-xl font-bold">Seans tugadi</h2>
 
         <p className="mt-2 text-sm leading-6 text-mb-muted">
-          {questions.length} ta savoldan {correctCount} tasini to‘g‘ri
-          yechdingiz. Xato qilganlaringiz keyingi haftaga qoldi.
+          {questions.length} ta savoldan {correctCount} tasini töğri
+          yeçdingiz. Xato qilganlaringiz keyingi haftaga qoldi.
         </p>
 
         <a
@@ -161,7 +161,7 @@ export default function ReviewSession({
           className="mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-mb-brand px-6 font-bold text-white transition hover:bg-mb-brandDark"
         >
           <RotateCcw className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
-          Davom etish
+          Davom etiş
         </a>
       </div>
     );
@@ -299,8 +299,8 @@ export default function ReviewSession({
 
         {failed && (
           <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
-            Javobni tekshirib bo‘lmadi. Internet aloqangizni tekshirib,
-            qayta urinib ko‘ring.
+            Javobni tekşirib bölmadi. Internet aloqangizni tekşirib,
+            qayta urinib köring.
           </p>
         )}
 
@@ -335,12 +335,12 @@ export default function ReviewSession({
                   aria-hidden="true"
                 />
               )}
-              {feedback.isCorrect ? "To‘g‘ri" : "Xato"}
+              {feedback.isCorrect ? "Töğri" : "Xato"}
             </p>
 
             {!feedback.isCorrect && feedback.correctAnswer && (
               <p className="mt-2 text-sm text-slate-700">
-                To‘g‘ri javob:{" "}
+                Töğri javob:{" "}
                 <b>
                   <MathValue value={feedback.correctAnswer} />
                 </b>
@@ -374,7 +374,7 @@ export default function ReviewSession({
               className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-mb-brand px-6 font-bold text-white transition hover:bg-mb-brandDark sm:w-auto"
             >
               {index + 1 >= questions.length
-                ? "Yakunlash"
+                ? "Yakunlaş"
                 : "Keyingi savol"}
               <ArrowRight
                 className="h-4 w-4"
@@ -392,10 +392,10 @@ export default function ReviewSession({
               {isChecking ? (
                 <>
                   <Spinner size="sm" />
-                  Tekshirilmoqda...
+                  Tekşirilmoqda...
                 </>
               ) : (
-                "Tekshirish"
+                "Tekşiriş"
               )}
             </button>
           )}

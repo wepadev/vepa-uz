@@ -11,7 +11,7 @@ import TestChecker, {
 } from "@/components/admin/test-checker";
 
 export const metadata = {
-  title: "Test tekshirish",
+  title: "Test tekşiriş",
 };
 
 /*
@@ -41,7 +41,7 @@ async function checkAnswersAction(
   }
 
   if (!Number.isInteger(slot) || slot < 0 || slot >= topic.variants.length) {
-    return { status: "error", message: "Test turi noto‘g‘ri." };
+    return { status: "error", message: "Test turi notöğri." };
   }
 
   const variant = topic.variants[slot];
@@ -95,12 +95,12 @@ export default async function TestCheckPage() {
       <header className="border-b border-mb-line bg-white">
         <div className="mx-auto max-w-[1600px] px-4 py-4 sm:px-6">
           <h1 className="text-xl font-bold text-mb-ink sm:text-2xl">
-            Test tekshirish
+            Test tekşiriş
           </h1>
 
           <p className="mt-1 text-sm text-mb-muted">
-            “Matematika 0 dan” to‘plami bo‘yicha javoblarni kalit bilan
-            solishtiradi — {ANSWER_TOPICS.length} ta mavzu,{" "}
+            “Matematika 0 dan” töplami böyiça javoblarni kalit bilan
+            soliştiradi — {ANSWER_TOPICS.length} ta mavzu,{" "}
             {totalQuestions.toLocaleString("uz-UZ")} ta javob.
           </p>
         </div>

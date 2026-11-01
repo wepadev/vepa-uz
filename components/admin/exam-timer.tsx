@@ -351,7 +351,7 @@ export default function ExamTimer() {
 
         {finished ? (
           <p className="mt-6 rounded-2xl bg-red-500/15 px-6 py-3 text-xl font-bold text-red-300 sm:text-2xl">
-            Qalamlarni qo‘ying
+            Qalamlarni qöying
           </p>
         ) : (
           <div className="mt-8 h-2.5 w-full max-w-4xl overflow-hidden rounded-full bg-white/10 sm:h-3">
@@ -367,7 +367,7 @@ export default function ExamTimer() {
           <div className="absolute bottom-6 flex items-center gap-2 opacity-25 transition hover:opacity-100">
             <IconButton
               onClick={status === "running" ? pause : start}
-              label={status === "running" ? "To‘xtatish" : "Boshlash"}
+              label={status === "running" ? "Töxtatiş" : "Boşlaş"}
             >
               {status === "running" ? (
                 <Pause className="h-5 w-5" aria-hidden="true" />
@@ -380,7 +380,7 @@ export default function ExamTimer() {
               <RotateCcw className="h-5 w-5" aria-hidden="true" />
             </IconButton>
 
-            <IconButton onClick={toggleFullscreen} label="Chiqish">
+            <IconButton onClick={toggleFullscreen} label="Çiqiş">
               <Minimize2 className="h-5 w-5" aria-hidden="true" />
             </IconButton>
           </div>
@@ -464,13 +464,13 @@ export default function ExamTimer() {
                 }
                 className="min-h-11 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-mb-ink transition hover:bg-slate-50"
               >
-                Qo‘yish
+                Qöyiş
               </button>
             </div>
 
             <p className="mt-3 text-xs leading-5 text-mb-muted">
-              Klaviatura: <b>Probel</b> — boshlash va to‘xtatish,{" "}
-              <b>F</b> — to‘liq ekran, <b>R</b> — qaytadan.
+              Klaviatura: <b>Probel</b> — boşlaş va töxtatiş,{" "}
+              <b>F</b> — töliq ekran, <b>R</b> — qaytadan.
             </p>
           </div>
 
@@ -483,12 +483,12 @@ export default function ExamTimer() {
               {status === "running" ? (
                 <>
                   <Pause className="h-5 w-5" aria-hidden="true" />
-                  To‘xtatish
+                  Töxtatiş
                 </>
               ) : (
                 <>
                   <Play className="h-5 w-5" aria-hidden="true" />
-                  {status === "paused" ? "Davom etish" : "Boshlash"}
+                  {status === "paused" ? "Davom etiş" : "Boşlaş"}
                 </>
               )}
             </button>
@@ -508,7 +508,7 @@ export default function ExamTimer() {
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 text-sm font-semibold text-mb-ink transition hover:bg-slate-50 lg:w-48"
             >
               <Maximize2 className="h-4 w-4" aria-hidden="true" />
-              To‘liq ekran
+              Töliq ekran
             </button>
 
             <button
@@ -525,7 +525,7 @@ export default function ExamTimer() {
               ) : (
                 <>
                   <VolumeX className="h-4 w-4" aria-hidden="true" />
-                  Ovoz o‘chiq
+                  Ovoz öçiq
                 </>
               )}
             </button>

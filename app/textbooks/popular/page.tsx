@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "TOP kitoblar",
   description:
-    "Ommabop qo‘llanmalar: misollarning yozma yechimi va mavzu videolari.",
+    "Ommabop qöllanmalar: misollarning yozma yeçimi va mavzu videolari.",
 };
 
 type TextbookRow = {
@@ -108,9 +108,9 @@ export default async function TextbookSectionPage() {
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <TextbooksHeader
         backHref="/textbooks"
-        backLabel="Darslik yechimlari"
+        backLabel="Darslik yeçimlari"
         title="TOP kitoblar"
-        subtitle="Imtihonga tayyorlanish to‘plamlari"
+        subtitle="Imtihonga tayyorlaniş töplamlari"
         chips={[
           `${textbooks.length} ta kitob`,
           `${totalTopics} ta mavzu`,
@@ -127,15 +127,15 @@ export default async function TextbookSectionPage() {
             />
 
             <p className="text-sm leading-6 text-amber-900">
-              TOP kitoblar yechimlari Premium tarifda ochiladi.
-              Maktab darsliklari esa hamma uchun bepul.
+              TOP kitoblar yeçimlari Premium tarifda oçiladi.
+              Maktab darsliklari esa hamma uçun bepul.
             </p>
           </div>
         )}
 
         {textbooks.length === 0 ? (
-          <AppAlert variant="info" title="Hozircha kitob mavjud emas">
-            Ustozingiz kitob qo‘shgach shu yerda ko‘rinadi.
+          <AppAlert variant="info" title="Hozirça kitob mavjud emas">
+            Ustozingiz kitob qöşgaç şu yerda körinadi.
           </AppAlert>
         ) : (
           /*
@@ -200,7 +200,7 @@ export default async function TextbookSectionPage() {
                     )}
 
                     <span className="mt-1 block text-xs font-semibold text-mb-muted">
-                      {empty ? "Mavzu yo‘q" : `${topicCount} ta mavzu`}
+                      {empty ? "Mavzu yöq" : `${topicCount} ta mavzu`}
                     </span>
                   </span>
                 </>

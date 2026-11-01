@@ -21,7 +21,7 @@
  * yangisi olinadi.
  */
 
-const VERSION = "v2";
+const VERSION = "v3";
 const CACHE = `vepa-ustoz-${VERSION}`;
 /* Sahifa o'zi to'ldiradigan kesh — versiya yangilanganda o'chmaydi */
 const OFFLINE_CACHE = "vepa-offline";

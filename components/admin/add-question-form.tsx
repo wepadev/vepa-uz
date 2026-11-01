@@ -84,7 +84,7 @@ export default function AddQuestionForm({
         id="questionText"
         name="questionText"
         rows={4}
-        placeholder="Masalan: 2 + 3 nechaga teng?"
+        placeholder="Masalan: 2 + 3 neçaga teng?"
         aria-invalid={
           Boolean(state.errors.questionText)
         }
@@ -143,7 +143,7 @@ export default function AddQuestionForm({
         htmlFor="correctAnswer"
         className="mt-5 block text-sm font-semibold"
       >
-        To‘g‘ri javob
+        Töğri javob
       </label>
 
       <select
@@ -181,7 +181,7 @@ export default function AddQuestionForm({
         htmlFor="solutionText"
         className="mt-5 block text-sm font-semibold"
       >
-        Yozma yechim
+        Yozma yeçim
       </label>
 
       <textarea
@@ -196,7 +196,7 @@ export default function AddQuestionForm({
         htmlFor="solutionVideoUrl"
         className="mt-5 block text-sm font-semibold"
       >
-        Videoyechim havolasi
+        Videoyeçim havolasi
       </label>
 
       <input
@@ -231,7 +231,7 @@ export default function AddQuestionForm({
       >
         {pending
           ? "Savol saqlanmoqda..."
-          : "Savolni qo‘shish"}
+          : "Savolni qöşiş"}
       </SubmitButton>
     </form>
   );

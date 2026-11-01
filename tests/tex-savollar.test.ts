@@ -52,7 +52,7 @@ test("optsauto ko'rinishi va chizma belgisi", () => {
   assert.equal(result.tests.length, 1);
   assert.equal(result.tests[0].questions.length, 2);
   assert.equal(result.tests[0].questions[0].options.a, "$y=\\sin x$");
-  assert.ok(result.tests[0].questions[0].flags.some((f) => f.includes("chizma")));
+  assert.ok(result.tests[0].questions[0].flags.some((f) => f.includes("çizma")));
   assert.deepEqual(result.tests[0].questions[1].flags, []);
 });
 
@@ -124,7 +124,7 @@ test("savol va javob birlashtiriladi, javobsizi tashlanadi", () => {
   assert.equal(ready.total, 2);
   assert.equal(ready.ready, 1);
   assert.equal(ready.tests[0].questions[0].correct, "C");
-  assert.ok(ready.tests[0].notes.some((n) => n.includes("javobi yo'q")));
+  assert.ok(ready.tests[0].notes.some((n) => n.includes("javobi yöq")));
 });
 
 test("kalit topilmasa aniq xato beradi", () => {

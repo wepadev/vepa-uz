@@ -161,18 +161,18 @@ export default async function GroupReportPage({ searchParams }: PageProps) {
             har bir o'quvchiga alohida sahifa.
           */}
           <Link
-            href={`/admin/groups/report/chop?groupId=${groupId}`}
+            href={`/admin/groups/report/çop?groupId=${groupId}`}
             className="inline-flex min-h-10 items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
           >
             <Printer className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-            Chop etish / PDF
+            Çop etiş / PDF
           </Link>
         </div>
 
         {migrationMissing && (
           <AppAlert variant="warning" title="Hisobot tayyor emas" className="mt-5">
-            Supabase’da <b>db/12-guruh-hisoboti.sql</b> faylini ishga
-            tushiring — shundan keyin ma’lumotlar chiqadi.
+            Supabase’da <b>db/12-guruh-hisoboti.sql</b> faylini işga
+            tuşiring — şundan keyin ma’lumotlar çiqadi.
           </AppAlert>
         )}
 
@@ -180,7 +180,7 @@ export default async function GroupReportPage({ searchParams }: PageProps) {
         <div className="mt-5 grid grid-cols-3 divide-x divide-slate-200 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
           <div className="px-2 py-3 text-center sm:px-4 sm:py-4">
             <p className="text-[10px] font-semibold uppercase tracking-wide text-mb-muted sm:text-xs">
-              O‘quvchi
+              Öquvçi
             </p>
             <p className="mt-1 text-lg font-bold text-mb-ink sm:text-2xl">
               {students.length}
@@ -198,7 +198,7 @@ export default async function GroupReportPage({ searchParams }: PageProps) {
 
           <div className="px-2 py-3 text-center sm:px-4 sm:py-4">
             <p className="text-[10px] font-semibold uppercase tracking-wide text-mb-muted sm:text-xs">
-              O‘rtacha
+              Örtaça
             </p>
             <p className="mt-1 whitespace-nowrap text-lg font-bold text-mb-brand sm:text-2xl">
               {groupAverage}%
@@ -209,12 +209,12 @@ export default async function GroupReportPage({ searchParams }: PageProps) {
         {/* O'quvchilar */}
         <h2 className="mt-8 inline-flex items-center gap-2 text-lg font-bold">
           <Users className="h-5 w-5 text-mb-muted" strokeWidth={2} aria-hidden="true" />
-          O‘quvchilar
+          Öquvçilar
         </h2>
 
         {students.length === 0 ? (
-          <AppAlert variant="info" title="Ma’lumot yo‘q" className="mt-3">
-            Guruhda o‘quvchi yo‘q yoki hali vazifa berilmagan.
+          <AppAlert variant="info" title="Ma’lumot yöq" className="mt-3">
+            Guruhda öquvçi yöq yoki hali vazifa berilmagan.
           </AppAlert>
         ) : (
           <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
@@ -288,8 +288,8 @@ export default async function GroupReportPage({ searchParams }: PageProps) {
             </h2>
 
             <p className="mt-1 text-sm leading-6 text-mb-muted">
-              Sinf eng past natija ko‘rsatgan vazifalar tepada. Keyingi
-              darsda shu mavzularni takrorlang.
+              Sinf eng past natija körsatgan vazifalar tepada. Keyingi
+              darsda şu mavzularni takrorlang.
             </p>
 
             <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
@@ -314,7 +314,7 @@ export default async function GroupReportPage({ searchParams }: PageProps) {
 
                       <p className="mt-0.5 inline-flex items-center gap-1.5 text-xs text-mb-muted">
                         <CalendarClock className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-                        {formatDate(item.due_at)} · {item.attempts_count} ta ishladi
+                        {formatDate(item.due_at)} · {item.attempts_count} ta işladi
                         · eng past {Math.round(Number(item.lowest_percent))}%
                       </p>
                     </div>

@@ -48,6 +48,12 @@ const FIXED_PATTERNS = [
   "javob yo'q",
   "hech biri",
   "barcha javob",
+  // Yangi alifbo (ö, ğ, ş, ç) bilan yozilgan variantlar
+  "barçasi",
+  "töğri javob yöq",
+  "javob yöq",
+  "heç biri",
+  "barça javob",
 ];
 
 export function hasFixedOption(

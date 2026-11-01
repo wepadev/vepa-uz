@@ -111,7 +111,7 @@ async function saveDraft(
     if (!Number.isFinite(timeLimit) || timeLimit <= 0) {
       return {
         status: "error",
-        message: "Vaqt chegarasi noto‘g‘ri.",
+        message: "Vaqt çegarasi notöğri.",
         testId: null,
       };
     }
@@ -123,7 +123,7 @@ async function saveDraft(
     } catch {
       return {
         status: "error",
-        message: "Savollar ro‘yxati o‘qilmadi.",
+        message: "Savollar röyxati öqilmadi.",
         testId: null,
       };
     }
@@ -131,7 +131,7 @@ async function saveDraft(
     if (!Array.isArray(questions) || questions.length === 0) {
       return {
         status: "error",
-        message: "Savollar bo‘sh.",
+        message: "Savollar böş.",
         testId: null,
       };
     }
@@ -164,7 +164,7 @@ async function saveDraft(
       message:
         error instanceof Error
           ? error.message
-          : "Qoralamani saqlashda xatolik yuz berdi.",
+          : "Qoralamani saqlaşda xatolik yuz berdi.",
       testId: null,
     };
   }
@@ -214,13 +214,13 @@ export default async function AdminTestImportPage() {
   const options: TopicOption[] = topics.map((topic) => {
     const section = sectionById.get(topic.section_id);
     const examTitle = section
-      ? examTitleById.get(section.exam_type_id) ?? "Boshqa"
-      : "Boshqa";
+      ? examTitleById.get(section.exam_type_id) ?? "Boşqa"
+      : "Boşqa";
 
     return {
       id: topic.id,
       title: topic.title,
-      groupTitle: `${examTitle} · ${section?.title ?? "Bo‘limsiz"}`,
+      groupTitle: `${examTitle} · ${section?.title ?? "Bölimsiz"}`,
     };
   });
 
@@ -245,65 +245,65 @@ export default async function AdminTestImportPage() {
           href="/admin/tests"
           className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
         >
-          ← Testlarga qaytish
+          ← Testlarga qaytiş
         </Link>
 
         <h1 className="mt-2 flex items-center gap-2 text-2xl font-bold sm:text-3xl">
           <FileUp className="h-6 w-6 text-mb-muted" strokeWidth={2} aria-hidden="true" />
-          PDF’dan test yaratish
+          PDF’dan test yaratiş
         </h1>
 
         <p className="mt-2 text-sm leading-6 text-mb-muted">
-          PDF’ni yuklaysiz, tizim savollarni, javob kalitini va yechimlarni
-          ajratib beradi. Saqlashdan oldin har birini ko‘rib chiqasiz va
-          kerak bo‘lsa tuzatasiz. Test har doim qoralama holida saqlanadi.
+          PDF’ni yuklaysiz, tizim savollarni, javob kalitini va yeçimlarni
+          ajratib beradi. Saqlaşdan oldin har birini körib çiqasiz va
+          kerak bölsa tuzatasiz. Test har doim qoralama holida saqlanadi.
         </p>
 
         {keyMissing && (
           <AppAlert
             variant="warning"
-            title="AI kaliti qo‘yilmagan — shuning uchun ishlamayapti"
+            title="AI kaliti qöyilmagan — şuning uçun işlamayapti"
             className="mt-5"
           >
             <span className="block">
-              PDF’ni o‘qish uchun kalit kerak. Bepul yo‘l bor:
+              PDF’ni öqiş uçun kalit kerak. Bepul yöl bor:
             </span>
 
             <span className="mt-2 block">
               1. <b>aistudio.google.com/apikey</b> ga kiring, Google hisobi
               bilan kirib <b>“Create API key”</b> ni bosing. Karta
-              so‘ralmaydi, kuniga ~1500 so‘rov bepul — bizga
+              söralmaydi, kuniga ~1500 sörov bepul — bizga
               yetib ortadi.
             </span>
 
             <span className="mt-1.5 block">
               2. Kalitni <b>GEMINI_API_KEY</b> nomi bilan ikki joyga
-              qo‘ying: loyihadagi <b>.env.local</b> fayliga va{" "}
+              qöying: loyihadagi <b>.env.local</b> fayliga va{" "}
               <b>Vercel → Settings → Environment Variables</b> ga.
             </span>
 
             <span className="mt-1.5 block">
               3. Vercel’da qayta deploy qiling, kompyuterda esa{" "}
-              <b>npm run dev</b> ni qaytadan ishga tushiring.
+              <b>npm run dev</b> ni qaytadan işga tuşiring.
             </span>
 
             <span className="mt-2 block text-[13px]">
-              Kalit qo‘ygandan keyin{" "}
+              Kalit qöygandan keyin{" "}
               <a
                 href="/api/admin/ai-status"
                 className="font-bold underline"
               >
-                shu yerni bosib
+                şu yerni bosib
               </a>{" "}
-              tekshirib ko‘rsangiz bo‘ladi — u kalit
-              ishlayaptimi va qaysi model tanlanganini aytadi.
+              tekşirib körsangiz böladi — u kalit
+              işlayaptimi va qaysi model tanlanganini aytadi.
             </span>
           </AppAlert>
         )}
 
         {options.length === 0 ? (
           <AppAlert variant="info" title="Avval mavzu yarating" className="mt-5">
-            Test qo‘shish uchun kamida bitta mavzu bo‘lishi kerak.
+            Test qöşiş uçun kamida bitta mavzu bölişi kerak.
           </AppAlert>
         ) : (
           <PdfImportForm

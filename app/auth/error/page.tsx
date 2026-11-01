@@ -48,8 +48,8 @@ export default function Page({
         </h1>
 
         <p className="mt-2 text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
-          Kirish jarayonida muammo chiqdi. Qayta
-          urinib ko‘ring yoki boshqa usul bilan
+          Kiriş jarayonida muammo çiqdi. Qayta
+          urinib köring yoki boşqa usul bilan
           kiring.
         </p>
 
@@ -61,14 +61,14 @@ export default function Page({
           href="/auth/login"
           className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 font-bold text-white transition hover:bg-blue-700"
         >
-          Qayta urinish
+          Qayta uriniş
         </Link>
 
         <Link
           href="/"
           className="mt-3 inline-flex min-h-12 w-full items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 py-3 font-semibold text-slate-700 transition hover:bg-slate-50"
         >
-          Bosh sahifa
+          Boş sahifa
         </Link>
       </div>
     </main>

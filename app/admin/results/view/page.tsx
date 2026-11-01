@@ -29,7 +29,7 @@ async function setAnswerCorrectness(formData: FormData) {
   const supabase = await requireAdmin();
 
   if (!attemptId || !Number.isInteger(questionId)) {
-    throw new Error("Ma’lumot noto‘g‘ri.");
+    throw new Error("Ma’lumot notöğri.");
   }
 
   const { error } = await supabase.rpc("set_answer_correctness", {
@@ -39,7 +39,7 @@ async function setAnswerCorrectness(formData: FormData) {
   });
 
   if (error) {
-    throw new Error(`Baho o‘zgartirilmadi: ${error.message}`);
+    throw new Error(`Baho özgartirilmadi: ${error.message}`);
   }
 
   revalidatePath("/admin/results/view");
@@ -56,7 +56,7 @@ async function addAnswerToKey(formData: FormData) {
   const supabase = await requireAdmin();
 
   if (!Number.isInteger(questionId) || !answer) {
-    throw new Error("Ma’lumot noto‘g‘ri.");
+    throw new Error("Ma’lumot notöğri.");
   }
 
   const { error } = await supabase.rpc("add_accepted_answer_smart", {
@@ -65,7 +65,7 @@ async function addAnswerToKey(formData: FormData) {
   });
 
   if (error) {
-    throw new Error(`Kalitga qo‘shilmadi: ${error.message}`);
+    throw new Error(`Kalitga qöşilmadi: ${error.message}`);
   }
 
   // Shu o'quvchining bahosini ham darhol to'g'rilaymiz
@@ -400,7 +400,7 @@ export default async function AdminResultViewPage({
 
   if (profileResult.error) {
     throw new Error(
-      "O‘quvchi ma’lumotlari yuklanmadi.",
+      "Öquvçi ma’lumotlari yuklanmadi.",
     );
   }
 
@@ -424,7 +424,7 @@ export default async function AdminResultViewPage({
 
   if (userAnswersResult.error) {
     throw new Error(
-      "O‘quvchi javoblari yuklanmadi.",
+      "Öquvçi javoblari yuklanmadi.",
     );
   }
 
@@ -463,7 +463,7 @@ export default async function AdminResultViewPage({
 
     if (answerKeysError) {
       throw new Error(
-        "To‘g‘ri javoblar yuklanmadi.",
+        "Töğri javoblar yuklanmadi.",
       );
     }
 
@@ -665,7 +665,7 @@ export default async function AdminResultViewPage({
                 href="/admin/results"
                 className="print-hidden text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
               >
-                ← Natijalarga qaytish
+                ← Natijalarga qaytiş
               </Link>
 
               <h1 className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl">
@@ -707,7 +707,7 @@ export default async function AdminResultViewPage({
 
           <article className="print-card rounded-2xl border border-emerald-200 bg-emerald-50/60 p-5 shadow-sm">
             <p className="text-sm font-bold text-emerald-700">
-              To‘g‘ri
+              Töğri
             </p>
 
             <p className="mt-2 text-3xl font-bold text-emerald-700">
@@ -717,7 +717,7 @@ export default async function AdminResultViewPage({
 
           <article className="print-card rounded-2xl border border-red-200 bg-red-50/60 p-5 shadow-sm">
             <p className="text-sm font-bold text-red-700">
-              Noto‘g‘ri
+              Notöğri
             </p>
 
             <p className="mt-2 text-3xl font-bold text-red-700">
@@ -764,7 +764,7 @@ export default async function AdminResultViewPage({
           <div className="grid gap-5 text-sm sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             <div>
               <p className="font-semibold text-slate-500">
-                O‘quvchi
+                Öquvçi
               </p>
 
               <p className="mt-1 font-bold text-slate-950">
@@ -822,7 +822,7 @@ export default async function AdminResultViewPage({
 
             <div>
               <p className="font-semibold text-slate-500">
-                Boshlangan
+                Boşlangan
               </p>
 
               <p className="mt-1 font-bold text-slate-950">
@@ -852,7 +852,7 @@ export default async function AdminResultViewPage({
           </h2>
 
           <p className="mt-1 text-sm text-slate-500">
-            O‘quvchi javobi, to‘g‘ri javob va yechimlar
+            Öquvçi javobi, töğri javob va yeçimlar
           </p>
         </div>
 
@@ -918,9 +918,9 @@ export default async function AdminResultViewPage({
                       }
                     >
                       {isCorrect
-                        ? "To‘g‘ri"
+                        ? "Töğri"
                         : selectedAnswer
-                          ? "Noto‘g‘ri"
+                          ? "Notöğri"
                           : "Javob berilmagan"}
                     </span>
                   </div>
@@ -931,7 +931,7 @@ export default async function AdminResultViewPage({
                         loading="lazy"
                         decoding="async"
                         src={imageUrl}
-                        alt={`${question.order_number}-savol chizmasi`}
+                        alt={`${question.order_number}-savol çizmasi`}
                         className="mx-auto max-h-[520px] w-auto max-w-full rounded-xl object-contain"
                       />
                     </div>
@@ -942,7 +942,7 @@ export default async function AdminResultViewPage({
                     <div className="mt-5 grid gap-3 sm:grid-cols-2">
                       <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                         <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
-                          O‘quvchi javobi
+                          Öquvçi javobi
                         </p>
 
                         <div className="mt-2 font-semibold">
@@ -960,7 +960,7 @@ export default async function AdminResultViewPage({
 
                       <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
                         <p className="text-xs font-bold uppercase tracking-wide text-emerald-700">
-                          To‘g‘ri javob
+                          Töğri javob
                         </p>
 
                         <div className="mt-2 font-semibold text-emerald-950">
@@ -1028,13 +1028,13 @@ export default async function AdminResultViewPage({
                               <div className="mt-2 flex flex-wrap gap-2">
                                 {isSelected && (
                                   <span className="text-xs font-semibold">
-                                    O‘quvchi tanlagan
+                                    Öquvçi tanlagan
                                   </span>
                                 )}
 
                                 {isRightAnswer && (
                                   <span className="text-xs font-semibold">
-                                    To‘g‘ri javob
+                                    Töğri javob
                                   </span>
                                 )}
                               </div>
@@ -1048,7 +1048,7 @@ export default async function AdminResultViewPage({
                   {answerKey?.solution_text && (
                     <div className="mt-5 rounded-xl border border-blue-200 bg-blue-50 p-4 text-blue-950">
                       <p className="mb-2 text-sm font-bold">
-                        Yechim
+                        Yeçim
                       </p>
 
                       <MathValue
@@ -1062,14 +1062,14 @@ export default async function AdminResultViewPage({
                   {answerKey?.solution_video_url && (
                     <div className="print-hidden mt-6">
                       <h3 className="mb-3 text-lg font-bold">
-                        Videoyechim
+                        Videoyeçim
                       </h3>
 
                       <YouTubeEmbed
                         url={
                           answerKey.solution_video_url
                         }
-                        title={`${question.order_number}-savol videoyechimi`}
+                        title={`${question.order_number}-savol videoyeçimi`}
                       />
                     </div>
                   )}
@@ -1144,7 +1144,7 @@ export default async function AdminResultViewPage({
                       loading="lazy"
                       decoding="async"
                       src={imageUrl}
-                      alt="Umumiy savol chizmasi"
+                      alt="Umumiy savol çizmasi"
                       className="mx-auto max-h-[560px] w-auto max-w-full rounded-xl object-contain"
                     />
                   </div>
@@ -1243,9 +1243,9 @@ export default async function AdminResultViewPage({
                               }
                             >
                               {isCorrect
-                                ? "To‘g‘ri"
+                                ? "Töğri"
                                 : selectedAnswer
-                                  ? "Noto‘g‘ri"
+                                  ? "Notöğri"
                                   : "Javob berilmagan"}
                             </span>
                           </div>
@@ -1253,7 +1253,7 @@ export default async function AdminResultViewPage({
                           <div className="mt-4 grid gap-3 sm:grid-cols-2">
                             <div className="rounded-xl border border-slate-200 bg-white p-4">
                               <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                                O‘quvchi javobi
+                                Öquvçi javobi
                               </p>
 
                               <div className="mt-2 font-semibold">
@@ -1273,7 +1273,7 @@ export default async function AdminResultViewPage({
 
                             <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4">
                               <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
-                                To‘g‘ri javob
+                                Töğri javob
                               </p>
 
                               <div className="mt-2 font-semibold text-emerald-900">
@@ -1293,7 +1293,7 @@ export default async function AdminResultViewPage({
                                 ?.length ?? 0
                             ) > 0 && (
                               <div className="mt-3 text-sm text-slate-500">
-                                Qabul qilinadigan boshqa javoblar:
+                                Qabul qilinadigan boşqa javoblar:
                                 <div className="mt-1">
                                   <MathValue
                                     value={(
@@ -1308,7 +1308,7 @@ export default async function AdminResultViewPage({
                           {answerKey?.solution_text && (
                             <div className="mt-4 rounded-xl border border-blue-200 bg-blue-50 p-4 text-blue-950">
                               <p className="mb-2 text-sm font-bold">
-                                Yechim
+                                Yeçim
                               </p>
 
                               <MathValue
@@ -1322,14 +1322,14 @@ export default async function AdminResultViewPage({
                           {answerKey?.solution_video_url && (
                             <div className="print-hidden mt-5">
                               <h4 className="mb-3 font-bold">
-                                Videoyechim
+                                Videoyeçim
                               </h4>
 
                               <YouTubeEmbed
                                 url={
                                   answerKey.solution_video_url
                                 }
-                                title={`${displayLabel} savol videoyechimi`}
+                                title={`${displayLabel} savol videoyeçimi`}
                               />
                             </div>
                           )}

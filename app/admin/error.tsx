@@ -32,18 +32,18 @@ export default function AdminError({
         </p>
 
         <h1 className="mt-3 text-2xl font-bold text-slate-950">
-          Sahifa ochilmadi
+          Sahifa oçilmadi
         </h1>
 
         <AppAlert variant="error" title="Xato matni" className="mt-5">
           <span className="break-words font-mono text-[13px]">
-            {error.message || "Sabab ko‘rsatilmagan."}
+            {error.message || "Sabab körsatilmagan."}
           </span>
         </AppAlert>
 
         {error.digest && (
           <p className="mt-2 text-xs text-slate-400">
-            Xato kodi: {error.digest} — Vercel loglaridan shu bo‘yicha
+            Xato kodi: {error.digest} — Vercel loglaridan şu böyiça
             qidiring.
           </p>
         )}
@@ -54,14 +54,14 @@ export default function AdminError({
             onClick={reset}
             className="min-h-12 rounded-2xl bg-mb-brand px-5 font-bold text-white transition hover:bg-mb-brandDark"
           >
-            Qayta urinish
+            Qayta uriniş
           </button>
 
           <Link
             href="/admin"
             className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-slate-300 px-5 font-semibold text-slate-700 transition hover:bg-slate-50"
           >
-            Boshqaruv paneli
+            Boşqaruv paneli
           </Link>
         </div>
       </div>

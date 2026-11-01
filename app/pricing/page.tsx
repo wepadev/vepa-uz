@@ -187,10 +187,10 @@ export default async function PricingPage({
     : null;
 
   const benefits = [
-    "Barcha premium videodarslar",
-    "Barcha premium testlar",
+    "Barça premium videodarslar",
+    "Barça premium testlar",
     "Reyting va natijalar tahlili",
-    "Yangi testlar birinchi bo‘lib",
+    "Yangi testlar birinçi bölib",
   ];
 
   return (
@@ -213,7 +213,7 @@ export default async function PricingPage({
               href="/profile/payments"
               className="inline-flex min-h-9 shrink-0 items-center rounded-xl border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700 hover:bg-slate-50"
             >
-              To‘lovlarim
+              Tölovlarim
             </Link>
           )}
         </div>
@@ -252,8 +252,8 @@ export default async function PricingPage({
 
             <p className="mt-1.5 text-sm leading-5 text-blue-100">
               {hasPremium
-                ? `${formatDate(premiumStatus?.premium_until ?? null)} gacha amal qiladi.`
-                : "Bepul belgisi bor dars va testlar ochiq. Qolganini Premium ochadi."}
+                ? `${formatDate(premiumStatus?.premium_until ?? null)} gaça amal qiladi.`
+                : "Bepul belgisi bor dars va testlar oçiq. Qolganini Premium oçadi."}
             </p>
 
             <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1">
@@ -276,7 +276,7 @@ export default async function PricingPage({
 
         {locked && (
           <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">
-            Siz ochmoqchi bo‘lgan {locked === "test" ? "test" : "dars"}{" "}
+            Siz oçmoqçi bölgan {locked === "test" ? "test" : "dars"}{" "}
             Premium tarifga kiradi.
           </div>
         )}
@@ -337,13 +337,13 @@ export default async function PricingPage({
                   <span className="mt-0.5 block text-lg font-bold leading-6 text-mb-ink">
                     {formatMoney(plan.price_uzs)}
                     <span className="ml-1 text-xs font-bold text-mb-muted">
-                      so‘m
+                      söm
                     </span>
                   </span>
 
                   {months > 1 && (
                     <span className="block text-[11px] font-semibold text-emerald-700">
-                      oyiga ≈ {formatMoney(Math.round(monthlyPrice(plan)))} so‘m
+                      oyiga ≈ {formatMoney(Math.round(monthlyPrice(plan)))} söm
                     </span>
                   )}
                 </span>
@@ -355,7 +355,7 @@ export default async function PricingPage({
                     href={`/auth/login?mode=signup&next=${encodeURIComponent(`/pricing?plan=${plan.code}`)}`}
                     className="inline-flex min-h-11 shrink-0 items-center rounded-xl bg-mb-brand px-4 text-sm font-bold text-white hover:bg-mb-brandDark"
                   >
-                    Olish
+                    Oliş
                   </Link>
                 )}
               </form>
@@ -364,7 +364,7 @@ export default async function PricingPage({
         </div>
 
         <p className="mt-3 text-center text-[11px] leading-5 text-mb-muted">
-          Tarifni tanlaysiz → Telegramda to‘laysiz → Premium darrov
+          Tarifni tanlaysiz → Telegramda tölaysiz → Premium darrov
           yoqiladi.
         </p>
       </section>

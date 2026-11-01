@@ -138,7 +138,7 @@ export default function DesktopNav({
                   type="submit"
                   className="inline-flex min-h-10 items-center rounded-xl px-3 text-sm font-semibold text-slate-500 hover:text-slate-800"
                 >
-                  Chiqish
+                  Çiqiş
                 </button>
               </form>
             </>
@@ -152,7 +152,7 @@ export default function DesktopNav({
                 href={pathname === "/" ? "/auth/login" : authHref(user, pathname)}
                 className="inline-flex min-h-10 items-center rounded-xl bg-mb-brand px-4 text-sm font-semibold text-white hover:bg-mb-brandDark"
               >
-                Kirish
+                Kiriş
               </Link>
             </>
           )}

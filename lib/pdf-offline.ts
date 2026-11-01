@@ -144,7 +144,7 @@ function flagQuestion(question: OfflineQuestion): void {
   );
 
   if (letters.length !== 4) {
-    question.flags.push(`variantlar to'liq emas (${letters.length}/4)`);
+    question.flags.push(`variantlar töliq emas (${letters.length}/4)`);
   }
 
   /*
@@ -155,7 +155,7 @@ function flagQuestion(question: OfflineQuestion): void {
   for (const key of letters) {
     const value = (question.options[key] ?? "").trim();
     if (/^[−\-+]?$/.test(value)) {
-      question.flags.push(`${key}) varianti bo'sh — kasr bo'lishi mumkin`);
+      question.flags.push(`${key}) varianti böş — kasr bölişi mumkin`);
     }
   }
 
@@ -166,15 +166,15 @@ function flagQuestion(question: OfflineQuestion): void {
    * tekshirishga chiqariladi.
    */
   if (/\\(int|sum|prod|lim|iint)\b/.test(question.text)) {
-    question.flags.push("integral/yig'indi — chegaralarini tekshiring");
+    question.flags.push("integral/yiğindi — çegaralarini tekşiring");
   }
 
   if (/[∫∑∏√⏟⎷︷︸]/.test(question.text)) {
-    question.flags.push("murakkab belgi tiklanmadi — qo'lda tekshiring");
+    question.flags.push("murakkab belgi tiklanmadi — qölda tekşiring");
   }
 
   if (/\^\{\s*\}|_\{\s*\}/.test(question.text)) {
-    question.flags.push("bo'sh daraja yoki indeks");
+    question.flags.push("böş daraja yoki indeks");
   }
 
   /*
@@ -195,7 +195,7 @@ function flagQuestion(question: OfflineQuestion): void {
    * son ("2½") yoki murakkab ifoda to'liq yig'ilmagani belgisi.
    */
   if (/\$\s+\d/.test(question.text)) {
-    question.flags.push("formuladan keyin yakka son — tekshirib chiqing");
+    question.flags.push("formuladan keyin yakka son — tekşirib çiqing");
   }
 
   /*
@@ -203,7 +203,7 @@ function flagQuestion(question: OfflineQuestion): void {
    * ifodaning bir qismi joyiga tushmagan.
    */
   if (/[+\-\u2212\u00B7:\u00D7/]\s*\.?\s*$/.test(question.text)) {
-    question.flags.push("savol amal belgisi bilan tugadi — to'liq emas");
+    question.flags.push("savol amal belgisi bilan tugadi — töliq emas");
   }
 }
 

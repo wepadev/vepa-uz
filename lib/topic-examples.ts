@@ -55,7 +55,7 @@ export function parseExampleLines(
     return {
       rows: [],
       problems: [
-        `Bir martada ${MAX_EXAMPLES_PER_BATCH} tagacha misol qo‘shish mumkin.`,
+        `Bir martada ${MAX_EXAMPLES_PER_BATCH} tagaça misol qöşiş mumkin.`,
       ],
     };
   }
@@ -77,7 +77,7 @@ export function parseExampleLines(
 
     if (label.length > MAX_EXAMPLE_LABEL) {
       problems.push(
-        `${number}-qator: misol nomi ${MAX_EXAMPLE_LABEL} ta belgidan oshmasin.`,
+        `${number}-qator: misol nomi ${MAX_EXAMPLE_LABEL} ta belgidan oşmasin.`,
       );
       return;
     }
@@ -86,7 +86,7 @@ export function parseExampleLines(
 
     if (seen.has(key)) {
       problems.push(
-        `${number}-qator: “${label}” ro‘yxatda takrorlanyapti.`,
+        `${number}-qator: “${label}” röyxatda takrorlanyapti.`,
       );
       return;
     }

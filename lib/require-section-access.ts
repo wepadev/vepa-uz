@@ -77,7 +77,7 @@ export async function requireSectionAccess(
 
   if (profileError) {
     throw new Error(
-      `Profil ruxsatlari tekshirilmadi: ${profileError.message}`,
+      `Profil ruxsatlari tekşirilmadi: ${profileError.message}`,
     );
   }
 

@@ -7,7 +7,7 @@ type YouTubeEmbedProps = {
 
 export default function YouTubeEmbed({
   url,
-  title = "Videoyechim",
+  title = "Videoyeçim",
 }: YouTubeEmbedProps) {
   if (!url) {
     return null;
@@ -18,7 +18,7 @@ export default function YouTubeEmbed({
   if (!videoId) {
     return (
       <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-        YouTube havolasi noto‘g‘ri kiritilgan.
+        YouTube havolasi notöğri kiritilgan.
       </div>
     );
   }

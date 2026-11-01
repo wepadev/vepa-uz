@@ -8,9 +8,9 @@ export const dynamic =
   "force-dynamic";
 
 export const metadata = {
-  title: "To‘lovlarim",
+  title: "Tölovlarim",
   description:
-    "To‘lov buyurtmalari tarixi.",
+    "Tölov buyurtmalari tarixi.",
 };
 
 type PremiumStatusRow = {
@@ -70,7 +70,7 @@ function statusLabel(
     Record<string, string> = {
       pending: "Kutilmoqda",
       prepared: "Tayyorlandi",
-      paid: "Toʼlangan",
+      paid: "Tölangan",
       cancelled: "Bekor qilingan",
       failed: "Xato",
       expired: "Muddati tugagan",
@@ -118,7 +118,7 @@ export default async function PaymentHistoryPage() {
 
   if (ordersResult.error) {
     throw new Error(
-      `Toʼlovlar yuklanmadi: ${ordersResult.error.message}`,
+      `Tölovlar yuklanmadi: ${ordersResult.error.message}`,
     );
   }
 
@@ -141,11 +141,11 @@ export default async function PaymentHistoryPage() {
               href="/profile"
               className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
             >
-              ← Profilga qaytish
+              ← Profilga qaytiş
             </Link>
 
             <h1 className="text-xl font-bold sm:text-2xl">
-              Premium va toʼlovlarim
+              Premium va tölovlarim
             </h1>
           </div>
 
@@ -153,7 +153,7 @@ export default async function PaymentHistoryPage() {
             href="/pricing"
             className="inline-flex min-h-11 items-center justify-center rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-blue-700"
           >
-            Tariflarni koʼrish
+            Tariflarni köriş
           </Link>
         </div>
       </header>
@@ -184,7 +184,7 @@ export default async function PaymentHistoryPage() {
               {formatDate(
                 premium.premium_until,
               )}{" "}
-              gacha —{" "}
+              gaça —{" "}
               {Number(
                 premium.days_remaining,
               ) || 0}{" "}
@@ -210,14 +210,14 @@ export default async function PaymentHistoryPage() {
           {orders.length === 0 ? (
             <div className="rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-14 text-center">
               <p className="font-bold">
-                Hozircha buyurtma yoʼq
+                Hozirça buyurtma yöq
               </p>
 
               <Link
                 href="/pricing"
                 className="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl bg-blue-600 px-5 py-2.5 font-bold text-white hover:bg-blue-700"
               >
-                Tarif tanlash
+                Tarif tanlaş
               </Link>
             </div>
           ) : (
@@ -273,18 +273,18 @@ export default async function PaymentHistoryPage() {
                         {formatMoney(
                           order.final_amount_uzs,
                         )}{" "}
-                        soʼm
+                        söm
                       </p>
 
                       {Number(
                         order.discount_amount_uzs,
                       ) > 0 && (
                         <p className="mt-1 text-xs font-bold text-emerald-600">
-                          Chegirma:{" "}
+                          Çegirma:{" "}
                           {formatMoney(
                             order.discount_amount_uzs,
                           )}{" "}
-                          soʼm
+                          söm
                         </p>
                       )}
 

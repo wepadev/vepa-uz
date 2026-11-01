@@ -20,7 +20,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Profil",
   description:
-    "Shaxsiy ma’lumotlar, obuna holati va yutuqlar.",
+    "Şaxsiy ma’lumotlar, obuna holati va yutuqlar.",
 };
 
 type ProfileRow = {
@@ -179,7 +179,7 @@ export default async function ProfilePage() {
     user.user_metadata?.full_name ||
     user.user_metadata?.name ||
     user.email?.split("@")[0] ||
-    "Oʼquvchi";
+    "Öquvçi";
 
   const [
     summaryResult,
@@ -251,7 +251,7 @@ export default async function ProfilePage() {
 
   if (summaryResult.error) {
     throw new Error(
-      `Shaxsiy reyting yuklanmadi: ${summaryResult.error.message}`,
+      `Şaxsiy reyting yuklanmadi: ${summaryResult.error.message}`,
     );
   }
 
@@ -401,7 +401,7 @@ export default async function ProfilePage() {
 
   if (recentAttemptsResult.error) {
     throw new Error(
-      `Soʼnggi natijalar yuklanmadi: ${recentAttemptsResult.error.message}`,
+      `Sönggi natijalar yuklanmadi: ${recentAttemptsResult.error.message}`,
     );
   }
 
@@ -596,7 +596,7 @@ const latestPlan =
               href="/"
               className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
             >
-              ← Bosh sahifa
+              ← Boş sahifa
             </Link>
 
             <p className="truncate text-lg font-bold sm:text-xl">
@@ -627,7 +627,7 @@ const latestPlan =
               </h1>
 
               <p className="mt-0.5 truncate text-sm text-blue-100">
-                {user.email ?? "Email ko‘rsatilmagan"}
+                {user.email ?? "Email körsatilmagan"}
               </p>
 
               <div className="mt-2 flex flex-wrap gap-1.5">
@@ -641,7 +641,7 @@ const latestPlan =
 
                 {!isAdmin && isRanked && (
                   <span className="rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-bold text-white ring-1 ring-white/20">
-                    Reytingda {overallRank}-o‘rin
+                    Reytingda {overallRank}-örin
                     <span className="font-medium text-blue-100">
                       {" "}
                       / {overallParticipants}
@@ -664,18 +664,18 @@ const latestPlan =
           <div className="min-w-0">
             <p className="text-sm font-bold text-mb-ink">
               {isAdmin
-                ? "Barcha materiallar ochiq"
+                ? "Barça materiallar oçiq"
                 : hasPremium
                   ? latestPlan?.name ?? "Premium tarif"
-                  : "Bepul dars va testlar ochiq"}
+                  : "Bepul dars va testlar oçiq"}
             </p>
 
             <p className="mt-0.5 text-sm text-mb-muted">
               {isAdmin
                 ? "Admin hisobida muddat talab qilinmaydi."
                 : hasPremium
-                  ? `${formatDate(profile.premium_until)} gacha · ${premiumDaysRemaining} kun qoldi`
-                  : "Qolgan dars va testlarni Premium ochadi."}
+                  ? `${formatDate(profile.premium_until)} gaça · ${premiumDaysRemaining} kun qoldi`
+                  : "Qolgan dars va testlarni Premium oçadi."}
             </p>
           </div>
 
@@ -689,7 +689,7 @@ const latestPlan =
                     : "inline-flex min-h-11 items-center rounded-xl bg-mb-brand px-4 text-sm font-bold text-white hover:bg-mb-brandDark"
                 }
               >
-                {hasPremium ? "Uzaytirish" : "Premium olish"}
+                {hasPremium ? "Uzaytiriş" : "Premium oliş"}
               </Link>
             )}
 
@@ -697,7 +697,7 @@ const latestPlan =
               href="/profile/payments"
               className="inline-flex min-h-11 items-center rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
-              To‘lovlarim
+              Tölovlarim
             </Link>
           </div>
         </div>
@@ -706,15 +706,15 @@ const latestPlan =
         <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3">
           {[
             {
-              label: "Ishlangan test",
+              label: "Işlangan test",
               value: String(testsCompleted),
               hint: `${rankingTestsTotal} tadan`,
               tone: "text-blue-600",
             },
             {
-              label: "O‘rtacha",
+              label: "Örtaça",
               value: `${formatPercentage(averagePercentage)}%`,
-              hint: "eng yaxshi natijalar",
+              hint: "eng yaxşi natijalar",
               tone: "text-blue-600",
             },
             {
@@ -766,7 +766,7 @@ const latestPlan =
               href="/lessons"
               className="inline-flex min-h-10 items-center rounded-xl bg-blue-600 px-4 text-sm font-bold text-white hover:bg-blue-700"
             >
-              Davom etish
+              Davom etiş
             </Link>
           </div>
 
@@ -779,19 +779,19 @@ const latestPlan =
         </div>
 
         {/* Testlar bo'yicha o'rin */}
-        <h2 className="mt-7 text-lg font-bold">Testlardagi o‘rningiz</h2>
+        <h2 className="mt-7 text-lg font-bold">Testlardagi örningiz</h2>
 
         {testRankingRows.length === 0 ? (
           <div className="mt-3 rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-10 text-center">
             <p className="font-bold text-slate-800">
-              Hali reyting natijasi yo‘q
+              Hali reyting natijasi yöq
             </p>
 
             <Link
               href="/tests"
               className="mt-3 inline-flex min-h-11 items-center rounded-xl bg-mb-brand px-5 text-sm font-bold text-white hover:bg-mb-brandDark"
             >
-              Test ishlash
+              Test işlaş
             </Link>
           </div>
         ) : (
@@ -811,8 +811,8 @@ const latestPlan =
                   </p>
 
                   <p className="mt-0.5 text-xs text-mb-muted">
-                    {formatPercentage(row.attempts_count)} urinish ·
-                    eng yaxshi vaqt{" "}
+                    {formatPercentage(row.attempts_count)} uriniş ·
+                    eng yaxşi vaqt{" "}
                     {formatDuration(row.best_duration_seconds)}
                   </p>
                 </div>
@@ -832,7 +832,7 @@ const latestPlan =
                       href={`/results/view?attemptId=${row.best_attempt_id}`}
                       className="inline-flex min-h-10 items-center rounded-xl border border-slate-200 px-3 text-xs font-semibold text-slate-600 hover:bg-slate-50"
                     >
-                      Ko‘rish
+                      Köriş
                     </Link>
                   )}
                 </div>
@@ -845,13 +845,13 @@ const latestPlan =
         {recentAttempts.length > 0 && (
           <>
             <div className="mt-7 flex items-end justify-between gap-3">
-              <h2 className="text-lg font-bold">So‘nggi natijalar</h2>
+              <h2 className="text-lg font-bold">Sönggi natijalar</h2>
 
               <Link
                 href="/results"
                 className="text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
               >
-                Barchasi
+                Barçasi
               </Link>
             </div>
 
@@ -906,8 +906,8 @@ const latestPlan =
           </summary>
 
           <p className="mt-2 text-sm leading-6 text-mb-muted">
-            Har testda eng yaxshi natijangiz olinadi va ular
-            qo‘shiladi; ishlanmagan test 0 ball. Foiz teng bo‘lsa
+            Har testda eng yaxşi natijangiz olinadi va ular
+            qöşiladi; işlanmagan test 0 ball. Foiz teng bölsa
             testni tezroq tugatgan yuqorida turadi. Dars testlari va
             uy vazifalari reytingga kirmaydi.
           </p>

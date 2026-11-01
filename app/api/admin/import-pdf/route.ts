@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
 
   if (!profile || profile.role !== "admin" || profile.is_active !== true) {
     return NextResponse.json(
-      { errors: ["Bu amal faqat administrator uchun."] },
+      { errors: ["Bu amal faqat administrator uçun."] },
       { status: 403 },
     );
   }
@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
     const answers = form.get("answers");
     answersFile = answers instanceof File && answers.size > 0 ? answers : null;
   } catch {
-    return NextResponse.json({ errors: ["Fayl o'qilmadi."] }, { status: 400 });
+    return NextResponse.json({ errors: ["Fayl öqilmadi."] }, { status: 400 });
   }
 
   if (!file) {
@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         errors: [
-          `Fayl juda katta (${(file.size / 1024 / 1024).toFixed(1)} MB). Chegara — 4 MB.`,
+          `Fayl juda katta (${(file.size / 1024 / 1024).toFixed(1)} MB). Çegara — 4 MB.`,
         ],
       },
       { status: 400 },
@@ -122,8 +122,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         errors: [
-          "Javoblar fayli berilmadi. Savol faylining ichida to'g'ri " +
-            "javob yo'q, shuning uchun ikkala fayl ham kerak.",
+          "Javoblar fayli berilmadi. Savol faylining içida töğri " +
+            "javob yöq, şuning uçun ikkala fayl ham kerak.",
         ],
       },
       { status: 400 },
@@ -165,7 +165,7 @@ export async function POST(request: NextRequest) {
       if (ready.ready < ready.total) {
         errors.unshift(
           `${ready.total} ta savoldan ${ready.ready} tasi tayyor. ` +
-            `Qolgani javobsiz yoki variantlari to'liq emas.`,
+            `Qolgani javobsiz yoki variantlari töliq emas.`,
         );
       }
 
@@ -250,7 +250,7 @@ export async function POST(request: NextRequest) {
       errors.unshift(
         `${offline.total} ta savoldan ${saved} tasi tayyor` +
           (repaired > 0 ? ` (${repaired} tasini model tikladi)` : "") +
-          `. Qolgan ${offline.total - saved} tasi qo'lda kiritiladi.`,
+          `. Qolgan ${offline.total - saved} tasi qölda kiritiladi.`,
       );
     } else if (repaired > 0) {
       errors.unshift(
@@ -260,7 +260,7 @@ export async function POST(request: NextRequest) {
 
     if (usage.input > 0 || usage.output > 0) {
       errors.push(
-        `Model sarfi: ${usage.input} kirish + ${usage.output} chiqish token.`,
+        `Model sarfi: ${usage.input} kiriş + ${usage.output} çiqiş token.`,
       );
     }
 
@@ -274,7 +274,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         errors: [
-          `Ajratishda xato: ${
+          `Ajratişda xato: ${
             error instanceof Error ? error.message : String(error)
           }`,
         ],
