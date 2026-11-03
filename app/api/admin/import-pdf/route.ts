@@ -181,6 +181,8 @@ export async function POST(request: NextRequest) {
             correct: question.correct,
             solution: null,
             solutionVideo: null,
+            /* Rasmni brauzer alohida so'raydi — bitta so'rov vaqtga sig'masligi mumkin */
+            figure: question.figure,
           })),
         })),
         errors,

@@ -24,6 +24,13 @@ export type ParsedChoiceQuestion = {
   solution: string | null;
   /** Yechim videosi (YouTube) */
   solutionVideo: string | null;
+  /**
+   * `.tex` dagi chizma: uni chizadigan LaTeX hujjat. Brauzer uni
+   * `/api/admin/tex-chizma` ga yuborib rasm oladi.
+   */
+  figure?: string | null;
+  /** Chizilgan rasm — `data:image/png;base64,...`. Saqlashda bucket'ga yuklanadi */
+  image?: string | null;
 };
 
 export type ParsedWrittenPart = {
