@@ -31,6 +31,12 @@ export type TexQuestion = {
   options: { a: string; b: string; c: string; d: string };
   /** Shubhali joylar: bo'sh bo'lsa savol ishonchli o'qilgan */
   flags: string[];
+  /**
+   * Savoldagi chizmalar — XOM LaTeX bo'laklari (`tikzpicture`,
+   * `\sonoqi{2}` kabi chizma buyrug'i, A)-D) jadvali). Matndan
+   * olib tashlangan, rasmga `figureDocument` orqali aylantiriladi.
+   */
+  figures: string[];
 };
 
 export type TexTest = {
@@ -43,6 +49,8 @@ export type TexTest = {
 export type TexResult = {
   tests: TexTest[];
   errors: string[];
+  /** Fayldagi ranglar, kutubxonalar va yordamchi buyruqlar */
+  figures?: FigureContext;
 };
 
 /* ------------------------------------------------------------------ */
@@ -79,7 +87,7 @@ function stripComments(source: string): string {
 const DROP = [
   /\\vspace\*?\{[^{}]*\}/g,
   /\\hspace\*?\{[^{}]*\}/g,
-  /\\(columnbreak|newpage|clearpage|centering|noindent|smallskip|medskip|bigskip|par)\b/g,
+  /\\(columnbreak|newpage|clearpage|centering|noindent|smallskip|medskip|bigskip|par|nobreak|newline|linebreak)\b/g,
   /\\label\{[^{}]*\}/g,
   /\\\\(\[[^\]]*\])?/g,
   /* LaTeX bo'shliqlari: \\, \\; \\! va teskari chiziq + bo'shliq */
@@ -124,6 +132,9 @@ export function cleanTex(text: string): string {
     out = unwrap(out, name);
   }
 
+  /* `peri\-met\-rini` — bo'g'in ko'chirish ishorasi, so'z bo'linmaydi */
+  out = out.replace(/(?<!\\)\\-/g, "");
+
   for (const pattern of DROP) out = out.replace(pattern, " ");
 
   return out
@@ -144,6 +155,395 @@ export function cleanTex(text: string): string {
     .replace(/\s+/g, " ")
     .replace(/\s+([.,;:?!])/g, "$1")
     .trim();
+}
+
+/* ------------------------------------------------------------------ */
+/* Chizmalar                                                           */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Savoldagi chizma matnga aylanmaydi — u RASM bo'ladi.
+ *
+ * Fayllarda chizma uch xil yoziladi:
+ *
+ *   1. To'g'ridan-to'g'ri `\begin{tikzpicture} ... \end{tikzpicture}`
+ *   2. Fayl boshida e'lon qilingan buyruq: `\sonoqi{2}`,
+ *      `\kvparabola{...}` — ichida tikzpicture bor
+ *   3. Variantlar jadvali: `\begin{tabular} A) <chizma> & B) ...`
+ *
+ * Avval bu bo'laklar savol matnidan kesib olinadi (aks holda
+ * saytda `\sonoqi{1}` degan xom yozuv turib qoladi), keyin
+ * `figureDocument` ularni alohida LaTeX hujjatga yig'adi — uni
+ * server rasmga aylantiradi (lib/tex-chizma.ts).
+ */
+
+export type FigureMacro = {
+  argc: number;
+  /** E'lonning o'zi: `\newcommand{\sonoqi}[1]{...}` */
+  source: string;
+  /** Ichida chizma bormi (o'zi yoki chaqirgan buyrug'i orqali) */
+  figure: boolean;
+};
+
+export type FigureContext = {
+  macros: Record<string, FigureMacro>;
+  /** `\definecolor`, `\colorlet`, `\usetikzlibrary`, `\tikzset` */
+  setup: string[];
+};
+
+/** Bular sahifa uchun — chizmaga aloqasi yo'q */
+const SKIP_MACROS = new Set(["variant"]);
+
+const NEW_COMMAND =
+  /\\(?:re|provide)?newcommand\*?\s*(?:\{\s*\\([A-Za-z]+)\s*\}|\\([A-Za-z]+))\s*(?:\[(\d)\])?\s*(?:\[[^\]]*\])?\s*\{/g;
+
+const HAS_PICTURE = /\\begin\{tikzpicture\}|\\tikz(?![A-Za-z])/;
+
+function mentions(source: string, name: string): boolean {
+  return new RegExp(`\\\\${name}(?![A-Za-z])`).test(source);
+}
+
+/** Fayldan chizma uchun kerakli e'lonlarni yig'ish */
+export function readFigureContext(source: string): FigureContext {
+  const text = stripComments(source);
+  const macros: Record<string, FigureMacro> = {};
+
+  NEW_COMMAND.lastIndex = 0;
+  let found = NEW_COMMAND.exec(text);
+
+  while (found) {
+    const name = found[1] ?? found[2];
+    const open = found.index + found[0].length - 1;
+    const body = readGroup(text, open);
+
+    if (!SKIP_MACROS.has(name)) {
+      macros[name] = {
+        argc: Number(found[3] ?? 0),
+        source: text.slice(found.index, body.end),
+        figure: HAS_PICTURE.test(body.value),
+      };
+    }
+
+    NEW_COMMAND.lastIndex = body.end;
+    found = NEW_COMMAND.exec(text);
+  }
+
+  /* Chizma buyrug'ini chaqiradigan buyruq ham chizma */
+  let changed = true;
+
+  while (changed) {
+    changed = false;
+
+    for (const macro of Object.values(macros)) {
+      if (macro.figure) continue;
+
+      const calls = Object.entries(macros).some(
+        ([other, item]) => item.figure && mentions(macro.source, other),
+      );
+
+      if (calls) {
+        macro.figure = true;
+        changed = true;
+      }
+    }
+  }
+
+  const setup: string[] = [];
+
+  for (const pattern of [
+    /\\definecolor\s*\{[^{}]*\}\s*\{[^{}]*\}\s*\{[^{}]*\}/g,
+    /\\colorlet\s*\{[^{}]*\}\s*\{[^{}]*\}/g,
+    /\\usetikzlibrary\s*\{[^{}]*\}/g,
+  ]) {
+    for (const item of text.match(pattern) ?? []) setup.push(item);
+  }
+
+  const TIKZSET = /\\tikzset\s*\{/g;
+  let style = TIKZSET.exec(text);
+
+  while (style) {
+    const group = readGroup(text, style.index + style[0].length - 1);
+    setup.push(text.slice(style.index, group.end));
+    TIKZSET.lastIndex = group.end;
+    style = TIKZSET.exec(text);
+  }
+
+  return { macros, setup };
+}
+
+/**
+ * Bo'lakdan chizmalarni kesib olish.
+ *
+ * `rest` — chizmasiz matn (uni `cleanTex` tozalaydi),
+ * `figures` — kesilgan bo'laklar, matndagi tartibida.
+ */
+export function takeFigures(
+  chunk: string,
+  context: FigureContext | undefined,
+): { rest: string; figures: string[] } {
+  const regions: Array<[number, number]> = [];
+  const macros = context?.macros ?? {};
+  const inside = (at: number) =>
+    regions.some(([from, to]) => at >= from && at < to);
+
+  /* 1. Chizma buyruqlari: `\sonoqi{2}` */
+  const names = Object.keys(macros).filter((name) => macros[name].figure);
+
+  if (names.length > 0) {
+    const call = new RegExp(`\\\\(${names.join("|")})(?![A-Za-z])`, "g");
+    let found = call.exec(chunk);
+
+    while (found) {
+      let end = found.index + found[0].length;
+
+      for (let i = 0; i < macros[found[1]].argc; i += 1) {
+        let next = end;
+        while (/\s/.test(chunk[next] ?? "")) next += 1;
+        if (chunk[next] !== "{") break;
+        end = readGroup(chunk, next).end;
+      }
+
+      regions.push([found.index, end]);
+      call.lastIndex = end;
+      found = call.exec(chunk);
+    }
+  }
+
+  /* 2. To'g'ridan-to'g'ri tikzpicture */
+  const OPEN = "\\begin{tikzpicture}";
+  const CLOSE = "\\end{tikzpicture}";
+  let at = chunk.indexOf(OPEN);
+
+  while (at !== -1) {
+    const close = chunk.indexOf(CLOSE, at);
+    if (close === -1) break;
+
+    const end = close + CLOSE.length;
+    if (!inside(at)) regions.push([at, end]);
+    at = chunk.indexOf(OPEN, end);
+  }
+
+  /* 3. Chizma jadval ichida bo'lsa (A)-D) variantlar) — butun jadval */
+  const TAB_OPEN = "\\begin{tabular}";
+  const TAB_CLOSE = "\\end{tabular}";
+
+  let found: Region[] = regions.map(([from, to]) => {
+    const open = chunk.lastIndexOf(TAB_OPEN, from);
+
+    if (open === -1 || chunk.lastIndexOf(TAB_CLOSE, from) > open) {
+      return { from, to, content: chunk.slice(from, to) };
+    }
+
+    const close = chunk.indexOf(TAB_CLOSE, to);
+    if (close === -1) return { from, to, content: chunk.slice(from, to) };
+
+    const end = close + TAB_CLOSE.length;
+    return { from: open, to: end, content: chunk.slice(open, end) };
+  });
+
+  /*
+   * 4. Qobiq: `\chizma{<chizma> \hspace{2mm} <chizma>}`.
+   *
+   * Qobiq ichida chizmadan boshqa narsa (bo'shliqdan tashqari)
+   * bo'lmasa, uning ichi BITTA rasm bo'ladi — chizmalar orasidagi
+   * masofa saqlanadi, qobiqning o'zi esa matndan o'chadi.
+   */
+  const wrappers = Object.keys(macros).filter(
+    (name) => !macros[name].figure && macros[name].argc === 1,
+  );
+
+  if (wrappers.length > 0 && found.length > 0) {
+    const call = new RegExp(`\\\\(?:${wrappers.join("|")})\\s*\\{`, "g");
+    let wrap = call.exec(chunk);
+
+    while (wrap) {
+      const open = wrap.index + wrap[0].length - 1;
+      const group = readGroup(chunk, open);
+      const within = found.filter((r) => r.from > open && r.to < group.end);
+
+      if (within.length > 0) {
+        let left = chunk.slice(open + 1, group.end - 1);
+
+        for (const r of within) left = left.replace(r.content, " ");
+
+        if (isBlank(left)) {
+          found = found.filter((r) => !within.includes(r));
+          found.push({
+            from: wrap.index,
+            to: group.end,
+            content: chunk.slice(open + 1, group.end - 1),
+          });
+        }
+      }
+
+      call.lastIndex = group.end;
+      wrap = call.exec(chunk);
+    }
+  }
+
+  found.sort((a, b) => a.from - b.from);
+
+  const merged: Region[] = [];
+
+  for (const region of found) {
+    const last = merged[merged.length - 1];
+
+    if (last && region.from < last.to) {
+      if (region.to > last.to) {
+        last.to = region.to;
+        last.content = chunk.slice(last.from, last.to);
+      }
+    } else {
+      merged.push({ ...region });
+    }
+  }
+
+  if (merged.length === 0) return { rest: chunk, figures: [] };
+
+  const figures: string[] = [];
+  let rest = "";
+  let from = 0;
+
+  for (const region of merged) {
+    figures.push(region.content.trim());
+    rest += chunk.slice(from, region.from) + " ";
+    from = region.to;
+  }
+
+  rest += chunk.slice(from);
+
+  /*
+   * Chizma o'ralgan qobiqlar bo'sh qoladi: `\chizma{}`,
+   * `{\centering \par}`, `\begin{center}\end{center}`.
+   */
+  const shells = Object.keys(macros).filter((name) => !macros[name].figure);
+
+  for (let i = 0; i < 3; i += 1) {
+    if (shells.length > 0) {
+      rest = rest.replace(
+        new RegExp(`\\\\(?:${shells.join("|")})\\s*\\{\\s*\\}`, "g"),
+        " ",
+      );
+    }
+
+    rest = rest
+      .replace(/\\begin\{center\}\s*\\end\{center\}/g, " ")
+      .replace(/\{(?:\s|\\centering\b|\\par\b|\\noindent\b)*\}/g, " ");
+  }
+
+  return { rest, figures };
+}
+
+type Region = { from: number; to: number; content: string };
+
+/** Chizmalar orasidagi bo'shliqdan boshqa narsa yo'qmi */
+function isBlank(text: string): boolean {
+  return (
+    text
+      .replace(/\\[hv]space\*?\{[^{}]*\}/g, "")
+      .replace(
+        /\\(quad|qquad|hfill|centering|par|noindent|newline|nobreak|medskip|smallskip|bigskip)(?![A-Za-z])/g,
+        "",
+      )
+      .replace(/\\\\|~|[{}\s]/g, "") === ""
+  );
+}
+
+/** Kitoblardagi ranglar — 1-65 mavzu fayllarida e'lon qilinmagan */
+const DEFAULT_SETUP = [
+  "\\definecolor{kitobKok}{HTML}{1F5FAF}",
+  "\\definecolor{kitobHavorang}{HTML}{EAF4FF}",
+  "\\definecolor{tblue}{rgb}{0.0902,0.41176,0.66667}",
+  "\\definecolor{tfill}{rgb}{0.91765,0.95686,0.98825}",
+  "\\definecolor{blueA}{rgb}{0.11374,0.37256,0.62354}",
+  "\\definecolor{blueB}{rgb}{0.09,0.412,0.667}",
+  "\\definecolor{lightA}{rgb}{0.91765,0.95686,0.98825}",
+  "\\colorlet{axisc}{black!75}",
+  "\\usetikzlibrary{arrows.meta,calc}",
+  /* Rasmda markazlash kerak emas, `center` esa satr ichida ishlamaydi */
+  "\\renewenvironment{center}{}{}",
+];
+
+/**
+ * Chizmalarni bitta LaTeX hujjatga yig'ish.
+ *
+ * Faqat kerakli buyruqlar qo'shiladi: chizmada (yoki u chaqirgan
+ * buyruqda) uchraganlari. Sahifa bezaklari (`\trow`, `\badge`)
+ * tushmaydi — ular chizmani chizadigan muhitda yo'q paketlarga
+ * tayanadi.
+ */
+export function figureDocument(
+  figures: string[],
+  context: FigureContext | undefined,
+): string {
+  /* Bir nechta chizma — ustma-ust, har biri o'z qatorida */
+  const body =
+    figures.length === 1
+      ? figures[0]
+      : [
+          "\\begin{tabular}{@{}c@{}}",
+          figures.join("\n\\\\[8pt]\n"),
+          "\\end{tabular}",
+        ].join("\n");
+
+  const macros = context?.macros ?? {};
+
+  const used = new Set<string>();
+  const queue = [body];
+
+  while (queue.length > 0) {
+    const source = queue.pop() as string;
+
+    for (const [name, macro] of Object.entries(macros)) {
+      if (used.has(name) || !mentions(source, name)) continue;
+      used.add(name);
+      queue.push(macro.source);
+    }
+  }
+
+  const definitions = Object.entries(macros)
+    .filter(([name]) => used.has(name))
+    .map(([, macro]) => macro.source);
+
+  return [
+    ...DEFAULT_SETUP,
+    ...(context?.setup ?? []),
+    ...definitions,
+    "\\begin{document}",
+    shortLines(body),
+    "\\end{document}",
+  ].join("\n");
+}
+
+/**
+ * Uzun qatorlarni bo'lish.
+ *
+ * Chizmadagi egri chiziq yuzlab nuqtadan iborat bo'lib, bitta
+ * qatorga yozilgan bo'ladi. Rasm chizadigan TeX'ning qator
+ * buferi kichik — bunday qatorda u qulaydi. TeX uchun qator
+ * oxiri bo'shliq bilan bir xil, shuning uchun bo'shliq o'rniga
+ * qator tashlash ma'noni o'zgartirmaydi.
+ */
+function shortLines(text: string, limit = 400): string {
+  return text
+    .split("\n")
+    .map((line) => {
+      if (line.length <= limit) return line;
+
+      const out: string[] = [];
+      let rest = line;
+
+      while (rest.length > limit) {
+        const cut = rest.lastIndexOf(" ", limit);
+        if (cut <= 0) break;
+        out.push(rest.slice(0, cut));
+        rest = rest.slice(cut + 1);
+      }
+
+      out.push(rest);
+      return out.join("\n");
+    })
+    .join("\n");
 }
 
 /* ------------------------------------------------------------------ */
@@ -199,7 +599,12 @@ function splitItems(block: string): string[] {
   return out;
 }
 
-function readTest(body: string, number: number, title: string): TexTest {
+function readTest(
+  body: string,
+  number: number,
+  title: string,
+  context: FigureContext,
+): TexTest {
   const questions: TexQuestion[] = [];
 
   for (const list of blocks(body, "testlar")) {
@@ -215,13 +620,15 @@ function readTest(body: string, number: number, title: string): TexTest {
       const tail = parts[i + 1];
 
       const items = splitItems(head);
-      const text = cleanTex(items[items.length - 1] ?? "");
+      const asked = takeFigures(items[items.length - 1] ?? "", context);
+      const text = cleanTex(asked.rest);
 
       const close = tail.indexOf("\\end{variantlar}");
       const inside = close === -1 ? tail : tail.slice(0, close);
-      const choices = splitItems(inside).map(cleanTex);
+      const options = optionFigures(splitItems(inside), context);
+      const choices = options.choices;
 
-      const flags: string[] = [];
+      const flags: string[] = [...options.flags];
 
       if (!text) flags.push("savol matni böş");
       if (choices.length !== 4) {
@@ -238,6 +645,7 @@ function readTest(body: string, number: number, title: string): TexTest {
           d: choices[3] ?? "",
         },
         flags,
+        figures: [...asked.figures, ...options.figures],
       });
     }
   }
@@ -315,6 +723,11 @@ export type ReadyQuestion = {
   text: string;
   options: { a: string; b: string; c: string; d: string };
   correct: "A" | "B" | "C" | "D";
+  /**
+   * Chizma bo'lsa — uni chizadigan to'liq LaTeX hujjat
+   * (`figureDocument`). Rasmga server aylantiradi.
+   */
+  figure: string | null;
 };
 
 export type ReadyTest = {
@@ -337,8 +750,8 @@ export type ReadyResult = {
  * Savollarni javoblar bilan birlashtirish.
  *
  * To'g'ri javobi yo'q savol saqlanmaydi — baribir ishlatib
- * bo'lmaydi. Chizmasi bor savol esa saqlanadi, lekin eslatma
- * bilan: rasmni qo'lda qo'shish kerak.
+ * bo'lmaydi. Chizmasi bor savolga esa chizmani chizadigan
+ * LaTeX hujjat qo'shiladi — server uni rasmga aylantiradi.
  */
 export function buildTests(
   questions: TexResult,
@@ -389,6 +802,10 @@ export function buildTests(
         text: question.text,
         options: question.options,
         correct,
+        figure:
+          question.figures.length > 0
+            ? figureDocument(question.figures, questions.figures)
+            : null,
       });
 
       ready += 1;
@@ -444,10 +861,17 @@ function readGroup(text: string, open: number): { value: string; end: number } {
 }
 
 /** `\optsauto{A}{B}{C}{D}` -> to'rtta variant */
-function readOptions(text: string): { choices: string[]; textEnd: number } {
+function readOptions(text: string): {
+  choices: string[];
+  textEnd: number;
+  /** Variantlardan keyingi joy — chizma ba'zan shu yerda turadi */
+  optionsEnd: number;
+} {
   const found = OPTS.exec(text);
 
-  if (!found) return { choices: [], textEnd: text.length };
+  if (!found) {
+    return { choices: [], textEnd: text.length, optionsEnd: text.length };
+  }
 
   const choices: string[] = [];
   let at = found.index + found[0].length - 1;
@@ -460,10 +884,10 @@ function readOptions(text: string): { choices: string[]; textEnd: number } {
     at = group.end;
   }
 
-  return { choices, textEnd: found.index };
+  return { choices, textEnd: found.index, optionsEnd: at };
 }
 
-function readVariantTests(source: string): TexResult {
+function readVariantTests(source: string, context: FigureContext): TexResult {
   const heads: Array<{ at: number; number: number }> = [];
 
   VARIANT_HEAD.lastIndex = 0;
@@ -499,34 +923,40 @@ function readVariantTests(source: string): TexResult {
       const end = i + 1 < marks.length ? marks[i + 1].at : body.length;
       const chunk = body.slice(start.at, end);
 
-      const { choices, textEnd } = readOptions(chunk);
-      const text = cleanTex(chunk.slice(0, textEnd));
-      const flags: string[] = [];
+      const { choices: raw, textEnd, optionsEnd } = readOptions(chunk);
+      const asked = takeFigures(chunk.slice(0, textEnd), context);
+
+      /*
+       * Chizma variantlardan KEYIN ham kelishi mumkin: savol chap
+       * ustunda, chizma o'ng ustunda (`minipage` yonma-yon).
+       */
+      const after = takeFigures(chunk.slice(optionsEnd), context);
+      const text = cleanTex(asked.rest);
+      const options = optionFigures(raw, context);
+      const choices = options.choices;
+      const flags: string[] = [...options.flags];
 
       if (!text) flags.push("savol matni böş");
       if (choices.length !== 4) {
         flags.push(`variantlar soni ${choices.length}, 4 emas`);
       }
 
-      /*
-       * Chizmali savol: grafik TikZ bilan chizilgan, uni matnga
-       * aylantirib bo'lmaydi. Savol saqlanadi, lekin rasmni
-       * qo'lda qo'shish kerakligi belgilanadi.
-       */
-      if (/\\begin\{tikzpicture\}|\\includegraphics/.test(chunk)) {
-        flags.push("savolda çizma bor — rasmni qölda qöşing");
+      /* `\includegraphics` — tashqi fayl, uni bu yerda chizib bo'lmaydi */
+      if (/\\includegraphics/.test(chunk)) {
+        flags.push("savolda tashqi rasm bor — uni qölda qöşing");
       }
 
       questions.push({
         number: start.number,
         text,
         options: {
-          a: cleanTex(choices[0] ?? ""),
-          b: cleanTex(choices[1] ?? ""),
-          c: cleanTex(choices[2] ?? ""),
-          d: cleanTex(choices[3] ?? ""),
+          a: choices[0] ?? "",
+          b: choices[1] ?? "",
+          c: choices[2] ?? "",
+          d: choices[3] ?? "",
         },
         flags,
+        figures: [...asked.figures, ...after.figures, ...options.figures],
       });
     });
 
@@ -541,10 +971,43 @@ function readVariantTests(source: string): TexResult {
   return { tests, errors };
 }
 
+
+/**
+ * Variant ichidagi chizma.
+ *
+ * Variant matn bo'lib saqlanadi, rasm esa faqat savolda turadi.
+ * Shuning uchun variantdagi chizma savol rasmiga "A)" belgisi
+ * bilan qo'shiladi, variantning o'zida esa unga havola qoladi.
+ */
+function optionFigures(
+  raw: string[],
+  context: FigureContext,
+): { choices: string[]; figures: string[]; flags: string[] } {
+  const figures: string[] = [];
+  const flags: string[] = [];
+  const letters = ["A", "B", "C", "D"];
+
+  const choices = raw.map((item, index) => {
+    const taken = takeFigures(item, context);
+    const text = cleanTex(taken.rest);
+
+    if (taken.figures.length === 0) return text;
+
+    const letter = letters[index] ?? String(index + 1);
+    figures.push(`\\textbf{${letter})}~${taken.figures.join("~")}`);
+    flags.push(`${letter} variant çizma edi — rasmga qöşildi`);
+
+    return text || `Rasmdagi ${letter})`;
+  });
+
+  return { choices, figures, flags };
+}
+
 /** `.tex` manba -> testlar */
 export function parseTex(source: string): TexResult {
   const text = stripComments(source);
   const errors: string[] = [];
+  const figures = readFigureContext(text);
 
   const heads: Array<{ at: number; title: string; number: number }> = [];
 
@@ -563,9 +1026,9 @@ export function parseTex(source: string): TexResult {
 
   if (heads.length === 0) {
     /* Ikkinchi ko'rinishni sinab ko'ramiz */
-    const other = readVariantTests(text);
+    const other = readVariantTests(text, figures);
 
-    if (other.tests.length > 0) return other;
+    if (other.tests.length > 0) return { ...other, figures };
 
     return {
       tests: [],
@@ -579,7 +1042,12 @@ export function parseTex(source: string): TexResult {
 
   heads.forEach((head, index) => {
     const to = index + 1 < heads.length ? heads[index + 1].at : text.length;
-    const test = readTest(text.slice(head.at, to), head.number, head.title);
+    const test = readTest(
+      text.slice(head.at, to),
+      head.number,
+      head.title,
+      figures,
+    );
 
     if (test.questions.length === 0) {
       errors.push(`${head.number}-testda savol topilmadi.`);
@@ -589,5 +1057,5 @@ export function parseTex(source: string): TexResult {
     tests.push(test);
   });
 
-  return { tests, errors };
+  return { tests, errors, figures };
 }

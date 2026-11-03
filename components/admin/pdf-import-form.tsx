@@ -106,6 +106,15 @@ export default function PdfImportForm({
   const saveGuardRef = useRef(false);
   const savingIndexRef = useRef(0);
 
+  /*
+   * `.tex` chizmalari: har biri alohida so'rov bilan rasmga
+   * aylanadi. Yangi fayl yuklansa eski navbat to'xtaydi.
+   */
+  const [drawing, setDrawing] = useState<{ done: number; total: number } | null>(
+    null,
+  );
+  const drawRunRef = useRef(0);
+
   const active = drafts[activeIndex] ?? null;
   const savedCount = drafts.filter((item) => item.savedTestId).length;
   const single = drafts.length === 1;
@@ -212,6 +221,8 @@ function describeNonJsonResponse(status: number, body: string) {
     setErrors([]);
     setDrafts([]);
     setActiveIndex(0);
+    drawRunRef.current += 1;
+    setDrawing(null);
 
     const body = new FormData();
     body.append("file", file);
@@ -265,6 +276,7 @@ function describeNonJsonResponse(status: number, body: string) {
       setDrafts(payload.tests.map(toDraft));
       setActiveIndex(0);
       setErrors(payload.errors ?? []);
+      void drawFigures(payload.tests);
     } catch (error) {
       setErrors([
         `Sörov yuborilmadi: ${
@@ -274,6 +286,82 @@ function describeNonJsonResponse(status: number, body: string) {
     } finally {
       setLoading(false);
     }
+  }
+
+  /**
+   * Chizmalarni navbat bilan rasmga aylantirish.
+   *
+   * Bitta-bitta: server TeX'i bir vaqtda bittasini chizadi, bir
+   * so'rovda hammasi esa funksiya vaqtiga sig'maydi.
+   */
+  async function drawFigures(tests: ParsedTest[]) {
+    const run = drawRunRef.current;
+    const jobs: Array<{ draft: number; question: number; figure: string }> = [];
+
+    tests.forEach((test, draft) =>
+      test.questions.forEach((question, index) => {
+        if (question.type === "choice" && question.figure && !question.image) {
+          jobs.push({ draft, question: index, figure: question.figure });
+        }
+      }),
+    );
+
+    if (jobs.length === 0) return;
+
+    setDrawing({ done: 0, total: jobs.length });
+
+    for (const [done, job] of jobs.entries()) {
+      if (drawRunRef.current !== run) return;
+
+      let image: string | null = null;
+      let problem: string | null = null;
+
+      try {
+        const response = await fetch("/api/admin/tex-chizma", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ document: job.figure }),
+        });
+
+        if (response.ok) {
+          image = await blobToDataUrl(await response.blob());
+        } else {
+          const body = (await response.json().catch(() => null)) as {
+            error?: string;
+          } | null;
+          problem = body?.error ?? `server ${response.status} qaytardi`;
+        }
+      } catch (error) {
+        problem = error instanceof Error ? error.message : String(error);
+      }
+
+      if (drawRunRef.current !== run) return;
+
+      setDrafts((list) =>
+        list.map((item, i) => {
+          if (i !== job.draft) return item;
+
+          const questions = item.questions.map((question, q) =>
+            q === job.question && question.type === "choice"
+              ? { ...question, image, figure: image ? question.figure : null }
+              : question,
+          );
+
+          const notes = problem
+            ? [
+                ...item.notes,
+                `${job.question + 1}-savol: çizma rasmga aylanmadi (${problem}) — rasmni qölda qöşing.`,
+              ]
+            : item.notes;
+
+          return { ...item, questions, notes };
+        }),
+      );
+
+      setDrawing({ done: done + 1, total: jobs.length });
+    }
+
+    setDrawing(null);
   }
 
   function patchActive(patch: Partial<Draft>) {
@@ -393,6 +481,13 @@ function describeNonJsonResponse(status: number, body: string) {
         )}
       </form>
 
+      {drawing && (
+        <p className="mt-4 inline-flex items-center gap-2 rounded-xl bg-mb-tintSoft px-3 py-2 text-sm font-semibold text-mb-brand">
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+          Çizmalar rasmga aylantirilmoqda: {drawing.done} / {drawing.total}
+        </p>
+      )}
+
       {errors.length > 0 && (
         <AppAlert
           variant={active ? "warning" : "error"}
@@ -498,10 +593,17 @@ function describeNonJsonResponse(status: number, body: string) {
           }}
           className="mt-6"
         >
+          {/* LaTeX manba saqlanmaydi — faqat tayyor rasm */}
           <input
             type="hidden"
             name="questions"
-            value={JSON.stringify(active.questions)}
+            value={JSON.stringify(
+              active.questions.map((question) =>
+                question.type === "choice"
+                  ? { ...question, figure: undefined }
+                  : question,
+              ),
+            )}
           />
 
           <div className="rounded-2xl border border-mb-line bg-white p-4 shadow-sm sm:p-5">
@@ -638,7 +740,7 @@ function describeNonJsonResponse(status: number, body: string) {
           )}
 
           <SaveDraftButton
-            disabled={active.questions.length === 0}
+            disabled={active.questions.length === 0 || drawing !== null}
             saved={Boolean(active.savedTestId)}
             label={
               single
@@ -748,6 +850,33 @@ function QuestionEditor({
         <div className="mt-1.5 text-sm text-mb-ink">
           <MathText content={question.text} />
         </div>
+
+        {question.type === "choice" && question.image && (
+          <div className="mt-2">
+            <img
+              src={question.image}
+              alt={`${index + 1}-savol çizmasi`}
+              className="max-h-72 max-w-full rounded-lg border border-slate-200 bg-white"
+            />
+
+            <button
+              type="button"
+              onClick={() =>
+                onChange({ ...question, image: null, figure: null })
+              }
+              className="mt-1 text-xs font-semibold text-slate-500 hover:text-red-600"
+            >
+              Rasmni olib taşlaş
+            </button>
+          </div>
+        )}
+
+        {question.type === "choice" && question.figure && !question.image && (
+          <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-mb-muted">
+            <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+            Çizma çizilmoqda…
+          </p>
+        )}
 
         {question.type === "choice" && (
           <div className="mt-2 grid gap-1 sm:grid-cols-2">
@@ -934,4 +1063,14 @@ function QuestionEditor({
       </p>
     </article>
   );
+}
+
+/** Rasmni `data:image/png;base64,...` ko'rinishiga keltirish */
+function blobToDataUrl(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(blob);
+  });
 }
