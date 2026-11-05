@@ -15,6 +15,7 @@ import {
   MIN_GRADE,
   isValidGrade,
 } from "@/lib/grades";
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import SubmitButton from "@/components/ui/submit-button";
 
@@ -42,9 +43,7 @@ type TopicRow = {
 async function requireAdmin() {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect("/auth/login");

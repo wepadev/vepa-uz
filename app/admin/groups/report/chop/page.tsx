@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 
 import AppAlert from "@/components/ui/app-alert";
 import PrintResultButton from "@/components/admin/print-result-button";
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -74,9 +75,7 @@ export default async function GroupReportPrintPage({
 
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) redirect("/auth/login");
 

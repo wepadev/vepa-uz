@@ -6,6 +6,7 @@ import {
   mergeFixes,
   parsePdfOffline,
 } from "@/lib/pdf-offline-import";
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import { buildTests, parseTex, parseTexAnswers } from "@/lib/tex-savollar";
 
@@ -53,9 +54,7 @@ export async function POST(request: NextRequest) {
   // 1. Faqat admin
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     return NextResponse.json(

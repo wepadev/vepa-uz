@@ -6,6 +6,7 @@ import {
 
 import MathText from "@/components/math-text";
 import YouTubeEmbed from "@/components/youtube-embed";
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import type { RankingTestRpcRow } from "@/lib/stats-types";
 
@@ -129,9 +130,7 @@ type LessonOrderRow = {
 async function getActiveClient() {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect("/auth/login");

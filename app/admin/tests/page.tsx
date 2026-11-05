@@ -4,6 +4,7 @@ import { ChevronRight, EyeOff, FileUp, Settings2 } from "lucide-react";
 
 import { examIcon } from "@/lib/exam-visuals";
 import { GROUP_EXAM_CODE } from "@/lib/group-tests";
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -106,9 +107,7 @@ function TestLinks({ tests }: { tests: TestRow[] }) {
 
 async function getAdminClient() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) redirect("/auth/login");
 

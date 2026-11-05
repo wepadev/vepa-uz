@@ -7,6 +7,7 @@ import TestRunner, {
   type RunnerItem,
 } from "@/components/test-runner";
 import { requireSectionAccess } from "@/lib/require-section-access";
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata = {
@@ -557,9 +558,7 @@ export default async function TakeTestPage({
   ) as TestSessionRow | null;
 
   if (!session?.session_id || !session.expires_at) {
-    const {
-      data: { user: currentUser },
-    } = await supabase.auth.getUser();
+    const currentUser = await getCurrentUser();
 
     const [countResult, writtenResult, recentResult] = await Promise.all([
       supabase
@@ -884,9 +883,7 @@ export default async function TakeTestPage({
    * tartib o'zgarmaydi. Javob asl harfi bilan yuboriladi, shuning
    * uchun baholash mantig'i o'zgarishsiz qoladi.
    */
-  const {
-    data: { user: answeringUser },
-  } = await supabase.auth.getUser();
+  const answeringUser = await getCurrentUser();
 
   const shuffleSeedBase = `${answeringUser?.id ?? "anon"}:${testId}`;
 

@@ -2,7 +2,10 @@ import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 
 import AdminNavigation from "@/components/admin/admin-navigation";
-import { createClient } from "@/lib/supabase/server";
+import {
+  getBasicProfile,
+  getCurrentUser,
+} from "@/lib/supabase/current-user";
 
 export const dynamic = "force-dynamic";
 
@@ -11,24 +14,14 @@ export default async function AdminLayout({
 }: {
   children: ReactNode;
 }) {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect("/auth/login");
   }
 
-  const {
-    data: profile,
-    error: profileError,
-  } = await supabase
-    .from("profiles")
-    .select("role, is_active")
-    .eq("id", user.id)
-    .maybeSingle();
+  /* Menyu ham shu profilni so'raydi — bir so'rovda bir marta o'qiladi */
+  const { profile, error: profileError } = await getBasicProfile(user.id);
 
   if (
     profileError ||

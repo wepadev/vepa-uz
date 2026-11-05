@@ -4,6 +4,7 @@ import { Check, Crown } from "lucide-react";
 import { createPaymentOrderAction } from "@/app/pricing/actions";
 import PaymentSubmitButton from "@/components/payment-submit-button";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import { asRpcClient } from "@/lib/supabase/rpc";
 
@@ -102,9 +103,7 @@ export default async function PricingPage({
   const supabase =
     await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   const rpcClient = asRpcClient(supabase);
 

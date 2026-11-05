@@ -4,6 +4,7 @@ import { CalendarDays, CheckCircle2 } from "lucide-react";
 
 import AppAlert from "@/components/ui/app-alert";
 import SubmitButton from "@/components/ui/submit-button";
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 
@@ -87,9 +88,7 @@ export default async function CrmLessonPage({ searchParams }: PageProps) {
 
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) redirect("/auth/login");
 

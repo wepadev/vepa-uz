@@ -16,6 +16,7 @@ import LessonHistory, {
   type LessonHistoryRow,
 } from "@/components/lesson-history";
 import PageHeader from "@/components/ui/page-header";
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 
@@ -101,9 +102,7 @@ export default async function MyGroupPage({ searchParams }: PageProps) {
 
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect("/auth/login");

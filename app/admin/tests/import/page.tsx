@@ -9,6 +9,7 @@ import PdfImportForm, {
 import AppAlert from "@/components/ui/app-alert";
 import type { ParsedQuestion } from "@/lib/pdf-import";
 import { saveParsedTest } from "@/lib/save-parsed-test";
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -37,9 +38,7 @@ type TopicRow = {
 async function requireAdmin() {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) redirect("/auth/login");
 
