@@ -40,7 +40,9 @@ export type QuestionRow = {
 export type QuestionBlockRow = {
   id: number;
   test_id: number;
-  block_type: "written_parts" | "shared_options";
+  block_type: "written_parts" | "shared_options" | "self_study";
+  /** Faqat mustaqil ish uchun (db/37) */
+  solution_video_url?: string | null;
   stimulus_text: string | null;
   image_path: string | null;
   option_a: string | null;
@@ -258,7 +260,8 @@ export async function renumberTestQuestions(
       orderNumber: block.order_number,
       blockType: block.block_type as
         | "written_parts"
-        | "shared_options",
+        | "shared_options"
+        | "self_study",
     })),
   ].sort((first, second) =>
     first.orderNumber === second.orderNumber
