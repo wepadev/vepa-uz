@@ -43,8 +43,8 @@ const ANSWERS_DIR = "Matematika-javoblar-1-89";
  */
 const ANSWER_FILE_OVERRIDE: Record<number, number> = { 27: 28, 28: 27 };
 
-/* Admin sahifadagi standart vaqt */
-const TIME_LIMIT_MINUTES = 45;
+/* Vaqt: har bir savolga 3 daqiqa (20 savol -> 60 daqiqa) */
+const MINUTES_PER_QUESTION = 3;
 
 /**
  * Global mavzu raqami -> bo'lim va bo'lim ichidagi tartib.
@@ -196,7 +196,7 @@ for (let number = from; number <= to; number += 1) {
       sectionId,
       title,
       description: null,
-      timeLimitMinutes: TIME_LIMIT_MINUTES,
+      timeLimitMinutes: questions.length * MINUTES_PER_QUESTION,
       questions,
     });
 
