@@ -188,6 +188,28 @@ async function changeTopicState(formData: FormData) {
     throw new Error(`Mavzu holati özgarmadi: ${error.message}`);
   }
 
+  /*
+   * Mavzu naşr qilinganda uning içidagi barça qoralama testlar ham
+   * naşr qilinadi — har birini alohida oçib çiqiş şart emas.
+   * Mavzu yopilganda testlarga tegilmaydi: mavzu yopiq turganda
+   * o'quvçi ularni baribir körmaydi.
+   */
+  if (nextState) {
+    const { error: testsError } = await supabase
+      .from("tests")
+      .update({ is_published: true })
+      .eq("topic_id", topicId)
+      .eq("is_published", false);
+
+    if (testsError) {
+      throw new Error(
+        `Mavzu naşr qilindi, lekin testlar naşr qilinmadi: ${testsError.message}`,
+      );
+    }
+
+    revalidatePath("/leaderboard");
+  }
+
   revalidateCatalog();
 }
 
