@@ -36,7 +36,7 @@ type QuestionRow = {
 
 type QuestionBlockRow = {
   id: number;
-  block_type: "written_parts" | "shared_options";
+  block_type: "written_parts" | "shared_options" | "self_study";
   stimulus_text: string | null;
   image_path: string | null;
   option_a: string | null;
@@ -822,6 +822,18 @@ export default async function TakeTestPage({
       imageUrl:
         blockImageUrlMap.get(block.id) ?? null,
     };
+
+    /* Mustaqil ish (db/37): javobsiz, ballsiz — faqat shart va rasm */
+    if (block.block_type === "self_study") {
+      items.push({
+        kind: "self_study",
+        key: `self-${block.id}`,
+        navNumber: block.order_number,
+        ...common,
+      });
+
+      continue;
+    }
 
     if (block.block_type === "written_parts") {
       items.push({

@@ -19,6 +19,7 @@
  * tashlab ketiladi, chala qolgani qaytadan yoziladi — qayta ishga
  * tushirish xavfsiz. Bir mavzuni ikki jarayon bir vaqtda yozmasin.
  */
+import { randomUUID } from "node:crypto";
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -31,6 +32,7 @@ import {
   parseTexAnswers,
 } from "../lib/tex-savollar.ts";
 import type { ParsedQuestion } from "../lib/pdf-import.ts";
+import type { ReadyTest } from "../lib/tex-savollar.ts";
 
 const QUESTIONS_DIR = "Matematika-savollar-tex-1-89";
 const ANSWERS_DIR = "Matematika-javoblar-1-89";
@@ -62,6 +64,12 @@ const args = process.argv.slice(2);
 const from = Number(args[0]);
 const to = Number(args[1]);
 const dryRun = args.includes("--dry-run");
+/*
+ * `--mustaqil` — yangi test yozilmaydi; MAVJUD testlarga faqat
+ * variantsiz topshiriqlar ("Mustaqil ishlang") qo'shiladi.
+ * Nashr qilingan testga ham qo'shiladi: savollar va kalitlar o'zgarmaydi.
+ */
+const openOnly = args.includes("--mustaqil");
 const imagesIndex = args.indexOf("--rasmlar");
 const imagesDir = imagesIndex >= 0 ? args[imagesIndex + 1] : null;
 
@@ -170,9 +178,112 @@ async function existingTest(
   return full ? "full" : "none";
 }
 
+/**
+ * Testga variantsiz topshiriqlarni ballsiz "Mustaqil ishlang" bo'lib
+ * qo'shish (db/37 kerak).
+ *
+ * Kitobdagi tartib saqlanadi: mavjud savollarning `order_number` i
+ * asl o'rniga suriladi, topshiriqlar bo'sh qolgan o'rinlarga tushadi.
+ * Savol qatorlari va ularning `answer_keys` iga TEGILMAYDI — kalit
+ * savolning id siga bog'langan, tartib raqamiga emas.
+ *
+ * Xavfsizlik: bazadagi savollar matni fayldagi bilan bittama-bitta
+ * solishtiriladi. Bitta ham farq qilsa, hech narsa o'zgartirilmaydi.
+ */
+async function addOpenTasks(testId: number, test: ReadyTest, label: string): Promise<number> {
+  if (test.openTasks.length === 0) return 0;
+
+  const { count: already } = await supabase
+    .from("question_blocks")
+    .select("id", { count: "exact", head: true })
+    .eq("test_id", testId)
+    .eq("block_type", "self_study");
+
+  if ((already ?? 0) > 0) {
+    console.log(`  – ${label}: mustaqil ishlar allaqachon bor`);
+    return 0;
+  }
+
+  const { data: rows, error } = await supabase
+    .from("questions")
+    .select("id, question_text, order_number, block_id")
+    .eq("test_id", testId)
+    .order("order_number", { ascending: true });
+
+  if (error || !rows) throw new Error(`${label}: savollar o'qilmadi: ${error?.message}`);
+
+  const { count: otherBlocks } = await supabase
+    .from("question_blocks")
+    .select("id", { count: "exact", head: true })
+    .eq("test_id", testId);
+
+  if (rows.some((row) => row.block_id !== null) || (otherBlocks ?? 0) > 0) {
+    throw new Error(`${label}: testda bloklar bor — qo'lda tekshiring`);
+  }
+
+  if (rows.length !== test.questions.length) {
+    throw new Error(`${label}: bazada ${rows.length} savol, faylda ${test.questions.length}`);
+  }
+
+  rows.forEach((row, index) => {
+    if (row.question_text !== test.questions[index].text) {
+      throw new Error(`${label}: ${index + 1}-savol matni fayldagidan farq qiladi`);
+    }
+  });
+
+  /* Rasmlar avval chiziladi: xato bo'lsa bazaga hali tegilmagan */
+  const images: Array<Buffer | null> = [];
+
+  for (const task of test.openTasks) {
+    images.push(task.figure ? await renderFigure(task.figure) : null);
+  }
+
+  /* Oxiridan boshlab: yangi o'rin eskisidan katta, to'qnashuv bo'lmaydi */
+  for (let index = rows.length - 1; index >= 0; index -= 1) {
+    const position = test.questions[index].position;
+    if (rows[index].order_number === position) continue;
+
+    const { error: moveError } = await supabase
+      .from("questions")
+      .update({ order_number: position })
+      .eq("id", rows[index].id)
+      .eq("test_id", testId);
+
+    if (moveError) throw new Error(`${label}: savol surilmadi: ${moveError.message}`);
+  }
+
+  for (const [index, task] of test.openTasks.entries()) {
+    let imagePath: string | null = null;
+    const png = images[index];
+
+    if (png) {
+      imagePath = `${testId}/self-study/${randomUUID()}.png`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("question-images")
+        .upload(imagePath, png, { cacheControl: "3600", contentType: "image/png", upsert: false });
+
+      if (uploadError) throw new Error(`${label}: rasm yuklanmadi: ${uploadError.message}`);
+    }
+
+    const { error: insertError } = await supabase.from("question_blocks").insert({
+      test_id: testId,
+      block_type: "self_study",
+      stimulus_text: task.text,
+      image_path: imagePath,
+      order_number: task.position,
+    });
+
+    if (insertError) throw new Error(`${label}: mustaqil ish qo'shilmadi: ${insertError.message}`);
+  }
+
+  return test.openTasks.length;
+}
+
 let createdTests = 0;
 let createdQuestions = 0;
 let createdImages = 0;
+let createdOpenTasks = 0;
 const problems: string[] = [];
 
 for (let number = from; number <= to; number += 1) {
@@ -196,6 +307,35 @@ for (let number = from; number <= to; number += 1) {
 
   for (const test of ready.tests) {
     const title = `${number}-mavzu, ${test.number}-test`;
+
+    if (openOnly) {
+      if (test.openTasks.length === 0) continue;
+
+      const { data: found, error: findError } = await supabase
+        .from("tests")
+        .select("id")
+        .eq("topic_id", topic.id)
+        .eq("title", title);
+
+      if (findError || !found || found.length !== 1) {
+        problems.push(`${title}: test ${found?.length ?? 0} ta topildi, bittasi kerak`);
+        continue;
+      }
+
+      if (dryRun) {
+        console.log(`  ${title}: ${test.openTasks.length} ta mustaqil iş (o'rinlari ${test.openTasks.map((task) => task.position).join(", ")})`);
+        createdOpenTasks += test.openTasks.length;
+        continue;
+      }
+
+      try {
+        createdOpenTasks += await addOpenTasks(found[0].id as number, test, title);
+      } catch (error) {
+        problems.push(error instanceof Error ? error.message : String(error));
+      }
+
+      continue;
+    }
 
     /*
      * Shu nomli test bazada bormi? Savollari to'liq bo'lsa — tegilmaydi.
@@ -281,6 +421,13 @@ for (let number = from; number <= to; number += 1) {
 
     createdTests += 1;
     createdQuestions += questions.length;
+
+    /* Variantsiz topshiriqlar — ballsiz "Mustaqil ishlang" */
+    try {
+      createdOpenTasks += await addOpenTasks(testId, test, title);
+    } catch (openError) {
+      problems.push(openError instanceof Error ? openError.message : String(openError));
+    }
   }
 
   console.log(`✓ ${label}: ${ready.tests.length} test, ${ready.total} savol`);
@@ -288,7 +435,7 @@ for (let number = from; number <= to; number += 1) {
 
 console.log("");
 console.log(
-  `${dryRun ? "[SINOV] " : ""}Testlar: ${createdTests}, savollar: ${createdQuestions}, çizmalar: ${createdImages}`,
+  `${dryRun ? "[SINOV] " : ""}Testlar: ${createdTests}, savollar: ${createdQuestions}, çizmalar: ${createdImages}, mustaqil işlar: ${createdOpenTasks}`,
 );
 
 if (problems.length > 0) {

@@ -87,6 +87,12 @@ const tekshiruvlar = [
     ish: () => ustun("lessons", "is_free"),
   },
   {
+    nom: "question_blocks.solution_video_url ustuni",
+    migratsiya: "db/37-mustaqil-ish.sql",
+    nega: "ballsiz \"Mustaqil ishlang\" savollari va ularning videoyechimi",
+    ish: () => ustun("question_blocks", "solution_video_url"),
+  },
+  {
     nom: "topic_examples jadvali",
     migratsiya: "db/33-misol-videolari.sql",
     nega: "TOP kitoblardagi misollar va ularning videolari",

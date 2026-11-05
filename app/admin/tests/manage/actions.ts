@@ -13,6 +13,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { normalizeVideoUrl } from "@/lib/video-url";
+
 import {
   getAdminClient,
   getNextDisplayNumber,
@@ -983,5 +985,44 @@ export async function deleteQuestionBlock(formData: FormData) {
   revalidatePath("/admin/tests/manage");
   revalidatePath("/tests");
   revalidatePath("/tests/take");
+  redirect(`/admin/tests/manage?testId=${testId}`);
+}
+
+/**
+ * Mustaqil ish videoyechimini saqlash (db/37).
+ *
+ * Mustaqil ishning javobi ham, bali ham yo'q — tahrirlanadigan
+ * yagona narsa videoyechim havolasi. Bo'sh qoldirilsa o'chiriladi.
+ */
+export async function updateSelfStudyVideo(formData: FormData) {
+  const supabase = await getAdminClient();
+
+  const testId = Number(formData.get("testId"));
+  const blockId = Number(formData.get("blockId"));
+  const video = normalizeVideoUrl(readText(formData, "selfStudyVideoUrl"));
+
+  validateTestId(testId);
+
+  if (!Number.isInteger(blockId) || blockId <= 0) {
+    throw new Error("Savol bloki ID notöğri.");
+  }
+
+  if (video.error) {
+    throw new Error(video.error);
+  }
+
+  const { error } = await supabase
+    .from("question_blocks")
+    .update({ solution_video_url: video.value })
+    .eq("id", blockId)
+    .eq("test_id", testId)
+    .eq("block_type", "self_study");
+
+  if (error) {
+    throw new Error(`Videoyeçim saqlanmadi: ${error.message}`);
+  }
+
+  revalidatePath("/admin/tests/manage");
+  revalidatePath("/results/view");
   redirect(`/admin/tests/manage?testId=${testId}`);
 }

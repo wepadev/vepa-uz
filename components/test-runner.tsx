@@ -47,6 +47,14 @@ export type RunnerItem =
         label: string;
         text: string;
       }>;
+    })
+  /*
+   * Mustaqil ish: javob maydoni yo'q, ball berilmaydi. O'quvchi
+   * daftarda ishlaydi, yechimni keyin natijalar sahifasidagi
+   * videodan ko'radi.
+   */
+  | (CommonItemFields & {
+      kind: "self_study";
     });
 
 type TestRunnerProps = {
@@ -399,7 +407,9 @@ export default function TestRunner({
           ? item.parts.map(
               (part) => part.questionId,
             )
-          : [item.questionId],
+          : item.kind === "self_study"
+            ? []
+            : [item.questionId],
       ),
     [items],
   );
@@ -433,6 +443,11 @@ export default function TestRunner({
     answeredQuestionCount;
 
   function getItemStatus(item: RunnerItem) {
+    /* Mustaqil ishda javob yo'q — "javobsiz" deb ko'rsatilmasin */
+    if (item.kind === "self_study") {
+      return "self";
+    }
+
     const ids =
       item.kind === "written"
         ? item.parts.map(
@@ -719,7 +734,11 @@ export default function TestRunner({
                     "h-10 min-w-10 shrink-0 rounded-xl border text-sm font-bold transition",
                     isCurrent
                       ? "border-blue-600 bg-blue-600 text-white shadow-sm"
-                      : status === "complete"
+                      : status === "self"
+
+                        ? "border-dashed border-slate-300 bg-slate-50 text-slate-400"
+
+                        : status === "complete"
                         ? "border-blue-200 bg-blue-50 text-blue-700"
                         : status === "partial"
                           ? "border-amber-300 bg-amber-50 text-amber-700"
@@ -767,7 +786,11 @@ export default function TestRunner({
                       "aspect-square rounded-xl border text-sm font-bold transition",
                       isCurrent
                         ? "border-blue-600 bg-blue-600 text-white shadow-sm"
-                        : status === "complete"
+                        : status === "self"
+
+                          ? "border-dashed border-slate-300 bg-slate-50 text-slate-400"
+
+                          : status === "complete"
                           ? "border-blue-200 bg-blue-50 text-blue-700 hover:border-blue-400"
                           : status === "partial"
                             ? "border-amber-300 bg-amber-50 text-amber-700"
@@ -812,10 +835,17 @@ export default function TestRunner({
           <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sm:rounded-3xl">
             <div className="border-b border-slate-100 px-4 py-3 sm:px-7 sm:py-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <span className="rounded-full bg-blue-50 px-3 py-1 text-sm font-bold text-blue-700">
-                  {currentItem.navNumber}
-                  -savol
-                </span>
+                {currentItem.kind === "self_study" ? (
+                  <span className="rounded-full bg-slate-100 px-3 py-1 text-sm font-bold text-slate-600">
+                    {currentItem.navNumber}
+                    -savol · Mustaqil iş
+                  </span>
+                ) : (
+                  <span className="rounded-full bg-blue-50 px-3 py-1 text-sm font-bold text-blue-700">
+                    {currentItem.navNumber}
+                    -savol
+                  </span>
+                )}
 
                 <span className="text-sm font-medium text-slate-500">
                   {currentIndex + 1} /{" "}
@@ -922,6 +952,19 @@ export default function TestRunner({
                     )}
                   </div>
                 </>
+              ) : currentItem.kind === "self_study" ? (
+                <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4 sm:p-5">
+                  <p className="text-base font-bold text-slate-800">
+                    Mustaqil ishlang
+                  </p>
+
+                  <p className="mt-1 text-sm leading-6 text-slate-600">
+                    Bu topşiriqni daftaringizda bajaring. Unga ball
+                    berilmaydi va javob kiritiş şart emas. Videoyeçimi
+                    bölsa, uni test tugagandan keyin natijalar
+                    sahifasida körasiz.
+                  </p>
+                </div>
               ) : (
                 <div className="space-y-6">
                   {currentItem.parts.map(
@@ -1086,7 +1129,11 @@ export default function TestRunner({
                       "flex h-12 items-center justify-center rounded-xl border text-sm font-bold transition",
                       isCurrent
                         ? "border-blue-600 bg-blue-600 text-white shadow-sm"
-                        : status === "complete"
+                        : status === "self"
+
+                          ? "border-dashed border-slate-300 bg-slate-50 text-slate-400"
+
+                          : status === "complete"
                           ? "border-blue-200 bg-blue-50 text-blue-700"
                           : status === "partial"
                             ? "border-amber-300 bg-amber-50 text-amber-700"

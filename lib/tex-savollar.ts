@@ -37,6 +37,19 @@ export type TexQuestion = {
    * olib tashlangan, rasmga `figureDocument` orqali aylantiriladi.
    */
   figures: string[];
+  /** Testdagi asl o'rni: variantsiz topshiriqlar ham sanaladi (1 dan) */
+  position?: number;
+};
+
+/**
+ * Variantsiz ochiq topshiriq ("grafigini yasang"). Kalitda javobi
+ * yo'q — testga ballsiz "Mustaqil ishlang" bo'lib qo'shiladi.
+ */
+export type TexOpenTask = {
+  /** Testdagi asl o'rni (savollar bilan birga sanaladi, 1 dan) */
+  position: number;
+  text: string;
+  figures: string[];
 };
 
 export type TexTest = {
@@ -44,6 +57,8 @@ export type TexTest = {
   number: number;
   title: string;
   questions: TexQuestion[];
+  /** Variantsiz topshiriqlar; ular `questions` raqamlashiga kirmaydi */
+  openTasks?: TexOpenTask[];
 };
 
 export type TexResult = {
@@ -637,6 +652,33 @@ function readTest(
   context: FigureContext,
 ): TexTest {
   const questions: TexQuestion[] = [];
+  const openTasks: TexOpenTask[] = [];
+  let position = 0;
+
+  /* Variantsiz `\item` — grafikli savol yoki ochiq topshiriq */
+  const takeLoose = (item: string) => {
+    if (isBlank(cleanTex(item)) && !/\\begin\{tikzpicture\}/.test(item)) return;
+
+    position += 1;
+
+    if (hasPictureOptions(item)) {
+      const picture = takeFigures(item, context);
+
+      questions.push({
+        number: questions.length + 1,
+        text: cleanTex(picture.rest),
+        options: PICTURE_OPTIONS,
+        flags: [],
+        figures: picture.figures.map(labelsInsidePictures),
+        position,
+      });
+
+      return;
+    }
+
+    const task = takeFigures(item, context);
+    openTasks.push({ position, text: cleanTex(task.rest), figures: task.figures });
+  };
 
   for (const list of blocks(body, "testlar")) {
     /*
@@ -650,29 +692,27 @@ function readTest(
       const head = parts[i];
       const tail = parts[i + 1];
 
-      const items = splitItems(head);
+      /*
+       * `head` da oldingi savolning variantlari ham bor — ular
+       * `\end{variantlar}` gacha. Undan keyingisi shu savolga tegishli.
+       */
+      const ended = head.lastIndexOf("\\end{variantlar}");
+      const own =
+        ended === -1 ? head : head.slice(ended + "\\end{variantlar}".length);
+
+      const items = splitItems(own);
 
       /*
-       * Oxirgisidan oldingi `\item` lar — `variantlar` siz savollar.
-       * Ularning ko'pi ochiq topshiriq ("grafigini yasang") — kalitda
-       * javobi yo'q, tashlab ketiladi. Lekin variantlari A)-D)
-       * chizmalar jadvali bo'lgan savol — oddiy test savoli, kalitda
+       * Oxirgisidan oldingi `\item` lar — `variantlar` siz.
+       * Ko'pi ochiq topshiriq ("grafigini yasang") — kalitda javobi
+       * yo'q, ballsiz "Mustaqil ishlang" bo'ladi. Variantlari A)-D)
+       * chizmalar jadvali bo'lgani esa oddiy test savoli, kalitda
        * javobi bor. Uni tashlab ketsak, keyingi savollarning javobi
        * bittaga surilib ketadi (63-mavzuda shunday bo'lgan edi).
        */
-      for (const item of items.slice(0, -1)) {
-        if (!hasPictureOptions(item)) continue;
+      for (const item of items.slice(0, -1)) takeLoose(item);
 
-        const picture = takeFigures(item, context);
-
-        questions.push({
-          number: questions.length + 1,
-          text: cleanTex(picture.rest),
-          options: PICTURE_OPTIONS,
-          flags: [],
-          figures: picture.figures.map(labelsInsidePictures),
-        });
-      }
+      position += 1;
 
       const asked = takeFigures(items[items.length - 1] ?? "", context);
       const text = cleanTex(asked.rest);
@@ -700,11 +740,23 @@ function readTest(
         },
         flags,
         figures: [...asked.figures, ...options.figures],
+        position,
       });
+    }
+
+    /* Oxirgi variantlardan keyin qolgan variantsiz topshiriqlar */
+    const last = parts[parts.length - 1];
+    const ended = last.lastIndexOf("\\end{variantlar}");
+
+    if (parts.length === 1 || ended !== -1) {
+      const rest =
+        parts.length === 1 ? last : last.slice(ended + "\\end{variantlar}".length);
+
+      for (const item of splitItems(rest)) takeLoose(item);
     }
   }
 
-  return { number, title, questions };
+  return { number, title, questions, openTasks };
 }
 
 
@@ -782,6 +834,16 @@ export type ReadyQuestion = {
    * (`figureDocument`). Rasmga server aylantiradi.
    */
   figure: string | null;
+  /** Testdagi asl o'rni (mustaqil ishlar bilan birga sanaladi) */
+  position: number;
+};
+
+/** Ballsiz "Mustaqil ishlang" topshirig'i */
+export type ReadyOpenTask = {
+  position: number;
+  text: string;
+  /** Chizma bo'lsa — LaTeX hujjat, aks holda null */
+  figure: string | null;
 };
 
 export type ReadyTest = {
@@ -790,6 +852,8 @@ export type ReadyTest = {
   questions: ReadyQuestion[];
   /** Tashlab ketilgan savollar va sabablari */
   notes: string[];
+  /** Variantsiz topshiriqlar — testga ballsiz qo'shiladi */
+  openTasks: ReadyOpenTask[];
 };
 
 export type ReadyResult = {
@@ -860,6 +924,7 @@ export function buildTests(
           question.figures.length > 0
             ? figureDocument(question.figures, questions.figures)
             : null,
+        position: question.position ?? question.number,
       });
 
       ready += 1;
@@ -875,6 +940,14 @@ export function buildTests(
       title: test.title,
       questions: kept,
       notes,
+      openTasks: (test.openTasks ?? []).map((task) => ({
+        position: task.position,
+        text: task.text,
+        figure:
+          task.figures.length > 0
+            ? figureDocument(task.figures, questions.figures)
+            : null,
+      })),
     });
   }
 

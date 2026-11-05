@@ -22,6 +22,7 @@ import {
   deleteStandaloneQuestion,
   renumberQuestionNumbers,
   updateQuestionBlock,
+  updateSelfStudyVideo,
   updateStandaloneQuestion,
   updateTestDetails,
 } from "./actions";
@@ -135,22 +136,8 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
       }),
     supabase
       .from("question_blocks")
-      .select(
-        `
-          id,
-          test_id,
-          block_type,
-          stimulus_text,
-          image_path,
-          option_a,
-          option_b,
-          option_c,
-          option_d,
-          option_e,
-          option_f,
-          order_number
-        `,
-      )
+      /* `*` — `solution_video_url` (db/37) bo'lmagan bazada ham buzilmasin */
+      .select("*")
       .eq("test_id", testId)
       .order("order_number", {
         ascending: true,
@@ -1032,6 +1019,67 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                 const blockQuestions = questionsByBlock.get(block.id) ?? [];
 
                 const imageUrl = blockImageUrlMap.get(block.id);
+
+                /* Mustaqil ish: ball yo'q, faqat videoyechim qo'shiladi */
+                if (block.block_type === "self_study") {
+                  return (
+                    <article
+                      key={`block-${block.id}`}
+                      className="rounded-2xl border border-dashed border-slate-300 bg-white p-4 shadow-sm"
+                    >
+                      <p className="font-semibold">
+                        <span className="text-mb-brand">
+                          {block.order_number}.
+                        </span>{" "}
+                        <span className="text-xs font-semibold text-mb-muted">
+                          Mustaqil iş · ball berilmaydi
+                        </span>
+                      </p>
+
+                      {block.stimulus_text && (
+                        <div className="mt-2 text-sm leading-6">
+                          <MathValue value={block.stimulus_text} />
+                        </div>
+                      )}
+
+                      {imageUrl && (
+                        <img
+                          loading="lazy"
+                          decoding="async"
+                          src={imageUrl}
+                          alt={`${block.order_number}-savol çizmasi`}
+                          className="mt-3 max-h-72 w-auto max-w-full rounded-xl border border-slate-200 object-contain"
+                        />
+                      )}
+
+                      <form
+                        action={updateSelfStudyVideo}
+                        className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-end"
+                      >
+                        <input type="hidden" name="testId" value={test.id} />
+                        <input type="hidden" name="blockId" value={block.id} />
+
+                        <label className="block min-w-0 flex-1 text-sm font-semibold">
+                          Videoyeçim havolasi
+                          <input
+                            name="selfStudyVideoUrl"
+                            type="url"
+                            defaultValue={block.solution_video_url ?? ""}
+                            placeholder="https://youtu.be/…"
+                            className={inputClass}
+                          />
+                        </label>
+
+                        <button
+                          type="submit"
+                          className="inline-flex min-h-11 items-center justify-center rounded-xl bg-mb-brand px-4 text-sm font-semibold text-white transition hover:bg-mb-brandDark"
+                        >
+                          Saqlaş
+                        </button>
+                      </form>
+                    </article>
+                  );
+                }
 
                 const isWritten = block.block_type === "written_parts";
 

@@ -87,7 +87,7 @@ type QuestionRow = {
 
 type QuestionBlockRow = {
   id: number;
-  block_type: "written_parts" | "shared_options";
+  block_type: "written_parts" | "shared_options" | "self_study";
   stimulus_text: string | null;
   image_path: string | null;
   option_a: string | null;
@@ -97,6 +97,8 @@ type QuestionBlockRow = {
   option_e: string | null;
   option_f: string | null;
   order_number: number;
+  /** Mustaqil ish videoyechimi (db/37). Migratsiyadan oldin ustun yo'q */
+  solution_video_url?: string | null;
 };
 
 type AnswerKeyRow = {
@@ -636,19 +638,11 @@ export default async function ResultViewPage({
 
     supabase
       .from("question_blocks")
-      .select(`
-        id,
-        block_type,
-        stimulus_text,
-        image_path,
-        option_a,
-        option_b,
-        option_c,
-        option_d,
-        option_e,
-        option_f,
-        order_number
-      `)
+      /*
+       * `*` — `solution_video_url` (db/37) migratsiya ishga
+       * tushirilmagan bazada ham so'rov buzilmasin.
+       */
+      .select("*")
       .eq("test_id", attempt.test_id)
       .order("order_number", {
         ascending: true,
@@ -1703,6 +1697,59 @@ const differenceLabel =
             }
 
             const block = item.block;
+
+            if (block.block_type === "self_study") {
+              const selfImageUrl =
+                blockImageUrlMap.get(block.id);
+
+              return (
+                <article
+                  key={`block-${block.id}`}
+                  className="rounded-3xl border border-dashed border-slate-300 bg-white p-5 shadow-sm sm:p-6"
+                >
+                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+                    Mustaqil iş · ball berilmaydi
+                  </span>
+
+                  <h3 className="mt-3 text-lg font-bold">
+                    {block.order_number}-savol
+                  </h3>
+
+                  {block.stimulus_text && (
+                    <div className="mt-5 text-base leading-8 sm:text-lg">
+                      <MathValue value={block.stimulus_text} />
+                    </div>
+                  )}
+
+                  {selfImageUrl && (
+                    <div className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-3">
+                      <img
+                        loading="lazy"
+                        decoding="async"
+                        src={selfImageUrl}
+                        alt={`${block.order_number}-savol çizmasi`}
+                        className="mx-auto max-h-[560px] w-auto max-w-full rounded-xl object-contain"
+                      />
+                    </div>
+                  )}
+
+                  {block.solution_video_url ? (
+                    <div className="mt-6">
+                      <h4 className="mb-3 font-bold">Videoyeçim</h4>
+
+                      <YouTubeEmbed
+                        url={block.solution_video_url}
+                        title={`${block.order_number}-savol videoyeçimi`}
+                      />
+                    </div>
+                  ) : (
+                    <p className="mt-5 text-sm text-slate-500">
+                      Videoyeçim hali qöşilmagan.
+                    </p>
+                  )}
+                </article>
+              );
+            }
 
             const blockQuestions =
               questionsByBlock.get(block.id) ??

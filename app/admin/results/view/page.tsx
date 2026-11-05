@@ -110,7 +110,7 @@ type QuestionRow = {
 
 type QuestionBlockRow = {
   id: number;
-  block_type: "written_parts" | "shared_options";
+  block_type: "written_parts" | "shared_options" | "self_study";
   stimulus_text: string | null;
   image_path: string | null;
   option_a: string | null;
@@ -1089,6 +1089,30 @@ export default async function AdminResultViewPage({
             }
 
             const block = item.block;
+
+            /* Mustaqil ish: javob ham, ball ham yo'q — faqat shartini ko'rsatamiz */
+            if (block.block_type === "self_study") {
+              return (
+                <article
+                  key={`block-${block.id}`}
+                  className="rounded-3xl border border-dashed border-slate-300 bg-white p-5 shadow-sm sm:p-6"
+                >
+                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+                    Mustaqil iş · ball berilmaydi
+                  </span>
+
+                  <h3 className="mt-3 text-lg font-bold">
+                    {block.order_number}-savol
+                  </h3>
+
+                  {block.stimulus_text && (
+                    <div className="mt-4 text-base leading-8">
+                      <MathValue value={block.stimulus_text} />
+                    </div>
+                  )}
+                </article>
+              );
+            }
 
             const blockQuestions =
               questionsByBlock.get(block.id) ??

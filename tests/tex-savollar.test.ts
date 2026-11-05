@@ -303,4 +303,46 @@ test("variantlari chizmada (A)-D) jadval) bo'lgan savol tashlab ketilmaydi", () 
   /* Javoblar surilmaydi */
   assert.deepEqual(ready.map((q) => q.correct), ["A", "C", "D"]);
   assert.equal(ready[2].text, "Uchinchi savol.");
+
+  /* Ochiq topshiriq "Mustaqil ishlang" bo'lib, asl o'rni bilan qoladi */
+  const built = buildTests(result, key).tests[0];
+  assert.deepEqual(
+    built.openTasks.map((task) => [task.position, task.text]),
+    [[3, "Grafigini yasang."]],
+  );
+  assert.deepEqual(
+    built.questions.map((q) => q.position),
+    [1, 2, 4],
+  );
+});
+
+test("oxirgi variantlardan keyingi va oldingi savol variantlari aralashmaydi", () => {
+  const result = parseTex(String.raw`
+\testboshi{Mavzu}{1}
+\begin{testlar}
+  \item Birinchi.
+  \begin{variantlar}
+    \item $1$
+    \item $2$
+    \item $3$
+    \item $4$
+  \end{variantlar}
+  \item Ikkinchi.
+  \begin{variantlar}
+    \item $5$
+    \item $6$
+    \item $7$
+    \item $8$
+  \end{variantlar}
+  \item Grafigini yasang.
+\end{testlar}
+`);
+
+  const test1 = result.tests[0];
+  assert.equal(test1.questions.length, 2);
+  assert.deepEqual(test1.questions[1].options, { a: "$5$", b: "$6$", c: "$7$", d: "$8$" });
+  assert.deepEqual(
+    (test1.openTasks ?? []).map((task) => [task.position, task.text]),
+    [[3, "Grafigini yasang."]],
+  );
 });
