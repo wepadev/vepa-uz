@@ -7,6 +7,7 @@ import {
 import UserAccessCard from "@/components/admin/user-access-card";
 import AppAlert from "@/components/ui/app-alert";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import type { FormState } from "@/lib/form-state";
 import Pagination from "@/components/ui/pagination";
@@ -70,9 +71,7 @@ function single(
 async function requireAdmin() {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect("/auth/login");

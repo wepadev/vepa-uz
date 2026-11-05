@@ -7,6 +7,7 @@ import {
   redirect,
 } from "next/navigation";
 
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import type { FormState } from "@/lib/form-state";
 import CreateLessonForm from "@/components/admin/create-lesson-form";
@@ -51,9 +52,7 @@ type TestRow = {
 async function requireAdmin() {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect("/auth/login");

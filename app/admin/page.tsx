@@ -19,6 +19,7 @@ import {
 import { accents, type Accent } from "@/components/ui/section-visual";
 import { remainingLabel } from "@/lib/due-label";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -75,9 +76,7 @@ function todayInTashkent() {
 async function getAdminName() {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect("/auth/login");

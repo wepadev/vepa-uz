@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { checkClaudeKey } from "@/lib/pdf-ai-tuzatish";
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
@@ -20,9 +21,7 @@ export const runtime = "nodejs";
 export async function GET() {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     return NextResponse.json(

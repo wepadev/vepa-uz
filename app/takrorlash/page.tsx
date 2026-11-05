@@ -12,6 +12,7 @@ import ReviewSession, {
 } from "@/components/review-session";
 import PageHeader from "@/components/ui/page-header";
 import { shuffleOptions } from "@/lib/shuffle";
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -59,9 +60,7 @@ function toNumber(value: number | string | null | undefined) {
 export default async function ReviewPage() {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect("/auth/login");

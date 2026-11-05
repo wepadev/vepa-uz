@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import PageHeader from "@/components/ui/page-header";
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import { card, cardPad, chip, pageSection, sectionTitle } from "@/lib/ui";
 import { cn } from "@/lib/utils";
@@ -104,9 +105,7 @@ export default async function CrmAnalysisPage({ searchParams }: PageProps) {
 
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) redirect("/auth/login");
 

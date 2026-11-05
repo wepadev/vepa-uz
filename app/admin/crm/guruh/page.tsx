@@ -21,6 +21,7 @@ import GroupAssignments from "@/components/admin/group-assignments";
 import AppAlert from "@/components/ui/app-alert";
 import SubmitButton from "@/components/ui/submit-button";
 import { parentReportUrl } from "@/lib/parent-link";
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 
@@ -221,9 +222,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
 
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) redirect("/auth/login");
 

@@ -5,6 +5,7 @@ import {
 } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import type { FormState } from "@/lib/form-state";
 import EditQuestionForm from "@/components/admin/edit-question-form";
@@ -12,9 +13,7 @@ import EditQuestionForm from "@/components/admin/edit-question-form";
 async function requireAdmin() {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect("/auth/login");

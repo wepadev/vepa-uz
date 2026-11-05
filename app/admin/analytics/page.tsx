@@ -3,6 +3,7 @@
 import AdminTabs from "@/components/admin/admin-tabs";
 import { redirect } from "next/navigation";
 
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import SubmitButton from "@/components/ui/submit-button";
 
@@ -237,9 +238,7 @@ async function requireAdmin() {
   const supabase =
     await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect("/auth/login");

@@ -22,7 +22,11 @@ import BrandMark from "@/components/ui/brand-mark";
 import { accents } from "@/components/ui/section-visual";
 import { TELEGRAM_CHANNEL_USERNAME } from "@/lib/contacts";
 import { formatDue, remainingLabel } from "@/lib/due-label";
-import { isGroupStudent } from "@/lib/group-membership";
+import {
+  getBasicProfile,
+  getCurrentUser,
+  getIsGroupStudent,
+} from "@/lib/supabase/current-user";
 import { getPublicCatalog } from "@/lib/public-catalog";
 import { createClient } from "@/lib/supabase/server";
 
@@ -47,22 +51,12 @@ type AssignmentRow = {
 export default async function HomePage() {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   let profile: Profile | null = null;
 
   if (user) {
-    const { data, error } = await supabase
-      .from("profiles")
-      .select(`
-        full_name,
-        role,
-        is_active
-      `)
-      .eq("id", user.id)
-      .maybeSingle();
+    const { profile: data, error } = await getBasicProfile(user.id);
 
     if (error) {
       throw new Error(
@@ -119,18 +113,22 @@ export default async function HomePage() {
   let pendingCount = 0;
 
   if (isAuthenticated && user) {
-    const [reviewResult, inGroup] = await Promise.all([
+    /*
+     * Uchala so'rov bir vaqtda ketadi. `my_assignments` guruhda
+     * bo'lmagan o'quvchiga bo'sh ro'yxat qaytaradi, shuning uchun
+     * guruh tekshiruvini kutib turish shart emas.
+     */
+    const [reviewResult, inGroup, assignmentsResult] = await Promise.all([
       supabase.rpc("due_review_count"),
-      isGroupStudent(supabase, user.id),
+      getIsGroupStudent(user.id),
+      supabase.rpc("my_assignments"),
     ]);
 
     dueReviewCount = Number(reviewResult.data) || 0;
     isInGroup = inGroup;
 
     if (isInGroup) {
-      const { data } = await supabase.rpc("my_assignments");
-
-      const open = ((data ?? []) as AssignmentRow[])
+      const open = ((assignmentsResult.data ?? []) as AssignmentRow[])
         .filter((item) => !item.completed_at && !item.is_overdue)
         .sort((a, b) => a.due_at.localeCompare(b.due_at));
 

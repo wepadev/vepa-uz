@@ -14,6 +14,7 @@ import SubmitButton from "@/components/ui/submit-button";
 import PageHeader from "@/components/ui/page-header";
 import { isGroupStudent } from "@/lib/group-membership";
 import { rewardIcon } from "@/lib/reward-icons";
+import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 
@@ -121,9 +122,7 @@ export default async function ShopPage({ searchParams }: PageProps) {
 
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect("/auth/login");
