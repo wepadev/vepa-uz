@@ -15,8 +15,9 @@
  * `--dry-run` — bazaga hech narsa yozilmaydi, chizmalar
  * `--rasmlar <papka>` ga PNG bo'lib tushadi (ko'rib chiqish uchun).
  *
- * Testlar har doim QORALAMA bo'lib tushadi. Testi allaqachon bor
- * mavzu tashlab ketiladi — ikki marta ishga tushirish xavfsiz.
+ * Testlar har doim QORALAMA bo'lib tushadi. To'liq yozilgan test
+ * tashlab ketiladi, chala qolgani qaytadan yoziladi — qayta ishga
+ * tushirish xavfsiz. Bir mavzuni ikki jarayon bir vaqtda yozmasin.
  */
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -110,6 +111,52 @@ function topicFor(number: number) {
   return { topic: matches[0], sectionId: section.id as number };
 }
 
+/**
+ * Mavzudagi shu nomli testlarni tekshirish: savollari to'liq bo'lsa
+ * "full", aks holda chala nusxalar (rasmlari bilan) o'chiriladi.
+ */
+async function existingTest(
+  topicId: number,
+  title: string,
+  expected: number,
+): Promise<"full" | "none"> {
+  const { data: rows, error } = await supabase
+    .from("tests")
+    .select("id")
+    .eq("topic_id", topicId)
+    .eq("title", title);
+
+  if (error) throw new Error(`${title}: tekshirilmadi: ${error.message}`);
+
+  let full = false;
+
+  for (const row of rows ?? []) {
+    const { count } = await supabase
+      .from("questions")
+      .select("id", { count: "exact", head: true })
+      .eq("test_id", row.id);
+
+    if (count === expected && !full) {
+      full = true;
+      continue;
+    }
+
+    /* Chala (yoki ortiqcha) nusxa — rasmlari bilan o'chiriladi */
+    const folder = `${row.id}/questions`;
+    const { data: files } = await supabase.storage.from("question-images").list(folder);
+    if (files && files.length > 0) {
+      await supabase.storage
+        .from("question-images")
+        .remove(files.map((file: { name: string }) => `${folder}/${file.name}`));
+    }
+
+    await supabase.from("tests").delete().eq("id", row.id).eq("is_published", false);
+    console.log(`  ${title}: chala nusxa (${count}/${expected} savol) o'chirildi`);
+  }
+
+  return full ? "full" : "none";
+}
+
 let createdTests = 0;
 let createdQuestions = 0;
 let createdImages = 0;
@@ -134,17 +181,19 @@ for (let number = from; number <= to; number += 1) {
     continue;
   }
 
-  const { count: existing } = await supabase
-    .from("tests")
-    .select("id", { count: "exact", head: true })
-    .eq("topic_id", topic.id);
-
-  if ((existing ?? 0) > 0 && !dryRun) {
-    console.log(`– ${label}: ${existing} ta test allaqachon bor — tashlab ketildi`);
-    continue;
-  }
-
   for (const test of ready.tests) {
+    const title = `${number}-mavzu, ${test.number}-test`;
+
+    /*
+     * Shu nomli test bazada bormi? Savollari to'liq bo'lsa — tegilmaydi.
+     * Chala qolgan bo'lsa (tarmoq uzilib, orqaga qaytarish ham
+     * bajarilmay qolgan) — o'chirib, qaytadan yoziladi.
+     */
+    if (!dryRun) {
+      const state = await existingTest(topic.id as number, title, test.questions.length);
+      if (state === "full") continue;
+    }
+
     const questions: ParsedQuestion[] = [];
 
     for (const question of test.questions) {
@@ -183,22 +232,33 @@ for (let number = from; number <= to; number += 1) {
       });
     }
 
-    const title = `${number}-mavzu, ${test.number}-test`;
-
     if (dryRun) {
       createdTests += 1;
       createdQuestions += questions.length;
       continue;
     }
 
-    const { testId, error } = await saveParsedTest(supabase, {
-      topicId: topic.id as number,
-      sectionId,
-      title,
-      description: null,
-      timeLimitMinutes: questions.length * MINUTES_PER_QUESTION,
-      questions,
-    });
+    /* Tarmoq uzilsa saveParsedTest o'zi orqaga qaytaradi — 3 marta urinamiz */
+    let testId: number | null = null;
+    let error: string | null = null;
+
+    for (let attempt = 1; attempt <= 3 && !testId; attempt += 1) {
+      if (attempt > 1) await existingTest(topic.id as number, title, questions.length);
+
+      ({ testId, error } = await saveParsedTest(supabase, {
+        topicId: topic.id as number,
+        sectionId,
+        title,
+        description: null,
+        timeLimitMinutes: questions.length * MINUTES_PER_QUESTION,
+        questions,
+      }));
+    }
+
+    /* Tartib raqami test raqamiga teng bo'lsin (1, 2, 3) */
+    if (testId) {
+      await supabase.from("tests").update({ order_number: test.number }).eq("id", testId);
+    }
 
     if (error || !testId) {
       problems.push(`${title}: ${error}`);
