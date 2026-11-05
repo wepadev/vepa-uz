@@ -122,11 +122,24 @@ async function existingTest(
 ): Promise<"full" | "none"> {
   const { data: rows, error } = await supabase
     .from("tests")
-    .select("id")
+    .select("id, is_published")
     .eq("topic_id", topicId)
     .eq("title", title);
 
   if (error) throw new Error(`${title}: tekshirilmadi: ${error.message}`);
+
+  /*
+   * Nashr qilingan testga HECH QACHON tegilmaydi (na o'chiriladi,
+   * na rasmlari) — uni o'quvchilar ko'rib turgan bo'lishi mumkin.
+   * Bunday holatda skript to'xtaydi, odam o'zi qaror qiladi.
+   */
+  const published = (rows ?? []).filter((row) => row.is_published);
+
+  if (published.length > 0) {
+    throw new Error(
+      `${title}: nashr qilingan test bor (id ${published.map((row) => row.id).join(", ")}) — skript unga tegmaydi`,
+    );
+  }
 
   let full = false;
 
@@ -150,7 +163,7 @@ async function existingTest(
         .remove(files.map((file: { name: string }) => `${folder}/${file.name}`));
     }
 
-    await supabase.from("tests").delete().eq("id", row.id).eq("is_published", false);
+    await supabase.from("tests").delete().eq("id", row.id);
     console.log(`  ${title}: chala nusxa (${count}/${expected} savol) o'chirildi`);
   }
 

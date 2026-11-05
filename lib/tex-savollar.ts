@@ -599,6 +599,37 @@ function splitItems(block: string): string[] {
   return out;
 }
 
+/** Variantlari rasmda (A, B, C, D chizmalar) bo'lgan savol uchun variant matnlari */
+const PICTURE_OPTIONS = {
+  a: "A grafik",
+  b: "B grafik",
+  c: "C grafik",
+  d: "D grafik",
+};
+
+/** `A)~\begin{tikzpicture}` ... `D)~\begin{tikzpicture}` — variantlar chizmada */
+function hasPictureOptions(item: string): boolean {
+  return ["A", "B", "C", "D"].every((letter) =>
+    new RegExp(`${letter}\\)\\s*~?\\s*\\\\begin\\{tikzpicture\\}`).test(item),
+  );
+}
+
+/**
+ * `A)~\begin{tikzpicture}...` dagi "A)" belgisini chizma ichiga,
+ * uning chap yuqori burchagiga ko'chirish.
+ *
+ * Chizma tashqarisida turgan eng birinchi "A)" ni rasmga aylantirgich
+ * (node-tikzjax) chizmay qo'yadi — B), C), D) chiqadi, A) yo'qoladi.
+ * Chizma ichidagi yozuv esa doim chiqadi.
+ */
+function labelsInsidePictures(figure: string): string {
+  return figure.replace(
+    /([A-D])\)\s*~?\s*(\\begin\{tikzpicture\}(?:\[[^\]]*\])?)([\s\S]*?)\\end\{tikzpicture\}/g,
+    (_all, letter: string, open: string, inner: string) =>
+      `${open}${inner}\\node[anchor=north east,inner sep=1pt,font=\\small] at (current bounding box.north west) {${letter})};\\end{tikzpicture}`,
+  );
+}
+
 function readTest(
   body: string,
   number: number,
@@ -620,6 +651,29 @@ function readTest(
       const tail = parts[i + 1];
 
       const items = splitItems(head);
+
+      /*
+       * Oxirgisidan oldingi `\item` lar — `variantlar` siz savollar.
+       * Ularning ko'pi ochiq topshiriq ("grafigini yasang") — kalitda
+       * javobi yo'q, tashlab ketiladi. Lekin variantlari A)-D)
+       * chizmalar jadvali bo'lgan savol — oddiy test savoli, kalitda
+       * javobi bor. Uni tashlab ketsak, keyingi savollarning javobi
+       * bittaga surilib ketadi (63-mavzuda shunday bo'lgan edi).
+       */
+      for (const item of items.slice(0, -1)) {
+        if (!hasPictureOptions(item)) continue;
+
+        const picture = takeFigures(item, context);
+
+        questions.push({
+          number: questions.length + 1,
+          text: cleanTex(picture.rest),
+          options: PICTURE_OPTIONS,
+          flags: [],
+          figures: picture.figures.map(labelsInsidePictures),
+        });
+      }
+
       const asked = takeFigures(items[items.length - 1] ?? "", context);
       const text = cleanTex(asked.rest);
 

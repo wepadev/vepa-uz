@@ -262,3 +262,45 @@ test("bo'g'in ishorasi va qator buyruqlari matndan olinadi", () => {
     "Şaklning perimetrini toping. Javob",
   );
 });
+
+test("variantlari chizmada (A)-D) jadval) bo'lgan savol tashlab ketilmaydi", () => {
+  const result = parseTex(String.raw`
+\testboshi{Mavzu}{1}
+\begin{testlar}
+  \item Birinchi savol.
+  \begin{variantlar}
+    \item $1$
+    \item $2$
+    \item $3$
+    \item $4$
+  \end{variantlar}
+  \item To'g'ri grafikni tanlang.
+  \begin{tabular}{@{}ll@{}}A)~\begin{tikzpicture}\draw (0,0)--(1,1);\end{tikzpicture} & B)~\begin{tikzpicture}\draw (0,0)--(1,0);\end{tikzpicture} \\ C)~\begin{tikzpicture}\draw (0,0)--(0,1);\end{tikzpicture} & D)~\begin{tikzpicture}\draw (0,1)--(1,0);\end{tikzpicture}\end{tabular}
+  \item Grafigini yasang.
+  \item Uchinchi savol.
+  \begin{variantlar}
+    \item $5$
+    \item $6$
+    \item $7$
+    \item $8$
+  \end{variantlar}
+\end{testlar}
+`);
+
+  const questions = result.tests[0].questions;
+  const key = parseTexAnswers("1-TEST: 1-A, 2-C, 3-D");
+  const ready = buildTests(result, key).tests[0].questions;
+
+  /* Ochiq topshiriq ("yasang") tashlab ketiladi, grafikli savol qoladi */
+  assert.equal(questions.length, 3);
+  assert.equal(questions[1].text, "To'g'ri grafikni tanlang.");
+  assert.equal(questions[1].options.a, "A grafik");
+  assert.equal(questions[1].figures.length, 1);
+  /* "A)" belgisi chizma ichiga ko'chadi */
+  assert.match(questions[1].figures[0], /\{A\)\};\\end\{tikzpicture\}/);
+  assert.doesNotMatch(questions[1].figures[0], /A\)~/);
+
+  /* Javoblar surilmaydi */
+  assert.deepEqual(ready.map((q) => q.correct), ["A", "C", "D"]);
+  assert.equal(ready[2].text, "Uchinchi savol.");
+});
