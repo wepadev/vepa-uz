@@ -15,6 +15,11 @@ import {
   lessonAverageScore,
 } from "@/lib/lesson-progress";
 import { requireSectionAccess } from "@/lib/require-section-access";
+import {
+  TEST_TOPIC_SELECT,
+  testLabel,
+  type TestWithTopic,
+} from "@/lib/test-label";
 
 export const dynamic = "force-dynamic";
 
@@ -329,6 +334,7 @@ export default async function LessonViewPage({
     id: number;
     title: string;
     is_published: boolean;
+    test_topics?: TestWithTopic["test_topics"];
   }> = [];
 
   if (currentTestIds.length > 0) {
@@ -337,7 +343,8 @@ export default async function LessonViewPage({
       .select(`
         id,
         title,
-        is_published
+        is_published,
+        ${TEST_TOPIC_SELECT}
       `)
       .in("id", currentTestIds);
 
@@ -349,13 +356,13 @@ export default async function LessonViewPage({
 
     /* Tartib admin belgilagancha qolsin */
     attachedTests = currentTestIds
-      .map((id) => (data ?? []).find((test) => test.id === id))
+      .map((id) =>
+        ((data ?? []) as Array<(typeof attachedTests)[number]>).find(
+          (test) => test.id === id,
+        ),
+      )
       .filter(
-        (test): test is {
-          id: number;
-          title: string;
-          is_published: boolean;
-        } => Boolean(test),
+        (test): test is (typeof attachedTests)[number] => Boolean(test),
       );
   }
 
@@ -479,7 +486,7 @@ export default async function LessonViewPage({
                   >
                     <div className="min-w-0">
                       <p className="truncate text-sm font-semibold text-mb-ink">
-                        {test.title}
+                        {testLabel(test)}
                       </p>
 
                       <p className="mt-0.5 text-xs text-mb-muted">

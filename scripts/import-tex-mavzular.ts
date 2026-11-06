@@ -127,6 +127,7 @@ async function existingTest(
   topicId: number,
   title: string,
   expected: number,
+  name = title,
 ): Promise<"full" | "none"> {
   const { data: rows, error } = await supabase
     .from("tests")
@@ -134,7 +135,7 @@ async function existingTest(
     .eq("topic_id", topicId)
     .eq("title", title);
 
-  if (error) throw new Error(`${title}: tekshirilmadi: ${error.message}`);
+  if (error) throw new Error(`${name}: tekshirilmadi: ${error.message}`);
 
   /*
    * Nashr qilingan testga HECH QACHON tegilmaydi (na o'chiriladi,
@@ -145,7 +146,7 @@ async function existingTest(
 
   if (published.length > 0) {
     throw new Error(
-      `${title}: nashr qilingan test bor (id ${published.map((row) => row.id).join(", ")}) — skript unga tegmaydi`,
+      `${name}: nashr qilingan test bor (id ${published.map((row) => row.id).join(", ")}) — skript unga tegmaydi`,
     );
   }
 
@@ -172,7 +173,7 @@ async function existingTest(
     }
 
     await supabase.from("tests").delete().eq("id", row.id);
-    console.log(`  ${title}: chala nusxa (${count}/${expected} savol) o'chirildi`);
+    console.log(`  ${name}: chala nusxa (${count}/${expected} savol) o'chirildi`);
   }
 
   return full ? "full" : "none";
@@ -306,7 +307,12 @@ for (let number = from; number <= to; number += 1) {
   }
 
   for (const test of ready.tests) {
-    const title = `${number}-mavzu, ${test.number}-test`;
+    /*
+     * Bazadagi nom mavzu ichida "1-test", "2-test" — mavzu nomi
+     * sarlavhada turadi. `name` faqat xabarlar uchun.
+     */
+    const title = `${test.number}-test`;
+    const name = `${number}-mavzu, ${title}`;
 
     if (openOnly) {
       if (test.openTasks.length === 0) continue;
@@ -318,18 +324,18 @@ for (let number = from; number <= to; number += 1) {
         .eq("title", title);
 
       if (findError || !found || found.length !== 1) {
-        problems.push(`${title}: test ${found?.length ?? 0} ta topildi, bittasi kerak`);
+        problems.push(`${name}: test ${found?.length ?? 0} ta topildi, bittasi kerak`);
         continue;
       }
 
       if (dryRun) {
-        console.log(`  ${title}: ${test.openTasks.length} ta mustaqil iş (o'rinlari ${test.openTasks.map((task) => task.position).join(", ")})`);
+        console.log(`  ${name}: ${test.openTasks.length} ta mustaqil iş (o'rinlari ${test.openTasks.map((task) => task.position).join(", ")})`);
         createdOpenTasks += test.openTasks.length;
         continue;
       }
 
       try {
-        createdOpenTasks += await addOpenTasks(found[0].id as number, test, title);
+        createdOpenTasks += await addOpenTasks(found[0].id as number, test, name);
       } catch (error) {
         problems.push(error instanceof Error ? error.message : String(error));
       }
@@ -343,7 +349,7 @@ for (let number = from; number <= to; number += 1) {
      * bajarilmay qolgan) — o'chirib, qaytadan yoziladi.
      */
     if (!dryRun) {
-      const state = await existingTest(topic.id as number, title, test.questions.length);
+      const state = await existingTest(topic.id as number, title, test.questions.length, name);
       if (state === "full") continue;
     }
 
@@ -396,7 +402,7 @@ for (let number = from; number <= to; number += 1) {
     let error: string | null = null;
 
     for (let attempt = 1; attempt <= 3 && !testId; attempt += 1) {
-      if (attempt > 1) await existingTest(topic.id as number, title, questions.length);
+      if (attempt > 1) await existingTest(topic.id as number, title, questions.length, name);
 
       ({ testId, error } = await saveParsedTest(supabase, {
         topicId: topic.id as number,
@@ -414,8 +420,8 @@ for (let number = from; number <= to; number += 1) {
     }
 
     if (error || !testId) {
-      problems.push(`${title}: ${error}`);
-      console.log(`✗ ${title}: ${error}`);
+      problems.push(`${name}: ${error}`);
+      console.log(`✗ ${name}: ${error}`);
       continue;
     }
 
@@ -424,7 +430,7 @@ for (let number = from; number <= to; number += 1) {
 
     /* Variantsiz topshiriqlar — ballsiz "Mustaqil ishlang" */
     try {
-      createdOpenTasks += await addOpenTasks(testId, test, title);
+      createdOpenTasks += await addOpenTasks(testId, test, name);
     } catch (openError) {
       problems.push(openError instanceof Error ? openError.message : String(openError));
     }

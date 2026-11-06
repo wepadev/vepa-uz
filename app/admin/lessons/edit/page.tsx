@@ -11,17 +11,13 @@ import type { FormState } from "@/lib/form-state";
 import EditLessonForm from "@/components/admin/edit-lesson-form";
 import { parseOrderNumber } from "@/lib/lesson-order";
 import { moveLessonTo } from "@/lib/lesson-order-db";
+import { loadLessonTestOptions } from "@/lib/lesson-test-options";
 
 type PageProps = {
   searchParams: Promise<{
     categoryId?: string;
     lessonId?: string;
   }>;
-};
-
-type TestRow = {
-  id: number;
-  title: string;
 };
 
 async function requireAdmin() {
@@ -350,12 +346,7 @@ export default async function EditLessonPage({
       .eq("category_id", categoryId)
       .maybeSingle(),
 
-    supabase
-      .from("tests")
-      .select("id, title")
-      .order("title", {
-        ascending: true,
-      }),
+    loadLessonTestOptions(supabase),
 
     supabase
       .from("lesson_tests")
@@ -373,20 +364,13 @@ export default async function EditLessonPage({
     notFound();
   }
 
-  if (testsResult.error) {
-    throw new Error(
-      `Testlar yuklanmadi: ${testsResult.error.message}`,
-    );
-  }
-
   const category =
     categoryResult.data;
 
   const lesson =
     lessonResult.data;
 
-  const tests =
-    (testsResult.data ?? []) as TestRow[];
+  const tests = testsResult;
 
   if (linksResult.error) {
     throw new Error(

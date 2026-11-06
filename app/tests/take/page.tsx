@@ -9,6 +9,7 @@ import TestRunner, {
 import { requireSectionAccess } from "@/lib/require-section-access";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
+import { TEST_TOPIC_SELECT, testLabel } from "@/lib/test-label";
 
 export const metadata = {
   title: "Test işlaş",
@@ -405,7 +406,8 @@ export default async function TakeTestPage({
         title,
         description,
         is_published,
-        time_limit_minutes
+        time_limit_minutes,
+        ${TEST_TOPIC_SELECT}
       `,
     )
     .eq("id", testId)
@@ -528,7 +530,7 @@ export default async function TakeTestPage({
   if (!accessCheckError && canAccess === false) {
     return (
       <TestLockedScreen
-        title={test.title}
+        title={testLabel(test)}
         backHref={validatedLessonId !== null ? "/lessons" : "/tests"}
       />
     );
@@ -615,7 +617,7 @@ export default async function TakeTestPage({
 
     return (
       <TestStartScreen
-        title={test.title}
+        title={testLabel(test)}
         description={test.description}
         questionCount={countResult.count ?? 0}
         timeLimitMinutes={test.time_limit_minutes ?? null}
@@ -907,7 +909,7 @@ export default async function TakeTestPage({
 
   return (
     <TestRunner
-      title={test.title}
+      title={testLabel(test)}
       description={test.description}
       sessionId={session.session_id}
       expiresAt={session.expires_at}
