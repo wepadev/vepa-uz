@@ -8,6 +8,7 @@ import PrintResultButton from "@/components/admin/print-result-button";
 import YouTubeEmbed from "@/components/youtube-embed";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireAdmin } from "@/lib/require-admin";
+import { TEST_TOPIC_SELECT, testLabel } from "@/lib/test-label";
 
 export const dynamic = "force-dynamic";
 
@@ -340,7 +341,7 @@ export default async function AdminResultViewPage({
 
     adminSupabase
       .from("tests")
-      .select("title")
+      .select(`title, ${TEST_TOPIC_SELECT}`)
       .eq("id", attempt.test_id)
       .maybeSingle(),
 
@@ -563,7 +564,7 @@ export default async function AdminResultViewPage({
     profileResult.data?.is_active ?? false;
 
   const testTitle =
-    testResult.data?.title ||
+    testLabel(testResult.data) ||
     "Noma’lum test";
 
   const percentage =

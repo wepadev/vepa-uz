@@ -9,6 +9,7 @@ import YouTubeEmbed from "@/components/youtube-embed";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import type { RankingTestRpcRow } from "@/lib/stats-types";
+import { TEST_TOPIC_SELECT, testLabel } from "@/lib/test-label";
 
 export const dynamic = "force-dynamic";
 
@@ -611,7 +612,7 @@ export default async function ResultViewPage({
 
     supabase
       .from("tests")
-      .select("title, is_published")
+      .select(`title, is_published, ${TEST_TOPIC_SELECT}`)
       .eq("id", attempt.test_id)
       .maybeSingle(),
 
@@ -869,7 +870,7 @@ export default async function ResultViewPage({
     "Ism kiritilmagan";
 
   const testTitle =
-    testResult.data?.title ||
+    testLabel(testResult.data) ||
     "Noma’lum test";
 
   const percentage =

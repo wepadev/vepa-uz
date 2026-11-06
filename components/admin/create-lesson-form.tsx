@@ -1,22 +1,19 @@
 "use client";
 
 import { useActionState } from "react";
+import LessonTestPicker from "@/components/admin/lesson-test-picker";
 import SubmitButton from "@/components/ui/submit-button";
+import type { LessonTestOption } from "@/lib/lesson-test-options";
 
 import {
   initialFormState,
   type FormState,
 } from "@/lib/form-state";
 
-type TestOption = {
-  id: number;
-  title: string;
-};
-
 type CreateLessonFormProps = {
   categoryId: number;
   nextOrderNumber: number;
-  tests: TestOption[];
+  tests: LessonTestOption[];
   action: (
     previousState: FormState,
     formData: FormData,
@@ -212,28 +209,9 @@ export default function CreateLessonForm({
         örtaça natijasi 90% ga yetganda oçiladi.
       </p>
 
-      <div className="mt-2 max-h-56 space-y-1 overflow-y-auto rounded-xl border border-slate-300 p-2">
-        {tests.length === 0 ? (
-          <p className="px-2 py-1 text-sm text-slate-500">
-            Test topilmadi.
-          </p>
-        ) : (
-          tests.map((test) => (
-            <label
-              key={test.id}
-              className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-sm hover:bg-slate-50"
-            >
-              <input
-                type="checkbox"
-                name="testIds"
-                value={test.id}
-                className="h-4 w-4 accent-blue-600"
-              />
-              {test.title}
-            </label>
-          ))
-        )}
-      </div>
+      <LessonTestPicker
+        tests={tests}
+      />
 
       {state.status === "error" &&
         state.message && (

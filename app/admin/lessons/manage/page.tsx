@@ -10,6 +10,10 @@ import {
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import type { FormState } from "@/lib/form-state";
+import {
+  loadLessonTestOptions,
+  type LessonTestOption,
+} from "@/lib/lesson-test-options";
 import CreateLessonForm from "@/components/admin/create-lesson-form";
 import ConfirmSubmitButton from "@/components/admin/confirm-submit-button";
 import CreatePanel from "@/components/admin/create-panel";
@@ -43,11 +47,7 @@ type LessonTestRow = {
   test_id: number;
 };
 
-type TestRow = {
-  id: number;
-  title: string;
-  is_published: boolean;
-};
+type TestRow = LessonTestOption;
 
 async function requireAdmin() {
   const supabase = await createClient();
@@ -562,16 +562,7 @@ export default async function ManageLessonsPage({
         ascending: true,
       }),
 
-    supabase
-      .from("tests")
-      .select(`
-        id,
-        title,
-        is_published
-      `)
-      .order("title", {
-        ascending: true,
-      }),
+    loadLessonTestOptions(supabase),
 
     supabase
       .from("lesson_tests")
@@ -589,12 +580,6 @@ export default async function ManageLessonsPage({
   if (lessonsResult.error) {
     throw new Error(
       `Darslar yuklanmadi: ${lessonsResult.error.message}`,
-    );
-  }
-
-  if (testsResult.error) {
-    throw new Error(
-      `Testlar yuklanmadi: ${testsResult.error.message}`,
     );
   }
 
@@ -620,9 +605,7 @@ export default async function ManageLessonsPage({
     (lessonsResult.data ??
       []) as LessonRow[];
 
-  const tests =
-    (testsResult.data ??
-      []) as TestRow[];
+  const tests = testsResult;
 
   const testMap = new Map(
     tests.map((test) => [
@@ -765,9 +748,9 @@ export default async function ManageLessonsPage({
                                 href={`/admin/tests/manage?testId=${test.id}`}
                                 className="font-semibold text-mb-brand hover:text-mb-brandDark"
                               >
-                                {test.title}
+                                {test.label}
                               </Link>
-                              {!test.is_published && " (yopiq)"}
+                              {!test.isPublished && " (yopiq)"}
                             </span>
                           ))}
                         </span>
