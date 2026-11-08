@@ -3,6 +3,7 @@ import { ClipboardCheck, Crown, Trophy } from "lucide-react";
 import { notFound, redirect } from "next/navigation";
 
 import { requireSectionAccess } from "@/lib/require-section-access";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic = "force-dynamic";
 
@@ -389,12 +390,11 @@ export default async function TestListPage({ searchParams }: PageProps) {
       <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 px-4 py-3 sm:flex-row sm:items-center sm:px-6">
           <div>
-            <Link
+            <BackLink
               href={`/tests/topics?sectionId=${section.id}`}
-              className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-            >
-              ← {section.title} mavzulariga qaytiş
-            </Link>
+              label={`${section.title} mavzulari`}
+              className="mb-2"
+            />
             <h1 className="text-xl font-bold sm:text-2xl">
               {topic.title}
             </h1>

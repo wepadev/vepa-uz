@@ -10,6 +10,7 @@ import { GROUP_EXAM_CODE } from "@/lib/group-tests";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import SubmitButton from "@/components/ui/submit-button";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic = "force-dynamic";
 
@@ -293,12 +294,11 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
       <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 px-4 py-3 sm:flex-row sm:items-center sm:px-6">
           <div>
-            <Link
+            <BackLink
               href="/admin/tests"
-              className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-            >
-              ← Test yönalişlariga qaytiş
-            </Link>
+              label="Test yönalişlari"
+              className="mb-2"
+            />
             <h1 className="text-xl font-bold sm:text-2xl">{examType.title}</h1>
             <p className="mt-1 text-sm text-slate-500">
               Mavzular yoki bölimlarni yarating va tartiblang.

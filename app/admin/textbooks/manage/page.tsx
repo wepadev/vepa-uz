@@ -1,4 +1,3 @@
-import Link from "next/link";
 
 import ConfirmSubmitButton from "@/components/admin/confirm-submit-button";
 import CreatePanel from "@/components/admin/create-panel";
@@ -22,6 +21,7 @@ import EditTopicForm from "@/components/admin/edit-topic-form";
 import TopicExamplesEditor, {
   type AdminExample,
 } from "@/components/admin/topic-examples-editor";
+import BackLink from "@/components/ui/back-link";
 
 type PageProps = {
   searchParams: Promise<{
@@ -817,12 +817,11 @@ export default async function ManageTextbookPage({
       <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 px-4 py-3 sm:flex-row sm:items-center">
           <div>
-            <Link
+            <BackLink
               href="/admin/textbooks"
-              className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-            >
-              ← Darsliklarga qaytiş
-            </Link>
+              label="Darsliklar"
+              className="mb-2"
+            />
 
             <h1 className="text-xl font-bold sm:text-2xl">
               {textbook.title}

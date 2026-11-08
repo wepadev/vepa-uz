@@ -20,6 +20,8 @@ import {
   testLabel,
   type TestWithTopic,
 } from "@/lib/test-label";
+import BackLink from "@/components/ui/back-link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -372,12 +374,10 @@ export default async function LessonViewPage({
         <div className="mx-auto max-w-6xl px-3 py-2.5 sm:px-6 sm:py-5">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
             <div className="min-w-0">
-              <a
+              <BackLink
                 href={`/lessons/category?categoryId=${currentLesson.category_id}`}
-                className="inline-flex min-h-8 items-center text-sm font-semibold text-blue-600 hover:text-blue-700"
-              >
-                ← {category.title}
-              </a>
+                label={category.title} native
+              />
 
               <h1 className="mt-0.5 truncate text-base font-bold sm:mt-2 sm:text-2xl">
                 {currentLesson.order_number}.{" "}
@@ -517,9 +517,10 @@ export default async function LessonViewPage({
           {previousLesson ? (
             <a
               href={`/lessons/view?lessonId=${previousLesson.id}`}
-              className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 py-3 text-center font-semibold text-slate-700 hover:bg-slate-50"
+              className="gap-1.5 inline-flex min-h-12 items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 py-3 text-center font-semibold text-slate-700 hover:bg-slate-50"
             >
-              ← Oldingi dars
+              <ChevronLeft className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
+              Oldingi dars
             </a>
           ) : (
             <a
@@ -541,9 +542,10 @@ export default async function LessonViewPage({
             ) : nextLessonUnlocked ? (
               <a
                 href={`/lessons/view?lessonId=${nextLesson.id}`}
-                className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-center font-bold text-white hover:bg-blue-700"
+                className="gap-1.5 inline-flex min-h-12 items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-center font-bold text-white hover:bg-blue-700"
               >
-                Keyingi dars →
+                Keyingi dars
+                <ChevronRight className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
               </a>
             ) : (
               <div className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-slate-200 px-5 py-3 text-center font-bold text-slate-500">

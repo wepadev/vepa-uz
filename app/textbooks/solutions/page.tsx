@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { Video } from "lucide-react";
+import { ChevronLeft, ChevronRight, Video } from "lucide-react";
 
 import AppAlert from "@/components/ui/app-alert";
 import TextbookLockedScreen from "@/components/textbook-locked-screen";
@@ -246,9 +246,10 @@ export default async function TextbookSolutionsPage({
           {previous ? (
             <Link
               href={`/textbooks/solutions?textbookId=${textbookId}&topicId=${previous.id}`}
-              className="inline-flex min-h-11 max-w-[45%] items-center rounded-xl border border-mb-line bg-white px-3 text-sm font-semibold text-mb-brand shadow-sm transition sm:hover:bg-slate-50"
+              className="inline-flex min-h-11 max-w-[45%] items-center gap-1 rounded-xl border border-mb-line bg-white px-3 text-sm font-semibold text-mb-brand shadow-sm transition sm:hover:bg-slate-50"
             >
-              <span className="truncate">← {previous.title}</span>
+              <ChevronLeft className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
+              <span className="truncate">{previous.title}</span>
             </Link>
           ) : (
             <span />
@@ -257,9 +258,10 @@ export default async function TextbookSolutionsPage({
           {next ? (
             <Link
               href={`/textbooks/solutions?textbookId=${textbookId}&topicId=${next.id}`}
-              className="inline-flex min-h-11 max-w-[45%] items-center rounded-xl border border-mb-line bg-white px-3 text-sm font-semibold text-mb-brand shadow-sm transition sm:hover:bg-slate-50"
+              className="inline-flex min-h-11 max-w-[45%] items-center gap-1 rounded-xl border border-mb-line bg-white px-3 text-sm font-semibold text-mb-brand shadow-sm transition sm:hover:bg-slate-50"
             >
-              <span className="truncate">{next.title} →</span>
+              <span className="truncate">{next.title}</span>
+              <ChevronRight className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
             </Link>
           ) : (
             <span />

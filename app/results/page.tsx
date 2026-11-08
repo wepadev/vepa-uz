@@ -10,6 +10,7 @@ import type {
   UserSummaryRpcRow,
   UserTestStatisticsRpcRow,
 } from "@/lib/stats-types";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic = "force-dynamic";
 
@@ -867,12 +868,11 @@ export default async function MyResultsPage({
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6 sm:py-3">
           <div className="min-w-0">
-            <Link
+            <BackLink
               href="/"
-              className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-            >
-              ← Boş sahifa
-            </Link>
+              label="Boş sahifa"
+              className="mb-2"
+            />
 
             <p className="truncate text-lg font-bold sm:text-xl">
               Natijalarim

@@ -22,6 +22,7 @@ import { getYouTubeThumbnail } from "@/lib/youtube";
 import SubmitButton from "@/components/ui/submit-button";
 import { parseOrderNumber } from "@/lib/lesson-order";
 import { moveLessonTo } from "@/lib/lesson-order-db";
+import BackLink from "@/components/ui/back-link";
 
 type PageProps = {
   searchParams: Promise<{
@@ -630,12 +631,11 @@ export default async function ManageLessonsPage({
       <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 px-4 py-3 sm:flex-row sm:items-center">
           <div>
-            <Link
+            <BackLink
               href="/admin/lessons"
-              className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-            >
-              ← Dars bölimlariga qaytiş
-            </Link>
+              label="Dars bölimlari"
+              className="mb-2"
+            />
 
             <h1 className="text-xl font-bold sm:text-2xl">
               {category.title}

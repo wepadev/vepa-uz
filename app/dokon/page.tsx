@@ -19,6 +19,7 @@ import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 
 import { requestRewardAction } from "@/app/guruhim/actions";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic = "force-dynamic";
 
@@ -142,12 +143,11 @@ export default async function ShopPage({ searchParams }: PageProps) {
     return (
       <main className="min-h-screen bg-slate-50 text-slate-900">
         <section className="mx-auto max-w-md px-3 py-10 sm:px-6">
-          <Link
+          <BackLink
             href="/"
-            className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-          >
-            ← Boş sahifa
-          </Link>
+            label="Boş sahifa"
+            className="mb-2"
+          />
 
           <div className="mt-4 rounded-3xl border border-mb-line bg-white px-5 py-10 text-center shadow-sm">
             <span className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-amber-50 text-amber-600">

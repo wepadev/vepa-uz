@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import BackLink from "@/components/ui/back-link";
 
 /**
  * Sayt bo'ylab yagona sahifa sarlavhasi.
@@ -35,17 +34,11 @@ export default function PageHeader({
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6 sm:py-3">
         <div className="min-w-0">
           {backHref && (
-            <Link
+            <BackLink
               href={backHref}
-              className="inline-flex min-h-7 items-center gap-0.5 text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-            >
-              <ChevronLeft
-                className="h-4 w-4"
-                strokeWidth={2.4}
-                aria-hidden="true"
-              />
-              {backLabel ?? "Orqaga"}
-            </Link>
+              label={backLabel ?? "Orqaga"}
+              className="mb-1.5"
+            />
           )}
 
           <h1 className="truncate text-lg font-bold sm:text-xl">

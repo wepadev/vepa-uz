@@ -14,6 +14,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { FormState } from "@/lib/form-state";
 import CreateLessonCategoryForm from "@/components/admin/create-lesson-category-form";
 import SubmitButton from "@/components/ui/submit-button";
+import BackLink from "@/components/ui/back-link";
 
 type CategoryRow = {
   id: number;
@@ -308,12 +309,11 @@ export default async function AdminLessonsPage() {
       <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 px-4 py-3 sm:flex-row sm:items-center">
           <div>
-            <Link
+            <BackLink
               href="/admin"
-              className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-            >
-              ← Admin panelga qaytiş
-            </Link>
+              label="Admin panel"
+              className="mb-2"
+            />
 
             <h1 className="text-xl font-bold sm:text-2xl">Darslar</h1>
 

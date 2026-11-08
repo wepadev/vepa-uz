@@ -34,6 +34,7 @@ import {
   type QuestionBlockRow,
   type QuestionRow,
 } from "./shared";
+import BackLink from "@/components/ui/back-link";
 
 const inputClass =
   "mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100";
@@ -238,12 +239,11 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
       <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-4xl flex-col justify-between gap-3 px-3 py-3 sm:flex-row sm:items-center sm:px-6">
           <div>
-            <Link
+            <BackLink
               href="/admin/tests"
-              className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-            >
-              ← Testlarga qaytiş
-            </Link>
+              label="Testlar"
+              className="mb-2"
+            />
 
             <h1 className="text-xl font-bold sm:text-2xl">{test.title}</h1>
 

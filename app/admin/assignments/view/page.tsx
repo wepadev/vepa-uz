@@ -16,6 +16,7 @@ import { requireAdmin } from "@/lib/require-admin";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 import SubmitButton from "@/components/ui/submit-button";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic = "force-dynamic";
 
@@ -207,12 +208,10 @@ export default async function AdminAssignmentViewPage({
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-10">
-        <Link
+        <BackLink
           href={`/admin/groups/view?groupId=${assignment.group_id}`}
-          className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-        >
-          ← {group?.title ?? "Guruhga qaytiş"}
-        </Link>
+          label={group?.title ?? "Guruh"}
+        />
 
         <h1 className="mt-2 text-2xl font-bold sm:text-3xl">
           {test?.title ?? "Vazifa"}

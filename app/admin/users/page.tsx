@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import {
   redirect,
@@ -13,6 +12,7 @@ import type { FormState } from "@/lib/form-state";
 import Pagination from "@/components/ui/pagination";
 import SubmitButton from "@/components/ui/submit-button";
 import { asRpcClient } from "@/lib/supabase/rpc";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic = "force-dynamic";
 
@@ -670,12 +670,11 @@ for (
         <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6">
           <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
             <div>
-              <Link
+              <BackLink
                 href="/admin"
-                className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-              >
-                ← Admin panelga qaytiş
-              </Link>
+                label="Admin panel"
+                className="mb-2"
+              />
 
               <h1 className="text-xl font-bold sm:text-2xl">
                 Foydalanuvçilar

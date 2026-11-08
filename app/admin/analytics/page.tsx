@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import SubmitButton from "@/components/ui/submit-button";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic = "force-dynamic";
 
@@ -423,12 +424,11 @@ export default async function AdminAnalyticsPage({
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <section className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-10">
-        <Link
+        <BackLink
           href="/admin"
-          className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-        >
-          ← Admin panelga qaytiş
-        </Link>
+          label="Admin panel"
+          className="mb-2"
+        />
 
         <h1 className="text-xl font-bold sm:text-2xl">Natijalar</h1>
 

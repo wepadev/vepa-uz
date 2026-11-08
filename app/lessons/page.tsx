@@ -1,4 +1,3 @@
-import Link from "next/link";
 
 import { MonitorPlay } from "lucide-react";
 
@@ -10,6 +9,7 @@ import {
   isLessonPassed,
 } from "@/lib/lesson-progress";
 import { requireSectionAccess } from "@/lib/require-section-access";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic = "force-dynamic";
 
@@ -172,12 +172,11 @@ export default async function LessonsPage() {
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
         <div className="mx-auto max-w-6xl px-3 py-2.5 sm:px-6 sm:py-5">
-          <Link
+          <BackLink
             href="/"
-            className="inline-flex min-h-8 items-center text-sm font-semibold text-blue-600 hover:text-blue-700"
-          >
-            ← Boş sahifa
-          </Link>
+            label="Boş sahifa"
+            className="mb-2"
+          />
 
           <h1 className="mt-0.5 text-lg font-bold sm:text-2xl">
             Videodarslar

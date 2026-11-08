@@ -1,10 +1,10 @@
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 import AppAlert from "@/components/ui/app-alert";
 import PrintResultButton from "@/components/admin/print-result-button";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic = "force-dynamic";
 
@@ -224,12 +224,11 @@ export default async function GroupReportPrintPage({
 
       <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-10 print:max-w-none print:px-0 print:py-0">
         <div className="chop-yashir flex flex-wrap items-center justify-between gap-3">
-          <Link
+          <BackLink
             href={`/admin/groups/report?groupId=${groupId}`}
-            className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-          >
-            ← Hisobotga qaytiş
-          </Link>
+            label="Hisobot"
+            className="mb-2"
+          />
 
           <PrintResultButton />
         </div>

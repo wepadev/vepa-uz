@@ -1,4 +1,3 @@
-import Link from "next/link";
 
 import LessonCard from "@/components/lesson-card";
 import {
@@ -14,6 +13,7 @@ import {
   lessonAverageScore,
 } from "@/lib/lesson-progress";
 import { requireSectionAccess } from "@/lib/require-section-access";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic = "force-dynamic";
 
@@ -269,12 +269,11 @@ export default async function LessonCategoryPage({
         <div className="mx-auto max-w-6xl px-3 py-2.5 sm:px-6 sm:py-5">
           <div className="flex items-center justify-between gap-4">
             <div className="min-w-0">
-              <Link
+              <BackLink
                 href="/lessons"
-                className="text-sm font-semibold text-blue-600 hover:text-blue-700"
-              >
-                ← Dars bölimlariga qaytiş
-              </Link>
+                label="Dars bölimlari"
+                className="mb-2"
+              />
 
               <h1 className="mt-0.5 truncate text-lg font-bold sm:text-2xl">
                 {category.title}

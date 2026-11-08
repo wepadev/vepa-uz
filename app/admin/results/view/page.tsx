@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import { notFound } from "next/navigation";
 
@@ -9,6 +8,7 @@ import YouTubeEmbed from "@/components/youtube-embed";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireAdmin } from "@/lib/require-admin";
 import { TEST_TOPIC_SELECT, testLabel } from "@/lib/test-label";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic = "force-dynamic";
 
@@ -662,12 +662,11 @@ export default async function AdminResultViewPage({
         <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
             <div>
-              <Link
+              <BackLink
                 href="/admin/results"
-                className="print-hidden text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-              >
-                ← Natijalarga qaytiş
-              </Link>
+                label="Natijalar"
+                className="mb-2 print-hidden"
+              />
 
               <h1 className="mt-3 text-2xl font-bold tracking-tight sm:text-3xl">
                 Batafsil test natijasi

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { Database, Sparkles } from "lucide-react";
@@ -7,6 +6,7 @@ import AppAlert from "@/components/ui/app-alert";
 import SubmitButton from "@/components/ui/submit-button";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic = "force-dynamic";
 
@@ -117,12 +117,10 @@ export default async function AdminMaintenancePage({
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <section className="mx-auto max-w-3xl px-3 py-6 sm:px-6 sm:py-10">
-        <Link
+        <BackLink
           href="/admin"
-          className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-        >
-          ← Admin panel
-        </Link>
+          label="Admin panel"
+        />
 
         <h1 className="mt-2 flex items-center gap-2 text-2xl font-bold sm:text-3xl">
           <Database
