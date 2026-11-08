@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import {
   notFound,
@@ -12,6 +11,7 @@ import EditLessonForm from "@/components/admin/edit-lesson-form";
 import { parseOrderNumber } from "@/lib/lesson-order";
 import { moveLessonTo } from "@/lib/lesson-order-db";
 import { loadLessonTestOptions } from "@/lib/lesson-test-options";
+import BackLink from "@/components/ui/back-link";
 
 type PageProps = {
   searchParams: Promise<{
@@ -386,12 +386,11 @@ export default async function EditLessonPage({
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
         <div className="mx-auto max-w-3xl px-4 py-3 sm:px-6">
-          <Link
+          <BackLink
             href={`/admin/lessons/manage?categoryId=${categoryId}`}
-            className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-          >
-            ← Videodarslarga qaytiş
-          </Link>
+            label="Videodarslar"
+            className="mb-2"
+          />
 
           <h1 className="text-xl font-bold sm:text-2xl">
             {lesson.order_number}-darsni

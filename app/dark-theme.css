@@ -24,6 +24,12 @@
 .dark .bg-mb-tint { background-color: rgb(22 41 74); }
 .dark .bg-mb-tintSoft { background-color: rgb(17 31 56); }
 
+/* --- Orqaga tugmasi (components/ui/back-link.tsx) --- */
+.dark .hover\:bg-mb-tintSoft:hover { background-color: rgb(22 41 74); }
+.dark .hover\:text-mb-brand:hover { color: rgb(127 176 250); }
+.dark .hover\:border-mb-brand\/40:hover { border-color: rgb(77 147 247 / 0.5); }
+.dark .group:hover .group-hover\:bg-mb-tint { background-color: rgb(30 58 108); }
+
 /* --- Umumiy --- */
 .dark .active\:bg-blue-200:active { background-color: rgb(30 64 175); }
 .dark .active\:bg-slate-100:active { background-color: rgb(27 36 54); }

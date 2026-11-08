@@ -11,6 +11,7 @@ import {
   cleanUsername,
 } from "@/lib/contacts";
 import { createClient } from "@/lib/supabase/server";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic =
   "force-dynamic";
@@ -207,13 +208,8 @@ export default async function PaymentPendingPage({
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-2xl items-center justify-between gap-3 px-4 py-2 sm:px-6 sm:py-3">
-          <div className="flex min-w-0 items-baseline gap-2">
-            <Link
-              href="/pricing"
-              className="inline-flex min-h-8 shrink-0 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-            >
-              ←
-            </Link>
+          <div className="flex min-w-0 items-center gap-2.5">
+            <BackLink href="/pricing" label="Premium" iconOnly />
 
             <p className="truncate text-lg font-bold">
               Buyurtma #{order.order_number}

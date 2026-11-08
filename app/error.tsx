@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import AppAlert from "@/components/ui/app-alert";
 import { LoadingLabel } from "@/components/ui/spinner";
 import { sendErrorReport } from "@/lib/send-error-report";
+import { ChevronLeft } from "lucide-react";
 
 export default function ErrorPage({
   error,
@@ -74,9 +75,10 @@ export default function ErrorPage({
             onClick={() =>
               window.history.back()
             }
-            className="min-h-12 rounded-2xl border border-slate-300 bg-white px-5 py-3 font-bold text-slate-700 hover:bg-slate-50"
+            className="inline-flex min-h-12 items-center justify-center gap-1.5 rounded-2xl border border-slate-300 bg-white px-5 py-3 font-bold text-slate-700 hover:bg-slate-50"
           >
-            ← Orqaga
+            <ChevronLeft className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
+            Orqaga
           </button>
 
           <button

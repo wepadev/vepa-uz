@@ -34,6 +34,7 @@ import {
   updateCrmGroup,
   updateCrmStudent,
 } from "../actions";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic = "force-dynamic";
 
@@ -305,12 +306,10 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-10">
-        <Link
+        <BackLink
           href="/admin/crm"
-          className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-        >
-          ← Guruhlarga qaytiş
-        </Link>
+          label="Guruhlar"
+        />
 
         <h1 className="mt-2 text-2xl font-bold sm:text-3xl">
           {group.title}

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import { asRpcClient } from "@/lib/supabase/rpc";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic =
   "force-dynamic";
@@ -136,12 +137,11 @@ export default async function PaymentHistoryPage() {
       <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl flex-col justify-between gap-4 px-4 py-3 sm:flex-row sm:items-center sm:px-6">
           <div>
-            <Link
+            <BackLink
               href="/profile"
-              className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-            >
-              ← Profilga qaytiş
-            </Link>
+              label="Profil"
+              className="mb-2"
+            />
 
             <h1 className="text-xl font-bold sm:text-2xl">
               Premium va tölovlarim

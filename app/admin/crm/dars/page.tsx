@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { CalendarDays, CheckCircle2 } from "lucide-react";
+import { CalendarDays, CheckCircle2, ChevronLeft, ChevronRight } from "lucide-react";
 
 import AppAlert from "@/components/ui/app-alert";
 import SubmitButton from "@/components/ui/submit-button";
@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 
 import { saveCrmDay } from "../actions";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic = "force-dynamic";
 
@@ -151,12 +152,10 @@ export default async function CrmLessonPage({ searchParams }: PageProps) {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-10">
-        <Link
+        <BackLink
           href={`/admin/crm/guruh?id=${groupId}`}
-          className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-        >
-          ← {group.title}
-        </Link>
+          label={group.title}
+        />
 
         <h1 className="mt-2 flex items-center gap-2 text-2xl font-bold sm:text-3xl">
           <CalendarDays
@@ -171,9 +170,10 @@ export default async function CrmLessonPage({ searchParams }: PageProps) {
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <Link
             href={dayHref(previousLesson)}
-            className="inline-flex min-h-11 items-center rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+            className="gap-1.5 inline-flex min-h-11 items-center rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
           >
-            ← Oldingi kun
+            <ChevronLeft className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
+            Oldingi kun
           </Link>
 
           <form method="get" className="flex items-center gap-2">
@@ -198,9 +198,10 @@ export default async function CrmLessonPage({ searchParams }: PageProps) {
 
           <Link
             href={dayHref(nextLesson)}
-            className="inline-flex min-h-11 items-center rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+            className="gap-1.5 inline-flex min-h-11 items-center rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
           >
-            Keyingi kun →
+            Keyingi kun
+            <ChevronRight className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
           </Link>
         </div>
 

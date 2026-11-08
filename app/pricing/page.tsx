@@ -7,6 +7,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import { asRpcClient } from "@/lib/supabase/rpc";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic =
   "force-dynamic";
@@ -196,13 +197,8 @@ export default async function PricingPage({
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-2 sm:px-6 sm:py-3">
-          <div className="flex min-w-0 items-baseline gap-2">
-            <Link
-              href="/"
-              className="inline-flex min-h-8 shrink-0 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-            >
-              ←
-            </Link>
+          <div className="flex min-w-0 items-center gap-2.5">
+            <BackLink href="/" label="Boş sahifa" iconOnly />
 
             <p className="truncate text-lg font-bold">Premium</p>
           </div>

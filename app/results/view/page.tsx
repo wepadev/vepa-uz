@@ -10,6 +10,8 @@ import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import type { RankingTestRpcRow } from "@/lib/stats-types";
 import { TEST_TOPIC_SELECT, testLabel } from "@/lib/test-label";
+import BackLink from "@/components/ui/back-link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -1094,19 +1096,17 @@ const differenceLabel =
       <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
         <div className="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-5">
           {lessonNavigation ? (
-            <a
+            <BackLink
               href={`/lessons/view?lessonId=${lessonNavigation.currentLessonId}`}
-              className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-            >
-              ← Darsga qaytiş
-            </a>
+              label="Darsga qaytiş" native
+              className="mb-2"
+            />
           ) : (
-            <Link
+            <BackLink
               href="/results"
-              className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-            >
-              ← Natijalarimga qaytiş
-            </Link>
+              label="Natijalarim"
+              className="mb-2"
+            />
           )}
 
           <h1 className="mt-3 text-2xl font-bold">
@@ -1418,9 +1418,10 @@ const differenceLabel =
                 lessonNavigation.nextLessonId ? (
                   <a
                     href={`/lessons/view?lessonId=${lessonNavigation.nextLessonId}`}
-                    className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-600 px-6 py-3 text-center font-bold text-white transition hover:bg-emerald-700"
+                    className="gap-1.5 inline-flex min-h-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-600 px-6 py-3 text-center font-bold text-white transition hover:bg-emerald-700"
                   >
-                    Keyingi dars →
+                    Keyingi dars
+                    <ChevronRight className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
                   </a>
                 ) : (
                   <a
@@ -1433,9 +1434,10 @@ const differenceLabel =
               ) : (
                 <a
                   href={`/lessons/view?lessonId=${lessonNavigation.currentLessonId}`}
-                  className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-2xl bg-amber-600 px-6 py-3 text-center font-bold text-white transition hover:bg-amber-700"
+                  className="gap-1.5 inline-flex min-h-12 shrink-0 items-center justify-center rounded-2xl bg-amber-600 px-6 py-3 text-center font-bold text-white transition hover:bg-amber-700"
                 >
-                  ← Darsga qaytiş
+                  <ChevronLeft className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
+                  Darsga qaytiş
                 </a>
               )}
             </div>

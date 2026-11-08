@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   notFound,
   redirect,
@@ -9,6 +8,7 @@ import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import type { FormState } from "@/lib/form-state";
 import EditQuestionForm from "@/components/admin/edit-question-form";
+import BackLink from "@/components/ui/back-link";
 
 async function requireAdmin() {
   const supabase = await createClient();
@@ -313,12 +313,11 @@ export default async function EditQuestionPage({
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
         <div className="mx-auto max-w-3xl px-4 py-3 sm:px-6">
-          <Link
+          <BackLink
             href={`/admin/tests/manage?testId=${testId}`}
-            className="inline-flex min-h-7 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-          >
-            ← Savollar röyxatiga qaytiş
-          </Link>
+            label="Savollar röyxati"
+            className="mb-2"
+          />
 
           <h1 className="text-xl font-bold sm:text-2xl">
             {question.order_number}-savolni

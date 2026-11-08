@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import {
   CheckCircle2,
@@ -29,6 +28,7 @@ import {
   toggleCrmReward,
   updateCrmReward,
 } from "../actions";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic = "force-dynamic";
 
@@ -142,12 +142,10 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-10">
-        <Link
+        <BackLink
           href={`/admin/crm/guruh?id=${groupId}`}
-          className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-        >
-          ← {group.title}
-        </Link>
+          label={group.title}
+        />
 
         <h1 className="mt-2 flex items-center gap-2 text-2xl font-bold sm:text-3xl">
           <Coins

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { FileUp } from "lucide-react";
 
@@ -11,6 +10,7 @@ import type { ParsedQuestion } from "@/lib/pdf-import";
 import { saveParsedTest } from "@/lib/save-parsed-test";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
+import BackLink from "@/components/ui/back-link";
 
 export const dynamic = "force-dynamic";
 
@@ -240,12 +240,10 @@ export default async function AdminTestImportPage() {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-10">
-        <Link
+        <BackLink
           href="/admin/tests"
-          className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-        >
-          ← Testlarga qaytiş
-        </Link>
+          label="Testlar"
+        />
 
         <h1 className="mt-2 flex items-center gap-2 text-2xl font-bold sm:text-3xl">
           <FileUp className="h-6 w-6 text-mb-muted" strokeWidth={2} aria-hidden="true" />
