@@ -132,7 +132,7 @@ export default function LessonHistory({
 
         <div className="mt-4 grid grid-cols-3 gap-2">
           <div className="rounded-xl bg-slate-50 px-2 py-3 text-center">
-            <p className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide text-mb-muted">
+            <p className="inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide text-mb-muted">
               <ListChecks
                 className="h-3.5 w-3.5"
                 strokeWidth={2}
@@ -146,7 +146,7 @@ export default function LessonHistory({
           </div>
 
           <div className="rounded-xl bg-mb-tintSoft px-2 py-3 text-center">
-            <p className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide text-mb-muted">
+            <p className="inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide text-mb-muted">
               <Star
                 className="h-3.5 w-3.5"
                 strokeWidth={2}
@@ -160,7 +160,7 @@ export default function LessonHistory({
           </div>
 
           <div className="rounded-xl bg-amber-50 px-2 py-3 text-center">
-            <p className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide text-amber-700">
+            <p className="inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide text-amber-700">
               <Coins
                 className="h-3.5 w-3.5"
                 strokeWidth={2}

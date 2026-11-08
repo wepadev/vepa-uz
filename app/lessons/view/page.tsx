@@ -21,7 +21,7 @@ import {
   type TestWithTopic,
 } from "@/lib/test-label";
 import BackLink from "@/components/ui/back-link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Lock } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -535,9 +535,10 @@ export default async function LessonViewPage({
             !nextLessonHasAccess ? (
               <Link
                 href={`/pricing?locked=lesson&lessonId=${nextLesson.id}`}
-                className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-amber-500 px-5 py-3 text-center font-bold text-white hover:bg-amber-600"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-amber-500 px-5 py-3 text-center font-bold text-white hover:bg-amber-600"
               >
-                🔒 Keyingi dars Premium
+                <Lock className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
+                Keyingi dars Premium
               </Link>
             ) : nextLessonUnlocked ? (
               <a
@@ -548,8 +549,9 @@ export default async function LessonViewPage({
                 <ChevronRight className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
               </a>
             ) : (
-              <div className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-slate-200 px-5 py-3 text-center font-bold text-slate-500">
-                🔒 Keyingi dars yopiq
+              <div className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-slate-200 px-5 py-3 text-center font-bold text-slate-600">
+                <Lock className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
+                Keyingi dars yopiq
               </div>
             )
           ) : (

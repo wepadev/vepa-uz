@@ -171,7 +171,7 @@ export default async function TextbookSectionPage() {
                     </span>
 
                     {!hasPremium && !empty && (
-                      <span className="absolute right-2 top-2 inline-flex items-center gap-1 rounded-full bg-amber-400/95 px-2 py-0.5 text-[10px] font-bold text-amber-950 shadow-sm">
+                      <span className="absolute right-2 top-2 inline-flex items-center gap-1 rounded-full bg-amber-400/95 px-2 py-0.5 text-[11px] font-bold text-amber-950 shadow-sm">
                         <Crown
                           className="h-3 w-3"
                           strokeWidth={2.6}
@@ -182,7 +182,7 @@ export default async function TextbookSectionPage() {
                     )}
 
                     {empty && (
-                      <span className="absolute inset-x-2 bottom-2 rounded-lg bg-slate-900/70 px-2 py-1 text-center text-[10px] font-bold text-white">
+                      <span className="absolute inset-x-2 bottom-2 rounded-lg bg-slate-900/70 px-2 py-1 text-center text-[11px] font-bold text-white">
                         Tayyorlanmoqda
                       </span>
                     )}

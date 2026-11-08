@@ -185,11 +185,8 @@ export function LoginForm({
       {...props}
     >
       <div>
-        <p className="text-sm font-bold uppercase tracking-[0.18em] text-blue-600">
-          Vepa Ustoz
-        </p>
-
-        <h1 className="mt-2 text-2xl font-bold text-slate-950 sm:mt-3 sm:text-3xl">
+        {/* Brend nomi kartaning tepasida logotip bilan turibdi — bu yerda takrorlanmaydi */}
+        <h1 className="text-2xl font-bold text-slate-950 sm:text-3xl">
           {mode === "login"
             ? "Xuş kelibsiz"
             : "Yangi akkaunt"}
@@ -206,6 +203,7 @@ export function LoginForm({
         <button
           type="button"
           onClick={() => changeMode("login")}
+          aria-pressed={mode === "login"}
           className={
             mode === "login"
               ? "min-h-11 rounded-xl bg-white px-3 py-3 text-sm font-bold text-blue-700 shadow-sm"
@@ -218,6 +216,7 @@ export function LoginForm({
         <button
           type="button"
           onClick={() => changeMode("signup")}
+          aria-pressed={mode === "signup"}
           className={
             mode === "signup"
               ? "min-h-11 rounded-xl bg-white px-3 py-3 text-sm font-bold text-blue-700 shadow-sm"

@@ -254,8 +254,8 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
                         <span
                           className={
                             isFree
-                              ? "shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700"
-                              : "shrink-0 rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-700"
+                              ? "shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700"
+                              : "shrink-0 rounded-full bg-blue-50 px-2 py-0.5 text-[11px] font-semibold text-blue-700"
                           }
                         >
                           {isFree ? "Bepul" : "Premium"}

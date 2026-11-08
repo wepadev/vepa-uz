@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BackLink from "@/components/ui/back-link";
 import { Crown, Lock } from "lucide-react";
 
 type TestLockedScreenProps = {
@@ -20,12 +21,7 @@ export default function TestLockedScreen({
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <section className="mx-auto max-w-2xl px-3 py-6 sm:px-6 sm:py-12">
-        <Link
-          href={backHref}
-          className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-        >
-          ← Orqaga
-        </Link>
+        <BackLink href={backHref} label="Orqaga" />
 
         <div className="mt-3 rounded-2xl border border-blue-200 bg-white p-6 text-center shadow-sm sm:p-8">
           <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-blue-100 text-blue-700">

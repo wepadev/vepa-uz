@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BackLink from "@/components/ui/back-link";
 import {
   AlertTriangle,
   CheckCircle2,
@@ -53,12 +54,7 @@ export default function TestStartScreen({
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <section className="mx-auto max-w-2xl px-3 py-6 sm:px-6 sm:py-12">
-        <Link
-          href={backHref}
-          className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-        >
-          ← {backLabel}
-        </Link>
+        <BackLink href={backHref} label={backLabel} />
 
         {errorMessage && (
           <AppAlert

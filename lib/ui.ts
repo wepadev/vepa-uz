@@ -21,15 +21,15 @@ export const cardPad = "p-4 sm:p-5";
 
 /** Bosiladigan karta — ustiga kelganda ko'tariladi */
 export const cardHover =
-  "transition sm:hover:-translate-y-0.5 sm:hover:shadow-md";
+  "press transition sm:hover:-translate-y-0.5 sm:hover:shadow-md";
 
 /** Asosiy amal tugmasi */
 export const btnPrimary =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-mb-brand px-4 text-sm font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-not-allowed disabled:opacity-60";
+  "press inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-mb-brand px-4 text-sm font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-not-allowed disabled:opacity-60";
 
 /** Ikkinchi darajali tugma */
 export const btnGhost =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50";
+  "press inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50";
 
 /** Xavfli amal (o'chirish) */
 export const btnDanger =

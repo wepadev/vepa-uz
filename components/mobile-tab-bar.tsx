@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 
 import {
   BookOpen,
+  ChevronRight,
   ClipboardCheck,
   ClipboardList,
   House,
@@ -63,8 +64,15 @@ export default function MobileTabBar({
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
+    /* Klaviaturada Esc — menyu yopiladi (shu oynalar uchun odatiy) */
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+
     return () => {
       document.body.style.overflow = previous;
+      window.removeEventListener("keydown", onKey);
     };
   }, [menuOpen]);
 
@@ -112,15 +120,20 @@ export default function MobileTabBar({
       />
 
       {menuOpen && (
-        <div className="fixed inset-0 z-50 md:hidden" role="dialog" aria-modal="true">
+        <div
+          className="fixed inset-0 z-50 md:hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menyu"
+        >
           <button
             type="button"
             aria-label="Menyuni yopiş"
             onClick={() => setMenuOpen(false)}
-            className="absolute inset-0 h-full w-full bg-slate-950/40 backdrop-blur-sm"
+            className="absolute inset-0 h-full w-full animate-in fade-in-0 bg-slate-950/40 backdrop-blur-sm duration-200"
           />
 
-          <div className="absolute inset-x-0 bottom-0 max-h-[80vh] overflow-y-auto rounded-t-3xl bg-white pb-[calc(env(safe-area-inset-bottom)+1rem)] shadow-2xl">
+          <div className="absolute inset-x-0 bottom-0 animate-in slide-in-from-bottom-8 fade-in-0 duration-200 max-h-[80vh] overflow-y-auto rounded-t-3xl bg-white pb-[calc(env(safe-area-inset-bottom)+1rem)] shadow-2xl">
             <div className="sticky top-0 bg-white px-5 pb-3 pt-3">
               <div className="mx-auto h-1.5 w-10 rounded-full bg-slate-200" />
 
@@ -147,7 +160,7 @@ export default function MobileTabBar({
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="flex min-h-[56px] items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 active:bg-slate-50"
+                      className="press flex min-h-[56px] items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 active:bg-slate-50"
                     >
                       <span className="min-w-0">
                         <span className="block truncate text-[15px] font-semibold text-slate-900">
@@ -157,9 +170,11 @@ export default function MobileTabBar({
                           {item.hint}
                         </span>
                       </span>
-                      <span aria-hidden="true" className="shrink-0 text-slate-400">
-                        ›
-                      </span>
+                      <ChevronRight
+                        className="h-5 w-5 shrink-0 text-slate-400"
+                        strokeWidth={2}
+                        aria-hidden="true"
+                      />
                     </Link>
                   ))}
                 </div>
@@ -172,7 +187,7 @@ export default function MobileTabBar({
                 <ThemeToggle />
               </div>
 
-              {/* Yopish tepada — eng ko'p ishlatiladigan amal */}
+              {/* Yopish — fon ustiga bosish va Esc ham yopadi */}
               <button
                 type="button"
                 onClick={() => setMenuOpen(false)}
@@ -216,18 +231,25 @@ export default function MobileTabBar({
                 href={tab.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex min-h-[58px] min-w-0 flex-col items-center justify-center gap-1 px-0.5 pt-1.5 transition-colors",
+                  "flex min-h-[58px] min-w-0 flex-col items-center justify-center gap-0.5 px-0.5 pt-1 transition-colors",
                   active
                     ? "text-mb-brand"
                     : "text-slate-500 active:text-slate-900",
                 )}
               >
-                <Icon
-                  className="h-[22px] w-[22px] shrink-0"
-                  strokeWidth={active ? 2.3 : 1.9}
+                <span
                   aria-hidden="true"
-                />
-                <span className="w-full truncate text-center text-[10px] font-semibold leading-none tracking-tight">
+                  className={cn(
+                    "grid h-7 w-12 place-items-center rounded-full transition-colors duration-200",
+                    active && "bg-mb-tint",
+                  )}
+                >
+                  <Icon
+                    className="h-[22px] w-[22px] shrink-0"
+                    strokeWidth={active ? 2.3 : 1.9}
+                  />
+                </span>
+                <span className="w-full truncate text-center text-[11px] font-semibold leading-tight tracking-tight">
                   {tab.label}
                 </span>
               </Link>
@@ -238,19 +260,27 @@ export default function MobileTabBar({
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}
+            aria-haspopup="dialog"
             className={cn(
-              "flex min-h-[58px] min-w-0 flex-col items-center justify-center gap-1 px-0.5 pt-1.5 transition-colors",
+              "flex min-h-[58px] min-w-0 flex-col items-center justify-center gap-0.5 px-0.5 pt-1 transition-colors",
               menuOpen
                 ? "text-mb-brand"
                 : "text-slate-500 active:text-slate-900",
             )}
           >
-            <Menu
-              className="h-[22px] w-[22px] shrink-0"
-              strokeWidth={menuOpen ? 2.3 : 1.9}
+            <span
               aria-hidden="true"
-            />
-            <span className="w-full truncate text-center text-[10px] font-semibold leading-none tracking-tight">
+              className={cn(
+                "grid h-7 w-12 place-items-center rounded-full transition-colors duration-200",
+                menuOpen && "bg-mb-tint",
+              )}
+            >
+              <Menu
+                className="h-[22px] w-[22px] shrink-0"
+                strokeWidth={menuOpen ? 2.3 : 1.9}
+              />
+            </span>
+            <span className="w-full truncate text-center text-[11px] font-semibold leading-tight tracking-tight">
               Menyu
             </span>
           </button>
