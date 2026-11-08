@@ -206,7 +206,7 @@ export default async function PricingPage({
           {user && (
             <Link
               href="/profile/payments"
-              className="inline-flex min-h-9 shrink-0 items-center rounded-xl border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+              className="inline-flex min-h-10 shrink-0 items-center rounded-xl border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
               Tölovlarim
             </Link>

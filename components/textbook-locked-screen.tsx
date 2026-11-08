@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BackLink from "@/components/ui/back-link";
 import { Crown, Lock } from "lucide-react";
 
 type TextbookLockedScreenProps = {
@@ -19,12 +20,7 @@ export default function TextbookLockedScreen({
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <section className="mx-auto max-w-2xl px-3 py-6 sm:px-6 sm:py-12">
-        <Link
-          href="/textbooks"
-          className="inline-flex min-h-8 items-center text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-        >
-          ← Darslik yeçimlari
-        </Link>
+        <BackLink href="/textbooks" label="Darslik yeçimlari" />
 
         <div className="mt-3 rounded-2xl border border-blue-200 bg-white p-6 text-center shadow-sm sm:p-8">
           <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-amber-50 text-amber-700">

@@ -341,7 +341,7 @@ export default async function HomePage() {
                   </Link>
 
                   <div className="sm:w-64">
-                    <GoogleSignInButton compact className="w-full" />
+                    <GoogleSignInButton compact className="min-h-12 w-full rounded-2xl" />
                   </div>
                 </div>
               </>
@@ -358,7 +358,7 @@ export default async function HomePage() {
         {dueReviewCount > 0 && (
           <Link
             href="/takrorlash"
-            className="group relative mt-3 flex items-center gap-4 overflow-hidden rounded-3xl border border-amber-200 bg-amber-50 p-4 shadow-sm transition sm:p-5 sm:hover:-translate-y-0.5 sm:hover:shadow-md"
+            className="press group relative mt-3 flex items-center gap-4 overflow-hidden rounded-3xl border border-amber-200 bg-amber-50 p-4 shadow-sm transition sm:p-5 sm:hover:-translate-y-0.5 sm:hover:shadow-md"
           >
             <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-amber-500 text-white shadow-sm sm:h-16 sm:w-16">
               <BrainCircuit
@@ -405,7 +405,7 @@ export default async function HomePage() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="flex flex-col items-center gap-2 rounded-2xl border border-mb-line bg-white px-2 py-3.5 text-center shadow-sm transition sm:hover:-translate-y-0.5 sm:hover:shadow-md"
+                className="press flex flex-col items-center gap-2 rounded-2xl border border-mb-line bg-white px-2 py-3.5 text-center shadow-sm transition sm:hover:-translate-y-0.5 sm:hover:shadow-md"
               >
                 <span
                   className={`grid h-10 w-10 place-items-center rounded-xl ${link.tone}`}
@@ -462,7 +462,7 @@ export default async function HomePage() {
             <Link
               key={item.title}
               href={item.href}
-              className={`group flex items-center gap-3.5 rounded-2xl border border-mb-line bg-white p-3.5 shadow-sm transition sm:p-4 sm:hover:-translate-y-0.5 sm:hover:shadow-md ${item.hover}`}
+              className={`press group flex items-center gap-3.5 rounded-2xl border border-mb-line bg-white p-3.5 shadow-sm transition sm:p-4 sm:hover:-translate-y-0.5 sm:hover:shadow-md ${item.hover}`}
             >
               <span
                 className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl ${item.tone}`}

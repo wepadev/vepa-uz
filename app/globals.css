@@ -383,3 +383,121 @@ h6 {
   background-color: #475569;
 }
 /* MATH BOOSTER CRAFT POLISH END */
+
+/* VEPA UX POLISH START
+ *
+ * Butun saytga tegishli kichik, lekin sezilarli UX qoidalari.
+ * Telefon (ko'pincha oddiy Android) birinchi o'rinda.
+ */
+
+/*
+ * Tugma va havolalarda ikki marta bosib zoom qilish o'chadi —
+ * brauzer bosishni ~300 ms kutib turmaydi, javob darrov keladi.
+ * Sahifani barmoq bilan kattalashtirish (pinch) ishlayveradi.
+ */
+a,
+button,
+summary,
+label,
+input,
+select,
+textarea,
+[role="button"] {
+  touch-action: manipulation;
+}
+
+/* Bosiladigan hamma narsada qo'l ko'rsatkichi */
+summary,
+label[for],
+select,
+[role="button"],
+[role="tab"] {
+  cursor: pointer;
+}
+
+/*
+ * Sarlavhalar qatorlarga teng bo'linadi (oxirgi qatorda bitta so'z
+ * yolg'iz qolmaydi), oddiy matnda esa oxirgi qator "yetim" qolmaydi.
+ */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+li,
+dd {
+  text-wrap: pretty;
+}
+
+/* Raqamlar ustunlarda tekis tursin: ball, vaqt, narx */
+time,
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Yopishqoq sarlavha va pastki tab bar ostida qolib ketmasin:
+ * #anchor ga o'tganda yoki fokus pastga tushganda element
+ * ko'rinadigan joyda to'xtaydi.
+ */
+html {
+  scroll-padding-top: 5rem;
+  scroll-padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 768px) {
+  html {
+    scroll-padding-bottom: 1rem;
+  }
+}
+
+/*
+ * Telefon sozlamasida "harakatni kamaytirish" yoqilgan bo'lsa,
+ * kartalarning ko'tarilishi, sakrashi va aylanishi to'xtaydi.
+ * Rang o'zgarishi qoladi — u ko'ngil aynitmaydi, lekin javob beradi.
+ * Yuklanish spinneri (animate-spin) sekinlashadi, to'xtamaydi —
+ * aks holda foydalanuvchi sahifa qotib qoldi deb o'ylaydi.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-spin {
+    animation-duration: 1.5s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  [class*="hover:-translate-y"]:hover,
+  [class*="hover:translate-x"]:hover,
+  [class*="group-hover:translate-x"] {
+    transform: none !important;
+  }
+}
+
+/*
+ * Bosish sezgisi. Telefonda hover yo'q, shuning uchun karta va
+ * tugma bosilganda bir zum ozgina "botadi". Faqat sensorli
+ * ekranda va harakat kamaytirilmagan bo'lsa.
+ */
+@media (hover: none) and (prefers-reduced-motion: no-preference) {
+  .press {
+    transition: transform 120ms ease-out;
+  }
+
+  .press:active {
+    transform: scale(0.98);
+  }
+}
+/* VEPA UX POLISH END */

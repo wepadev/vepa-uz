@@ -58,6 +58,10 @@ export default function JoinGroupButton({
             maxLength={6}
             autoFocus
             autoComplete="off"
+            autoCapitalize="characters"
+            autoCorrect="off"
+            spellCheck={false}
+            enterKeyHint="go"
             placeholder="ABC123"
             className="min-h-12 w-full rounded-xl border border-slate-300 bg-white pl-9 pr-4 font-mono text-lg font-bold uppercase tracking-widest outline-none transition focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
           />

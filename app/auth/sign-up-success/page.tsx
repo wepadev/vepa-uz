@@ -1,11 +1,12 @@
 import Link from "next/link";
+import { CheckCircle2 } from "lucide-react";
 
 export default function Page() {
   return (
     <main className="flex min-h-svh w-full items-center justify-center bg-slate-50 px-3 py-8 text-slate-900 sm:px-6 sm:py-10">
       <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-5 shadow-xl shadow-slate-200/50 sm:p-7">
         <div className="grid h-14 w-14 place-items-center rounded-2xl bg-emerald-50 text-2xl text-emerald-600 ring-1 ring-emerald-100">
-          ✓
+          <CheckCircle2 className="h-7 w-7" strokeWidth={2} aria-hidden="true" />
         </div>
 
         <h1 className="mt-5 text-2xl font-bold text-slate-950 sm:text-3xl">

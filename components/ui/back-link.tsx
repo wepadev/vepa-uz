@@ -37,6 +37,8 @@ export default function BackLink({
       ? "group inline-grid h-9 w-9 shrink-0 place-items-center rounded-full border border-mb-line bg-white text-mb-brand shadow-sm transition hover:border-mb-brand/40 hover:bg-mb-tintSoft active:scale-[0.95]"
       : "group inline-flex h-9 max-w-full items-center gap-1.5 rounded-full border border-mb-line bg-white py-1 pl-1 pr-3.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-mb-brand/40 hover:bg-mb-tintSoft hover:text-mb-brand active:scale-[0.97]",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mb-brand/50",
+    /* Ko'rinishi 36 px, lekin barmoq uchun bosish maydoni 48 px */
+    "relative before:absolute before:-inset-1.5 before:content-['']",
     className,
   );
 
