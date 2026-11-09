@@ -82,17 +82,10 @@ export default async function HomePage() {
     user?.email?.split("@")[0] ||
     "Öquvçi";
 
-  const testsHref = isAuthenticated
-    ? "/tests"
-    : "/auth/login";
-
-  const lessonsHref = isAuthenticated
-    ? "/lessons"
-    : "/auth/login";
-
-  const textbooksHref = isAuthenticated
-    ? "/textbooks"
-    : "/auth/login";
+  /* Mehmon ochiq katalogga tushadi: avval nima borligini ko'radi */
+  const testsHref = isAuthenticated ? "/tests" : "/katalog#testlar";
+  const lessonsHref = isAuthenticated ? "/lessons" : "/katalog#darslar";
+  const textbooksHref = isAuthenticated ? "/textbooks" : "/katalog#yecimlar";
 
   /*
    * Bugun takrorlash kutayotgan savollar soni.
@@ -566,13 +559,22 @@ export default async function HomePage() {
                   </p>
                 )}
 
-                <Link
-                  href="/pricing"
-                  className="mt-3 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-                >
-                  Tariflar va narxlar
-                  <ArrowRight className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
-                </Link>
+                <div className="mt-3 flex flex-wrap gap-x-5">
+                  <Link
+                    href="/katalog"
+                    className="inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
+                  >
+                    Barça mavzular röyxati
+                    <ArrowRight className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
+                  </Link>
+                  <Link
+                    href="/pricing"
+                    className="inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
+                  >
+                    Tariflar va narxlar
+                    <ArrowRight className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
+                  </Link>
+                </div>
               </div>
             )}
           </div>
