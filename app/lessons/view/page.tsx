@@ -20,8 +20,8 @@ import {
   testLabel,
   type TestWithTopic,
 } from "@/lib/test-label";
-import BackLink from "@/components/ui/back-link";
 import { ChevronLeft, ChevronRight, Lock } from "lucide-react";
+import PageHeader from "@/components/ui/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -370,52 +370,35 @@ export default async function LessonViewPage({
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
-        <div className="mx-auto max-w-6xl px-3 py-2.5 sm:px-6 sm:py-5">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-            <div className="min-w-0">
-              <BackLink
-                href={`/lessons/category?categoryId=${currentLesson.category_id}`}
-                label={category.title} native
-              />
-
-              <h1 className="mt-0.5 truncate text-base font-bold sm:mt-2 sm:text-2xl">
-                {currentLesson.order_number}.{" "}
-                {currentLesson.title}
-              </h1>
-            </div>
-
-            <div className="flex flex-wrap gap-2 sm:justify-end">
-              <span
-                className={
-                  currentLesson.is_free
-                    ? "rounded-full bg-emerald-100 px-3 py-1.5 text-xs font-bold text-emerald-700"
-                    : "rounded-full bg-amber-100 px-3 py-1.5 text-xs font-bold text-amber-700"
-                }
-              >
-                {currentLesson.is_free
-                  ? "Bepul"
-                  : "Premium"}
-              </span>
-
-              <span
-                className={
-                  currentCompleted
-                    ? "rounded-full bg-emerald-100 px-3 py-1.5 text-xs font-bold text-emerald-700"
-                    : "rounded-full bg-blue-100 px-3 py-1.5 text-xs font-bold text-blue-700"
-                }
-              >
-                {currentCompleted
-                  ? "Tugallangan"
-                  : (testsByLesson.get(currentLesson.id) ?? [])
-                        .length === 0
-                    ? "Testsiz dars"
-                    : "Jarayonda"}
-              </span>
-            </div>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        backHref={`/lessons/category?categoryId=${currentLesson.category_id}`}
+        backLabel={category.title}
+        backNative
+        title={
+          <>
+            {currentLesson.order_number}. {currentLesson.title}
+          </>
+        }
+        width="6xl"
+        chips={[
+          <span
+            key="tarif"
+            className={currentLesson.is_free ? "text-emerald-700" : "text-amber-700"}
+          >
+            {currentLesson.is_free ? "Bepul" : "Premium"}
+          </span>,
+          <span
+            key="holat"
+            className={currentCompleted ? "text-emerald-700" : "text-mb-brand"}
+          >
+            {currentCompleted
+              ? "Tugallangan"
+              : (testsByLesson.get(currentLesson.id) ?? []).length === 0
+                ? "Testsiz dars"
+                : "Jarayonda"}
+          </span>,
+        ]}
+      />
 
       <section className="mx-auto max-w-5xl px-3 py-5 sm:px-6 sm:py-12">
         {currentLesson.description && (
@@ -437,7 +420,7 @@ export default async function LessonViewPage({
 
         {currentLesson.content && (
           <article className="mt-5 rounded-2xl border border-blue-100 bg-white p-4 shadow-sm sm:p-5">
-            <p className="text-xs font-bold uppercase tracking-wide text-blue-600">
+            <p className="text-xs font-bold uppercase tracking-wide text-mb-brand">
               Nazariy qism
             </p>
 
@@ -469,7 +452,7 @@ export default async function LessonViewPage({
                 >
                   {formatPercentage(averageScore ?? 0)}%
                 </span>
-                <span className="font-medium text-blue-600">
+                <span className="font-medium text-mb-brand">
                   {" "}/ 90%
                 </span>
               </p>
@@ -497,7 +480,7 @@ export default async function LessonViewPage({
                     {test.is_published ? (
                       <a
                         href={`/tests/take?testId=${test.id}&lessonId=${currentLesson.id}`}
-                        className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-xl bg-blue-600 px-4 text-sm font-bold text-white hover:bg-blue-700"
+                        className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-xl bg-mb-brand px-4 text-sm font-bold text-white hover:bg-mb-brandDark"
                       >
                         {score > 0 ? "Qayta işlaş" : "Boşlaş"}
                       </a>
@@ -543,7 +526,7 @@ export default async function LessonViewPage({
             ) : nextLessonUnlocked ? (
               <a
                 href={`/lessons/view?lessonId=${nextLesson.id}`}
-                className="gap-1.5 inline-flex min-h-12 items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-center font-bold text-white hover:bg-blue-700"
+                className="gap-1.5 inline-flex min-h-12 items-center justify-center rounded-2xl bg-mb-brand px-5 py-3 text-center font-bold text-white hover:bg-mb-brandDark"
               >
                 Keyingi dars
                 <ChevronRight className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />

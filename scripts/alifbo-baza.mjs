@@ -75,10 +75,14 @@ function looksEnglish(text) {
 export function convertText(text) {
   if (looksEnglish(text)) return text;
 
-  // URL va \begin{..} / \end{..} argumentlarini vaqtincha yashiramiz
+  /*
+   * URL, \begin{..} / \end{..} argumentlari va formulalar ($...$,
+   * $$...$$, \(...\), \[...\]) vaqtincha yashiriladi. Formulada
+   * "CH" — kesma nomi ($CH=2$), uni Ç ga aylantirish formulani buzadi.
+   */
   const kept = [];
   const masked = text.replace(
-    /https?:\/\/\S+|\\(?:begin|end|label|ref|includegraphics)(?:\[[^\]]*\])?\{[^}]*\}/g,
+    /\$\$[\s\S]*?\$\$|\$[^$]*\$|\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]|https?:\/\/\S+|\\(?:begin|end|label|ref|includegraphics)(?:\[[^\]]*\])?\{[^}]*\}/g,
     (m) => {
       kept.push(m);
       return `\u0000${kept.length - 1}\u0000`;

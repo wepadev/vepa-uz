@@ -352,6 +352,7 @@ export default async function CrmAnalysisPage({ searchParams }: PageProps) {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <PageHeader
+        sticky={false}
         backHref={`/admin/crm/guruh?id=${groupId}`}
         backLabel="Guruh"
         title="Ball tahlili"
@@ -449,7 +450,7 @@ export default async function CrmAnalysisPage({ searchParams }: PageProps) {
                 )}
               >
                 <Info
-                  className="h-6 w-6 shrink-0 text-blue-600"
+                  className="h-6 w-6 shrink-0 text-mb-brand"
                   strokeWidth={2}
                   aria-hidden="true"
                 />

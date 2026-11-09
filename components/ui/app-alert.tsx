@@ -60,7 +60,7 @@ const styles: Record<
     wrapper:
       "border-blue-200 bg-blue-50/90 shadow-blue-100/70",
     iconBox:
-      "bg-blue-600 text-white ring-4 ring-blue-100",
+      "bg-mb-brand text-white ring-4 ring-blue-100",
     title: "text-blue-950",
     text: "text-blue-800",
   },

@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import { asRpcClient } from "@/lib/supabase/rpc";
-import BackLink from "@/components/ui/back-link";
+import PageHeader, { headerPrimaryButton } from "@/components/ui/page-header";
 
 export const dynamic =
   "force-dynamic";
@@ -134,28 +134,17 @@ export default async function PaymentHistoryPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl flex-col justify-between gap-4 px-4 py-3 sm:flex-row sm:items-center sm:px-6">
-          <div>
-            <BackLink
-              href="/profile"
-              label="Profil"
-              className="mb-2"
-            />
-
-            <h1 className="text-xl font-bold sm:text-2xl">
-              Premium va tölovlarim
-            </h1>
-          </div>
-
-          <Link
-            href="/pricing"
-            className="inline-flex min-h-11 items-center justify-center rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-blue-700"
-          >
-            Tariflarni köriş
+      <PageHeader
+        backHref="/profile"
+        backLabel="Profil"
+        title="Premium va tölovlarim"
+        width="6xl"
+        action={
+          <Link href="/pricing" className={headerPrimaryButton}>
+            Tariflar
           </Link>
-        </div>
-      </header>
+        }
+      />
 
       <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
         <div
@@ -214,7 +203,7 @@ export default async function PaymentHistoryPage() {
 
               <Link
                 href="/pricing"
-                className="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl bg-blue-600 px-5 py-2.5 font-bold text-white hover:bg-blue-700"
+                className="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl bg-mb-brand px-5 py-2.5 font-bold text-white hover:bg-mb-brandDark"
               >
                 Tarif tanlaş
               </Link>
@@ -268,7 +257,7 @@ export default async function PaymentHistoryPage() {
                     </div>
 
                     <div className="text-left md:text-right">
-                      <p className="text-2xl font-bold text-blue-600">
+                      <p className="text-2xl font-bold text-mb-brand">
                         {formatMoney(
                           order.final_amount_uzs,
                         )}{" "}

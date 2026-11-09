@@ -8,7 +8,7 @@ import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import type { FormState } from "@/lib/form-state";
 import EditQuestionForm from "@/components/admin/edit-question-form";
-import BackLink from "@/components/ui/back-link";
+import PageHeader from "@/components/ui/page-header";
 
 async function requireAdmin() {
   const supabase = await createClient();
@@ -311,24 +311,14 @@ export default async function EditQuestionPage({
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
-        <div className="mx-auto max-w-3xl px-4 py-3 sm:px-6">
-          <BackLink
-            href={`/admin/tests/manage?testId=${testId}`}
-            label="Savollar röyxati"
-            className="mb-2"
-          />
-
-          <h1 className="text-xl font-bold sm:text-2xl">
-            {question.order_number}-savolni
-            tahrirlaş
-          </h1>
-
-          <p className="mt-1 text-sm text-slate-500">
-            Savol raqami özgarmaydi.
-          </p>
-        </div>
-      </header>
+      <PageHeader
+        sticky={false}
+        backHref={`/admin/tests/manage?testId=${testId}`}
+        backLabel="Savollar röyxati"
+        title={`${question.order_number}-savolni tahrirlaş`}
+        subtitle="Savol raqami özgarmaydi."
+        width="3xl"
+      />
 
       <section className="mx-auto max-w-3xl px-6 py-10">
         <EditQuestionForm

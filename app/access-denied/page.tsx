@@ -76,7 +76,7 @@ export default async function AccessDeniedPage({
         <div className="mt-7 grid gap-3 sm:grid-cols-2">
           <Link
             href="/"
-            className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 font-bold text-white hover:bg-blue-700"
+            className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-mb-brand px-5 py-3 font-bold text-white hover:bg-mb-brandDark"
           >
             Boş sahifaga qaytiş
           </Link>

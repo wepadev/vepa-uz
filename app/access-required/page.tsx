@@ -95,7 +95,7 @@ export default async function AccessRequiredPage({
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
           <Link
             href="/"
-            className="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
+            className="rounded-xl bg-mb-brand px-6 py-3 font-semibold text-white transition hover:bg-mb-brandDark"
           >
             Boş sahifaga qaytiş
           </Link>

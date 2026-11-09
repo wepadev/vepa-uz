@@ -33,6 +33,17 @@ export function authHref(user: NavUser, href: string) {
     : `/auth/login?next=${encodeURIComponent(href)}`;
 }
 
+/** Mehmon uchun ochiq katalogning tegishli qismi */
+const GUEST_CATALOG: Record<string, string> = {
+  "/tests": "/katalog#testlar",
+  "/lessons": "/katalog#darslar",
+  "/textbooks": "/katalog#yecimlar",
+};
+
+function catalogHref(user: NavUser, href: string) {
+  return user.isAuthenticated ? href : GUEST_CATALOG[href] ?? authHref(user, href);
+}
+
 /** Asosiy o'quv bo'limlari — kompyuter menyusida birinchi turadi */
 export function primaryLinks(user: NavUser): NavLink[] {
   return [
@@ -46,19 +57,19 @@ export function primaryLinks(user: NavUser): NavLink[] {
         ]
       : []),
     {
-      href: authHref(user, "/tests"),
+      href: catalogHref(user, "/tests"),
       match: "/tests",
       label: "Testlar",
       hint: "Attestatsiya, Milliy sertifikat, SAT",
     },
     {
-      href: authHref(user, "/lessons"),
+      href: catalogHref(user, "/lessons"),
       match: "/lessons",
       label: "Darslar",
       hint: "Mavzular böyiça videodarslar",
     },
     {
-      href: authHref(user, "/textbooks"),
+      href: catalogHref(user, "/textbooks"),
       match: "/textbooks",
       label: "Yeçimlar",
       hint: "5–11-sinf va TOP kitoblar",

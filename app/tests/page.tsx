@@ -5,7 +5,7 @@ import { accents } from "@/components/ui/section-visual";
 import { examAccent, examIcon } from "@/lib/exam-visuals";
 
 import { requireSectionAccess } from "@/lib/require-section-access";
-import BrandMark from "@/components/ui/brand-mark";
+import PageHeader, { headerButton } from "@/components/ui/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -38,7 +38,7 @@ type LessonTestRow = {
 };
 
 export default async function TestsPage() {
-  const { supabase, user, profile } =
+  const { supabase, profile } =
     await requireSectionAccess("tests");
 
   const [examTypesResult, sectionsResult, testsResult, lessonTestsResult] =
@@ -117,11 +117,6 @@ export default async function TestsPage() {
     );
   }
 
-  const fullName =
-    profile.full_name?.trim() ||
-    user.email?.split("@")[0] ||
-    "Öquvçi";
-
   const totalTests = [...testCountBySection.values()].reduce(
     (sum, value) => sum + value,
     0,
@@ -129,32 +124,19 @@ export default async function TestsPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6 sm:py-3">
-          <Link href="/" className="flex min-w-0 items-center gap-2.5">
-            <BrandMark size={40} className="h-9 w-9 sm:h-10 sm:w-10" />
-
-            <div className="min-w-0">
-              <p className="truncate text-base font-bold sm:text-lg">
-                Testlar
-              </p>
-
-              <p className="truncate text-xs text-slate-500">
-                {fullName}
-              </p>
-            </div>
-          </Link>
-
-          {profile.role === "admin" && (
-            <Link
-              href="/admin/tests"
-              className="inline-flex min-h-10 shrink-0 items-center rounded-xl border border-blue-200 bg-blue-50 px-3 text-sm font-semibold text-blue-700 hover:bg-blue-100"
-            >
+      <PageHeader
+        backHref="/"
+        backLabel="Boş sahifa"
+        title="Testlar"
+        subtitle="Yönalişni tanlang"
+        action={
+          profile.role === "admin" ? (
+            <Link href="/admin/tests" className={headerButton}>
               Boşqariş
             </Link>
-          )}
-        </div>
-      </header>
+          ) : null
+        }
+      />
 
       <section className="mx-auto max-w-5xl px-3 py-5 sm:px-6 sm:py-8">
         <div className="relative overflow-hidden rounded-3xl bg-mb-brand p-5 text-white shadow-lg sm:p-7">

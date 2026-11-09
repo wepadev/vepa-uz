@@ -352,7 +352,7 @@ export default async function TestSectionsPage({ searchParams }: PageProps) {
 
                   <Link
                     href={`/tests/topics?sectionId=${section.id}`}
-                    className="mt-5 inline-flex min-h-12 items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-center font-bold text-white hover:bg-blue-700"
+                    className="mt-5 inline-flex min-h-12 items-center justify-center rounded-2xl bg-mb-brand px-5 py-3 text-center font-bold text-white hover:bg-mb-brandDark"
                   >
                     Mavzularni köriş
                   </Link>

@@ -694,7 +694,7 @@ export default async function AdminResultViewPage({
                 percentage >= 80
                   ? "mt-2 text-3xl font-bold text-emerald-600"
                   : percentage >= 60
-                    ? "mt-2 text-3xl font-bold text-blue-600"
+                    ? "mt-2 text-3xl font-bold text-mb-brand"
                     : "mt-2 text-3xl font-bold text-red-600"
               }
             >

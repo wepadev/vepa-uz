@@ -5,7 +5,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://vepa.uz";
 /**
  * Sayt xaritasi.
  *
- * Bu yerda faqat ochiq sahifalar bor: bosh sahifa va tariflar. Testlar, darslar va yechimlar
+ * Bu yerda faqat ochiq sahifalar bor: bosh sahifa, katalog va tariflar. Testlar, darslar va yechimlar
  * ataylab qo'shilmagan: ular tizimga kirmagan foydalanuvchini login
  * sahifasiga yo'naltiradi, ya'ni Google ularni baribir o'qiy olmaydi.
  * Yo'q sahifani xaritaga yozish esa indekslash xatolariga olib keladi.
@@ -24,6 +24,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "weekly",
       priority: 1,
+    },
+    {
+      url: `${siteUrl}/katalog`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
     },
     {
       url: `${siteUrl}/pricing`,

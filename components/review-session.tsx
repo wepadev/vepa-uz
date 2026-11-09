@@ -260,7 +260,7 @@ export default function ReviewSession({
                     "flex min-h-[56px] cursor-pointer select-none items-start gap-3 rounded-2xl border px-3 py-3 transition sm:px-5",
                     !feedback &&
                       (selected
-                        ? "border-blue-500 bg-blue-50 ring-2 ring-blue-100"
+                        ? "border-mb-brand bg-blue-50 ring-2 ring-blue-100"
                         : "border-slate-200 bg-white hover:border-blue-300"),
                     feedback &&
                       isRight &&
@@ -282,7 +282,7 @@ export default function ReviewSession({
                     checked={selected}
                     disabled={Boolean(feedback)}
                     onChange={() => setAnswer(option.letter)}
-                    className="mt-1 h-5 w-5 shrink-0 accent-blue-600"
+                    className="mt-1 h-5 w-5 shrink-0 accent-mb-brand"
                   />
 
                   <span className="min-w-0 text-[15px] leading-7">

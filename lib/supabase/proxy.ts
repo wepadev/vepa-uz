@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { requiresLogin } from "../route-access";
 import { hasEnvVars } from "../utils";
 
 /*
@@ -19,20 +20,6 @@ const PUBLIC_FILES = new Set([
   "/robots.txt",
   "/sitemap.xml",
 ]);
-
-/*
- * Tizimga kirmasdan ochiladigan sahifalar.
- *
- *   /pricing  — tariflar: mehmon narxni ko'rib, keyin ro'yxatdan o'tadi
- *   /ota-ona  — ota-onaga yuborilgan hisobot (imzoli havola bilan)
- */
-const PUBLIC_PREFIXES = ["/pricing", "/ota-ona"];
-
-function isPublicPage(pathname: string) {
-  return PUBLIC_PREFIXES.some(
-    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
-  );
-}
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -79,13 +66,14 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
 
+  /*
+   * Faqat yopiq bo'limlar (lib/route-access.ts) kirishni talab
+   * qiladi. Yo'q manzil o'tkaziladi va 404 sahifasi chiqadi.
+   */
   if (
-    request.nextUrl.pathname !== "/" &&
     !user &&
     !PUBLIC_FILES.has(request.nextUrl.pathname) &&
-    !isPublicPage(request.nextUrl.pathname) &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/auth")
+    requiresLogin(request.nextUrl.pathname)
   ) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();

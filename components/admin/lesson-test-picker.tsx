@@ -94,7 +94,7 @@ export default function LessonTestPicker({
         onChange={(event) => setQuery(event.target.value)}
         placeholder="Mavzu nomi böyiça qidiriş"
         aria-label="Testni mavzu böyiça qidiriş"
-        className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+        className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-mb-brand focus:ring-2 focus:ring-blue-100"
       />
 
       <div className="mt-2 max-h-80 overflow-y-auto rounded-xl border border-slate-300 p-2">
@@ -132,7 +132,7 @@ export default function LessonTestPicker({
                         onChange={(event) =>
                           toggle(test.id, event.target.checked)
                         }
-                        className="h-4 w-4 accent-blue-600"
+                        className="h-4 w-4 accent-mb-brand"
                       />
                       {test.title}
                       {!test.isPublished && (

@@ -53,7 +53,7 @@ export default function CreateStudentForm({
         className={`mt-2 w-full rounded-xl bg-white px-4 py-3 outline-none ${
           state.errors.fullName
             ? "border border-red-400 focus:ring-2 focus:ring-red-100"
-            : "border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            : "border border-slate-300 focus:border-mb-brand focus:ring-2 focus:ring-blue-100"
         }`}
       />
 
@@ -82,7 +82,7 @@ export default function CreateStudentForm({
         className={`mt-2 w-full rounded-xl bg-white px-4 py-3 outline-none ${
           state.errors.email
             ? "border border-red-400 focus:ring-2 focus:ring-red-100"
-            : "border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            : "border border-slate-300 focus:border-mb-brand focus:ring-2 focus:ring-blue-100"
         }`}
       />
 
@@ -114,7 +114,7 @@ export default function CreateStudentForm({
         className={`mt-2 w-full rounded-xl bg-white px-4 py-3 font-mono outline-none ${
           state.errors.password
             ? "border border-red-400 focus:ring-2 focus:ring-red-100"
-            : "border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            : "border border-slate-300 focus:border-mb-brand focus:ring-2 focus:ring-blue-100"
         }`}
       />
 
@@ -137,7 +137,7 @@ export default function CreateStudentForm({
 
       <SubmitButton
         disabled={pending}
-        className="mt-6 w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-6 w-full rounded-xl bg-mb-brand px-5 py-3 font-semibold text-white transition hover:bg-mb-brandDark disabled:cursor-not-allowed disabled:opacity-60"
       >
         {pending
           ? "Yaratilmoqda..."

@@ -10,7 +10,7 @@ import { GROUP_EXAM_CODE } from "@/lib/group-tests";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import SubmitButton from "@/components/ui/submit-button";
-import BackLink from "@/components/ui/back-link";
+import PageHeader, { headerButton } from "@/components/ui/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -286,33 +286,27 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
   const firstPublishedSectionId =
     sections.find((section) => section.is_published)?.id ?? null;
   const inputClass =
-    "mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100";
+    "mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-mb-brand focus:ring-2 focus:ring-blue-100";
   const textareaClass = `${inputClass} resize-none`;
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 px-4 py-3 sm:flex-row sm:items-center sm:px-6">
-          <div>
-            <BackLink
-              href="/admin/tests"
-              label="Test yönalişlari"
-              className="mb-2"
-            />
-            <h1 className="text-xl font-bold sm:text-2xl">{examType.title}</h1>
-            <p className="mt-1 text-sm text-slate-500">
-              Mavzular yoki bölimlarni yarating va tartiblang.
-            </p>
-          </div>
-
+      <PageHeader
+        sticky={false}
+        backHref="/admin/tests"
+        backLabel="Test yönalişlari"
+        title={examType.title}
+        subtitle="Mavzular yoki bölimlarni yarating va tartiblang."
+        width="7xl"
+        action={
           <Link
             href={`/tests/sections?exam=${encodeURIComponent(examType.code)}`}
-            className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-700"
+            className={headerButton}
           >
-            Foydalanuvçi körinişi
+            Öquvçi körinişi
           </Link>
-        </div>
-      </header>
+        }
+      />
 
       <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-8">
         <CreatePanel label="Yangi bölim" defaultOpen={sections.length === 0}>
@@ -519,7 +513,7 @@ export default async function AdminTestSectionsPage({ searchParams }: PageProps)
                         />
 
                         <SubmitButton
-                          className="mt-5 rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white hover:bg-blue-700"
+                          className="mt-5 rounded-xl bg-mb-brand px-6 py-3 text-sm font-bold text-white hover:bg-mb-brandDark"
                         >
                           Özgarişlarni saqlaş
                         </SubmitButton>

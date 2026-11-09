@@ -11,7 +11,7 @@ import type {
   UserSummaryRpcRow,
   UserTestStatisticsRpcRow,
 } from "@/lib/stats-types";
-import BackLink from "@/components/ui/back-link";
+import PageHeader, { headerButton } from "@/components/ui/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -456,28 +456,16 @@ export default async function LeaderboardPage({
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6 sm:py-3">
-          <div className="min-w-0">
-            <BackLink
-              href="/"
-              label="Boş sahifa"
-              className="mb-2"
-            />
-
-            <p className="truncate text-lg font-bold sm:text-xl">
-              Reyting
-            </p>
-          </div>
-
-          <Link
-            href="/results"
-            className="inline-flex min-h-10 shrink-0 items-center rounded-xl border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-          >
+      <PageHeader
+        backHref="/"
+        backLabel="Boş sahifa"
+        title="Reyting"
+        action={
+          <Link href="/results" className={headerButton}>
             Natijalarim
           </Link>
-        </div>
-      </header>
+        }
+      />
 
       <section className="mx-auto max-w-5xl px-3 py-5 sm:px-6 sm:py-8">
         {/* Sizning o'rningiz */}
@@ -717,7 +705,7 @@ export default async function LeaderboardPage({
                         <p className="truncate text-sm font-bold text-slate-950">
                           {row.full_name}
                           {isCurrentUser && (
-                            <span className="ml-2 inline-flex rounded-full bg-blue-600 px-2 py-0.5 text-[10px] font-bold text-white">
+                            <span className="ml-2 inline-flex rounded-full bg-mb-brand px-2 py-0.5 text-[10px] font-bold text-white">
                               Siz
                             </span>
                           )}
@@ -809,7 +797,7 @@ export default async function LeaderboardPage({
 
                               {row.user_id ===
                                 user.id && (
-                                <span className="mt-1 inline-flex rounded-full bg-blue-600 px-2.5 py-1 text-[10px] font-bold text-white">
+                                <span className="mt-1 inline-flex rounded-full bg-mb-brand px-2.5 py-1 text-[10px] font-bold text-white">
                                   Siz
                                 </span>
                               )}
@@ -893,7 +881,7 @@ export default async function LeaderboardPage({
                             )
                           : undefined
                       }
-                      className="min-h-11 min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-bold outline-none focus:border-blue-500 sm:w-56"
+                      className="min-h-11 min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-bold outline-none focus:border-mb-brand sm:w-56"
                     >
                       {rankingTests.map(
                         (test) => (
@@ -913,7 +901,7 @@ export default async function LeaderboardPage({
 
                     <button
                       type="submit"
-                      className="min-h-11 rounded-xl bg-blue-600 px-4 py-2 text-sm font-bold text-white hover:bg-blue-700"
+                      className="min-h-11 rounded-xl bg-mb-brand px-4 py-2 text-sm font-bold text-white hover:bg-mb-brandDark"
                     >
                       Köriş
                     </button>
@@ -994,7 +982,7 @@ export default async function LeaderboardPage({
                           <p className="truncate text-sm font-bold text-slate-950">
                             {row.full_name}
                             {isCurrentUser && (
-                              <span className="ml-2 inline-flex rounded-full bg-blue-600 px-2 py-0.5 text-[10px] font-bold text-white">
+                              <span className="ml-2 inline-flex rounded-full bg-mb-brand px-2 py-0.5 text-[10px] font-bold text-white">
                                 Siz
                               </span>
                             )}
@@ -1091,7 +1079,7 @@ export default async function LeaderboardPage({
 
                                 {row.user_id ===
                                   user.id && (
-                                  <span className="mt-1 inline-flex rounded-full bg-blue-600 px-2.5 py-1 text-[10px] font-bold text-white">
+                                  <span className="mt-1 inline-flex rounded-full bg-mb-brand px-2.5 py-1 text-[10px] font-bold text-white">
                                     Siz
                                   </span>
                                 )}

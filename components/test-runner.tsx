@@ -700,7 +700,7 @@ export default function TestRunner({
         {/* Mobil: yupqa progress chizig‘i (raqamlar tasmasi o‘rniga) */}
         <div className="h-1 w-full bg-slate-100 md:hidden">
           <div
-            className="h-full bg-blue-600 transition-all duration-300"
+            className="h-full bg-mb-brand transition-all duration-300"
             style={{
               width: `${
                 allQuestionIds.length > 0
@@ -733,7 +733,7 @@ export default function TestRunner({
                   className={[
                     "h-10 min-w-10 shrink-0 rounded-xl border text-sm font-bold transition",
                     isCurrent
-                      ? "border-blue-600 bg-blue-600 text-white shadow-sm"
+                      ? "border-mb-brand bg-mb-brand text-white shadow-sm"
                       : status === "self"
 
                         ? "border-dashed border-slate-300 bg-slate-50 text-slate-400"
@@ -785,7 +785,7 @@ export default function TestRunner({
                     className={[
                       "aspect-square rounded-xl border text-sm font-bold transition",
                       isCurrent
-                        ? "border-blue-600 bg-blue-600 text-white shadow-sm"
+                        ? "border-mb-brand bg-mb-brand text-white shadow-sm"
                         : status === "self"
 
                           ? "border-dashed border-slate-300 bg-slate-50 text-slate-400"
@@ -794,7 +794,7 @@ export default function TestRunner({
                           ? "border-blue-200 bg-blue-50 text-blue-700 hover:border-blue-400"
                           : status === "partial"
                             ? "border-amber-300 bg-amber-50 text-amber-700"
-                            : "border-slate-200 bg-white text-slate-600 hover:border-blue-300 hover:text-blue-700",
+                            : "border-slate-200 bg-white text-slate-600 hover:border-blue-300 hover:text-mb-brandDark",
                     ].join(" ")}
                   >
                     {item.navNumber}
@@ -906,7 +906,7 @@ export default function TestRunner({
                             className={[
                               "flex min-h-[60px] cursor-pointer select-none items-start gap-3 rounded-2xl border px-3 py-3.5 transition active:scale-[0.99] sm:px-5 sm:py-4",
                               selected
-                                ? "border-blue-500 bg-blue-50 shadow-sm ring-2 ring-blue-100"
+                                ? "border-mb-brand bg-blue-50 shadow-sm ring-2 ring-blue-100"
                                 : "border-slate-200 bg-white hover:border-blue-300 hover:bg-blue-50/50",
                             ].join(" ")}
                           >
@@ -925,14 +925,14 @@ export default function TestRunner({
                                   option.letter,
                                 )
                               }
-                              className="sr-only sm:not-sr-only sm:mt-1 sm:h-5 sm:w-5 sm:shrink-0 sm:accent-blue-600"
+                              className="sr-only sm:not-sr-only sm:mt-1 sm:h-5 sm:w-5 sm:shrink-0 sm:accent-mb-brand"
                             />
 
                             <span
                               className={[
                                 "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-sm font-bold transition sm:h-8 sm:w-8",
                                 selected
-                                  ? "bg-blue-600 text-white ring-2 ring-blue-200"
+                                  ? "bg-mb-brand text-white ring-2 ring-blue-200"
                                   : "bg-slate-100 text-slate-700",
                               ].join(" ")}
                             >
@@ -955,7 +955,7 @@ export default function TestRunner({
               ) : currentItem.kind === "self_study" ? (
                 <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4 sm:p-5">
                   <p className="text-base font-bold text-slate-800">
-                    Mustaqil ishlang
+                    Mustaqil işlang
                   </p>
 
                   <p className="mt-1 text-sm leading-6 text-slate-600">
@@ -1017,7 +1017,7 @@ export default function TestRunner({
                             setInputFocused(false)
                           }
                           placeholder={`${part.label}) javobni kiriting`}
-                          className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-4 text-base outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-blue-50/40 focus:ring-2 focus:ring-blue-100 sm:text-lg"
+                          className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-4 text-base outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:bg-blue-50/40 focus:ring-2 focus:ring-blue-100 sm:text-lg"
                         />
                       </section>
                     ),
@@ -1037,7 +1037,7 @@ export default function TestRunner({
                     currentIndex - 1,
                   )
                 }
-                className="rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-bold text-slate-700 transition hover:border-blue-300 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-40 sm:px-6"
+                className="rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-bold text-slate-700 transition hover:border-blue-300 hover:text-mb-brandDark disabled:cursor-not-allowed disabled:opacity-40 sm:px-6"
               >
                 ← Oldingi
               </button>
@@ -1053,7 +1053,7 @@ export default function TestRunner({
                     currentIndex + 1,
                   )
                 }
-                className="rounded-xl bg-blue-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300 sm:px-6"
+                className="rounded-xl bg-mb-brand px-4 py-3 text-sm font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-not-allowed disabled:bg-slate-300 sm:px-6"
               >
                 Keyingi →
               </button>
@@ -1128,7 +1128,7 @@ export default function TestRunner({
                     className={[
                       "flex h-12 items-center justify-center rounded-xl border text-sm font-bold transition",
                       isCurrent
-                        ? "border-blue-600 bg-blue-600 text-white shadow-sm"
+                        ? "border-mb-brand bg-mb-brand text-white shadow-sm"
                         : status === "self"
 
                           ? "border-dashed border-slate-300 bg-slate-50 text-slate-400"
@@ -1224,7 +1224,7 @@ export default function TestRunner({
                 goToItem(currentIndex + 1)
               }
               aria-label="Keyingi savol"
-              className="flex h-12 w-14 shrink-0 items-center justify-center rounded-2xl bg-blue-600 text-lg font-bold text-white transition active:bg-blue-700"
+              className="flex h-12 w-14 shrink-0 items-center justify-center rounded-2xl bg-mb-brand text-lg font-bold text-white transition active:bg-mb-brandDark"
             >
               →
             </button>

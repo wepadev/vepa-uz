@@ -53,7 +53,7 @@ function SaveButton() {
     <button
       type="submit"
       disabled={pending}
-      className="inline-flex min-h-11 w-full items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-700 disabled:cursor-wait disabled:opacity-70"
+      className="inline-flex min-h-11 w-full items-center justify-center rounded-2xl bg-mb-brand px-5 py-3 text-sm font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-wait disabled:opacity-70"
     >
       {pending ? (
         <span className="inline-flex items-center gap-2">
@@ -139,7 +139,7 @@ function AccessSwitch({
           className="peer sr-only"
         />
 
-        <span className="block h-7 w-12 rounded-full bg-slate-300 transition peer-checked:bg-blue-600 peer-disabled:bg-slate-300" />
+        <span className="block h-7 w-12 rounded-full bg-slate-300 transition peer-checked:bg-mb-brand peer-disabled:bg-slate-300" />
 
         <span className="absolute left-1 top-1 h-5 w-5 rounded-full bg-white shadow-sm transition peer-checked:translate-x-5" />
       </span>
@@ -408,13 +408,13 @@ export default function UserAccessCard({
                 <PremiumButton
                   operation="monthly"
                   label="1 oy beriş"
-                  className="bg-blue-600 text-white hover:bg-blue-700"
+                  className="bg-mb-brand text-white hover:bg-mb-brandDark"
                 />
 
                 <PremiumButton
                   operation="quarterly"
                   label="3 oy beriş"
-                  className="bg-blue-600 text-white hover:bg-blue-700"
+                  className="bg-mb-brand text-white hover:bg-mb-brandDark"
                 />
 
                 <PremiumButton

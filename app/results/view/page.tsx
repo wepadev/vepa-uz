@@ -10,8 +10,8 @@ import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import type { RankingTestRpcRow } from "@/lib/stats-types";
 import { TEST_TOPIC_SELECT, testLabel } from "@/lib/test-label";
-import BackLink from "@/components/ui/back-link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import PageHeader from "@/components/ui/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -1093,31 +1093,18 @@ const differenceLabel =
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-5">
-          {lessonNavigation ? (
-            <BackLink
-              href={`/lessons/view?lessonId=${lessonNavigation.currentLessonId}`}
-              label="Darsga qaytiş" native
-              className="mb-2"
-            />
-          ) : (
-            <BackLink
-              href="/results"
-              label="Natijalarim"
-              className="mb-2"
-            />
-          )}
-
-          <h1 className="mt-3 text-2xl font-bold">
-            Test natijasi
-          </h1>
-
-          <p className="mt-1 text-sm text-slate-500">
-            {fullName} — {testTitle}
-          </p>
-        </div>
-      </header>
+      <PageHeader
+        backHref={
+          lessonNavigation
+            ? `/lessons/view?lessonId=${lessonNavigation.currentLessonId}`
+            : "/results"
+        }
+        backLabel={lessonNavigation ? "Darsga qaytiş" : "Natijalarim"}
+        backNative={Boolean(lessonNavigation)}
+        title="Test natijasi"
+        subtitle={`${fullName} — ${testTitle}`}
+        width="7xl"
+      />
 
       <section className="mx-auto max-w-7xl px-3 py-5 sm:px-6 sm:py-10">
         {/*
@@ -1136,7 +1123,7 @@ const differenceLabel =
                 percentage >= 80
                   ? "mt-1 whitespace-nowrap text-lg font-bold text-emerald-600 sm:text-2xl"
                   : percentage >= 60
-                    ? "mt-1 whitespace-nowrap text-lg font-bold text-blue-600 sm:text-2xl"
+                    ? "mt-1 whitespace-nowrap text-lg font-bold text-mb-brand sm:text-2xl"
                     : "mt-1 whitespace-nowrap text-lg font-bold text-red-600 sm:text-2xl"
               }
             >
@@ -1160,7 +1147,7 @@ const differenceLabel =
               Ball
             </p>
 
-            <p className="mt-1 whitespace-nowrap text-lg font-bold text-blue-600 sm:text-2xl">
+            <p className="mt-1 whitespace-nowrap text-lg font-bold text-mb-brand sm:text-2xl">
               {attempt.score}
               <span className="text-slate-400">
                 /{attempt.total_questions}
@@ -1174,7 +1161,7 @@ const differenceLabel =
               <span className="hidden sm:inline">Sarflangan vaqt</span>
             </p>
 
-            <p className="mt-1 whitespace-nowrap font-mono text-[13px] font-bold tabular-nums text-blue-600 sm:text-xl">
+            <p className="mt-1 whitespace-nowrap font-mono text-[13px] font-bold tabular-nums text-mb-brand sm:text-xl">
               {elapsedTime}
             </p>
           </div>
@@ -1233,7 +1220,7 @@ const differenceLabel =
 
     <div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-2 lg:grid-cols-4 sm:p-6">
       <div className="rounded-2xl bg-blue-50 p-4">
-        <p className="text-xs font-bold uppercase tracking-wide text-blue-600">
+        <p className="text-xs font-bold uppercase tracking-wide text-mb-brand">
           Eng yaxşi foiz
         </p>
 
@@ -1247,7 +1234,7 @@ const differenceLabel =
       </div>
 
       <div className="rounded-2xl bg-blue-50 p-4">
-        <p className="text-xs font-bold uppercase tracking-wide text-blue-600">
+        <p className="text-xs font-bold uppercase tracking-wide text-mb-brand">
           Eng yaxşi vaqt
         </p>
 
@@ -1299,7 +1286,7 @@ const differenceLabel =
     <div className="flex flex-col gap-3 border-t border-slate-100 p-5 sm:flex-row sm:p-6">
       <Link
         href={retryHref}
-        className="inline-flex min-h-12 flex-1 items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-center font-bold text-white transition hover:bg-blue-700"
+        className="inline-flex min-h-12 flex-1 items-center justify-center rounded-2xl bg-mb-brand px-5 py-3 text-center font-bold text-white transition hover:bg-mb-brandDark"
       >
         {retryLabel}
       </Link>
@@ -1317,7 +1304,7 @@ const differenceLabel =
     <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
       <div>
         <div className="flex flex-wrap gap-2">
-          <span className="rounded-full bg-blue-600 px-3 py-1 text-xs font-bold text-white">
+          <span className="rounded-full bg-mb-brand px-3 py-1 text-xs font-bold text-white">
             Dars testi
           </span>
 
@@ -1338,7 +1325,7 @@ const differenceLabel =
 
       <Link
         href={retryHref}
-        className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-2xl bg-blue-600 px-6 py-3 text-center font-bold text-white transition hover:bg-blue-700"
+        className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-2xl bg-mb-brand px-6 py-3 text-center font-bold text-white transition hover:bg-mb-brandDark"
       >
         {lessonRetryLabel}
       </Link>

@@ -42,7 +42,7 @@ function fieldClass(error?: string) {
     "outline-none transition",
     error
       ? "border border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100"
-      : "border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100",
+      : "border border-slate-300 focus:border-mb-brand focus:ring-2 focus:ring-blue-100",
   ].join(" ");
 }
 
@@ -157,7 +157,7 @@ function ExampleRow({
 
           <SubmitButton
             disabled={pending}
-            className="min-h-11 rounded-xl bg-blue-600 px-4 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60"
+            className="min-h-11 rounded-xl bg-mb-brand px-4 text-sm font-semibold text-white transition hover:bg-mb-brandDark disabled:opacity-60"
           >
             {pending ? "Saqlanmoqda..." : "Saqlaş"}
           </SubmitButton>
@@ -269,7 +269,7 @@ function AddExamplesForm({
 
       <SubmitButton
         disabled={pending}
-        className="mt-3 min-h-11 w-full rounded-xl bg-blue-600 px-5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+        className="mt-3 min-h-11 w-full rounded-xl bg-mb-brand px-5 text-sm font-semibold text-white transition hover:bg-mb-brandDark disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
       >
         {pending ? "Qöşilmoqda..." : "Misollarni qöşiş"}
       </SubmitButton>

@@ -6,6 +6,8 @@ import type { PDFDocumentProxy, RenderTask } from "pdfjs-dist";
 import {
   GRID_STEP,
   MARKER_OPACITY,
+  TEXT_FONT,
+  TEXT_LINE_HEIGHT,
   outlinePath,
   penOutline,
   simplifyStroke,
@@ -15,9 +17,17 @@ import {
   type PathSegment,
   type PenKind,
   type Stroke,
+  type TextNote,
 } from "@/lib/pdf-ink";
 
-export type EditorTool = InkTool | "eraser" | "hand";
+export type EditorTool = InkTool | "eraser" | "hand" | "text";
+
+/** Hozir yozilayotgan matn (faqat bitta sahifada bo'ladi) */
+export type TextEdit = TextNote & {
+  pageId: string;
+  /** Mavjud matnni tahrirlash bo'lsa — uning id'si */
+  noteId: string | null;
+};
 
 /** O'chirg'ich radiusi, punktda */
 export const ERASER_RADIUS = 7;
@@ -31,6 +41,12 @@ export type PageHandlers = {
   onPenDetected: () => void;
   /** Ikki barmoq bilan kattalashtirilmoqda — chizilmaydi */
   isPinching: () => boolean;
+  /** "T" asbobi: bo'sh joyga bosildi — yangi matn */
+  onTextPlace: (pageId: string, x: number, y: number) => void;
+  /** "T" asbobi: mavjud matn bosildi — tahrirlash */
+  onTextEdit: (pageId: string, noteId: string) => void;
+  onTextChange: (text: string) => void;
+  onTextDone: () => void;
 };
 
 type InkPageViewProps = {
@@ -45,6 +61,8 @@ type InkPageViewProps = {
   penOnly: boolean;
   scrollRef: RefObject<HTMLDivElement | null>;
   handlers: RefObject<PageHandlers>;
+  /** Shu sahifada yozilayotgan matn (boshqa sahifalarda null) */
+  textEdit: TextEdit | null;
 };
 
 function pixelRatio() {
@@ -210,6 +228,8 @@ type Gesture =
       y: number;
       left: number;
       top: number;
+      /** "T" asbobi: qo'zg'almay qo'yib yuborilsa — shu nuqtaga matn */
+      tap?: { x: number; y: number };
     };
 
 /**
@@ -234,6 +254,7 @@ function InkPageView({
   penOnly,
   scrollRef,
   handlers,
+  textEdit,
 }: InkPageViewProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const pdfCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -462,7 +483,11 @@ function InkPageView({
 
     const touchPans = event.pointerType === "touch" && (penOnly || tool === "hand");
 
-    if (tool === "hand" || touchPans) {
+    /*
+     * Matn asbobida bosish — sahifani surish ham bo'lishi mumkin.
+     * Barmoq qo'zg'almay ko'tarilsa (finish), shu nuqtaga matn qo'yiladi.
+     */
+    if (tool === "hand" || tool === "text" || touchPans) {
       const scroller = scrollRef.current;
       gestureRef.current = {
         kind: "pan",
@@ -472,6 +497,13 @@ function InkPageView({
         y: event.clientY,
         left: scroller?.scrollLeft ?? 0,
         top: scroller?.scrollTop ?? 0,
+        tap:
+          tool === "text"
+            ? (() => {
+                const [x, y] = pointFrom(event, canvas.getBoundingClientRect());
+                return { x, y };
+              })()
+            : undefined,
       };
       return;
     }
@@ -556,6 +588,14 @@ function InkPageView({
       return;
     }
 
+    if (gesture.kind === "pan") {
+      const moved = Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y);
+      if (gesture.tap && moved < 8) {
+        handlers.current.onTextPlace(page.id, gesture.tap.x, gesture.tap.y);
+      }
+      return;
+    }
+
     if (gesture.kind !== "draw") return;
 
     cancelAnimationFrame(frameRef.current);
@@ -576,7 +616,15 @@ function InkPageView({
   }
 
   const cursor =
-    tool === "hand" ? "grab" : tool === "eraser" ? "cell" : "crosshair";
+    tool === "hand"
+      ? "grab"
+      : tool === "eraser"
+        ? "cell"
+        : tool === "text"
+          ? "text"
+          : "crosshair";
+
+  const texts = page.texts ?? [];
 
   return (
     <div
@@ -624,7 +672,97 @@ function InkPageView({
         onPointerCancel={finish}
         onContextMenu={(event) => event.preventDefault()}
       />
+
+      {/* Matnlar — HTML qatlam: kattalikka qarab shrift ham o'sadi */}
+      {texts.map((note) =>
+        textEdit?.noteId === note.id ? null : (
+          <div
+            key={note.id}
+            role={tool === "text" ? "button" : undefined}
+            tabIndex={tool === "text" ? 0 : undefined}
+            onPointerDown={(event) => {
+              if (tool !== "text") return;
+              event.stopPropagation();
+            }}
+            onClick={() => {
+              if (tool === "text") handlers.current.onTextEdit(page.id, note.id);
+            }}
+            className={tool === "text" ? "absolute cursor-text rounded-sm hover:outline hover:outline-1 hover:outline-mb-brand/50" : "pointer-events-none absolute"}
+            style={{
+              left: note.x * zoom,
+              top: note.y * zoom,
+              color: note.color,
+              fontFamily: TEXT_FONT,
+              fontSize: note.size * zoom,
+              lineHeight: TEXT_LINE_HEIGHT,
+              whiteSpace: "pre",
+            }}
+          >
+            {note.text}
+          </div>
+        ),
+      )}
+
+      {textEdit && (
+        <TextEditor edit={textEdit} zoom={zoom} handlers={handlers} />
+      )}
     </div>
+  );
+}
+
+/** Matn yozish maydoni — yozilgan sari kengayadi */
+function TextEditor({
+  edit,
+  zoom,
+  handlers,
+}: {
+  edit: TextEdit;
+  zoom: number;
+  handlers: RefObject<PageHandlers>;
+}) {
+  const ref = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    node.focus({ preventScroll: true });
+    node.setSelectionRange(node.value.length, node.value.length);
+  }, [edit.pageId, edit.noteId, edit.x, edit.y]);
+
+  const lines = edit.text.split("\n");
+  const columns = Math.max(4, ...lines.map((line) => line.length + 1));
+
+  return (
+    <textarea
+      ref={ref}
+      value={edit.text}
+      rows={lines.length}
+      cols={columns}
+      wrap="off"
+      spellCheck={false}
+      aria-label="Matn"
+      placeholder="Yozing..."
+      onChange={(event) => handlers.current.onTextChange(event.target.value)}
+      onBlur={() => handlers.current.onTextDone()}
+      onKeyDown={(event) => {
+        if (event.key === "Escape") {
+          event.preventDefault();
+          event.currentTarget.blur();
+        }
+      }}
+      onPointerDown={(event) => event.stopPropagation()}
+      className="absolute z-10 resize-none overflow-hidden rounded-sm border-0 bg-white/80 p-0 outline outline-1 outline-mb-brand placeholder:text-slate-400"
+      style={{
+        left: edit.x * zoom,
+        top: edit.y * zoom,
+        color: edit.color,
+        fontFamily: TEXT_FONT,
+        fontSize: edit.size * zoom,
+        lineHeight: TEXT_LINE_HEIGHT,
+        /* cols ≈ belgi kengligi; Arial'da o'rtacha harf 0.55em */
+        width: `${columns * 0.6}em`,
+      }}
+    />
   );
 }
 

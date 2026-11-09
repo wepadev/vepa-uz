@@ -10,7 +10,7 @@ import type {
   UserSummaryRpcRow,
   UserTestStatisticsRpcRow,
 } from "@/lib/stats-types";
-import BackLink from "@/components/ui/back-link";
+import PageHeader, { headerPrimaryButton } from "@/components/ui/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -865,28 +865,16 @@ export default async function MyResultsPage({
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6 sm:py-3">
-          <div className="min-w-0">
-            <BackLink
-              href="/"
-              label="Boş sahifa"
-              className="mb-2"
-            />
-
-            <p className="truncate text-lg font-bold sm:text-xl">
-              Natijalarim
-            </p>
-          </div>
-
-          <Link
-            href="/tests"
-            className="inline-flex min-h-10 shrink-0 items-center rounded-xl bg-mb-brand px-4 text-sm font-semibold text-white hover:bg-mb-brandDark"
-          >
+      <PageHeader
+        backHref="/"
+        backLabel="Boş sahifa"
+        title="Natijalarim"
+        action={
+          <Link href="/tests" className={headerPrimaryButton}>
             Test işlaş
           </Link>
-        </div>
-      </header>
+        }
+      />
 
       <section className="mx-auto max-w-5xl px-3 py-5 sm:px-6 sm:py-8">
         {/* Umumiy o'rin */}
@@ -954,12 +942,12 @@ export default async function MyResultsPage({
             {
               label: "Reyting testi",
               value: String(userBestRankingAttempts.length),
-              tone: "text-blue-600",
+              tone: "text-mb-brand",
             },
             {
               label: "Örtaça",
               value: `${formatPercentage(averageRankingPercentage)}%`,
-              tone: "text-blue-600",
+              tone: "text-mb-brand",
             },
             {
               label: "Eng yuqori",
@@ -1037,7 +1025,7 @@ export default async function MyResultsPage({
 
               <Link
                 href="/tests"
-                className="mt-6 inline-flex min-h-12 items-center justify-center rounded-2xl bg-blue-600 px-6 py-3 font-bold text-white hover:bg-blue-700"
+                className="mt-6 inline-flex min-h-12 items-center justify-center rounded-2xl bg-mb-brand px-6 py-3 font-bold text-white hover:bg-mb-brandDark"
               >
                 Testlarni köriş
               </Link>
@@ -1133,7 +1121,7 @@ export default async function MyResultsPage({
                             "ranking" &&
                             result.testRank >
                               0 && (
-                              <div className="rounded-2xl bg-blue-600 px-5 py-3 text-center text-white">
+                              <div className="rounded-2xl bg-mb-brand px-5 py-3 text-center text-white">
                                 <p className="text-[11px] font-bold uppercase tracking-wide text-blue-100">
                                   Test reytingi
                                 </p>
@@ -1153,7 +1141,7 @@ export default async function MyResultsPage({
 
                         <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
                           <div className="rounded-2xl bg-blue-50 p-3">
-                            <p className="text-xs font-bold text-blue-600">
+                            <p className="text-xs font-bold text-mb-brand">
                               Foiz
                             </p>
 
@@ -1252,7 +1240,7 @@ export default async function MyResultsPage({
                           {isCompleted && (
                             <Link
                               href={`/results/view?attemptId=${result.id}`}
-                              className="inline-flex min-h-11 items-center justify-center rounded-xl bg-blue-600 px-5 py-2.5 text-center text-sm font-bold text-white transition hover:bg-blue-700"
+                              className="inline-flex min-h-11 items-center justify-center rounded-xl bg-mb-brand px-5 py-2.5 text-center text-sm font-bold text-white transition hover:bg-mb-brandDark"
                             >
                               Batafsil köriş
                             </Link>

@@ -30,6 +30,7 @@ import {
   appendBezierCurve,
   closePath,
   concatTransformationMatrix,
+  drawObject,
   fill,
   lineTo,
   moveTo,
@@ -92,6 +93,77 @@ export type InkPage = {
   /** Faqat qo'shilgan sahifalar uchun */
   background: PageBackground;
   strokes: Stroke[];
+  /** Klaviatura bilan yozilgan matnlar (eski sahifalarda yo'q bo'lishi mumkin) */
+  texts?: TextNote[];
+};
+
+/**
+ * Matn yozuvi — "T" asbobi bilan sahifaga bosib, klaviaturada
+ * yoziladi. `x`, `y` — birinchi qatorning chap yuqori burchagi,
+ * ko'rinish koordinatasida (punkt). Bir necha qator bo'lishi mumkin.
+ */
+export type TextNote = {
+  id: string;
+  x: number;
+  y: number;
+  text: string;
+  /** "#RRGGBB" */
+  color: string;
+  /** Shrift o'lchami, punktda */
+  size: number;
+};
+
+/** Matn o'lchamlari, punktda: kichik, o'rtacha, katta, juda katta */
+export const TEXT_SIZES = [12, 16, 22, 30];
+
+/** Ekranda ham, eksportda ham bir xil shrift */
+export const TEXT_FONT = 'Arial, "Helvetica Neue", Helvetica, sans-serif';
+
+export const TEXT_LINE_HEIGHT = 1.25;
+
+/**
+ * Matnning taxminiy chegarasi (o'chirg'ich uchun). Arial'da harf
+ * o'rtacha shrift o'lchamining ~0.55 qismiga teng.
+ */
+export function textNoteBox(note: TextNote) {
+  const lines = note.text.split("\n");
+  const longest = Math.max(1, ...lines.map((line) => line.length));
+
+  return {
+    x: note.x,
+    y: note.y,
+    width: longest * note.size * 0.55,
+    height: lines.length * note.size * TEXT_LINE_HEIGHT,
+  };
+}
+
+/** O'chirg'ich matnga tegdimi */
+export function textHit(note: TextNote, x: number, y: number, radius: number) {
+  const box = textNoteBox(note);
+
+  return (
+    x >= box.x - radius &&
+    x <= box.x + box.width + radius &&
+    y >= box.y - radius &&
+    y <= box.y + box.height + radius
+  );
+}
+
+/** Sahifada biror yozuv (chizgi yoki matn) bormi */
+export function pageHasInk(page: InkPage) {
+  return page.strokes.length > 0 || (page.texts?.length ?? 0) > 0;
+}
+
+/**
+ * Matnning PNG ko'rinishi. Eksportda brauzer chizib beradi: PDF'ning
+ * standart shriftlarida ğ va ş harflari yo'q, shrift faylini esa
+ * har saqlashda yuklab o'tirmaymiz.
+ */
+export type RenderedText = {
+  png: Uint8Array;
+  /** Punktda */
+  width: number;
+  height: number;
 };
 
 /** Marker shaffofligi — ostidagi matn ko'rinib tursin */
@@ -485,6 +557,48 @@ function drawStrokes(doc: PDFDocument, page: PDFPage, item: InkPage) {
   page.pushOperators(...ops);
 }
 
+async function drawTexts(
+  doc: PDFDocument,
+  page: PDFPage,
+  item: InkPage,
+  renderText: (note: TextNote) => Promise<RenderedText | null>,
+) {
+  const texts = (item.texts ?? []).filter((note) => note.text.trim());
+  if (texts.length === 0) return;
+
+  const ops: PDFOperator[] = [pushGraphicsState(), concatTransformationMatrix(...item.toPdf)];
+
+  for (const note of texts) {
+    const rendered = await renderText(note);
+    if (!rendered) continue;
+
+    const image = await doc.embedPng(rendered.png);
+    const name = page.node.newXObject("Matn", image.ref);
+
+    /*
+     * Ko'rinish koordinatasida y pastga o'sadi, rasmniki esa tepaga.
+     * Shuning uchun rasm pastki chap burchagidan (x, y + h) va
+     * vertikal o'q teskari: [w, 0, 0, -h, x, y + h].
+     */
+    ops.push(
+      pushGraphicsState(),
+      concatTransformationMatrix(
+        round(rendered.width),
+        0,
+        0,
+        round(-rendered.height),
+        round(note.x),
+        round(note.y + rendered.height),
+      ),
+      drawObject(name),
+      popGraphicsState(),
+    );
+  }
+
+  ops.push(popGraphicsState());
+  page.pushOperators(...ops);
+}
+
 /**
  * Yozuvlar tushirilgan yangi PDF.
  *
@@ -496,6 +610,8 @@ function drawStrokes(doc: PDFDocument, page: PDFPage, item: InkPage) {
 export async function exportInkPdf(
   original: Uint8Array | ArrayBuffer,
   pages: InkPage[],
+  /** Matnlarni PNG qilib beradi (brauzerda). Berilmasa matnlar tushmaydi */
+  renderText?: (note: TextNote) => Promise<RenderedText | null>,
 ): Promise<Uint8Array> {
   const source = await PDFDocument.load(original, { ignoreEncryption: true });
   const out = await PDFDocument.create();
@@ -533,6 +649,7 @@ export async function exportInkPdf(
     }
 
     drawStrokes(out, page, item);
+    if (renderText) await drawTexts(out, page, item, renderText);
   }
 
   const title = source.getTitle();

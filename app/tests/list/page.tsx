@@ -3,7 +3,7 @@ import { ClipboardCheck, Crown, Trophy } from "lucide-react";
 import { notFound, redirect } from "next/navigation";
 
 import { requireSectionAccess } from "@/lib/require-section-access";
-import BackLink from "@/components/ui/back-link";
+import PageHeader, { headerButton } from "@/components/ui/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -387,41 +387,19 @@ export default async function TestListPage({ searchParams }: PageProps) {
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 px-4 py-3 sm:flex-row sm:items-center sm:px-6">
-          <div>
-            <BackLink
-              href={`/tests/topics?sectionId=${section.id}`}
-              label={`${section.title} mavzulari`}
-              className="mb-2"
-            />
-            <h1 className="text-xl font-bold sm:text-2xl">
-              {topic.title}
-            </h1>
-            <p className="mt-1 max-w-2xl text-sm text-slate-500">
-              {topic.description || "Testni tanlang va işlaşni boşlang."}
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            <span
-              className={
-                isPremium || isAdmin
-                  ? "rounded-xl bg-emerald-100 px-4 py-2.5 text-sm font-bold text-emerald-700"
-                  : "rounded-xl bg-slate-100 px-4 py-2.5 text-sm font-bold text-slate-600"
-              }
-            >
-              {isAdmin ? "Admin" : isPremium ? "Premium faol" : "Bepul tarif"}
-            </span>
-            <Link
-              href="/results"
-              className="rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-blue-700"
-            >
-              Natijalarim
-            </Link>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        backHref={`/tests/topics?sectionId=${section.id}`}
+        backLabel={`${section.title} mavzulari`}
+        title={topic.title}
+        subtitle={topic.description || "Testni tanlang va işlaşni boşlang."}
+        width="7xl"
+        chips={[isAdmin ? "Admin" : isPremium ? "Premium faol" : "Bepul tarif"]}
+        action={
+          <Link href="/results" className={headerButton}>
+            Natijalarim
+          </Link>
+        }
+      />
 
       <section className="mx-auto max-w-7xl px-3 py-5 sm:px-6 sm:py-12">
         <div className="rounded-3xl border border-blue-100 bg-mb-brand p-6 text-white shadow-lg sm:p-8">
@@ -547,7 +525,7 @@ export default async function TestListPage({ searchParams }: PageProps) {
                       <div className="mt-2.5 rounded-xl border border-blue-100 bg-blue-50 p-2.5 sm:mt-4 sm:rounded-2xl sm:p-4">
                         <div className="flex items-end justify-between gap-3">
                           <div>
-                            <p className="text-[10px] font-semibold uppercase tracking-wide text-blue-600 sm:text-[11px]">
+                            <p className="text-[10px] font-semibold uppercase tracking-wide text-mb-brand sm:text-[11px]">
                               Eng yaxşi natija
                             </p>
                             <p
@@ -578,7 +556,7 @@ export default async function TestListPage({ searchParams }: PageProps) {
                     ) : (
                       <Link
                         href="/pricing"
-                        className="mt-3 inline-flex min-h-11 items-center justify-center rounded-xl bg-blue-600 px-5 text-center text-sm font-bold text-white transition hover:bg-blue-700 sm:mt-5 sm:min-h-12 sm:rounded-2xl sm:text-base"
+                        className="mt-3 inline-flex min-h-11 items-center justify-center rounded-xl bg-mb-brand px-5 text-center text-sm font-bold text-white transition hover:bg-mb-brandDark sm:mt-5 sm:min-h-12 sm:rounded-2xl sm:text-base"
                       >
                         Premium orqali oçiş
                       </Link>

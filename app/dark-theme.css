@@ -20,6 +20,9 @@
 .dark .text-mb-brand { color: rgb(77 147 247); }
 .dark .border-mb-brand { border-color: rgb(77 147 247); }
 .dark .text-mb-brandDark { color: rgb(127 176 250); }
+/* blue-600 → mb-brand almashtirilgandan keyin (yagona rang) */
+.dark .hover\:text-mb-brandDark:hover { color: rgb(147 197 253); }
+.dark .focus\:border-mb-brand:focus { border-color: rgb(77 147 247); }
 .dark .bg-mb-page { background-color: rgb(11 18 32); }
 .dark .bg-mb-tint { background-color: rgb(22 41 74); }
 .dark .bg-mb-tintSoft { background-color: rgb(17 31 56); }

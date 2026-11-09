@@ -18,7 +18,7 @@ import {
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import SubmitButton from "@/components/ui/submit-button";
-import BackLink from "@/components/ui/back-link";
+import PageHeader from "@/components/ui/page-header";
 
 type ActionState = {
   status: "idle" | "success" | "error";
@@ -930,44 +930,26 @@ export default async function AdminTextbooksPage({
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6">
-          <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
-            <div>
-              <BackLink
-                href="/admin"
-                label="Admin panel"
-                className="mb-2"
-              />
-
-              <h1 className="text-xl font-bold sm:text-2xl">Darslar</h1>
-
-              <AdminTabs
-                className="mt-2"
-                active="/admin/textbooks"
-                tabs={[
-                { href: "/admin/lessons", label: "Videodarslar" },
-                { href: "/admin/textbooks", label: "Darslik yeçimlari" },
-              ]}
-              />
-            </div>
-
-            <div className="flex flex-wrap gap-2 text-sm">
-              <span className="rounded-xl bg-blue-50 px-4 py-2 font-semibold text-blue-800">
-                Maktab: {schoolBooks.length}
-              </span>
-
-              <span className="rounded-xl bg-blue-50 px-4 py-2 font-semibold text-blue-800">
-                Maşhur: {popularBooks.length}
-              </span>
-
-              <span className="rounded-xl bg-emerald-50 px-4 py-2 font-semibold text-emerald-800">
-                Naşrda: {publishedCount}
-              </span>
-            </div>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        sticky={false}
+        backHref="/admin"
+        backLabel="Admin panel"
+        title="Darslar"
+        width="7xl"
+        chips={[
+          `Maktab: ${schoolBooks.length}`,
+          `Maşhur: ${popularBooks.length}`,
+          `Naşrda: ${publishedCount}`,
+        ]}
+      >
+        <AdminTabs
+          active="/admin/textbooks"
+          tabs={[
+            { href: "/admin/lessons", label: "Videodarslar" },
+            { href: "/admin/textbooks", label: "Darslik yeçimlari" },
+          ]}
+        />
+      </PageHeader>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         {errorMessage && (

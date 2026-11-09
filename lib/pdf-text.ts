@@ -18,14 +18,12 @@
  * tayyor LaTeX bo'lib chiqadi: `$\frac{7}{40}$`, `$5^{3}$`.
  * Saytda uni `components/math-text.tsx` chizadi.
  *
- * pdfjs-dist "legacy" (CommonJS) qurilmasi ishlatiladi — sabab
- * shu faylning import qatorida yozilgan.
+ * pdfjs-dist "legacy" qurilmasi ishlatiladi: u Node.js da ham
+ * ishlaydi (oddiy qurilma faqat yangi brauzerlarga mo'ljallangan).
  */
-import pdfjs from "pdfjs-dist/legacy/build/pdf.js";
+import { getDocument, OPS } from "pdfjs-dist/legacy/build/pdf.mjs";
 
 import type { PdfLine } from "@/lib/pdf-offline";
-
-const { getDocument, OPS } = pdfjs;
 
 type Item = {
   text: string;

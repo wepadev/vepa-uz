@@ -922,7 +922,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                       name="isActive"
                       value="1"
                       defaultChecked={group.is_active}
-                      className="h-4 w-4 accent-blue-600"
+                      className="h-4 w-4 accent-mb-brand"
                     />
                     Guruh faol
                   </label>
