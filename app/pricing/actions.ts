@@ -36,7 +36,7 @@ export async function createPaymentOrderAction(
     ].includes(planCode)
   ) {
     redirect(
-      "/pricing?error=Tarif+noto%CA%BBg%CA%BBri",
+      "/pricing?error=Tarif+nötoğri",
     );
   }
 

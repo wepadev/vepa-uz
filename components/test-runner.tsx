@@ -955,7 +955,7 @@ export default function TestRunner({
               ) : currentItem.kind === "self_study" ? (
                 <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4 sm:p-5">
                   <p className="text-base font-bold text-slate-800">
-                    Mustaqil ishlang
+                    Mustaqil işlang
                   </p>
 
                   <p className="mt-1 text-sm leading-6 text-slate-600">

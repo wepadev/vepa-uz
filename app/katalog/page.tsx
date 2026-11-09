@@ -18,7 +18,7 @@ import { getCurrentUser } from "@/lib/supabase/current-user";
 export const metadata: Metadata = {
   title: "Katalog — barça testlar, videodarslar va darsliklar",
   description:
-    "Vepa Ustoz platformasidagi barça matematika test mavzulari, videodarslar va darslik yeçimlari ro'yxati.",
+    "Vepa Ustoz platformasidagi barça matematika test mavzulari, videodarslar va darslik yeçimlari röyxati.",
   alternates: { canonical: "/katalog" },
 };
 
