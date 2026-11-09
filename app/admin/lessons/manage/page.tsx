@@ -22,7 +22,7 @@ import { getYouTubeThumbnail } from "@/lib/youtube";
 import SubmitButton from "@/components/ui/submit-button";
 import { parseOrderNumber } from "@/lib/lesson-order";
 import { moveLessonTo } from "@/lib/lesson-order-db";
-import BackLink from "@/components/ui/back-link";
+import PageHeader from "@/components/ui/page-header";
 
 type PageProps = {
   searchParams: Promise<{
@@ -628,32 +628,19 @@ export default async function ManageLessonsPage({
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 px-4 py-3 sm:flex-row sm:items-center">
-          <div>
-            <BackLink
-              href="/admin/lessons"
-              label="Dars bölimlari"
-              className="mb-2"
-            />
-
-            <h1 className="text-xl font-bold sm:text-2xl">
-              {category.title}
-            </h1>
-
-            {category.description && (
-              <p className="mt-1 text-sm text-slate-500">
-                {category.description}
-              </p>
-            )}
-          </div>
-
-          <p className="text-sm text-slate-500">
-            {lessons.length} dars · {publishedLessons} naşrda · {freeLessons}{" "}
-            bepul
-          </p>
-        </div>
-      </header>
+      <PageHeader
+        sticky={false}
+        backHref="/admin/lessons"
+        backLabel="Dars bölimlari"
+        title={category.title}
+        subtitle={category.description}
+        width="7xl"
+        chips={[
+          `${lessons.length} dars`,
+          `${publishedLessons} naşrda`,
+          `${freeLessons} bepul`,
+        ]}
+      />
 
       <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-8">
         <CreatePanel

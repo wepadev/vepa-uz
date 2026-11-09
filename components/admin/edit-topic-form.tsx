@@ -83,7 +83,7 @@ export default function EditTopicForm({
         className={
           state.errors.title
             ? "mt-2 w-full rounded-xl border border-red-400 bg-white px-4 py-3 text-slate-900 outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100"
-            : "mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            : "mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none focus:border-mb-brand focus:ring-2 focus:ring-blue-100"
         }
       />
 
@@ -115,7 +115,7 @@ export default function EditTopicForm({
             className={
               state.errors.videoUrl
                 ? "mt-2 w-full rounded-xl border border-red-400 bg-white px-4 py-3 text-slate-900 outline-none focus:border-red-500 focus:ring-2 focus:ring-red-100"
-                : "mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                : "mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none focus:border-mb-brand focus:ring-2 focus:ring-blue-100"
             }
           />
 
@@ -148,7 +148,7 @@ export default function EditTopicForm({
 
       <SubmitButton
         disabled={pending}
-        className="mt-4 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-4 rounded-xl bg-mb-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-mb-brandDark disabled:cursor-not-allowed disabled:opacity-60"
       >
         {pending
           ? "Saqlanmoqda..."

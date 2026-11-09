@@ -76,7 +76,7 @@ export default function GoogleSignInButton({
         {isLoading ? (
           <Spinner
             size="sm"
-            className="text-blue-600"
+            className="text-mb-brand"
             label="Google oçilmoqda"
           />
         ) : (

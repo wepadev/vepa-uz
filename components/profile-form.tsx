@@ -245,7 +245,7 @@ export default function ProfileForm({
     <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
       <div className="space-y-6">
         <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-600">
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-mb-brand">
             Profil ma’lumotlari
           </p>
 
@@ -281,7 +281,7 @@ export default function ProfileForm({
                   )
                 }
                 maxLength={120}
-                className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3.5 text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3.5 text-slate-900 outline-none transition focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
                 required
               />
             </div>
@@ -307,7 +307,7 @@ export default function ProfileForm({
             <button
               type="submit"
               disabled={nameLoading}
-              className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-blue-600 px-5 py-3.5 font-bold text-white transition hover:bg-blue-700 disabled:cursor-wait disabled:opacity-60"
+              className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-mb-brand px-5 py-3.5 font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-wait disabled:opacity-60"
             >
               {nameLoading ? (
                 <LoadingLabel>
@@ -321,7 +321,7 @@ export default function ProfileForm({
         </section>
 
         <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-600">
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-mb-brand">
             Akkaunt xavfsizligi
           </p>
 
@@ -371,7 +371,7 @@ export default function ProfileForm({
                     }
                     minLength={8}
                     placeholder="Kamida 8 ta belgi"
-                    className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3.5 pr-20 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3.5 pr-20 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
                     required
                   />
 
@@ -416,7 +416,7 @@ export default function ProfileForm({
                   }
                   minLength={8}
                   placeholder="Parolni qayta kiriting"
-                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
                   required
                 />
               </div>
@@ -442,7 +442,7 @@ export default function ProfileForm({
               <button
                 type="submit"
                 disabled={passwordLoading}
-                className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-blue-600 px-5 py-3.5 font-bold text-white transition hover:bg-blue-700 disabled:cursor-wait disabled:opacity-60"
+                className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-mb-brand px-5 py-3.5 font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-wait disabled:opacity-60"
               >
                 {passwordLoading ? (
                   <LoadingLabel>

@@ -249,7 +249,7 @@ export default async function GroupReportPage({ searchParams }: PageProps) {
                       className={cn(
                         "shrink-0 whitespace-nowrap text-lg font-bold",
                         tone === "emerald" && "text-emerald-600",
-                        tone === "blue" && "text-blue-600",
+                        tone === "blue" && "text-mb-brand",
                         tone === "amber" && "text-amber-600",
                         tone === "red" && "text-red-600",
                       )}
@@ -264,7 +264,7 @@ export default async function GroupReportPage({ searchParams }: PageProps) {
                         className={cn(
                           "h-full rounded-full",
                           tone === "emerald" && "bg-emerald-500",
-                          tone === "blue" && "bg-blue-500",
+                          tone === "blue" && "bg-mb-brand",
                           tone === "amber" && "bg-amber-500",
                           tone === "red" && "bg-red-500",
                         )}
@@ -322,7 +322,7 @@ export default async function GroupReportPage({ searchParams }: PageProps) {
                       className={cn(
                         "shrink-0 whitespace-nowrap text-lg font-bold",
                         tone === "emerald" && "text-emerald-600",
-                        tone === "blue" && "text-blue-600",
+                        tone === "blue" && "text-mb-brand",
                         tone === "amber" && "text-amber-600",
                         tone === "red" && "text-red-600",
                       )}

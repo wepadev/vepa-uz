@@ -14,7 +14,7 @@ import type {
   UserSummaryRpcRow,
   UserTestStatisticsRpcRow,
 } from "@/lib/stats-types";
-import BackLink from "@/components/ui/back-link";
+import PageHeader from "@/components/ui/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -590,23 +590,13 @@ const latestPlan =
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-4xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6 sm:py-3">
-          <div className="min-w-0">
-            <BackLink
-              href="/"
-              label="Boş sahifa"
-              className="mb-2"
-            />
-
-            <p className="truncate text-lg font-bold sm:text-xl">
-              Profilim
-            </p>
-          </div>
-
-          <LogoutButton />
-        </div>
-      </header>
+      <PageHeader
+        backHref="/"
+        backLabel="Boş sahifa"
+        title="Profilim"
+        width="4xl"
+        action={<LogoutButton />}
+      />
 
       <section className="mx-auto max-w-4xl px-3 py-5 sm:px-6 sm:py-8">
         {/* Kim ekaningiz va o'rningiz */}
@@ -709,13 +699,13 @@ const latestPlan =
               label: "Işlangan test",
               value: String(testsCompleted),
               hint: `${rankingTestsTotal} tadan`,
-              tone: "text-blue-600",
+              tone: "text-mb-brand",
             },
             {
               label: "Örtaça",
               value: `${formatPercentage(averagePercentage)}%`,
               hint: "eng yaxşi natijalar",
-              tone: "text-blue-600",
+              tone: "text-mb-brand",
             },
             {
               label: "Eng yuqori",
@@ -764,7 +754,7 @@ const latestPlan =
 
             <Link
               href="/lessons"
-              className="inline-flex min-h-10 items-center rounded-xl bg-blue-600 px-4 text-sm font-bold text-white hover:bg-blue-700"
+              className="inline-flex min-h-10 items-center rounded-xl bg-mb-brand px-4 text-sm font-bold text-white hover:bg-mb-brandDark"
             >
               Davom etiş
             </Link>
@@ -772,7 +762,7 @@ const latestPlan =
 
           <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-blue-100">
             <div
-              className="h-full rounded-full bg-blue-600"
+              className="h-full rounded-full bg-mb-brand"
               style={{ width: `${lessonPercentage}%` }}
             />
           </div>

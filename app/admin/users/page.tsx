@@ -12,7 +12,7 @@ import type { FormState } from "@/lib/form-state";
 import Pagination from "@/components/ui/pagination";
 import SubmitButton from "@/components/ui/submit-button";
 import { asRpcClient } from "@/lib/supabase/rpc";
-import BackLink from "@/components/ui/back-link";
+import PageHeader from "@/components/ui/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -666,50 +666,21 @@ for (
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6">
-          <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
-            <div>
-              <BackLink
-                href="/admin"
-                label="Admin panel"
-                className="mb-2"
-              />
-
-              <h1 className="text-xl font-bold sm:text-2xl">
-                Foydalanuvçilar
-              </h1>
-
-              <p className="mt-1 text-sm text-slate-500">
-                Akkaunt, Premium muddati va
-                bölim ruxsatlarini boşqariş
-              </p>
-            </div>
-
-            <div className="flex flex-wrap gap-2 text-sm">
-              <span className="rounded-xl bg-blue-50 px-4 py-2 font-bold text-blue-700">
-                Jami: {profiles.length}
-              </span>
-
-              <span className="rounded-xl bg-emerald-50 px-4 py-2 font-bold text-emerald-700">
-                Faol: {activeCount}
-              </span>
-
-              <span className="rounded-xl bg-red-50 px-4 py-2 font-bold text-red-700">
-                Faol emas: {inactiveCount}
-              </span>
-
-              <span className="rounded-xl bg-amber-50 px-4 py-2 font-bold text-amber-700">
-                Premium: {premiumCount}
-              </span>
-
-              <span className="rounded-xl bg-blue-50 px-4 py-2 font-bold text-blue-700">
-                Admin: {adminCount}
-              </span>
-            </div>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        sticky={false}
+        backHref="/admin"
+        backLabel="Admin panel"
+        title="Foydalanuvçilar"
+        subtitle="Akkaunt, Premium muddati va bölim ruxsatlarini boşqariş"
+        width="7xl"
+        chips={[
+          `Jami: ${profiles.length}`,
+          `Faol: ${activeCount}`,
+          `Faol emas: ${inactiveCount}`,
+          `Premium: ${premiumCount}`,
+          `Admin: ${adminCount}`,
+        ]}
+      />
 
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
         <form
@@ -730,7 +701,7 @@ for (
                 name="q"
                 defaultValue={query}
                 placeholder="Masalan: Ali yoki email@gmail.com"
-                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               />
             </div>
 
@@ -746,7 +717,7 @@ for (
                 id="users-state"
                 name="state"
                 defaultValue={selectedState}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               >
                 <option value="all">
                   Barçasi
@@ -780,7 +751,7 @@ for (
 
             <SubmitButton
 
-              className="min-h-12 self-end rounded-2xl bg-blue-600 px-6 py-3 font-bold text-white hover:bg-blue-700"
+              className="min-h-12 self-end rounded-2xl bg-mb-brand px-6 py-3 font-bold text-white hover:bg-mb-brandDark"
             >
               Qidiriş
             </SubmitButton>

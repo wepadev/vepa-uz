@@ -9,7 +9,7 @@ import {
   isLessonPassed,
 } from "@/lib/lesson-progress";
 import { requireSectionAccess } from "@/lib/require-section-access";
-import BackLink from "@/components/ui/back-link";
+import PageHeader from "@/components/ui/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -170,19 +170,7 @@ export default async function LessonsPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
-        <div className="mx-auto max-w-6xl px-3 py-2.5 sm:px-6 sm:py-5">
-          <BackLink
-            href="/"
-            label="Boş sahifa"
-            className="mb-2"
-          />
-
-          <h1 className="mt-0.5 text-lg font-bold sm:text-2xl">
-            Videodarslar
-          </h1>
-        </div>
-      </header>
+      <PageHeader backHref="/" backLabel="Boş sahifa" title="Videodarslar" width="6xl" />
 
       <section className="mx-auto max-w-6xl px-3 py-5 sm:px-6 sm:py-12">
         <div className="rounded-2xl bg-mb-brand p-4 text-white shadow-lg sm:rounded-3xl sm:p-6">

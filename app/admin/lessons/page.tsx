@@ -14,7 +14,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { FormState } from "@/lib/form-state";
 import CreateLessonCategoryForm from "@/components/admin/create-lesson-category-form";
 import SubmitButton from "@/components/ui/submit-button";
-import BackLink from "@/components/ui/back-link";
+import PageHeader from "@/components/ui/page-header";
 
 type CategoryRow = {
   id: number;
@@ -306,44 +306,22 @@ export default async function AdminLessonsPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 px-4 py-3 sm:flex-row sm:items-center">
-          <div>
-            <BackLink
-              href="/admin"
-              label="Admin panel"
-              className="mb-2"
-            />
-
-            <h1 className="text-xl font-bold sm:text-2xl">Darslar</h1>
-
-            <AdminTabs
-              className="mt-2"
-              active="/admin/lessons"
-              tabs={[
-              { href: "/admin/lessons", label: "Videodarslar" },
-              { href: "/admin/textbooks", label: "Darslik yeçimlari" },
-            ]}
-            />
-          </div>
-
-          <div className="flex flex-wrap gap-3">
-            <div className="rounded-xl bg-blue-50 px-4 py-2 text-sm text-blue-800">
-              Bölimlar:{" "}
-              <strong>
-                {categories.length}
-              </strong>
-            </div>
-
-            <div className="rounded-xl bg-emerald-50 px-4 py-2 text-sm text-emerald-800">
-              Naşr qilingan:{" "}
-              <strong>
-                {publishedCount}
-              </strong>
-            </div>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        sticky={false}
+        backHref="/admin"
+        backLabel="Admin panel"
+        title="Darslar"
+        width="7xl"
+        chips={[`Bölimlar: ${categories.length}`, `Naşr qilingan: ${publishedCount}`]}
+      >
+        <AdminTabs
+          active="/admin/lessons"
+          tabs={[
+            { href: "/admin/lessons", label: "Videodarslar" },
+            { href: "/admin/textbooks", label: "Darslik yeçimlari" },
+          ]}
+        />
+      </PageHeader>
 
       <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-8">
         <CreatePanel

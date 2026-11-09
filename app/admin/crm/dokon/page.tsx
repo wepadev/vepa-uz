@@ -541,7 +541,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
                           name="forAll"
                           value="1"
                           defaultChecked={reward.group_id === null}
-                          className="h-4 w-4 accent-blue-600"
+                          className="h-4 w-4 accent-mb-brand"
                         />
                         Barça guruhlar uçun
                       </label>
@@ -688,7 +688,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
               type="checkbox"
               name="forAll"
               value="1"
-              className="h-4 w-4 accent-blue-600"
+              className="h-4 w-4 accent-mb-brand"
             />
             Barça guruhlar uçun
           </label>

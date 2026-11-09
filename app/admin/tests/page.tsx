@@ -6,7 +6,7 @@ import { examIcon } from "@/lib/exam-visuals";
 import { GROUP_EXAM_CODE } from "@/lib/group-tests";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
-import BackLink from "@/components/ui/back-link";
+import PageHeader, { headerButton, headerPrimaryButton } from "@/components/ui/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -178,38 +178,24 @@ export default async function AdminTestsPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 px-4 py-3 sm:flex-row sm:items-center sm:px-6">
-          <div>
-            <BackLink
-              href="/admin"
-              label="Admin panel"
-              className="mb-2"
-            />
-            <h1 className="text-xl font-bold sm:text-2xl">Testlar</h1>
-            <p className="mt-1 text-sm text-slate-500">
-              Yönaliş → bölim → mavzu → test. Oçiş uçun bosing.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            <Link
-              href="/admin/tests/import"
-              className="inline-flex items-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-5 py-3 text-sm font-bold text-blue-700 hover:bg-blue-100"
-            >
-              <FileUp className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-              PDF’dan test yaratiş
-            </Link>
-
-            <Link
-              href="/tests"
-              className="inline-flex items-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50"
-            >
-              Öquvçi körinişi
-            </Link>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        sticky={false}
+        backHref="/admin"
+        backLabel="Admin panel"
+        title="Testlar"
+        subtitle="Yönaliş → bölim → mavzu → test. Oçiş uçun bosing."
+        width="7xl"
+        action={
+          <Link href="/tests" className={headerButton}>
+            Öquvçi körinişi
+          </Link>
+        }
+      >
+        <Link href="/admin/tests/import" className={headerPrimaryButton}>
+          <FileUp className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
+          PDF’dan test yaratiş
+        </Link>
+      </PageHeader>
 
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
         {!examTypes.length ? (

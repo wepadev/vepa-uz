@@ -47,7 +47,7 @@ const variantStyles: Record<
     icon:
       "bg-blue-100 text-blue-700 ring-8 ring-blue-50",
     button:
-      "bg-blue-600 hover:bg-blue-700 focus:ring-blue-200",
+      "bg-mb-brand hover:bg-mb-brandDark focus:ring-blue-200",
   },
 };
 

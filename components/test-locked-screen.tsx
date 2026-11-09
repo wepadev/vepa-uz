@@ -41,7 +41,7 @@ export default function TestLockedScreen({
           <div className="mt-6 grid gap-2 sm:grid-cols-2">
             <Link
               href="/pricing"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 font-bold text-white transition hover:bg-blue-700"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-mb-brand px-5 font-bold text-white transition hover:bg-mb-brandDark"
             >
               <Crown className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
               Premium oliş

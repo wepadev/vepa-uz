@@ -28,7 +28,7 @@ export default function Page() {
 
         <Link
           href="/auth/login"
-          className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 font-bold text-white transition hover:bg-blue-700"
+          className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-mb-brand px-5 py-3 font-bold text-white transition hover:bg-mb-brandDark"
         >
           Kiriş sahifasiga ötiş
         </Link>

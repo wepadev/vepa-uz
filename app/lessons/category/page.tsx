@@ -13,7 +13,7 @@ import {
   lessonAverageScore,
 } from "@/lib/lesson-progress";
 import { requireSectionAccess } from "@/lib/require-section-access";
-import BackLink from "@/components/ui/back-link";
+import PageHeader from "@/components/ui/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -265,23 +265,12 @@ export default async function LessonCategoryPage({
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
-        <div className="mx-auto max-w-6xl px-3 py-2.5 sm:px-6 sm:py-5">
-          <div className="flex items-center justify-between gap-4">
-            <div className="min-w-0">
-              <BackLink
-                href="/lessons"
-                label="Dars bölimlari"
-                className="mb-2"
-              />
-
-              <h1 className="mt-0.5 truncate text-lg font-bold sm:text-2xl">
-                {category.title}
-              </h1>
-            </div>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        backHref="/lessons"
+        backLabel="Dars bölimlari"
+        title={category.title}
+        width="6xl"
+      />
 
       <section className="mx-auto max-w-6xl px-3 py-5 sm:px-6 sm:py-12">
         <div className="overflow-hidden rounded-2xl bg-mb-brand p-4 text-white shadow-lg sm:p-6">

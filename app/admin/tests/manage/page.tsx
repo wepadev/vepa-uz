@@ -34,13 +34,13 @@ import {
   type QuestionBlockRow,
   type QuestionRow,
 } from "./shared";
-import BackLink from "@/components/ui/back-link";
+import PageHeader from "@/components/ui/page-header";
 
 const inputClass =
-  "mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100";
+  "mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 outline-none focus:border-mb-brand focus:ring-2 focus:ring-blue-100";
 
 const textareaClass =
-  "mt-2 w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100";
+  "mt-2 w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 outline-none focus:border-mb-brand focus:ring-2 focus:ring-blue-100";
 
 const fileInputClass =
   "mt-2 block w-full rounded-xl border border-slate-300 bg-white px-3 py-3 text-sm text-slate-700 file:mr-4 file:rounded-lg file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:font-semibold file:text-blue-700 hover:file:bg-blue-100";
@@ -236,35 +236,24 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-4xl flex-col justify-between gap-3 px-3 py-3 sm:flex-row sm:items-center sm:px-6">
-          <div>
-            <BackLink
-              href="/admin/tests"
-              label="Testlar"
-              className="mb-2"
-            />
-
-            <h1 className="text-xl font-bold sm:text-2xl">{test.title}</h1>
-
-            <p className="mt-1 text-sm text-slate-500">
-              {!test.is_published && (
-                <span className="mr-2 rounded-full bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-700">
-                  Qoralama
-                </span>
-              )}
-              {displayQuestionCount} savol · {test.time_limit_minutes} daqiqa
-              · {maximumScore} ball
-            </p>
-
-            {test.description && (
-              <div className="mt-2 text-sm text-slate-500">
-                <MathValue value={test.description} />
-              </div>
-            )}
-          </div>
-
-          <div className="flex items-center gap-2">
+      <PageHeader
+        sticky={false}
+        backHref="/admin/tests"
+        backLabel="Testlar"
+        title={test.title}
+        width="4xl"
+        chips={[
+          !test.is_published && (
+            <span key="qoralama" className="text-amber-700">
+              Qoralama
+            </span>
+          ),
+          `${displayQuestionCount} savol`,
+          `${test.time_limit_minutes} daqiqa`,
+          `${maximumScore} ball`,
+        ]}
+        action={
+          <>
             <form action={changePublishedState}>
               <input type="hidden" name="testId" value={test.id} />
 
@@ -293,9 +282,15 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                 </SubmitButton>
               </form>
             </RowMenu>
+          </>
+        }
+      >
+        {test.description && (
+          <div className="text-sm text-mb-muted">
+            <MathValue value={test.description} />
           </div>
-        </div>
-      </header>
+        )}
+      </PageHeader>
 
       <section className="mx-auto max-w-4xl px-3 py-5 sm:px-6 sm:py-6">
         <details className="group/edit mb-4 rounded-2xl open:border open:border-mb-line open:bg-white open:shadow-sm">
@@ -514,7 +509,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                 </div>
 
                 <SubmitButton
-                  className="mt-6 rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
+                  className="mt-6 rounded-xl bg-mb-brand px-6 py-3 font-semibold text-white hover:bg-mb-brandDark"
                 >
                   Oddiy savolni qöşiş
                 </SubmitButton>
@@ -637,7 +632,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                 </div>
 
                 <SubmitButton
-                  className="mt-6 rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
+                  className="mt-6 rounded-xl bg-mb-brand px-6 py-3 font-semibold text-white hover:bg-mb-brandDark"
                 >
                   a)–b) yozma savolni qöşiş
                 </SubmitButton>
@@ -1004,7 +999,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                           </div>
 
                           <SubmitButton
-                            className="mt-6 rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
+                            className="mt-6 rounded-xl bg-mb-brand px-6 py-3 font-semibold text-white hover:bg-mb-brandDark"
                           >
                             Özgarişlarni saqlaş
                           </SubmitButton>
@@ -1471,7 +1466,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                         )}
 
                         <SubmitButton
-                          className="mt-6 rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700"
+                          className="mt-6 rounded-xl bg-mb-brand px-6 py-3 font-semibold text-white hover:bg-mb-brandDark"
                         >
                           Özgarişlarni saqlaş
                         </SubmitButton>

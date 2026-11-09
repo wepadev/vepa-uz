@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import SubmitButton from "@/components/ui/submit-button";
-import BackLink from "@/components/ui/back-link";
+import PageHeader, { headerButton } from "@/components/ui/page-header";
 
 export const dynamic = "force-dynamic";
 
@@ -487,39 +487,26 @@ export default async function AdminResultsPage({
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6">
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-            <div>
-              <BackLink
-                href="/admin"
-                label="Admin panel"
-                className="mb-2"
-              />
-
-              <h1 className="text-xl font-bold sm:text-2xl">Natijalar</h1>
-
-              <AdminTabs
-                className="mt-2"
-                active="/admin/results"
-                tabs={[
-                { href: "/admin/results", label: "Barça natijalar" },
-                { href: "/admin/analytics", label: "Tahlil" },
-              ]}
-              />
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              <Link
-                href="/admin/tests"
-                className="inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-bold text-slate-700 hover:bg-slate-50"
-              >
-                Testlarni boşqariş
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <PageHeader
+        sticky={false}
+        backHref="/admin"
+        backLabel="Admin panel"
+        title="Natijalar"
+        width="7xl"
+        action={
+          <Link href="/admin/tests" className={headerButton}>
+            Testlar
+          </Link>
+        }
+      >
+        <AdminTabs
+          active="/admin/results"
+          tabs={[
+            { href: "/admin/results", label: "Barça natijalar" },
+            { href: "/admin/analytics", label: "Tahlil" },
+          ]}
+        />
+      </PageHeader>
 
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -543,7 +530,7 @@ export default async function AdminResultsPage({
               Öquvçilar
             </p>
 
-            <p className="mt-2 text-3xl font-bold text-blue-600">
+            <p className="mt-2 text-3xl font-bold text-mb-brand">
               {uniqueStudents}
             </p>
 
@@ -558,7 +545,7 @@ export default async function AdminResultsPage({
               Örtaça natija
             </p>
 
-            <p className="mt-2 text-3xl font-bold text-blue-600">
+            <p className="mt-2 text-3xl font-bold text-mb-brand">
               {formatPercentage(
                 averagePercentage,
               )}
@@ -609,7 +596,7 @@ export default async function AdminResultsPage({
                   single(params.q) ?? ""
                 }
                 placeholder="Ism, email yoki test nomi"
-                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               />
             </div>
 
@@ -631,7 +618,7 @@ export default async function AdminResultsPage({
                       )
                     : "all"
                 }
-                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               >
                 <option value="all">
                   Barça testlar
@@ -660,7 +647,7 @@ export default async function AdminResultsPage({
                 id="results-status"
                 name="status"
                 defaultValue={status}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               >
                 <option value="all">
                   Barçasi
@@ -688,7 +675,7 @@ export default async function AdminResultsPage({
                 id="results-sort"
                 name="sort"
                 defaultValue={sort}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               >
                 <option value="newest">
                   Eng yangi
@@ -721,7 +708,7 @@ export default async function AdminResultsPage({
                 name="dateFrom"
                 type="date"
                 defaultValue={dateFrom}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               />
             </div>
 
@@ -738,7 +725,7 @@ export default async function AdminResultsPage({
                 name="dateTo"
                 type="date"
                 defaultValue={dateTo}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               />
             </div>
           </div>
@@ -754,7 +741,7 @@ export default async function AdminResultsPage({
             )}
 
             <SubmitButton
-              className="min-h-12 rounded-2xl bg-blue-600 px-7 py-3 font-bold text-white hover:bg-blue-700"
+              className="min-h-12 rounded-2xl bg-mb-brand px-7 py-3 font-bold text-white hover:bg-mb-brandDark"
             >
               Qöllaş
             </SubmitButton>
@@ -898,7 +885,7 @@ export default async function AdminResultsPage({
                                   percentage >= 80
                                     ? "font-bold text-emerald-600"
                                     : percentage >= 60
-                                      ? "font-bold text-blue-600"
+                                      ? "font-bold text-mb-brand"
                                       : "font-bold text-red-600"
                                 }
                               >
@@ -1005,7 +992,7 @@ export default async function AdminResultsPage({
                         className={
                           pageNumber ===
                           currentPage
-                            ? "inline-flex h-11 min-w-11 items-center justify-center rounded-xl bg-blue-600 px-3 text-sm font-bold text-white"
+                            ? "inline-flex h-11 min-w-11 items-center justify-center rounded-xl bg-mb-brand px-3 text-sm font-bold text-white"
                             : "inline-flex h-11 min-w-11 items-center justify-center rounded-xl border border-slate-300 bg-white px-3 text-sm font-bold text-slate-700 hover:bg-slate-50"
                         }
                       >

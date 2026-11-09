@@ -134,7 +134,7 @@ function resultColor(
   }
 
   if (value >= 70) {
-    return "text-blue-600";
+    return "text-mb-brand";
   }
 
   if (value >= 50) {
@@ -152,7 +152,7 @@ function resultBackground(
   }
 
   if (value >= 70) {
-    return "bg-blue-500";
+    return "bg-mb-brand";
   }
 
   if (value >= 50) {
@@ -467,7 +467,7 @@ export default async function AdminAnalyticsPage({
               Faol öquvçilar
             </p>
 
-            <p className="mt-2 text-3xl font-bold text-blue-600">
+            <p className="mt-2 text-3xl font-bold text-mb-brand">
               {uniqueStudents}
             </p>
 
@@ -552,7 +552,7 @@ export default async function AdminAnalyticsPage({
                           <div className="flex flex-wrap items-start justify-between gap-2">
                             <Link
                               href={`/admin/results?testId=${item.testId}&status=completed`}
-                              className="font-bold text-slate-900 hover:text-blue-600"
+                              className="font-bold text-slate-900 hover:text-mb-brand"
                             >
                               {item.title}
                             </Link>
@@ -720,7 +720,7 @@ export default async function AdminAnalyticsPage({
                   single(params.q) ?? ""
                 }
                 placeholder="Test nomini qidiriş"
-                className="min-h-11 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-800 outline-none transition placeholder:font-normal placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="min-h-11 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-800 outline-none transition placeholder:font-normal placeholder:text-slate-400 focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               />
 
               <select
@@ -728,7 +728,7 @@ export default async function AdminAnalyticsPage({
                 defaultValue={
                   selectedSort
                 }
-                className="min-h-11 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+                className="min-h-11 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               >
                 <option value="attempts">
                   Eng köp işlangan
@@ -748,7 +748,7 @@ export default async function AdminAnalyticsPage({
               </select>
 
               <SubmitButton
-                className="min-h-11 rounded-xl bg-blue-600 px-5 text-sm font-bold text-white hover:bg-blue-700"
+                className="min-h-11 rounded-xl bg-mb-brand px-5 text-sm font-bold text-white hover:bg-mb-brandDark"
               >
                 Qöllaş
               </SubmitButton>

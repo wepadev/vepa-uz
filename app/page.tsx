@@ -596,7 +596,7 @@ export default async function HomePage() {
             </span>
 
             <ArrowRight
-              className="h-5 w-5 shrink-0 text-blue-600"
+              className="h-5 w-5 shrink-0 text-mb-brand"
               strokeWidth={2.2}
               aria-hidden="true"
             />

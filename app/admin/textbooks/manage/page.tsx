@@ -21,7 +21,7 @@ import EditTopicForm from "@/components/admin/edit-topic-form";
 import TopicExamplesEditor, {
   type AdminExample,
 } from "@/components/admin/topic-examples-editor";
-import BackLink from "@/components/ui/back-link";
+import PageHeader from "@/components/ui/page-header";
 
 type PageProps = {
   searchParams: Promise<{
@@ -814,35 +814,25 @@ export default async function ManageTextbookPage({
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-30 border-b border-mb-line bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 px-4 py-3 sm:flex-row sm:items-center">
-          <div>
-            <BackLink
-              href="/admin/textbooks"
-              label="Darsliklar"
-              className="mb-2"
-            />
-
-            <h1 className="text-xl font-bold sm:text-2xl">
-              {textbook.title}
-            </h1>
-
-            <p className="mt-1 text-sm text-slate-500">
-              {textbook.book_type === "school"
-                ? `${textbook.grade}-sinf maktab darsligi`
-                : textbook.author_name
-                  ? `Maşhur darslik • ${textbook.author_name}`
-                  : "Maşhur darslik"}
-            </p>
-          </div>
-
-          <p className="text-sm text-slate-500">
-            {!textbook.is_published && "Yopiq · "}
-            {topics.length} mavzu
-            {isPopular && <> · {totalExamples} misol</>}
-          </p>
-        </div>
-      </header>
+      <PageHeader
+        sticky={false}
+        backHref="/admin/textbooks"
+        backLabel="Darsliklar"
+        title={textbook.title}
+        subtitle={
+          textbook.book_type === "school"
+            ? `${textbook.grade}-sinf maktab darsligi`
+            : textbook.author_name
+              ? `Maşhur darslik • ${textbook.author_name}`
+              : "Maşhur darslik"
+        }
+        width="7xl"
+        chips={[
+          !textbook.is_published && "Yopiq",
+          `${topics.length} mavzu`,
+          isPopular && `${totalExamples} misol`,
+        ]}
+      />
 
       <section className="mx-auto max-w-4xl px-3 py-6 sm:px-6 sm:py-8">
         <CreatePanel label="Yangi mavzu" defaultOpen={topics.length === 0}>
