@@ -18,7 +18,10 @@ import {
   simplifyStroke,
   strokeHit,
   strokePath,
+  textHit,
+  textNoteBox,
   type InkPage,
+  type TextNote,
   type Matrix,
   type Stroke,
 } from "../lib/pdf-ink.ts";
@@ -185,4 +188,57 @@ test("stabilizatsiya yo'q: chiziq qalam yurgan yerdan o'tadi", () => {
     /* Tepalar kesilmaydi — chiziq qalam turgan joydan o'tgan */
     assert.ok(Math.max(...ys) > 5.5 && Math.min(...ys) < -5.5, kind);
   }
+});
+
+test("matn: o'chirg'ich faqat matn ustida tegadi", () => {
+  const note: TextNote = { id: "t1", x: 100, y: 200, text: "Javob: 12\nikkinçi qator", color: "#151A23", size: 16 };
+  const box = textNoteBox(note);
+
+  assert.equal(box.height, 2 * 16 * 1.25);
+  assert.equal(textHit(note, 110, 210, 2), true);
+  assert.equal(textHit(note, 50, 210, 2), false);
+  assert.equal(textHit(note, 110, 400, 2), false);
+});
+
+test("eksport: matn rasm bo'lib sahifaga tushadi", async () => {
+  const source = await PDFDocument.create();
+  source.addPage([400, 600]);
+  const original = await source.save();
+
+  /* 1x1 shaffof PNG */
+  const png = Uint8Array.from(
+    Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
+      "base64",
+    ),
+  );
+
+  const pages: InkPage[] = [
+    {
+      id: "a",
+      source: 0,
+      width: 400,
+      height: 600,
+      toPdf: blankPageMatrix(600),
+      background: "blank",
+      strokes: [],
+      texts: [{ id: "t", x: 20, y: 30, text: "Öçirğiç şu", color: "#E11D48", size: 16 }],
+    },
+  ];
+
+  let rendered = 0;
+  const bytes = await exportInkPdf(original, pages, async () => {
+    rendered += 1;
+    return { png, width: 80, height: 20 };
+  });
+
+  assert.equal(rendered, 1);
+  const out = await PDFDocument.load(bytes);
+  assert.equal(out.getPageCount(), 1);
+  /* Sahifa resurslarida rasm (XObject) bor */
+  const resources = out.getPage(0).node.Resources();
+  assert.ok(resources?.toString().includes("/XObject"));
+
+  /* Bo'sh matn chizilmaydi, renderText berilmasa ham xato bermaydi */
+  await exportInkPdf(original, [{ ...pages[0], texts: [{ ...pages[0].texts![0], text: "  " }] }]);
 });

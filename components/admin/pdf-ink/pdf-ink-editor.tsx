@@ -16,6 +16,7 @@ import {
   Plus,
   Redo2,
   Trash2,
+  Type,
   Undo2,
   X,
   type LucideIcon,
@@ -28,16 +29,22 @@ import {
   exportInkPdf,
   invertMatrix,
   looksLikePdf,
+  pageHasInk,
   strokeHit,
+  textHit,
+  TEXT_FONT,
+  TEXT_LINE_HEIGHT,
+  TEXT_SIZES,
   type InkPage,
   type Matrix,
   type PageBackground,
   type PenKind,
   type Stroke,
+  type TextNote,
 } from "@/lib/pdf-ink";
 import { cn } from "@/lib/utils";
 
-import InkPageView, { type EditorTool, type PageHandlers } from "./ink-page";
+import InkPageView, { type EditorTool, type PageHandlers, type TextEdit } from "./ink-page";
 import ExportPanel from "./export-panel";
 import PenPanel, { PEN_KINDS, PEN_SIZES } from "./pen-panel";
 
@@ -70,6 +77,42 @@ const MAX_ZOOM = 4;
 const HISTORY_LIMIT = 100;
 
 type History = { past: InkPage[][]; future: InkPage[][] };
+
+/**
+ * Matnni PNG qilib chizish (PDF eksporti uchun). Ekrandagi bilan bir
+ * xil shrift va qator balandligi; 4 barobar aniqlikda — chop etganda
+ * ham tiniq.
+ */
+async function renderTextNote(note: TextNote) {
+  const scale = 4;
+  const lines = note.text.replace(/\s+$/, "").split("\n");
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+
+  const font = `${note.size * scale}px ${TEXT_FONT}`;
+  ctx.font = font;
+  const lineHeight = note.size * TEXT_LINE_HEIGHT * scale;
+  const widest = Math.max(1, ...lines.map((line) => ctx.measureText(line).width));
+
+  canvas.width = Math.ceil(widest + note.size * 0.2 * scale);
+  canvas.height = Math.ceil(lineHeight * lines.length);
+
+  /* O'lcham o'zgarganda kontekst tozalanadi — shriftni qayta beramiz */
+  ctx.font = font;
+  ctx.fillStyle = note.color;
+  ctx.textBaseline = "middle";
+  lines.forEach((line, index) => ctx.fillText(line, 0, lineHeight * (index + 0.5)));
+
+  const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
+  if (!blob) return null;
+
+  return {
+    png: new Uint8Array(await blob.arrayBuffer()),
+    width: canvas.width / scale,
+    height: canvas.height / scale,
+  };
+}
 
 let idCounter = 0;
 const newId = () => `p${Date.now().toString(36)}${(idCounter += 1)}`;
@@ -255,6 +298,9 @@ export default function PdfInkEditor() {
   const [markerColor, setMarkerColor] = useState(MARKER_COLORS[0]);
   const [penWidth, setPenWidth] = useState(PEN_SIZES[2]);
   const [markerWidth, setMarkerWidth] = useState(MARKER_WIDTHS[1]);
+  const [textSize, setTextSize] = useState(TEXT_SIZES[1]);
+  const [textEdit, setTextEditState] = useState<TextEdit | null>(null);
+  const textEditRef = useRef<TextEdit | null>(null);
   const [zoom, setZoom] = useState(1);
   const [penOnly, setPenOnly] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
@@ -316,6 +362,11 @@ export default function PdfInkEditor() {
 
   pagesRef.current = pages;
 
+  const setTextEdit = useCallback((next: TextEdit | null) => {
+    textEditRef.current = next;
+    setTextEditState(next);
+  }, []);
+
   const isMarker = tool === "marker";
   const color = isMarker ? markerColor : penColor;
   const width = isMarker ? markerWidth : penWidth;
@@ -370,9 +421,81 @@ export default function PdfInkEditor() {
     onEraseEnd: () => {},
     onPenDetected: () => {},
     isPinching: () => false,
+    onTextPlace: () => {},
+    onTextEdit: () => {},
+    onTextChange: () => {},
+    onTextDone: () => {},
   });
 
+  /**
+   * Yozilayotgan matnni sahifaga yozib qo'yadi (yoki bo'sh bo'lsa
+   * olib tashlaydi). Boshqa joy bosilganda, asbob almashganda va
+   * saqlashdan oldin chaqiriladi.
+   */
+  const finishText = useCallback(() => {
+    const edit = textEditRef.current;
+    if (!edit) return;
+    setTextEdit(null);
+
+    const { pageId, noteId, ...rest } = edit;
+    const text = rest.text.replace(/\s+$/, "");
+    const current = pagesRef.current;
+    const page = current.find((item) => item.id === pageId);
+    if (!page) return;
+
+    const texts = page.texts ?? [];
+    const before = noteId ? texts.find((note) => note.id === noteId) : null;
+
+    let nextTexts: TextNote[];
+    if (!text.trim()) {
+      if (!before) return;
+      nextTexts = texts.filter((note) => note.id !== noteId);
+    } else if (before) {
+      if (before.text === text && before.color === rest.color && before.size === rest.size) return;
+      nextTexts = texts.map((note) => (note.id === noteId ? { ...rest, id: noteId!, text } : note));
+    } else {
+      nextTexts = [...texts, { ...rest, id: newId(), text }];
+    }
+
+    commit(current.map((item) => (item.id === pageId ? { ...item, texts: nextTexts } : item)));
+  }, [commit, setTextEdit]);
+
   handlers.current = {
+    onTextPlace(pageId, x, y) {
+      /* Ochiq matn bo'lsa — avval uni yopamiz; bosish faqat yopadi */
+      if (textEditRef.current) {
+        finishText();
+        return;
+      }
+      setTextEdit({
+        pageId,
+        noteId: null,
+        id: "",
+        /* Bosilgan nuqta birinchi qatorning o'rtasiga tushsin */
+        x,
+        y: Math.max(0, y - (textSize * TEXT_LINE_HEIGHT) / 2),
+        text: "",
+        color: penColor,
+        size: textSize,
+      });
+    },
+    onTextEdit(pageId, noteId) {
+      finishText();
+      const note = pagesRef.current
+        .find((page) => page.id === pageId)
+        ?.texts?.find((item) => item.id === noteId);
+      if (!note) return;
+      setTextSize(note.size);
+      setPenColor(note.color);
+      setTextEdit({ ...note, pageId, noteId });
+    },
+    onTextChange(text) {
+      const edit = textEditRef.current;
+      if (edit) setTextEdit({ ...edit, text });
+    },
+    onTextDone() {
+      finishText();
+    },
     onStroke(pageId: string, stroke: Stroke) {
       commit(
         pagesRef.current.map((page) =>
@@ -391,10 +514,12 @@ export default function PdfInkEditor() {
 
       const page = current[index];
       const kept = page.strokes.filter((stroke) => !strokeHit(stroke, x, y, radius));
-      if (kept.length === page.strokes.length) return;
+      const texts = page.texts ?? [];
+      const keptTexts = texts.filter((note) => !textHit(note, x, y, radius));
+      if (kept.length === page.strokes.length && keptTexts.length === texts.length) return;
 
       const next = current.slice();
-      next[index] = { ...page, strokes: kept };
+      next[index] = { ...page, strokes: kept, texts: keptTexts };
       pagesRef.current = next;
       erasedRef.current = true;
 
@@ -507,6 +632,8 @@ export default function PdfInkEditor() {
     const original = originalRef.current;
     if (!original || saving) return;
 
+    /* Yozilayotgan matn ham saqlansin */
+    finishText();
     const all = pagesRef.current;
     const chosen = indexes ? all.filter((_, i) => indexes.includes(i)) : all;
     if (chosen.length === 0) return;
@@ -516,7 +643,7 @@ export default function PdfInkEditor() {
     setError("");
 
     try {
-      const bytes = await exportInkPdf(original, chosen);
+      const bytes = await exportInkPdf(original, chosen, renderTextNote);
       const saved = await saveToComputer(bytes, exportFileName(fileName));
       if (saved) {
         setExportPanel(false);
@@ -564,8 +691,8 @@ export default function PdfInkEditor() {
   function clearPage() {
     const current = pagesRef.current;
     const page = current[currentPage];
-    if (!page || page.strokes.length === 0) return;
-    commit(current.map((p, i) => (i === currentPage ? { ...p, strokes: [] } : p)));
+    if (!page || !pageHasInk(page)) return;
+    commit(current.map((p, i) => (i === currentPage ? { ...p, strokes: [], texts: [] } : p)));
   }
 
   function deletePage() {
@@ -828,6 +955,11 @@ export default function PdfInkEditor() {
     });
   }
 
+  /* Boshqa asbob tanlansa — yozilayotgan matn yopiladi */
+  useEffect(() => {
+    if (tool !== "text") finishText();
+  }, [tool, finishText]);
+
   /* -------------------------- klaviatura ------------------------ */
 
   useEffect(() => {
@@ -854,6 +986,7 @@ export default function PdfInkEditor() {
           l: "line",
           e: "eraser",
           h: "hand",
+          t: "text",
         };
         if (map[key]) setTool(map[key]);
       }
@@ -969,7 +1102,8 @@ export default function PdfInkEditor() {
     : customColor
       ? [...PEN_COLORS, customColor]
       : PEN_COLORS;
-  const showStyle = tool === "pen" || tool === "marker" || tool === "line";
+  const isText = tool === "text";
+  const showStyle = tool === "pen" || tool === "marker" || tool === "line" || isText;
   const PenIcon = PEN_KINDS.find((item) => item.kind === penKind)?.icon ?? PenLine;
 
   /* Qalam (yoki chiziq) tanlangan bo'lsa, qayta bosish oynani ochadi */
@@ -1028,6 +1162,12 @@ export default function PdfInkEditor() {
               active={tool === "eraser"}
               onClick={() => setTool("eraser")}
             />
+            <ToolButton
+              icon={Type}
+              label="Matn (T) — sahifaga bosing va yozing"
+              active={isText}
+              onClick={() => setTool("text")}
+            />
             <ToolButton icon={Hand} label="Suriş (H)" active={tool === "hand"} onClick={() => setTool("hand")} />
 
             {showStyle && (
@@ -1040,7 +1180,16 @@ export default function PdfInkEditor() {
                     title={c}
                     aria-label={`Rang ${c}`}
                     aria-pressed={c === color}
-                    onClick={() => (isMarker ? setMarkerColor(c) : setPenColor(c))}
+                    /* Matn yozilayotganda rang tanlash fokusni olib qo'ymasin */
+                    onPointerDown={(event) => {
+                      if (isText) event.preventDefault();
+                    }}
+                    onClick={() => {
+                      if (isMarker) setMarkerColor(c);
+                      else setPenColor(c);
+                      const edit = textEditRef.current;
+                      if (isText && edit) setTextEdit({ ...edit, color: c });
+                    }}
                     className="grid h-10 w-8 shrink-0 place-items-center"
                   >
                     <span
@@ -1074,6 +1223,35 @@ export default function PdfInkEditor() {
                     />
                   </label>
                 )}
+              </>
+            )}
+
+            {isText && (
+              <>
+                <Divider />
+                {TEXT_SIZES.map((size, i) => (
+                  <button
+                    key={size}
+                    type="button"
+                    title={["Kiçik", "Örtaça", "Katta", "Juda katta"][i]}
+                    aria-label={`Matn ölçami: ${["kiçik", "örtaça", "katta", "juda katta"][i]}`}
+                    aria-pressed={size === textSize}
+                    /* Bosganda matn maydoni fokusni yo'qotmasin */
+                    onPointerDown={(event) => event.preventDefault()}
+                    onClick={() => {
+                      setTextSize(size);
+                      const edit = textEditRef.current;
+                      if (edit) setTextEdit({ ...edit, size });
+                    }}
+                    className={cn(
+                      "grid h-10 w-9 shrink-0 place-items-center rounded-xl font-semibold text-slate-700 transition",
+                      size === textSize ? "bg-mb-tint" : "hover:bg-slate-100",
+                    )}
+                    style={{ fontSize: 11 + i * 3 }}
+                  >
+                    A
+                  </button>
+                ))}
               </>
             )}
 
@@ -1141,7 +1319,7 @@ export default function PdfInkEditor() {
             <ToolButton
               icon={Trash2}
               label="Şu sahifadagi yozuvni tozalaş"
-              disabled={!pages[currentPage]?.strokes.length}
+              disabled={!pages[currentPage] || !pageHasInk(pages[currentPage])}
               onClick={clearPage}
             />
             <ToolButton
@@ -1223,7 +1401,7 @@ export default function PdfInkEditor() {
           <ExportPanel
             pageCount={pages.length}
             currentPage={Math.min(currentPage, pages.length - 1)}
-            inked={pages.map((page) => page.strokes.length > 0)}
+            inked={pages.map(pageHasInk)}
             saving={saving}
             onExport={(indexes) => void save(indexes)}
             onClose={() => setExportPanel(false)}
@@ -1282,6 +1460,7 @@ export default function PdfInkEditor() {
               penOnly={penOnly}
               scrollRef={scrollRef}
               handlers={handlers}
+              textEdit={textEdit?.pageId === page.id ? textEdit : null}
             />
           ))}
         </div>
