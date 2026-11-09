@@ -18,8 +18,8 @@ import { fileURLToPath } from "node:url";
 const require = createRequire(import.meta.url);
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-const source = require.resolve("pdfjs-dist/build/pdf.worker.min.js");
+const source = require.resolve("pdfjs-dist/build/pdf.worker.min.mjs");
 const targetDir = join(root, "public", "pdfjs");
 
 mkdirSync(targetDir, { recursive: true });
-copyFileSync(source, join(targetDir, "pdf.worker.min.js"));
+copyFileSync(source, join(targetDir, "pdf.worker.min.mjs"));

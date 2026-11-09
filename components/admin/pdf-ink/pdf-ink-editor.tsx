@@ -81,7 +81,7 @@ function clampZoom(value: number) {
 async function loadPdfjs() {
   const pdfjs = await import("pdfjs-dist");
   /* Worker faylini `scripts/copy-pdf-worker.mjs` public/ ga qo'yadi */
-  pdfjs.GlobalWorkerOptions.workerSrc = "/pdfjs/pdf.worker.min.js";
+  pdfjs.GlobalWorkerOptions.workerSrc = "/pdfjs/pdf.worker.min.mjs";
   return pdfjs;
 }
 
@@ -111,7 +111,7 @@ async function prepareOffline() {
     const cache = await caches.open(OFFLINE_CACHE);
     await cache.put(pageUrl, response);
 
-    const assets = new Set<string>([`${window.location.origin}/pdfjs/pdf.worker.min.js`]);
+    const assets = new Set<string>([`${window.location.origin}/pdfjs/pdf.worker.min.mjs`]);
     for (const entry of performance.getEntriesByType("resource")) {
       const url = new URL(entry.name);
       if (url.origin === window.location.origin && url.pathname.startsWith("/_next/static/")) {
