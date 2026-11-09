@@ -1,5 +1,7 @@
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 import { Plus } from "lucide-react";
+
+import CreatePanelFab from "@/components/admin/create-panel-fab";
 
 /**
  * "+ Yangi ..." tugmasi ostiga yashirilgan yaratish formasi.
@@ -8,6 +10,9 @@ import { Plus } from "lucide-react";
  * ekranning yarmini egallardi — ro'yxat esa chetga surilib qolardi.
  * Endi forma faqat kerak bo'lganda ochiladi. Ro'yxat bo'sh bo'lsa
  * (`defaultOpen`) darhol ochiq turadi: boshqa qiladigan ish yo'q.
+ *
+ * Telefonda forma ekrandan chiqib ketsa, pastda shu nomli tugma
+ * paydo bo'ladi (create-panel-fab.tsx).
  */
 export default function CreatePanel({
   label,
@@ -18,10 +23,14 @@ export default function CreatePanel({
   defaultOpen?: boolean;
   children: ReactNode;
 }) {
+  const id = `yaratish-${useId().replace(/:/g, "")}`;
+
   return (
+    <>
     <details
+      id={id}
       open={defaultOpen}
-      className="group rounded-2xl border border-dashed border-mb-brand/40 bg-white open:border-solid open:border-mb-line open:shadow-sm"
+      className="group scroll-mt-20 rounded-2xl border border-dashed border-mb-brand/40 bg-white open:border-solid open:border-mb-line open:shadow-sm"
     >
       <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 px-4 text-sm font-semibold text-mb-brand group-open:border-b group-open:border-mb-line">
         <Plus
@@ -38,5 +47,8 @@ export default function CreatePanel({
         {children}
       </div>
     </details>
+
+    <CreatePanelFab targetId={id} label={label} />
+    </>
   );
 }
