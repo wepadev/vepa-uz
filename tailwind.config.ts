@@ -1,7 +1,16 @@
 import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
 
+import vepaPreset from "./design-system/tailwind-preset";
+
 export default {
+  /*
+   * Vepa Ustoz dizayn tizimi: mb-* va vp-* ranglar, burchaklar,
+   * soyalar va shrift o'lchamlari shu presetdan keladi. Qiymatlar
+   * design-system/vepa-tokens.css dagi --vp-* o'zgaruvchilarda,
+   * shuning uchun yorug' va tun rejimi bitta joydan boshqariladi.
+   */
+  presets: [vepaPreset],
   darkMode: ["class"],
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -13,27 +22,10 @@ export default {
     extend: {
       colors: {
         /*
-         * Math Booster dizayn tizimi.
-         * Kartalar, fon va matn ranglari shu yerdan olinadi,
-         * shuning uchun uslubni bir joydan boshqarish mumkin.
+         * mb-* ranglar endi design-system/tailwind-preset.ts dan keladi
+         * (CSS o'zgaruvchilariga bog'langan). Qiymatlarni o'zgartirish:
+         * design-system/tokens.json.
          */
-        mb: {
-          page: "#F4F7FB",
-          tint: "#DEEAFB",
-          tintSoft: "#EDF4FD",
-          line: "#E6EAF0",
-          ink: "#151A23",
-          /*
-           * Ikkinchi darajali matn. Avval #7C8798 edi — oq fonda
-           * kontrasti 3.6:1, ya'ni WCAG 4.5:1 chegarasidan past edi.
-           * Bir xil ko'k-kulrang ohangda saqlab, biroz to'qlashtirdik:
-           * endi oqda 4.9:1, sahifa fonida 4.5:1. Rang o'zgarmadi,
-           * faqat o'qilishi yaxshilandi.
-           */
-          muted: "#64728A",
-          brand: "#1B72F2",
-          brandDark: "#155FCC",
-        },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

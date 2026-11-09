@@ -1,3 +1,6 @@
+/* Vepa Ustoz dizayn tizimi tokenlari (--vp-*). @import eng boshida turishi shart. */
+@import "../design-system/vepa-tokens.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
