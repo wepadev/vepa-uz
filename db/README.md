@@ -46,6 +46,7 @@ Tartib bilan yuring — keyingi fayl oldingisiga tayanishi mumkin.
 | `35-mavzu-bepul.sql` | Mavzuni qo'lda bepul qilish. Bepullik har doim test darajasida hal bo'ladi — Premium bo'lim ichidagi bepul mavzu ham ochiq |
 | `36-videodars-bepul.sql` | Videodarsni qo'lda bepul qilish (`lessons.is_free`). Admin panelda "Bepul qilish" tugmasi paydo bo'ldi |
 | `37-mustaqil-ish.sql` | Ballsiz "Mustaqil ishlang" savoli (`question_blocks.block_type = self_study`) va uning videoyechimi (`question_blocks.solution_video_url`) |
+| `39-qolda-baholash-balli.sql` | Qo'lda baholaganda ball ikki baravar kam chiqardi (12 to'g'ri → 12/24 = 50%). Tuzatildi va buzilgan natijalar qayta hisoblandi |
 
 ## Alohida: tozalash
 

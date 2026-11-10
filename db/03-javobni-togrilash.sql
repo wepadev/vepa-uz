@@ -49,8 +49,9 @@ begin
     and question_id = p_question_id;
 
   -- Ball va foizni qayta hisoblaymiz
-  select count(*) filter (where is_correct),
-         count(*)
+  -- Har savol 2 ball (39-faylda tuzatilgan; u yerda vazifa bali ham yangilanadi)
+  select count(*) filter (where is_correct) * 2,
+         count(*) * 2
   into v_score, v_total
   from public.user_answers
   where attempt_id = p_attempt_id;
