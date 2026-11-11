@@ -222,16 +222,7 @@ export default async function ShopPage({ searchParams }: PageProps) {
 
       <section className="mx-auto max-w-3xl px-3 py-5 sm:px-6 sm:py-8">
         {/* Tanga kartasi */}
-        <div className="relative overflow-hidden rounded-3xl bg-amber-500 p-5 text-white shadow-lg sm:p-7">
-          {/* Bezak doiralari */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -right-10 -top-12 h-40 w-40 rounded-full bg-white/15"
-          />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -bottom-16 right-10 h-32 w-32 rounded-full bg-white/10"
-          />
+        <div className="relative overflow-hidden rounded-3xl bg-amber-500 p-5 text-white sm:p-7">
 
           <div className="relative">
             <p className="inline-flex items-center gap-1.5 text-sm font-semibold text-white/90">
@@ -324,7 +315,7 @@ export default async function ShopPage({ searchParams }: PageProps) {
                 <div
                   key={reward.id}
                   className={cn(
-                    "relative flex flex-col overflow-hidden rounded-2xl border bg-white p-4 pt-5 shadow-sm transition sm:hover:-translate-y-0.5 sm:hover:shadow-md",
+                    "relative flex flex-col overflow-hidden rounded-2xl border bg-white p-4 pt-5 shadow-sm transition sm:hover:border-slate-300 sm:hover:shadow-md",
                     soldOut
                       ? "border-slate-200 bg-slate-50"
                       : affordable

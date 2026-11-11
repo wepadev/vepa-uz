@@ -173,7 +173,7 @@ export default async function LessonsPage() {
       <PageHeader backHref="/" backLabel="Boş sahifa" title="Videodarslar" width="6xl" />
 
       <section className="mx-auto max-w-6xl px-3 py-5 sm:px-6 sm:py-12">
-        <div className="rounded-2xl bg-mb-brand p-4 text-white shadow-lg sm:rounded-3xl sm:p-6">
+        <div className="hero-board rounded-2xl p-4 text-white sm:rounded-3xl sm:p-6">
           <h2 className="text-xl font-bold sm:text-3xl">
             Dars bölimlari
           </h2>

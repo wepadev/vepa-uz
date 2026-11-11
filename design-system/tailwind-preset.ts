@@ -56,14 +56,14 @@ const vp = {
  * Temaga qarab özgaradigan yangi klasslar uçun vp-* işlating.
  */
 const mb = {
-  page: "rgb(244 247 251 / <alpha-value>)", // #f4f7fb
-  tint: "rgb(222 234 251 / <alpha-value>)", // #deeafb
-  tintSoft: "rgb(237 244 253 / <alpha-value>)", // #edf4fd
-  line: "rgb(230 234 240 / <alpha-value>)", // #e6eaf0
-  ink: "rgb(21 26 35 / <alpha-value>)", // #151a23
-  muted: "rgb(94 107 130 / <alpha-value>)", // #5e6b82
-  brand: "rgb(22 103 224 / <alpha-value>)", // #1667e0
-  brandDark: "rgb(18 82 184 / <alpha-value>)", // #1252b8
+  page: "rgb(247 245 240 / <alpha-value>)", // #f7f5f0 — qoğoz
+  tint: "rgb(222 229 249 / <alpha-value>)", // #dee5f9
+  tintSoft: "rgb(239 242 252 / <alpha-value>)", // #eff2fc
+  line: "rgb(227 223 214 / <alpha-value>)", // #e3dfd6
+  ink: "rgb(22 27 40 / <alpha-value>)", // #161b28 — siyoh
+  muted: "rgb(82 86 98 / <alpha-value>)", // #525662
+  brand: "rgb(29 71 201 / <alpha-value>)", // #1d47c9 — logo köki
+  brandDark: "rgb(22 56 166 / <alpha-value>)", // #1638a6
 };
 
 const preset = {

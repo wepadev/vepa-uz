@@ -45,11 +45,10 @@ export default function ContentCard({
     <>
       <div
         className={cn(
-          "relative flex aspect-[5/4] items-center justify-center overflow-hidden",
-          visual.tint,
+          "paper-grid relative flex aspect-[5/4] items-center justify-center overflow-hidden border-b border-mb-line",
         )}
       >
-        <span className="grid h-[68px] w-[68px] place-items-center rounded-2xl bg-white shadow-[0_2px_8px_rgba(16,24,40,0.08)] sm:h-[76px] sm:w-[76px]">
+        <span className="grid h-[68px] w-[68px] place-items-center rounded-2xl border border-mb-line bg-white shadow-md sm:h-[76px] sm:w-[76px]">
           <Icon
             className={cn(
               "h-8 w-8 sm:h-9 sm:w-9",
@@ -68,7 +67,7 @@ export default function ContentCard({
       </div>
 
       <div className="flex flex-1 flex-col p-3.5 sm:p-4">
-        <h3 className="text-[15px] font-bold leading-snug text-mb-ink sm:text-[17px]">
+        <h3 className="font-serif text-[16px] font-bold leading-snug text-mb-ink sm:text-[18px]">
           {title}
         </h3>
 
@@ -88,10 +87,10 @@ export default function ContentCard({
 
         <span
           className={cn(
-            "mt-3 inline-flex min-h-11 w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-xl px-3 text-[14px] font-semibold text-white transition sm:mt-4 sm:text-[15px]",
+            "mt-3 inline-flex min-h-11 w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-xl px-3 text-[14px] font-bold text-white transition sm:mt-4 sm:text-[15px]",
             disabled
               ? "bg-slate-200 text-slate-500"
-              : visual.button,
+              : cn("btn-solid", visual.button),
           )}
         >
           {actionLabel}
@@ -108,10 +107,10 @@ export default function ContentCard({
   );
 
   const shell = cn(
-    "group flex h-full flex-col overflow-hidden rounded-2xl border border-mb-line bg-white shadow-[0_1px_2px_rgba(16,24,40,0.05)] transition",
+    "group flex h-full flex-col overflow-hidden rounded-2xl border border-mb-line bg-white transition",
     disabled
       ? "opacity-75"
-      : "sm:hover:shadow-[0_8px_24px_rgba(16,24,40,0.10)]",
+      : "sm:hover:border-slate-300 sm:hover:shadow-md",
     className,
   );
 

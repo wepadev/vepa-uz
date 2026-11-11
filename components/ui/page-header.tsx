@@ -31,11 +31,11 @@ const WIDTHS = {
 
 /** Sarlavhadagi ikkinchi darajali tugma (oq, ramkali) */
 export const headerButton =
-  "press inline-flex min-h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50";
+  "press inline-flex min-h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50";
 
 /** Sarlavhadagi asosiy tugma (brend ko'k) */
 export const headerPrimaryButton =
-  "press inline-flex min-h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl bg-mb-brand px-4 text-sm font-semibold text-white transition hover:bg-mb-brandDark";
+  "press btn-solid inline-flex min-h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl bg-mb-brand px-4 text-sm font-bold text-white transition hover:bg-mb-brandDark";
 
 export default function PageHeader({
   backHref,
@@ -71,7 +71,7 @@ export default function PageHeader({
   return (
     <header
       className={cn(
-        "border-b border-mb-line bg-white/90 backdrop-blur",
+        "border-b border-mb-line bg-slate-50/90 backdrop-blur",
         sticky && "sticky top-0 z-30",
       )}
     >
@@ -87,7 +87,7 @@ export default function PageHeader({
 
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
-            <h1 className="line-clamp-2 text-lg font-bold leading-snug text-mb-ink sm:text-xl">
+            <h1 className="line-clamp-2 text-[21px] font-bold leading-tight text-mb-ink sm:text-[26px]">
               {title}
             </h1>
 
@@ -108,7 +108,7 @@ export default function PageHeader({
             {visibleChips.map((chip, index) => (
               <span
                 key={index}
-                className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600"
+                className="rounded-md border border-mb-line bg-white px-2 py-0.5 text-xs font-semibold tabular-nums text-slate-600"
               >
                 {chip}
               </span>

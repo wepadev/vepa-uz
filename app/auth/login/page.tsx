@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { LoginForm } from "@/components/login-form";
 import BrandMark from "@/components/ui/brand-mark";
+import WorkedExample from "@/components/ui/worked-example";
 import { getSafeNext } from "@/lib/safe-next";
 
 type PageProps = {
@@ -30,15 +31,13 @@ export default async function Page({
 
   return (
     <main className="relative min-h-svh overflow-hidden bg-slate-50 text-slate-900">
-      <div className="pointer-events-none absolute -left-28 -top-28 h-72 w-72 rounded-full bg-blue-200/50 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-32 -right-24 h-80 w-80 rounded-full bg-blue-200/40 blur-3xl" />
 
       <div className="relative mx-auto grid min-h-svh max-w-7xl lg:grid-cols-[1.05fr_0.95fr]">
-        <section className="hidden flex-col justify-between bg-mb-brand p-12 text-white lg:flex">
+        <section className="hidden flex-col justify-between hero-board p-12 text-white lg:flex">
           <div>
             <Link
               href="/"
-              className="inline-flex items-center gap-3 text-xl font-bold"
+              className="inline-flex items-center gap-3 font-serif text-xl font-bold"
             >
               <Image src="/logo-white.png" alt="" width={44} height={44} priority className="h-11 w-11 shrink-0" />
               Vepa Ustoz
@@ -46,11 +45,11 @@ export default async function Page({
           </div>
 
           <div className="max-w-xl">
-            <p className="inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-semibold ring-1 ring-white/20">
+            <p className="text-xs font-bold uppercase tracking-[0.1em] text-blue-200">
               Matematika — aniq va tuşunarli
             </p>
 
-            <h1 className="mt-6 text-5xl font-bold leading-tight">
+            <h1 className="mt-5 text-[52px] font-bold leading-[1.08]">
               Darslar, testlar va natijalar — barçasi bir joyda.
             </h1>
 
@@ -60,23 +59,7 @@ export default async function Page({
               ötişi mumkin.
             </p>
 
-            <div className="mt-9 grid gap-4 sm:grid-cols-3">
-              {[
-                ["01", "Darsliklar"],
-                ["02", "Darslar"],
-                ["03", "Testlar"],
-              ].map(([number, label]) => (
-                <div
-                  key={number}
-                  className="rounded-2xl bg-white/10 p-4 ring-1 ring-white/15"
-                >
-                  <p className="text-sm font-bold text-blue-200">
-                    {number}
-                  </p>
-                  <p className="mt-2 font-semibold">{label}</p>
-                </div>
-              ))}
-            </div>
+            <WorkedExample className="mt-10 max-w-md rotate-[-1deg] text-mb-ink" />
           </div>
 
           <p className="text-sm text-blue-200">
@@ -88,7 +71,7 @@ export default async function Page({
           <div className="w-full max-w-md">
             <Link
               href="/"
-              className="mb-5 inline-flex min-h-11 items-center gap-3 text-xl font-bold text-blue-700 lg:hidden"
+              className="mb-5 inline-flex min-h-11 items-center gap-2.5 font-serif text-xl font-bold text-mb-ink lg:hidden"
             >
               <BrandMark size={40} className="h-10 w-10" />
               Vepa Ustoz

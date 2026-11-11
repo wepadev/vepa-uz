@@ -139,11 +139,7 @@ export default async function TestsPage() {
       />
 
       <section className="mx-auto max-w-5xl px-3 py-5 sm:px-6 sm:py-8">
-        <div className="relative overflow-hidden rounded-3xl bg-mb-brand p-5 text-white shadow-lg sm:p-7">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -right-10 -top-14 h-48 w-48 rounded-full bg-white/10"
-          />
+        <div className="relative overflow-hidden hero-board rounded-3xl p-5 text-white sm:p-7">
 
           <div className="relative">
             <p className="inline-flex items-center gap-2 text-sm font-semibold text-blue-100">
@@ -193,7 +189,7 @@ export default async function TestsPage() {
                 <Link
                   key={examType.id}
                   href={`/tests/sections?exam=${encodeURIComponent(examType.code)}`}
-                  className="group flex items-center gap-3.5 rounded-2xl border border-mb-line bg-white p-3.5 shadow-sm transition sm:p-4 sm:hover:-translate-y-0.5 sm:hover:shadow-md"
+                  className="group flex items-center gap-3.5 rounded-2xl border border-mb-line bg-white p-3.5 shadow-sm transition sm:p-4 sm:hover:border-slate-300 sm:hover:shadow-md"
                 >
                   <span
                     className={`grid h-14 w-14 shrink-0 place-items-center rounded-2xl ${visual.softBox}`}
@@ -239,7 +235,7 @@ export default async function TestsPage() {
         <div className="mt-5 grid grid-cols-2 gap-2 sm:gap-3">
           <Link
             href="/results"
-            className="flex items-center gap-2.5 rounded-2xl border border-mb-line bg-white px-4 py-3 shadow-sm transition sm:hover:-translate-y-0.5 sm:hover:shadow-md"
+            className="flex items-center gap-2.5 rounded-2xl border border-mb-line bg-white px-4 py-3 shadow-sm transition sm:hover:border-slate-300 sm:hover:shadow-md"
           >
             <History
               className="h-5 w-5 shrink-0 text-mb-brand"
@@ -254,7 +250,7 @@ export default async function TestsPage() {
 
           <Link
             href="/leaderboard"
-            className="flex items-center gap-2.5 rounded-2xl border border-mb-line bg-white px-4 py-3 shadow-sm transition sm:hover:-translate-y-0.5 sm:hover:shadow-md"
+            className="flex items-center gap-2.5 rounded-2xl border border-mb-line bg-white px-4 py-3 shadow-sm transition sm:hover:border-slate-300 sm:hover:shadow-md"
           >
             <Trophy
               className="h-5 w-5 shrink-0 text-amber-500"

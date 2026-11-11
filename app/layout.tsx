@@ -1,6 +1,6 @@
 import "katex/dist/katex.min.css";
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Caveat, Golos_Text, Literata } from "next/font/google";
 
 import SiteNav from "@/components/site-nav";
 import SiteJsonLd from "@/components/site-json-ld";
@@ -33,10 +33,30 @@ const defaultUrl = process.env.NEXT_PUBLIC_SITE_URL
     ? "https://vepa.uz"
     : "http://localhost:3000";
 
-const inter = Inter({
+/*
+ * Şriftlar (barçasida ö, ğ, ş, ç bor — latin-ext):
+ *   Golos Text — interfeys matni;
+ *   Literata — sarlavhalar: kitob şrifti, KaTeX formulalari bilan
+ *              bir oila bölib turadi;
+ *   Caveat   — ustozning qöl yozuvi, juda kam joyda.
+ */
+const sans = Golos_Text({
   subsets: ["latin", "latin-ext"],
   display: "swap",
-  variable: "--font-inter",
+  variable: "--font-sans",
+});
+
+const serif = Literata({
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+  variable: "--font-serif",
+});
+
+const hand = Caveat({
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+  weight: ["600"],
+  variable: "--font-hand",
 });
 
 export const metadata: Metadata = {
@@ -115,7 +135,10 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   viewportFit: "cover",
-  themeColor: "#1B72F2",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f7f5f0" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b1220" },
+  ],
 };
 
 export default function RootLayout({
@@ -129,7 +152,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body
-        className={`${inter.className} ${inter.variable} antialiased`}
+        className={`${sans.className} ${sans.variable} ${serif.variable} ${hand.variable} antialiased`}
       >
         {/* Qidiruv tizimlari uchun — ekranda ko'rinmaydi */}
         <SiteJsonLd siteUrl={defaultUrl} />
