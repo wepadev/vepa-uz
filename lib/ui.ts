@@ -14,22 +14,22 @@
 
 /** Oq karta — ro'yxat, forma va blok uchun asos */
 export const card =
-  "rounded-2xl border border-mb-line bg-white shadow-sm";
+  "rounded-2xl border border-mb-line bg-white";
 
 /** Karta ichidagi odatiy bo'shliq */
 export const cardPad = "p-4 sm:p-5";
 
 /** Bosiladigan karta — ustiga kelganda ko'tariladi */
 export const cardHover =
-  "press transition sm:hover:-translate-y-0.5 sm:hover:shadow-md";
+  "press transition sm:hover:border-slate-300 sm:hover:shadow-md";
 
 /** Asosiy amal tugmasi */
 export const btnPrimary =
-  "press inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-mb-brand px-4 text-sm font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-not-allowed disabled:opacity-60";
+  "press btn-solid inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-mb-brand px-4 text-sm font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-not-allowed disabled:opacity-60";
 
 /** Ikkinchi darajali tugma */
 export const btnGhost =
-  "press inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50";
+  "press inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50";
 
 /** Xavfli amal (o'chirish) */
 export const btnDanger =
@@ -37,14 +37,14 @@ export const btnDanger =
 
 /** Kulrang raqamli belgi */
 export const chip =
-  "rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600";
+  "rounded-md border border-mb-line bg-white px-2 py-0.5 text-xs font-semibold tabular-nums text-slate-600";
 
 /** Sahifaning asosiy qismi */
 export const pageSection =
   "mx-auto max-w-5xl px-3 py-5 sm:px-6 sm:py-8";
 
 /** Bo'lim sarlavhasi (h2) */
-export const sectionTitle = "text-lg font-bold sm:text-xl";
+export const sectionTitle = "font-serif text-xl font-bold sm:text-2xl";
 
 /** Kiritish maydoni */
 export const field =

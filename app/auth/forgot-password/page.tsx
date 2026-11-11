@@ -7,11 +7,9 @@ import BrandMark from "@/components/ui/brand-mark";
 export default function ForgotPasswordPage() {
   return (
     <main className="relative min-h-svh overflow-hidden bg-slate-50 text-slate-900">
-      <div className="pointer-events-none absolute -left-28 -top-28 h-72 w-72 rounded-full bg-blue-200/50 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-32 -right-24 h-80 w-80 rounded-full bg-blue-200/40 blur-3xl" />
 
       <div className="relative mx-auto grid min-h-svh max-w-7xl lg:grid-cols-[1.05fr_0.95fr]">
-        <section className="hidden flex-col justify-between bg-mb-brand p-12 text-white lg:flex">
+        <section className="hidden flex-col justify-between hero-board p-12 text-white lg:flex">
           <Link
             href="/"
             className="inline-flex items-center gap-3 text-xl font-bold"

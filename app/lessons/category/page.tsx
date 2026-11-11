@@ -273,7 +273,7 @@ export default async function LessonCategoryPage({
       />
 
       <section className="mx-auto max-w-6xl px-3 py-5 sm:px-6 sm:py-12">
-        <div className="overflow-hidden rounded-2xl bg-mb-brand p-4 text-white shadow-lg sm:p-6">
+        <div className="overflow-hidden hero-board rounded-2xl p-4 text-white sm:p-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="min-w-0">
               <h2 className="text-xl font-bold sm:text-2xl">

@@ -600,11 +600,7 @@ const latestPlan =
 
       <section className="mx-auto max-w-4xl px-3 py-5 sm:px-6 sm:py-8">
         {/* Kim ekaningiz va o'rningiz */}
-        <div className="relative overflow-hidden rounded-3xl bg-mb-brand p-5 text-white shadow-lg sm:p-6">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -right-10 -top-14 h-48 w-48 rounded-full bg-white/10"
-          />
+        <div className="relative overflow-hidden hero-board rounded-3xl p-5 text-white sm:p-6">
 
           <div className="relative flex flex-wrap items-center gap-4">
             <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-white/15 text-xl font-bold ring-1 ring-white/25 sm:h-20 sm:w-20 sm:text-2xl">

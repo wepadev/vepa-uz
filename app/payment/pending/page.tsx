@@ -234,13 +234,9 @@ export default async function PaymentPendingPage({
           className={
             isPaid
               ? "relative overflow-hidden rounded-3xl bg-emerald-600 p-5 text-white shadow-lg sm:p-6"
-              : "relative overflow-hidden rounded-3xl bg-mb-brand p-5 text-white shadow-lg sm:p-6"
+              : "relative overflow-hidden hero-board rounded-3xl p-5 text-white sm:p-6"
           }
         >
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -right-10 -top-14 h-44 w-44 rounded-full bg-white/10"
-          />
 
           <div className="relative">
             <p className="text-sm font-semibold text-white/85">

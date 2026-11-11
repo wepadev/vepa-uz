@@ -202,7 +202,7 @@ iframe {
 /* MATH BOOSTER FONT SYSTEM START */
 :root {
   --font-ui:
-    var(--font-inter),
+    var(--font-sans),
     "Segoe UI",
     Arial,
     sans-serif;
@@ -287,7 +287,7 @@ samp,
 html,
 body {
   font-family:
-    var(--font-inter),
+    var(--font-sans),
     "Segoe UI",
     Arial,
     sans-serif;
@@ -305,7 +305,7 @@ select {
 
 .font-sans {
   font-family:
-    var(--font-inter),
+    var(--font-sans),
     "Segoe UI",
     Arial,
     sans-serif !important;
@@ -342,18 +342,18 @@ h6 {
  * bor, shuning uchun ularga tegmaymiz (ular `outline-none` qo'yadi).
  */
 :focus-visible {
-  outline: 2px solid #1b72f2;
+  outline: 2px solid #1d47c9;
   outline-offset: 2px;
   border-radius: 2px;
 }
 .dark :focus-visible {
-  outline-color: #6ea8fe;
+  outline-color: #a9bbf6;
 }
 
 /* Matn tanlanganda brend ohangi — standart ko'k o'rniga */
 ::selection {
-  background-color: rgba(27, 114, 242, 0.18);
-  color: #151a23;
+  background-color: #ffe27a;
+  color: #161b28;
 }
 .dark ::selection {
   background-color: rgba(110, 168, 254, 0.28);
@@ -504,3 +504,137 @@ html {
   }
 }
 /* VEPA UX POLISH END */
+
+/* KATAKLI DAFTAR START
+ *
+ * Vepa Ustoz dizayn tili (2026-11). Ğoya: matematikani qoğoz va
+ * ruçka bilan işlaydigan öquvçining daftari.
+ *   - fon: iliq qoğoz (#f7f5f0), kartalar oq varaq;
+ *   - siyoh: logodagi kök (#1d47c9) va töq siyoh matn (#161b28);
+ *   - ustoz ruçkasi: qizil (#d7362a) — faqat bezak, holat emas;
+ *   - sarlavhalar — kitob şrifti (Literata), formulalar bilan bir oila;
+ *   - interfeys — Onest; qöl yozuvi — Caveat (juda kam).
+ */
+body {
+  background-color: #f7f5f0;
+  color: #161b28;
+}
+.dark body {
+  background-color: #0b1220;
+  color: #eef2f7;
+}
+
+h1,
+h2 {
+  font-family: var(--font-serif), Georgia, serif;
+  letter-spacing: -0.012em;
+  font-variant-numeric: lining-nums;
+}
+
+/* Katakli daftar: 24px katak, juda nozik */
+.paper-grid {
+  background-color: #fbfaf6;
+  background-image:
+    linear-gradient(rgb(29 71 201 / 0.075) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(29 71 201 / 0.075) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: -1px -1px;
+}
+.dark .paper-grid {
+  background-color: #0e1626;
+  background-image:
+    linear-gradient(rgb(169 187 246 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(169 187 246 / 0.06) 1px, transparent 1px);
+}
+
+/* Daftar hoşiyasi — çap tomonda qizil vertikal çiziq */
+.paper-margin {
+  position: relative;
+}
+.paper-margin::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  left: 18px;
+  width: 1px;
+  background: rgb(215 54 42 / 0.45);
+}
+@media (min-width: 640px) {
+  .paper-margin::before {
+    left: 28px;
+  }
+}
+
+/* Marker bilan belgilangan söz */
+.marker {
+  background-image: linear-gradient(transparent 58%, #ffe27a 58%, #ffe27a 92%, transparent 92%);
+  padding-inline: 0.08em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.dark .marker {
+  background-image: linear-gradient(transparent 62%, rgb(255 226 122 / 0.28) 62%, rgb(255 226 122 / 0.28) 92%, transparent 92%);
+}
+
+/* Çizğiç belgilari — bölim ajratgiçi (logodagi çizğiçdan) */
+.ruler {
+  height: 10px;
+  background-image:
+    linear-gradient(90deg, rgb(22 27 40 / 0.28) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(22 27 40 / 0.18) 1px, transparent 1px);
+  background-size: 40px 10px, 8px 5px;
+  background-repeat: repeat-x;
+  background-position: 0 0, 0 0;
+  border-top: 1px solid rgb(22 27 40 / 0.28);
+}
+.dark .ruler {
+  background-image:
+    linear-gradient(90deg, rgb(238 242 247 / 0.28) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(238 242 247 / 0.16) 1px, transparent 1px);
+  border-top-color: rgb(238 242 247 / 0.28);
+}
+
+/* Tugmaning pastki "qalinligi" — bosilganda tuşadi */
+.btn-solid {
+  box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.22);
+}
+.btn-solid:active {
+  box-shadow: inset 0 1px 0 rgb(0 0 0 / 0.18);
+}
+/* Saytdagi barça kök tugmalarga ham — har birini qöl bilan yozmaslik uçun */
+a.bg-mb-brand,
+button.bg-mb-brand {
+  box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.22);
+}
+a.bg-mb-brand:active,
+button.bg-mb-brand:active {
+  box-shadow: inset 0 1px 0 rgb(0 0 0 / 0.18);
+}
+
+/* Kiçik bölim yorlig'i: "01 — Testlar" */
+.eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #525662;
+}
+.dark .eyebrow {
+  color: #94a3b8;
+}
+/* Ustoz doskasi — sahifa boşidagi töq blok (avval kök "slab" edi) */
+.hero-board {
+  position: relative;
+  background-color: #161b28;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: -1px -1px;
+  box-shadow: inset 0 -3px 0 rgb(255 255 255 / 0.05);
+}
+.dark .hero-board {
+  background-color: #111a2e;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.07);
+}
+/* KATAKLI DAFTAR END */

@@ -17,20 +17,20 @@
 .dark .border-mb-line { border-color: rgb(37 50 71); }
 .dark .text-mb-ink { color: rgb(238 242 247); }
 .dark .text-mb-muted { color: rgb(148 163 184); }
-.dark .text-mb-brand { color: rgb(77 147 247); }
-.dark .border-mb-brand { border-color: rgb(77 147 247); }
-.dark .text-mb-brandDark { color: rgb(127 176 250); }
+.dark .text-mb-brand { color: rgb(125 152 240); }
+.dark .border-mb-brand { border-color: rgb(125 152 240); }
+.dark .text-mb-brandDark { color: rgb(169 187 246); }
 /* blue-600 → mb-brand almashtirilgandan keyin (yagona rang) */
-.dark .hover\:text-mb-brandDark:hover { color: rgb(147 197 253); }
-.dark .focus\:border-mb-brand:focus { border-color: rgb(77 147 247); }
+.dark .hover\:text-mb-brandDark:hover { color: rgb(190 204 248); }
+.dark .focus\:border-mb-brand:focus { border-color: rgb(125 152 240); }
 .dark .bg-mb-page { background-color: rgb(11 18 32); }
 .dark .bg-mb-tint { background-color: rgb(22 41 74); }
 .dark .bg-mb-tintSoft { background-color: rgb(17 31 56); }
 
 /* --- Orqaga tugmasi (components/ui/back-link.tsx) --- */
 .dark .hover\:bg-mb-tintSoft:hover { background-color: rgb(22 41 74); }
-.dark .hover\:text-mb-brand:hover { color: rgb(127 176 250); }
-.dark .hover\:border-mb-brand\/40:hover { border-color: rgb(77 147 247 / 0.5); }
+.dark .hover\:text-mb-brand:hover { color: rgb(169 187 246); }
+.dark .hover\:border-mb-brand\/40:hover { border-color: rgb(125 152 240 / 0.5); }
 .dark .group:hover .group-hover\:bg-mb-tint { background-color: rgb(30 58 108); }
 
 /* --- Umumiy --- */
@@ -117,7 +117,7 @@
 .dark .hover\:border-emerald-200:hover { border-color: rgb(6 95 70); }
 .dark .hover\:border-red-200:hover { border-color: rgb(153 27 27); }
 .dark .hover\:text-blue-600:hover { color: rgb(96 165 250); }
-.dark .hover\:text-blue-700:hover { color: rgb(147 197 253); }
+.dark .hover\:text-blue-700:hover { color: rgb(190 204 248); }
 .dark .hover\:text-emerald-700:hover { color: rgb(110 231 183); }
 .dark .hover\:text-red-600:hover { color: rgb(248 113 113); }
 .dark .hover\:text-red-700:hover { color: rgb(252 165 165); }
@@ -140,7 +140,7 @@
 .dark .text-amber-900 { color: rgb(254 243 199); }
 .dark .text-amber-950 { color: rgb(255 251 235); }
 .dark .text-blue-600 { color: rgb(96 165 250); }
-.dark .text-blue-700 { color: rgb(147 197 253); }
+.dark .text-blue-700 { color: rgb(190 204 248); }
 .dark .text-blue-800 { color: rgb(191 219 254); }
 .dark .text-blue-900 { color: rgb(219 234 254); }
 .dark .text-blue-950 { color: rgb(239 246 255); }
@@ -175,4 +175,24 @@
   .dark .sm\:hover\:bg-white:hover { background-color: rgb(20 29 46); }
   .dark .sm\:hover\:border-amber-300:hover { border-color: rgb(180 83 9); }
   .dark .sm\:hover\:border-blue-300:hover { border-color: rgb(29 78 216); }
+}
+
+/* --- Katakli daftar dizayni (2026-11, qöl bilan yozilgan) --- */
+@media screen {
+.dark .bg-slate-50\/90 { background-color: rgb(11 18 32 / 0.9); }
+.dark .bg-slate-50\/95 { background-color: rgb(11 18 32 / 0.95); }
+.dark .border-slate-300\/70 { border-color: rgb(47 61 85 / 0.7); }
+.dark .divide-mb-line > :not([hidden]) ~ :not([hidden]) { border-color: rgb(37 50 71); }
+.dark .hover\:border-slate-400:hover,
+.dark .sm\:hover\:border-slate-300:hover,
+.dark .sm\:hover\:border-slate-400:hover { border-color: rgb(71 85 105); }
+.dark .border-slate-400 { border-color: rgb(71 85 105); }
+.dark .group:hover .group-hover\:text-mb-brand { color: rgb(169 187 246); }
+.dark .group:hover .group-hover\:border-mb-brand { border-color: rgb(125 152 240); }
+.dark .bg-mb-ink { background-color: rgb(20 29 46); }
+.dark .text-pen { color: rgb(248 113 113); }
+.dark .after\:bg-mb-brand::after,
+.dark .before\:bg-mb-brand::before { background-color: rgb(125 152 240); }
+.dark .border-mb-brand\/70 { border-color: rgb(125 152 240 / 0.7); }
+.dark .text-amber-950 { color: rgb(254 243 199); }
 }

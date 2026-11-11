@@ -216,11 +216,7 @@ export default async function PricingPage({
         darrov tugmani bosadi.
       */}
       <section className="mx-auto max-w-3xl px-3 pb-6 pt-3 sm:px-6 sm:pt-5">
-        <div className="relative overflow-hidden rounded-2xl bg-mb-brand p-4 text-white shadow-lg sm:p-6">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -right-10 -top-12 h-40 w-40 rounded-full bg-white/10"
-          />
+        <div className="relative overflow-hidden hero-board rounded-2xl p-4 text-white sm:p-6">
 
           <div className="relative">
             <p className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-bold text-blue-100 ring-1 ring-white/20">

@@ -202,7 +202,7 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
       />
 
       <section className="mx-auto max-w-7xl px-3 py-5 sm:px-6 sm:py-12">
-        <div className="rounded-2xl border border-blue-100 bg-mb-brand p-4 text-white shadow-lg sm:rounded-3xl sm:p-8">
+        <div className="hero-board rounded-2xl p-4 text-white sm:rounded-3xl sm:p-8">
           <p className="text-[12px] font-bold text-blue-100 sm:text-sm">
             {examType.title} · {section.title}
           </p>

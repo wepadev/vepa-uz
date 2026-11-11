@@ -122,7 +122,7 @@ export default async function TextbooksPage() {
             <Link
               key={card.href}
               href={card.href}
-              className={`group relative flex flex-col overflow-hidden rounded-3xl border border-mb-line bg-white p-5 shadow-sm transition sm:p-6 sm:hover:-translate-y-0.5 sm:hover:shadow-md ${card.hover}`}
+              className={`group relative flex flex-col overflow-hidden rounded-3xl border border-mb-line bg-white p-5 shadow-sm transition sm:p-6 sm:hover:border-slate-300 sm:hover:shadow-md ${card.hover}`}
             >
               {/* Orqa fondagi yirik ikonka — bezak */}
               <card.icon
