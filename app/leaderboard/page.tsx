@@ -15,6 +15,12 @@ import type {
   UserTestStatisticsRpcRow,
 } from "@/lib/stats-types";
 import PageHeader, { headerButton } from "@/components/ui/page-header";
+import AutoSubmitSelect from "@/components/auto-submit-select";
+import {
+  loadRankingTestGroups,
+  topicLabel,
+  type RankingTopicGroup,
+} from "@/lib/ranking-test-groups";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +42,8 @@ const LEADERBOARD_PAGE_SIZE = 25;
 
 type PageProps = {
   searchParams: Promise<{
+    tab?: string | string[];
+    topic?: string | string[];
     testId?: string | string[];
     page?: string | string[];
     testPage?: string | string[];
@@ -151,76 +159,49 @@ function initialOf(name: string | null | undefined) {
   return (name ?? "").trim().charAt(0).toUpperCase() || "?";
 }
 
-export default async function LeaderboardPage({
-  searchParams,
-}: PageProps) {
+/** Sahifa manzildagi raqam — noto'g'ri qiymatda 1 */
+function readPage(value: string | string[] | undefined) {
+  const number = Number(getSingleValue(value));
+
+  return Number.isInteger(number) && number > 0 ? number : 1;
+}
+
+/** Ketma-ket kelgan bir bölim mavzularini `<optgroup>` ga yiğadi */
+function bySection(groups: RankingTopicGroup[]) {
+  const result: { section: string; groups: RankingTopicGroup[] }[] = [];
+
+  for (const group of groups) {
+    const last = result[result.length - 1];
+
+    if (last && last.section === group.section) {
+      last.groups.push(group);
+    } else {
+      result.push({ section: group.section, groups: [group] });
+    }
+  }
+
+  return result;
+}
+
+type Tab = "overall" | "test";
+
+export default async function LeaderboardPage({ searchParams }: PageProps) {
   const params = await searchParams;
 
-  /** So'rovdagi sahifa raqami — noto'g'ri qiymatda 1-sahifa */
-  function readPage(
-    value: string | string[] | undefined,
-  ) {
-    const number = Number(
-      getSingleValue(value),
-    );
+  const rawTab = getSingleValue(params.tab);
+  const rawTestId = getSingleValue(params.testId);
+  const rawTopic = getSingleValue(params.topic);
 
-    return Number.isInteger(number) &&
-      number > 0
-      ? number
-      : 1;
-  }
+  /*
+   * Eski havolalar (`?testId=12`) ham test böyiça reytingni oçsin.
+   */
+  const tab: Tab =
+    rawTab === "test" || (rawTab !== "umumiy" && (rawTestId || rawTopic))
+      ? "test"
+      : "overall";
 
-  const overallPage = readPage(
-    params.page,
-  );
-
-  const testPage = readPage(
-    params.testPage,
-  );
-
-  /** Sahifa manzili — tanlangan test va ikkinchi jadval saqlanadi */
-  function hrefWith(
-    overrides: {
-      page?: number;
-      testPage?: number;
-    },
-  ) {
-    const search = new URLSearchParams();
-
-    const testId = getSingleValue(
-      params.testId,
-    );
-
-    const nextPage =
-      overrides.page ?? overallPage;
-
-    const nextTestPage =
-      overrides.testPage ?? testPage;
-
-    if (testId) {
-      search.set("testId", testId);
-    }
-
-    if (nextPage > 1) {
-      search.set(
-        "page",
-        String(nextPage),
-      );
-    }
-
-    if (nextTestPage > 1) {
-      search.set(
-        "testPage",
-        String(nextTestPage),
-      );
-    }
-
-    const text = search.toString();
-
-    return text
-      ? `/leaderboard?${text}`
-      : "/leaderboard";
-  }
+  const overallPage = readPage(params.page);
+  const testPage = readPage(params.testPage);
 
   const supabase = await createClient();
 
@@ -230,70 +211,35 @@ export default async function LeaderboardPage({
     redirect("/auth/login");
   }
 
-  const {
-    data: currentProfileData,
-    error: currentProfileError,
-  } = await supabase
-    .from("profiles")
-    .select(`
-      full_name,
-      role,
-      is_active
-    `)
-    .eq("id", user.id)
-    .single();
+  const { data: currentProfileData, error: currentProfileError } =
+    await supabase
+      .from("profiles")
+      .select("full_name, role, is_active")
+      .eq("id", user.id)
+      .single();
 
   if (
     currentProfileError ||
     !currentProfileData ||
-    currentProfileData.is_active !==
-      true
+    currentProfileData.is_active !== true
   ) {
     redirect("/");
   }
 
-  const currentProfile =
-    currentProfileData as CurrentProfileRow;
+  const currentProfile = currentProfileData as CurrentProfileRow;
 
-  const [
-    rankingTestsResult,
-    overallResult,
-    summaryResult,
-  ] = await Promise.all([
-    supabase.rpc(
-      "get_ranking_tests",
-    ),
+  const [summaryResult, overallResult, rankingTestsResult] = await Promise.all([
+    supabase.rpc("get_user_ranking_summary", { p_user_id: null }),
 
-    supabase.rpc(
-      "get_overall_leaderboard",
-      {
-        p_limit:
-          LEADERBOARD_PAGE_SIZE,
-        p_offset:
-          (overallPage - 1) *
-          LEADERBOARD_PAGE_SIZE,
-      },
-    ),
+    tab === "overall"
+      ? supabase.rpc("get_overall_leaderboard", {
+          p_limit: LEADERBOARD_PAGE_SIZE,
+          p_offset: (overallPage - 1) * LEADERBOARD_PAGE_SIZE,
+        })
+      : null,
 
-    supabase.rpc(
-      "get_user_ranking_summary",
-      {
-        p_user_id: null,
-      },
-    ),
+    tab === "test" ? supabase.rpc("get_ranking_tests") : null,
   ]);
-
-  if (rankingTestsResult.error) {
-    throw new Error(
-      `Reyting testlari yuklanmadi: ${rankingTestsResult.error.message}`,
-    );
-  }
-
-  if (overallResult.error) {
-    throw new Error(
-      `Umumiy reyting yuklanmadi: ${overallResult.error.message}`,
-    );
-  }
 
   if (summaryResult.error) {
     throw new Error(
@@ -301,85 +247,69 @@ export default async function LeaderboardPage({
     );
   }
 
-  const rankingTests =
-    (
-      rankingTestsResult.data ??
-      []
-    ) as RankingTestRpcRow[];
-
-  const overallRows =
-    (
-      overallResult.data ??
-      []
-    ) as OverallRpcRow[];
-
-  const currentSummary =
-    (
-      summaryResult.data ??
-      []
-    )[0] as
-      | UserSummaryRpcRow
-      | undefined;
-
-  const requestedTestId =
-    Number(
-      getSingleValue(
-        params.testId,
-      ),
+  if (overallResult?.error) {
+    throw new Error(
+      `Umumiy reyting yuklanmadi: ${overallResult.error.message}`,
     );
+  }
 
-  const selectedTest =
-    rankingTests.find(
-      (test) =>
-        toNumber(test.test_id) ===
-        requestedTestId,
-    ) ??
-    rankingTests[0] ??
+  if (rankingTestsResult?.error) {
+    throw new Error(
+      `Reyting testlari yuklanmadi: ${rankingTestsResult.error.message}`,
+    );
+  }
+
+  const currentSummary = (summaryResult.data ?? [])[0] as
+    | UserSummaryRpcRow
+    | undefined;
+
+  const overallRows = (overallResult?.data ?? []) as OverallRpcRow[];
+
+  const rankingTests = (rankingTestsResult?.data ??
+    []) as RankingTestRpcRow[];
+
+  /* ---------------- Test böyiça: mavzu va test tanlaş ---------------- */
+
+  const groups =
+    tab === "test" ? await loadRankingTestGroups(supabase, rankingTests) : [];
+
+  const requestedTestId = Number(rawTestId);
+
+  /*
+   * Mavzu almaşsa (`topic` kelsa) — şu mavzuning birinçi testi.
+   * Faqat test tanlansa — şu test va uning mavzusi.
+   */
+  const selectedGroup =
+    (rawTopic && groups.find((group) => group.key === rawTopic)) ||
+    groups.find((group) =>
+      group.tests.some((test) => test.id === requestedTestId),
+    ) ||
+    groups[0] ||
     null;
 
-  let testRows:
-    TestLeaderboardRpcRow[] = [];
+  const selectedTest =
+    selectedGroup?.tests.find((test) => test.id === requestedTestId) ??
+    selectedGroup?.tests[0] ??
+    null;
 
-  let currentTestStatistics:
-    | UserTestStatisticsRpcRow
-    | null = null;
+  let testRows: TestLeaderboardRpcRow[] = [];
+  let currentTestStatistics: UserTestStatisticsRpcRow | null = null;
 
   if (selectedTest) {
-    const selectedTestId =
-      toNumber(
-        selectedTest.test_id,
-      );
+    const [testLeaderboardResult, userTestResult] = await Promise.all([
+      supabase.rpc("get_test_leaderboard", {
+        p_test_id: selectedTest.id,
+        p_limit: LEADERBOARD_PAGE_SIZE,
+        p_offset: (testPage - 1) * LEADERBOARD_PAGE_SIZE,
+      }),
 
-    const [
-      testLeaderboardResult,
-      userTestResult,
-    ] = await Promise.all([
-      supabase.rpc(
-        "get_test_leaderboard",
-        {
-          p_test_id:
-            selectedTestId,
-          p_limit:
-            LEADERBOARD_PAGE_SIZE,
-          p_offset:
-            (testPage - 1) *
-            LEADERBOARD_PAGE_SIZE,
-        },
-      ),
-
-      supabase.rpc(
-        "get_user_test_statistics",
-        {
-          p_user_id: null,
-          p_test_id:
-            selectedTestId,
-        },
-      ),
+      supabase.rpc("get_user_test_statistics", {
+        p_user_id: null,
+        p_test_id: selectedTest.id,
+      }),
     ]);
 
-    if (
-      testLeaderboardResult.error
-    ) {
+    if (testLeaderboardResult.error) {
       throw new Error(
         `Test reytingi yuklanmadi: ${testLeaderboardResult.error.message}`,
       );
@@ -391,65 +321,65 @@ export default async function LeaderboardPage({
       );
     }
 
-    testRows =
-      (
-        testLeaderboardResult.data ??
-        []
-      ) as TestLeaderboardRpcRow[];
-
-    const userTestRows =
-      (
-        userTestResult.data ??
-        []
-      ) as UserTestStatisticsRpcRow[];
+    testRows = (testLeaderboardResult.data ?? []) as TestLeaderboardRpcRow[];
 
     currentTestStatistics =
-      userTestRows[0] ?? null;
+      ((userTestResult.data ?? []) as UserTestStatisticsRpcRow[])[0] ?? null;
+  }
+
+  /** Sahifa manzili — tanlangan bölim, test va sahifa saqlanadi */
+  function hrefWith(overrides: {
+    tab?: Tab;
+    testId?: number;
+    page?: number;
+    testPage?: number;
+  }) {
+    const search = new URLSearchParams();
+    const nextTab = overrides.tab ?? tab;
+
+    if (nextTab === "test") {
+      search.set("tab", "test");
+
+      const testId = overrides.testId ?? selectedTest?.id;
+      if (testId) search.set("testId", String(testId));
+
+      const nextTestPage =
+        overrides.testPage ?? (overrides.testId ? 1 : testPage);
+      if (nextTestPage > 1) search.set("testPage", String(nextTestPage));
+    } else {
+      const nextPage = overrides.page ?? (overrides.tab ? 1 : overallPage);
+      if (nextPage > 1) search.set("page", String(nextPage));
+    }
+
+    const text = search.toString();
+
+    return text ? `/leaderboard?${text}` : "/leaderboard";
   }
 
   /*
    * Jami qatnashchilar soni har bir qatorda qaytadi. Sahifa bo'sh
-   * bo'lsa (masalan qo'lda katta raqam yozilsa) hozirgi holatdan
-   * kelib chiqib hisoblaymiz — sahifalash yashiriladi.
+   * bo'lsa (masalan qo'lda katta raqam yozilsa) sahifalash yashiriladi.
    */
-  const overallTotal = toNumber(
-    overallRows[0]?.participants,
-  );
-
+  const overallTotal = toNumber(overallRows[0]?.participants);
   const overallTotalPages = Math.max(
     1,
-    Math.ceil(
-      overallTotal /
-        LEADERBOARD_PAGE_SIZE,
-    ),
+    Math.ceil(overallTotal / LEADERBOARD_PAGE_SIZE),
   );
 
-  const testTotal = toNumber(
-    testRows[0]?.participants,
-  );
-
+  const testTotal = toNumber(testRows[0]?.participants);
   const testTotalPages = Math.max(
     1,
-    Math.ceil(
-      testTotal /
-        LEADERBOARD_PAGE_SIZE,
-    ),
+    Math.ceil(testTotal / LEADERBOARD_PAGE_SIZE),
   );
 
-  /* Sovrindorlar faqat birinchi sahifada — ular umumiy TOP 3 */
-  const topThree =
-    overallPage === 1
-      ? overallRows.slice(0, 3)
-      : [];
+  const participants =
+    toNumber(currentSummary?.overall_participants) || overallTotal;
 
-  const isAdmin =
-    currentProfile.role === "admin";
+  const isAdmin = currentProfile.role === "admin";
+  const isRanked = Boolean(currentSummary?.is_ranked);
 
-  const isRanked =
-    Boolean(
-      currentSummary?.is_ranked,
-    );
-
+  /* Şohsupa faqat birinçi sahifada — ular umumiy TOP 3 */
+  const topThree = overallPage === 1 ? overallRows.slice(0, 3) : [];
   const showPodium = topThree.length === 3;
   const listRows = showPodium ? overallRows.slice(3) : overallRows;
 
@@ -462,6 +392,11 @@ export default async function LeaderboardPage({
       ]
     : [];
 
+  const tabs: { id: Tab; label: string }[] = [
+    { id: "overall", label: "Umumiy" },
+    { id: "test", label: "Test böyiça" },
+  ];
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <PageHeader
@@ -470,7 +405,7 @@ export default async function LeaderboardPage({
         glyph="ranking"
         title="Reyting"
         subtitle={
-          overallTotal > 0 ? `${formatNumber(overallTotal)} öquvçi` : undefined
+          participants > 0 ? `${formatNumber(participants)} öquvçi` : undefined
         }
         action={
           <Link href="/results" className={headerButton}>
@@ -479,8 +414,8 @@ export default async function LeaderboardPage({
         }
       />
 
-      <section className="mx-auto max-w-5xl px-4 py-5 sm:px-6 sm:py-8">
-        {/* Sizning örningiz — sahifadagi yagona kök karta */}
+      <section className="mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-8">
+        {/* 1. Holat — sizning örningiz (sahifadagi yagona kök karta) */}
         {isAdmin ? (
           <p className="rounded-2xl border border-mb-line bg-white px-4 py-3 text-sm text-mb-muted">
             Admin hisobi reytingga kirmaydi.
@@ -547,241 +482,315 @@ export default async function LeaderboardPage({
           </div>
         )}
 
-        {/* Şohsupa: birinçi uç örin */}
-        {showPodium && (
-          <div className="mt-6 rounded-2xl border border-mb-line bg-white px-3 pt-5 sm:px-6">
-            <p className="eyebrow text-center">Eng yuqori uç örin</p>
+        {/* 2. Qaysi reyting — ikki bölim, bir vaqtda bittasi */}
+        <nav
+          aria-label="Reyting turi"
+          className="mt-6 grid grid-cols-2 gap-1 rounded-2xl border border-mb-line bg-white p-1"
+        >
+          {tabs.map((item) => {
+            const active = item.id === tab;
 
-            <ol className="mx-auto mt-4 grid max-w-lg grid-cols-3 items-end gap-2 sm:gap-4">
-              {podium.map(({ row, height, tone }) => {
-                const rank = toNumber(row.overall_rank);
-                const isCurrentUser = row.user_id === user.id;
-
-                return (
-                  <li
-                    key={row.user_id}
-                    className="flex min-w-0 flex-col items-center text-center"
-                  >
-                    <span
-                      className={cn(
-                        "grid place-items-center rounded-full bg-slate-100 font-extrabold text-slate-700",
-                        rank === 1
-                          ? "h-16 w-16 text-2xl ring-4 ring-vp-accent"
-                          : "h-12 w-12 text-lg ring-2 ring-mb-tint",
-                        isCurrentUser && "bg-mb-brand text-white",
-                      )}
-                      aria-hidden="true"
-                    >
-                      {initialOf(row.full_name)}
-                    </span>
-
-                    <p className="mt-2 line-clamp-2 w-full break-words text-[13px] font-bold leading-4 text-mb-ink sm:text-sm">
-                      {row.full_name}
-                    </p>
-
-                    <p className="num mt-0.5 text-[13px] font-semibold text-mb-muted">
-                      {formatNumber(row.rating_points)} ball
-                    </p>
-
-                    <span
-                      className={cn(
-                        "num mt-2 grid w-full place-items-center rounded-t-xl text-2xl font-extrabold",
-                        height,
-                        tone,
-                      )}
-                    >
-                      {rank}
-                    </span>
-                  </li>
-                );
-              })}
-            </ol>
-          </div>
-        )}
-
-        <div className="mt-6 grid gap-6 lg:grid-cols-2 lg:items-start">
-          <section className="overflow-hidden rounded-2xl border border-mb-line bg-white">
-            <div className="border-b border-mb-line px-4 py-3.5 sm:px-5">
-              <h2 className="text-lg font-bold text-mb-ink">Umumiy reyting</h2>
-
-              <p className="mt-0.5 text-sm text-mb-muted">
-                Har testdagi eng yaxşi foizlar yiğindisi
-              </p>
-            </div>
-
-            {overallRows.length === 0 ? (
-              <p className="px-5 py-12 text-center text-sm text-mb-muted">
-                Hozirça reyting natijasi yöq.
-              </p>
-            ) : (
-              <>
-                {listRows.length > 0 && (
-                  <ol className="divide-y divide-mb-line">
-                    {listRows.map((row) => {
-                      const rank = toNumber(row.overall_rank);
-                      const isCurrentUser = row.user_id === user.id;
-
-                      return (
-                        <li
-                          key={row.user_id}
-                          className={cn(
-                            "flex items-center gap-3 px-4 py-3 sm:px-5",
-                            isCurrentUser && "bg-mb-tintSoft",
-                          )}
-                        >
-                          <Rank rank={rank} />
-
-                          <div className="min-w-0 flex-1">
-                            <p className="flex items-center gap-2 text-[15px] font-bold text-mb-ink">
-                              <span className="truncate">{row.full_name}</span>
-                              {isCurrentUser && <Tag tone="brand">Siz</Tag>}
-                            </p>
-
-                            <p className="num mt-0.5 text-[13px] text-mb-muted">
-                              {formatNumber(row.tests_completed)} test ·{" "}
-                              {formatNumber(row.average_percentage)}% örtaça
-                            </p>
-                          </div>
-
-                          <p className="num shrink-0 text-right text-base font-extrabold text-mb-ink">
-                            {formatNumber(row.rating_points)}
-                            <span className="ml-1 text-xs font-semibold text-mb-muted">
-                              ball
-                            </span>
-                          </p>
-                        </li>
-                      );
-                    })}
-                  </ol>
+            return (
+              <Link
+                key={item.id}
+                href={hrefWith({ tab: item.id })}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "press grid min-h-11 place-items-center rounded-xl text-sm font-bold transition-colors",
+                  active
+                    ? "bg-mb-brand text-white"
+                    : "text-slate-600 hover:bg-slate-50",
                 )}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
 
-                <div className="px-4 pb-4 sm:px-5">
-                  <Pagination
-                    currentPage={overallPage}
-                    totalPages={overallTotalPages}
-                    totalItems={overallTotal}
-                    pageSize={LEADERBOARD_PAGE_SIZE}
-                    hrefFor={(page) => hrefWith({ page })}
-                  />
-                </div>
-              </>
-            )}
-          </section>
+        {/* 3. Röyxat */}
+        {tab === "overall" ? (
+          <>
+            {showPodium && (
+              <div className="mt-4 rounded-2xl border border-mb-line bg-white px-3 pt-5 sm:px-6">
+                <p className="eyebrow text-center">Eng yuqori uç örin</p>
 
-          <section className="overflow-hidden rounded-2xl border border-mb-line bg-white">
-            <div className="border-b border-mb-line px-4 py-3.5 sm:px-5">
-              <h2 className="text-lg font-bold text-mb-ink">Test reytingi</h2>
-
-              {rankingTests.length > 0 ? (
-                <form method="get" className="mt-2.5 flex gap-2">
-                  {/* Umumiy reyting sahifasi saqlansin */}
-                  {overallPage > 1 && (
-                    <input type="hidden" name="page" value={overallPage} />
-                  )}
-
-                  <select
-                    name="testId"
-                    aria-label="Testni tanlang"
-                    defaultValue={
-                      selectedTest ? toNumber(selectedTest.test_id) : undefined
-                    }
-                    className="min-h-11 min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-3 text-sm font-semibold outline-none focus:border-mb-brand"
-                  >
-                    {rankingTests.map((test) => (
-                      <option key={test.test_id} value={test.test_id}>
-                        {test.title}
-                      </option>
-                    ))}
-                  </select>
-
-                  <button type="submit" className={btnGhost}>
-                    Köriş
-                  </button>
-                </form>
-              ) : (
-                <p className="mt-0.5 text-sm text-mb-muted">
-                  Faol reyting testi yöq
-                </p>
-              )}
-            </div>
-
-            {!selectedTest ? null : testRows.length === 0 ? (
-              <div className="px-5 py-12 text-center">
-                <p className="font-bold text-mb-ink">{selectedTest.title}</p>
-
-                <p className="mt-1 text-sm text-mb-muted">
-                  Bu testni hali heç kim tugatmagan.
-                </p>
-              </div>
-            ) : (
-              <>
-                {currentTestStatistics &&
-                  toNumber(currentTestStatistics.test_rank) > 0 && (
-                    <p className="num border-b border-mb-line bg-mb-tintSoft px-4 py-3 text-sm font-semibold text-mb-brandDark sm:px-5">
-                      Siz: {formatNumber(currentTestStatistics.test_rank)}-örin ·{" "}
-                      {formatNumber(currentTestStatistics.best_percentage)}% ·{" "}
-                      {formatDuration(
-                        currentTestStatistics.best_duration_seconds,
-                      )}
-                    </p>
-                  )}
-
-                <ol className="divide-y divide-mb-line">
-                  {testRows.map((row) => {
-                    const rank = toNumber(row.test_rank);
+                <ol className="mx-auto mt-4 grid max-w-lg grid-cols-3 items-end gap-2 sm:gap-4">
+                  {podium.map(({ row, height, tone }) => {
+                    const rank = toNumber(row.overall_rank);
                     const isCurrentUser = row.user_id === user.id;
 
                     return (
                       <li
                         key={row.user_id}
-                        className={cn(
-                          "flex items-center gap-3 px-4 py-3 sm:px-5",
-                          isCurrentUser && "bg-mb-tintSoft",
-                        )}
+                        className="flex min-w-0 flex-col items-center text-center"
                       >
-                        <Rank rank={rank} />
-
-                        <div className="min-w-0 flex-1">
-                          <p className="flex items-center gap-2 text-[15px] font-bold text-mb-ink">
-                            <span className="truncate">{row.full_name}</span>
-                            {isCurrentUser && <Tag tone="brand">Siz</Tag>}
-                          </p>
-
-                          <p className="num mt-0.5 truncate text-[13px] text-mb-muted">
-                            {formatDuration(row.duration_seconds)} ·{" "}
-                            {formatNumber(row.attempts_count)} uriniş ·{" "}
-                            {formatDate(row.completed_at)}
-                          </p>
-                        </div>
-
-                        <p
+                        <span
                           className={cn(
-                            "num shrink-0 text-base font-extrabold",
-                            toNumber(row.percentage) >= 90
-                              ? "text-vp-success"
-                              : "text-mb-ink",
+                            "grid place-items-center rounded-full bg-slate-100 font-extrabold text-slate-700",
+                            rank === 1
+                              ? "h-16 w-16 text-2xl ring-4 ring-vp-accent"
+                              : "h-12 w-12 text-lg ring-2 ring-mb-tint",
+                            isCurrentUser && "bg-mb-brand text-white",
+                          )}
+                          aria-hidden="true"
+                        >
+                          {initialOf(row.full_name)}
+                        </span>
+
+                        <p className="mt-2 line-clamp-2 w-full break-words text-[13px] font-bold leading-4 text-mb-ink sm:text-sm">
+                          {row.full_name}
+                        </p>
+
+                        <p className="num mt-0.5 text-[13px] font-semibold text-mb-muted">
+                          {formatNumber(row.rating_points)} ball
+                        </p>
+
+                        <span
+                          className={cn(
+                            "num mt-2 grid w-full place-items-center rounded-t-xl text-2xl font-extrabold",
+                            height,
+                            tone,
                           )}
                         >
-                          {formatNumber(row.percentage)}%
-                        </p>
+                          {rank}
+                        </span>
                       </li>
                     );
                   })}
                 </ol>
-
-                <div className="px-4 pb-4 sm:px-5">
-                  <Pagination
-                    currentPage={testPage}
-                    totalPages={testTotalPages}
-                    totalItems={testTotal}
-                    pageSize={LEADERBOARD_PAGE_SIZE}
-                    hrefFor={(page) => hrefWith({ testPage: page })}
-                  />
-                </div>
-              </>
+              </div>
             )}
-          </section>
-        </div>
+
+            <section className="mt-4 overflow-hidden rounded-2xl border border-mb-line bg-white">
+              <div className="border-b border-mb-line px-4 py-3.5 sm:px-5">
+                <h2 className="text-lg font-bold text-mb-ink">Umumiy reyting</h2>
+
+                <p className="mt-0.5 text-sm text-mb-muted">
+                  Hamma reyting testlaridagi foizlar yiğindisi
+                </p>
+              </div>
+
+              {overallRows.length === 0 ? (
+                <p className="px-5 py-12 text-center text-sm text-mb-muted">
+                  Hozirça reyting natijasi yöq.
+                </p>
+              ) : (
+                <>
+                  {listRows.length > 0 && (
+                    <ol className="divide-y divide-mb-line">
+                      {listRows.map((row) => {
+                        const isCurrentUser = row.user_id === user.id;
+
+                        return (
+                          <li
+                            key={row.user_id}
+                            className={cn(
+                              "flex items-center gap-3 px-4 py-3 sm:px-5",
+                              isCurrentUser && "bg-mb-tintSoft",
+                            )}
+                          >
+                            <Rank rank={toNumber(row.overall_rank)} />
+
+                            <div className="min-w-0 flex-1">
+                              <p className="flex items-center gap-2 text-[15px] font-bold text-mb-ink">
+                                <span className="truncate">{row.full_name}</span>
+                                {isCurrentUser && <Tag tone="brand">Siz</Tag>}
+                              </p>
+
+                              <p className="num mt-0.5 text-[13px] text-mb-muted">
+                                {formatNumber(row.tests_completed)} test ·{" "}
+                                {formatNumber(row.average_percentage)}% örtaça
+                              </p>
+                            </div>
+
+                            <p className="num shrink-0 text-right text-base font-extrabold text-mb-ink">
+                              {formatNumber(row.rating_points)}
+                              <span className="ml-1 text-xs font-semibold text-mb-muted">
+                                ball
+                              </span>
+                            </p>
+                          </li>
+                        );
+                      })}
+                    </ol>
+                  )}
+
+                  <div className="px-4 pb-4 sm:px-5">
+                    <Pagination
+                      currentPage={overallPage}
+                      totalPages={overallTotalPages}
+                      totalItems={overallTotal}
+                      pageSize={LEADERBOARD_PAGE_SIZE}
+                      hrefFor={(page) => hrefWith({ page })}
+                    />
+                  </div>
+                </>
+              )}
+            </section>
+          </>
+        ) : groups.length === 0 || !selectedGroup ? (
+          <p className="mt-4 rounded-2xl border border-mb-line bg-white px-5 py-12 text-center text-sm text-mb-muted">
+            Hozirça reyting testi yöq.
+          </p>
+        ) : (
+          <>
+            {/* Mavzu, keyin uning testi */}
+            <div className="mt-4 rounded-2xl border border-mb-line bg-white p-4 sm:p-5">
+              <form method="get" className="flex gap-2">
+                <input type="hidden" name="tab" value="test" />
+
+                <label className="min-w-0 flex-1">
+                  <span className="eyebrow">Mavzu</span>
+
+                  <AutoSubmitSelect
+                    name="topic"
+                    defaultValue={selectedGroup.key}
+                    className="mt-1.5 min-h-11 w-full rounded-xl border border-slate-300 bg-white px-3 text-sm font-semibold text-mb-ink outline-none focus:border-mb-brand"
+                  >
+                    {bySection(groups).map((section) => (
+                      <optgroup key={section.section} label={section.section}>
+                        {section.groups.map((group) => (
+                          <option key={group.key} value={group.key}>
+                            {topicLabel(group)}
+                          </option>
+                        ))}
+                      </optgroup>
+                    ))}
+                  </AutoSubmitSelect>
+                </label>
+
+                <noscript>
+                  <button type="submit" className={cn(btnGhost, "mt-6")}>
+                    Köriş
+                  </button>
+                </noscript>
+              </form>
+
+              {selectedGroup.tests.length > 1 && (
+                <div
+                  role="list"
+                  aria-label="Testlar"
+                  className="mt-3 flex flex-wrap gap-2"
+                >
+                  {selectedGroup.tests.map((test) => {
+                    const active = test.id === selectedTest?.id;
+
+                    return (
+                      <Link
+                        key={test.id}
+                        role="listitem"
+                        href={hrefWith({ testId: test.id })}
+                        aria-current={active ? "page" : undefined}
+                        className={cn(
+                          "press inline-flex min-h-10 items-center rounded-xl border px-4 text-sm font-bold",
+                          active
+                            ? "border-mb-brand bg-mb-brand text-white"
+                            : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50",
+                        )}
+                      >
+                        {test.title}
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {selectedTest && (
+              <section className="mt-4 overflow-hidden rounded-2xl border border-mb-line bg-white">
+                <div className="border-b border-mb-line px-4 py-3.5 sm:px-5">
+                  <p className="eyebrow truncate">{selectedGroup.section}</p>
+
+                  <h2 className="mt-1 text-lg font-bold leading-snug text-mb-ink">
+                    {topicLabel(selectedGroup)}
+                    <span className="text-mb-muted"> · {selectedTest.title}</span>
+                  </h2>
+
+                  <p className="num mt-0.5 text-sm text-mb-muted">
+                    {formatNumber(testTotal || selectedTest.participants)}{" "}
+                    qatnaşçi
+                  </p>
+                </div>
+
+                {testRows.length === 0 ? (
+                  <p className="px-5 py-12 text-center text-sm text-mb-muted">
+                    Bu testni hali heç kim tugatmagan.
+                  </p>
+                ) : (
+                  <>
+                    {currentTestStatistics &&
+                      toNumber(currentTestStatistics.test_rank) > 0 && (
+                        <p className="num border-b border-mb-line bg-mb-tintSoft px-4 py-3 text-sm font-semibold text-mb-brandDark sm:px-5">
+                          Siz: {formatNumber(currentTestStatistics.test_rank)}
+                          -örin ·{" "}
+                          {formatNumber(currentTestStatistics.best_percentage)}% ·{" "}
+                          {formatDuration(
+                            currentTestStatistics.best_duration_seconds,
+                          )}
+                        </p>
+                      )}
+
+                    <ol className="divide-y divide-mb-line">
+                      {testRows.map((row) => {
+                        const isCurrentUser = row.user_id === user.id;
+
+                        return (
+                          <li
+                            key={row.user_id}
+                            className={cn(
+                              "flex items-center gap-3 px-4 py-3 sm:px-5",
+                              isCurrentUser && "bg-mb-tintSoft",
+                            )}
+                          >
+                            <Rank rank={toNumber(row.test_rank)} />
+
+                            <div className="min-w-0 flex-1">
+                              <p className="flex items-center gap-2 text-[15px] font-bold text-mb-ink">
+                                <span className="truncate">{row.full_name}</span>
+                                {isCurrentUser && <Tag tone="brand">Siz</Tag>}
+                              </p>
+
+                              <p className="num mt-0.5 truncate text-[13px] text-mb-muted">
+                                {formatDuration(row.duration_seconds)} ·{" "}
+                                {formatNumber(row.attempts_count)} uriniş
+                                <span className="hidden sm:inline">
+                                  {" "}
+                                  · {formatDate(row.completed_at)}
+                                </span>
+                              </p>
+                            </div>
+
+                            <p
+                              className={cn(
+                                "num shrink-0 text-base font-extrabold",
+                                toNumber(row.percentage) >= 90
+                                  ? "text-vp-success"
+                                  : "text-mb-ink",
+                              )}
+                            >
+                              {formatNumber(row.percentage)}%
+                            </p>
+                          </li>
+                        );
+                      })}
+                    </ol>
+
+                    <div className="px-4 pb-4 sm:px-5">
+                      <Pagination
+                        currentPage={testPage}
+                        totalPages={testTotalPages}
+                        totalItems={testTotal}
+                        pageSize={LEADERBOARD_PAGE_SIZE}
+                        hrefFor={(page) => hrefWith({ testPage: page })}
+                      />
+                    </div>
+                  </>
+                )}
+              </section>
+            )}
+          </>
+        )}
 
         <details className="group mt-6 rounded-2xl border border-mb-line bg-white">
           <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 text-sm font-bold text-mb-ink sm:px-5 [&::-webkit-details-marker]:hidden">
