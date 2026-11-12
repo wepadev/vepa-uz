@@ -13,7 +13,7 @@ import {
   Menu,
   MonitorPlay,
   type LucideIcon,
-} from "lucide-react";
+} from "@/components/ui/icons";
 
 import InstallAppButton from "@/components/install-app-button";
 import {

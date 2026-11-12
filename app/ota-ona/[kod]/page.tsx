@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CalendarCheck, ClipboardList, Star } from "lucide-react";
+import { CalendarCheck, ClipboardList, Star } from "@/components/ui/icons";
 
 import BrandMark from "@/components/ui/brand-mark";
 import { parseParentToken } from "@/lib/parent-link";

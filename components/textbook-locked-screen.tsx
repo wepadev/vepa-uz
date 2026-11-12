@@ -1,6 +1,8 @@
 import Link from "next/link";
 import BackLink from "@/components/ui/back-link";
-import { Crown, Lock } from "lucide-react";
+import { Crown } from "@/components/ui/icons";
+import { GlyphTile } from "@/components/ui/glyph";
+import { btnAccent, btnGhost } from "@/lib/ui";
 
 type TextbookLockedScreenProps = {
   /** Darslik nomi — bo'lmasa umumiy matn chiqadi */
@@ -22,10 +24,8 @@ export default function TextbookLockedScreen({
       <section className="mx-auto max-w-2xl px-3 py-6 sm:px-6 sm:py-12">
         <BackLink href="/textbooks" label="Darslik yeçimlari" />
 
-        <div className="mt-3 rounded-2xl border border-blue-200 bg-white p-6 text-center shadow-sm sm:p-8">
-          <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-amber-50 text-amber-700">
-            <Lock className="h-7 w-7" strokeWidth={1.9} aria-hidden="true" />
-          </span>
+        <div className="mt-3 rounded-2xl border border-mb-line bg-white p-6 text-center sm:p-8">
+          <GlyphTile name="locked" size="lg" className="mx-auto" />
 
           <h1 className="mt-5 text-xl font-bold leading-snug text-mb-ink sm:text-2xl">
             TOP kitoblar yeçimlari Premium tarifda
@@ -41,7 +41,7 @@ export default function TextbookLockedScreen({
           <div className="mt-6 grid gap-2 sm:grid-cols-2">
             <Link
               href="/pricing"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-mb-brand px-5 font-bold text-white transition hover:bg-mb-brandDark"
+              className={`${btnAccent} min-h-12`}
             >
               <Crown className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
               Premium oliş
@@ -49,7 +49,7 @@ export default function TextbookLockedScreen({
 
             <Link
               href="/textbooks/school"
-              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-300 px-5 font-semibold text-slate-700 transition hover:bg-slate-50"
+              className={`${btnGhost} min-h-12`}
             >
               Maktab darsliklari
             </Link>

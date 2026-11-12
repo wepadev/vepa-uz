@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import AppAlert from "@/components/ui/app-alert";
 import { LoadingLabel } from "@/components/ui/spinner";
 import { sendErrorReport } from "@/lib/send-error-report";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft } from "@/components/ui/icons";
 
 export default function ErrorPage({
   error,

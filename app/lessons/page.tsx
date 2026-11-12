@@ -1,6 +1,6 @@
 
 import Link from "next/link";
-import { ChevronRight, Info } from "lucide-react";
+import { ChevronRight, Info } from "@/components/ui/icons";
 
 import EmptyState from "@/components/ui/empty-state";
 import ProgressRing from "@/components/ui/progress-ring";

@@ -1,4 +1,4 @@
-import { Lock } from "lucide-react";
+import { Lock } from "@/components/ui/icons";
 import Link from "next/link";
 
 type PageProps = {

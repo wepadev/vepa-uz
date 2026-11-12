@@ -14,7 +14,7 @@ import type {
   UserSummaryRpcRow,
   UserTestStatisticsRpcRow,
 } from "@/lib/stats-types";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight } from "@/components/ui/icons";
 import EmptyState from "@/components/ui/empty-state";
 import { GlyphTile } from "@/components/ui/glyph";
 import PageHeader from "@/components/ui/page-header";

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BookOpen, ChevronRight, ClipboardCheck, MonitorPlay } from "lucide-react";
+import { BookOpen, ChevronRight, ClipboardCheck, MonitorPlay } from "@/components/ui/icons";
 
 import PageHeader from "@/components/ui/page-header";
 import { accents } from "@/components/ui/section-visual";

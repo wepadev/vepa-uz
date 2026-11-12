@@ -540,6 +540,22 @@ svg.lucide * {
   vector-effect: non-scaling-stroke;
 }
 
+/* Öz ikonkalarimiz (components/ui/icons.tsx): bitta qalinlik va
+   rangli fon ustida sariq urğu matn rangiga ötadi */
+svg.vi {
+  flex-shrink: 0;
+}
+svg.vi * {
+  vector-effect: non-scaling-stroke;
+}
+.btn-solid,
+.btn-accent,
+.spotlight,
+.bg-mb-brand,
+.bg-vp-brand {
+  --vi-accent: currentColor;
+}
+
 /* --- 3. Qirrali tugma ------------------------------------------ */
 .btn-solid,
 a.bg-mb-brand,

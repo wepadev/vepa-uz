@@ -38,17 +38,13 @@ type SectionRow = {
 
 type TestRow = {
   id: number;
-  section_id: number | null;
+  topic_id: number | null;
 };
 
 type TopicRow = {
   id: number;
   section_id: number;
   is_free: boolean;
-};
-
-type LessonTestRow = {
-  test_id: number | null;
 };
 
 function singleValue(value: string | string[] | undefined) {
@@ -84,7 +80,7 @@ export default async function TestSectionsPage({ searchParams }: PageProps) {
 
   const examType = examTypeData as ExamTypeRow;
 
-  const [sectionsResult, topicsResult, testsResult, lessonTestsResult] =
+  const [sectionsResult, topicsResult, testsResult] =
     await Promise.all([
     supabase
       .from("test_sections")
@@ -101,13 +97,9 @@ export default async function TestSectionsPage({ searchParams }: PageProps) {
 
       supabase
         .from("tests")
-        .select("id, section_id")
+        .select("id, topic_id")
         .eq("is_published", true)
-        .not("section_id", "is", null),
-
-      supabase
-        .from("lesson_tests")
-        .select("test_id"),
+        .not("topic_id", "is", null),
     ]);
 
   if (sectionsResult.error) {
@@ -124,30 +116,32 @@ export default async function TestSectionsPage({ searchParams }: PageProps) {
     throw new Error(`Testlar soni yuklanmadi: ${testsResult.error.message}`);
   }
 
-  if (lessonTestsResult.error) {
-    throw new Error(
-      `Dars testlari tekşirilmadi: ${lessonTestsResult.error.message}`,
-    );
-  }
-
   const sections = (sectionsResult.data ?? []) as SectionRow[];
   const tests = (testsResult.data ?? []) as TestRow[];
-  const lessonTestIds = new Set(
-    ((lessonTestsResult.data ?? []) as LessonTestRow[])
-      .map((row) => row.test_id)
-      .filter((id): id is number => typeof id === "number"),
-  );
-
   const testCountBySection = new Map<number, number>();
 
+  /*
+   * Test soni mavzular orqali sanaladi: öquvçi testga faqat naşr
+   * qilingan mavzu orqali yetib boradi. Ilgari bölimdagi hamma test
+   * sanalardi (yopiq mavzudagilari ham) va "78 test" yozilib, içida
+   * 27 tasi çiqardi.
+   */
+  const sectionOfTopic = new Map(
+    ((topicsResult.data ?? []) as TopicRow[]).map((topic) => [
+      topic.id,
+      topic.section_id,
+    ]),
+  );
+
   for (const test of tests) {
-    if (test.section_id === null || lessonTestIds.has(test.id)) {
-      continue;
-    }
+    const sectionId =
+      test.topic_id === null ? undefined : sectionOfTopic.get(test.topic_id);
+
+    if (sectionId === undefined) continue;
 
     testCountBySection.set(
-      test.section_id,
-      (testCountBySection.get(test.section_id) ?? 0) + 1,
+      sectionId,
+      (testCountBySection.get(sectionId) ?? 0) + 1,
     );
   }
 

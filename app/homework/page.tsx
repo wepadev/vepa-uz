@@ -7,7 +7,7 @@ import {
   Lock,
   Play,
   Users,
-} from "lucide-react";
+} from "@/components/ui/icons";
 
 import AppAlert from "@/components/ui/app-alert";
 import EmptyState from "@/components/ui/empty-state";

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Compass, House, Search } from "lucide-react";
+import { Compass, House, Search } from "@/components/ui/icons";
 
 /**
  * 404 sahifasi.

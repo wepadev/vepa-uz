@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { CheckCircle2, Clock, Coins, Sparkles } from "lucide-react";
+import { CheckCircle2, Clock, Coins, Sparkles } from "@/components/ui/icons";
 
 import AppAlert from "@/components/ui/app-alert";
 import EmptyState from "@/components/ui/empty-state";

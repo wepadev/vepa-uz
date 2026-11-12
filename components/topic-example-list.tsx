@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { ChevronDown, Play } from "lucide-react";
+import { ChevronDown, Play } from "@/components/ui/icons";
 
 import YouTubeEmbed from "@/components/youtube-embed";
 

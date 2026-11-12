@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { ChevronRight } from "lucide-react";
+import { ChevronRight } from "@/components/ui/icons";
 
 import { GlyphTile } from "@/components/ui/glyph";
 import TextbooksHeader from "@/components/textbooks-header";

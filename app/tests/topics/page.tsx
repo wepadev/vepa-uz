@@ -46,10 +46,6 @@ type TestRow = {
   topic_id: number | null;
 };
 
-type LessonTestRow = {
-  test_id: number | null;
-};
-
 function singleValue(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
 }
@@ -94,7 +90,7 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
 
   const examType = examTypeData as ExamTypeRow;
 
-  const [topicsResult, firstSectionResult, testsResult, lessonTestsResult] =
+  const [topicsResult, firstSectionResult, testsResult] =
     await Promise.all([
       supabase
         .from("test_topics")
@@ -125,8 +121,6 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
         .select("id, topic_id")
         .eq("is_published", true)
         .not("topic_id", "is", null),
-
-      supabase.from("lesson_tests").select("test_id"),
     ]);
 
   if (topicsResult.error) {
@@ -143,23 +137,11 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
     throw new Error(`Testlar soni yuklanmadi: ${testsResult.error.message}`);
   }
 
-  if (lessonTestsResult.error) {
-    throw new Error(
-      `Dars testlari tekşirilmadi: ${lessonTestsResult.error.message}`,
-    );
-  }
-
   const topics = (topicsResult.data ?? []) as TopicRow[];
-  const lessonTestIds = new Set(
-    ((lessonTestsResult.data ?? []) as LessonTestRow[])
-      .map((row) => row.test_id)
-      .filter((id): id is number => typeof id === "number"),
-  );
-
   const testCountByTopic = new Map<number, number>();
 
   for (const test of (testsResult.data ?? []) as TestRow[]) {
-    if (test.topic_id === null || lessonTestIds.has(test.id)) continue;
+    if (test.topic_id === null) continue;
 
     testCountByTopic.set(
       test.topic_id,

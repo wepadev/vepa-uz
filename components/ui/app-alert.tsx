@@ -7,7 +7,7 @@ import {
   Info,
   XCircle,
   type LucideIcon,
-} from "lucide-react";
+} from "@/components/ui/icons";
 
 type AlertVariant =
   | "success"

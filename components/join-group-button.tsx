@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { KeyRound, Plus } from "lucide-react";
+import { KeyRound, Plus } from "@/components/ui/icons";
 
 import SubmitButton from "@/components/ui/submit-button";
 

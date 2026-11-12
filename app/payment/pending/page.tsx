@@ -4,7 +4,7 @@ import {
   redirect,
 } from "next/navigation";
 
-import { CheckCircle2, Send } from "lucide-react";
+import { CheckCircle2, Send } from "@/components/ui/icons";
 
 import {
   TELEGRAM_ADMIN_USERNAME,

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { isGroupOnlyTest as checkGroupOnlyTest } from "@/lib/group-tests";
 import {
   notFound,
   redirect,
@@ -10,7 +11,7 @@ import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import type { RankingTestRpcRow } from "@/lib/stats-types";
 import { TEST_TOPIC_SELECT, testLabel } from "@/lib/test-label";
-import { ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
+import { ChevronLeft, ChevronRight, RotateCcw } from "@/components/ui/icons";
 import PageHeader from "@/components/ui/page-header";
 import ProgressRing from "@/components/ui/progress-ring";
 import { Tag } from "@/components/ui/row";
@@ -959,16 +960,13 @@ const isLessonTest =
  * Uy vazifasi testlari qayta ishlanmaydi — "Qayta ishlash" tugmasi
  * o'rniga vazifalar sahifasiga yo'naltiramiz.
  *
- * db/06 hali ishga tushirilmagan bo'lsa RPC xato beradi; bunday
- * holatda oddiy test deb hisoblaymiz va sahifa ishlashda davom etadi.
+ * Tekşiruv lib/group-tests.ts da (bazadagi is_group_only_test()
+ * db/26 dan beri har bir katalog testiga true qaytaradi).
  */
-const groupOnlyResult = await supabase.rpc(
-  "is_group_only_test",
-  { p_test_id: attempt.test_id },
+const isGroupOnlyTest = await checkGroupOnlyTest(
+  supabase,
+  attempt.test_id,
 );
-
-const isGroupOnlyTest =
-  groupOnlyResult.data === true;
 
 const isRankingTest =
   rankingTests.some(

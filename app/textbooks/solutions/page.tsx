@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "@/components/ui/icons";
 
 import EmptyState from "@/components/ui/empty-state";
 import TextbookLockedScreen from "@/components/textbook-locked-screen";
