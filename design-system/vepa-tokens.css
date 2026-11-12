@@ -134,7 +134,7 @@
   --vp-font-hand: var(--font-hand), cursive;
   --vp-pen: #d7362a;
   --vp-marker: #ffe27a;
-  --vp-font-math: KaTeX_Main, "Latin Modern Roman", "Times New Roman", serif;
+  --vp-font-math: var(--font-cmu), "CMU Serif", KaTeX_Main, "Latin Modern Roman", "Times New Roman", serif;
   --vp-font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
 .dark {

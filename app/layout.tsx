@@ -1,6 +1,7 @@
 import "katex/dist/katex.min.css";
 import type { Metadata, Viewport } from "next";
 import { Geologica } from "next/font/google";
+import localFont from "next/font/local";
 
 import SiteNav from "@/components/site-nav";
 import SiteJsonLd from "@/components/site-json-ld";
@@ -42,6 +43,30 @@ const sans = Geologica({
   subsets: ["latin", "latin-ext"],
   display: "swap",
   variable: "--font-sans",
+});
+
+/*
+ * Savol matni va formulalar şrifti — CMU Serif (Computer Modern
+ * Unicode, LaTeX'ning öz şrifti). Sayt interfeysi Geologica'da qoladi;
+ * CMU faqat `.math-content` içida işlatiladi (globals.css,
+ * `--font-latex-text`). ö, ğ, ş, ç şriftning özida çizilgan.
+ *
+ * `preload: false` — fayllar faqat savol bor sahifada yuklanadi.
+ * Fayllar kiçraytirilgan (lotin, yunon, matematik belgilar; ~32 KB),
+ * qayta yasaş: docs/dizayn.md → "Şrift".
+ */
+const cmu = localFont({
+  src: [
+    { path: "../assets/fonts/cmu-serif-regular.woff2", weight: "400", style: "normal" },
+    { path: "../assets/fonts/cmu-serif-italic.woff2", weight: "400", style: "italic" },
+    { path: "../assets/fonts/cmu-serif-bold.woff2", weight: "700", style: "normal" },
+    { path: "../assets/fonts/cmu-serif-bold-italic.woff2", weight: "700", style: "italic" },
+  ],
+  display: "swap",
+  preload: false,
+  variable: "--font-cmu",
+  fallback: ["KaTeX_Main", "Latin Modern Roman", "Times New Roman", "serif"],
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
@@ -134,6 +159,8 @@ export default function RootLayout({
   return (
     <html
       lang="uz"
+      // --font-cmu <html> da turadi: globals.css dagi :root uni şunda köradi
+      className={cmu.variable}
       suppressHydrationWarning
     >
       <body

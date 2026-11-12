@@ -1,5 +1,7 @@
 import katex from "katex";
 
+import { fixKatexLetters } from "@/lib/katex-harflar";
+
 type MathTextProps = {
   content: string | null | undefined;
   className?: string;
@@ -56,7 +58,7 @@ function renderFormula(
     ? formula.trim()
     : String.raw`\displaystyle ${formula.trim()}`;
 
-  return katex.renderToString(preparedFormula, {
+  const html = katex.renderToString(preparedFormula, {
     displayMode,
     throwOnError: false,
     strict: false,
@@ -64,6 +66,9 @@ function renderFormula(
     output: "htmlAndMathml",
     errorColor: "#dc2626",
   });
+
+  // ö, ğ, ş, ç — bitta tayyor harf bölib çiqsin (lib/katex-harflar.ts)
+  return fixKatexLetters(html);
 }
 
 export default function MathText({

@@ -63,6 +63,28 @@ qöllaydi). Sarlavha `font-extrabold`, matn `font-medium`/oddiy.
 Raqamlar `.num` klassi bilan (bir xil enli raqamlar) — jadval va
 hisoblagiçlar sakramaydi.
 
+**Savol matni va formulalar — CMU Serif** (Computer Modern Unicode,
+LaTeX'ning öz şrifti). Faqat `.math-content` içida (`MathText`
+komponenti, bosh sahifadagi namuna): savol, variant, izoh, yeçim.
+Sayt interfeysi Geologica'da qoladi. KaTeX formulalari ham Computer
+Modern, şuning uçun matn va formula bir xil körinadi.
+
+- KaTeX `ö ğ ş ç` ni özi çizmaydi — "harf + ustki belgi" qilib böladi
+  (`ş` da ilgak harf tepasiga çiqadi). `lib/katex-harflar.ts`
+  (`fixKatexLetters`) ularni bitta harfga qaytaradi; KaTeX HTML
+  çiqaradigan har yerda şu funksiyadan ötkazing.
+- Fayllar `assets/fonts/` (OFL litsenziyasi), `app/layout.tsx` da
+  `--font-cmu`. Kiçraytirilgan: lotin + lotin-ext, yunon, matematik
+  belgilar, ~32 KB. Qayta yasaş (npm `computer-modern` paketidagi
+  `.ttf` dan):
+
+  ```sh
+  pyftsubset cmu-serif-500-roman.ttf --flavor=woff2 --no-hinting \
+    --desubroutinize --layout-features='kern,liga,mark,mkmk,ccmp' \
+    --unicodes="U+0000-017F,U+018F,U+0259,U+02B0-02FF,U+0300-0331,U+0391-03C9,U+03D1,U+03D5,U+03F5,U+2000-206F,U+2070-209F,U+20AC,U+2100-215F,U+2190-2199,U+21D0-21D5,U+2200-22FF,U+25A0-25CF,U+FB00-FB04" \
+    --output-file=assets/fonts/cmu-serif-regular.woff2
+  ```
+
 Kiçik bölim yorliği — `.eyebrow` (bosh harflar, siyrak).
 
 ## Belgilar

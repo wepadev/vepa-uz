@@ -1,5 +1,7 @@
 import katex from "katex";
 
+import { fixKatexLetters } from "@/lib/katex-harflar";
+
 import SampleQuizClient, {
   type SampleQuestion,
 } from "@/components/home/sample-quiz-client";
@@ -16,7 +18,9 @@ import SampleQuizClient, {
  * (zaif internetda bosh sahifa yengil qoladi).
  */
 const tex = (formula: string) =>
-  katex.renderToString(formula, { throwOnError: false, output: "html" });
+  fixKatexLetters(
+    katex.renderToString(formula, { throwOnError: false, output: "html" }),
+  );
 
 /** `$...$` içidagi formulalarni HTML ga aylantiradi */
 function render(text: string) {
