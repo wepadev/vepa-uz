@@ -844,7 +844,7 @@ export default async function ManageTextbookPage({
         </CreatePanel>
 
         {topics.length > 0 && (
-          <div className="mt-5 rounded-2xl border border-mb-line bg-white shadow-sm">
+          <div className="mt-5 rounded-2xl border border-mb-line bg-white">
             {topics.map((topic, index) => {
               const hasVideo = Boolean(topic.video_url);
               const examples = examplesByTopic.get(topic.id) ?? [];

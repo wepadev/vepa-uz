@@ -252,7 +252,7 @@ export default async function GroupReportPrintPage({
         </p>
 
         {/* ============ 1-varaq: umumiy ============ */}
-        <article className="varaq mt-6 rounded-2xl border border-mb-line bg-white p-5 shadow-sm print:mt-0 print:rounded-none print:p-0 print:shadow-none">
+        <article className="varaq mt-6 rounded-2xl border border-mb-line bg-white p-5 print:mt-0 print:rounded-none print:p-0 print:shadow-none">
           <header className="border-b border-slate-200 pb-4">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-mb-brand">
               Vepa Ustoz · vepa.uz
@@ -347,7 +347,7 @@ export default async function GroupReportPrintPage({
         {sheets.map((sheet) => (
           <article
             key={sheet.userId}
-            className="varaq yangi-varaq mt-6 rounded-2xl border border-mb-line bg-white p-5 shadow-sm print:rounded-none print:p-0 print:shadow-none"
+            className="varaq yangi-varaq mt-6 rounded-2xl border border-mb-line bg-white p-5 print:rounded-none print:p-0 print:shadow-none"
           >
             <header className="border-b border-slate-200 pb-4">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-mb-brand">

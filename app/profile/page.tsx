@@ -14,7 +14,13 @@ import type {
   UserSummaryRpcRow,
   UserTestStatisticsRpcRow,
 } from "@/lib/stats-types";
+import { ChevronRight } from "lucide-react";
+import EmptyState from "@/components/ui/empty-state";
+import { GlyphTile } from "@/components/ui/glyph";
 import PageHeader from "@/components/ui/page-header";
+import ProgressRing from "@/components/ui/progress-ring";
+import { Tag } from "@/components/ui/row";
+import { btnAccent, btnGhost, btnPrimary } from "@/lib/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -527,10 +533,6 @@ export default async function ProfilePage() {
       summary?.excellent_tests,
     );
 
-  const maximumRatingPoints =
-    rankingTestsTotal * 100;
-
-
 const premiumTimestamp =
   profile.premium_until
     ? new Date(
@@ -594,61 +596,51 @@ const latestPlan =
         backHref="/"
         backLabel="Boş sahifa"
         title="Profilim"
-        width="4xl"
+        glyph="profile"
+        width="3xl"
         action={<LogoutButton />}
       />
 
-      <section className="mx-auto max-w-4xl px-3 py-5 sm:px-6 sm:py-8">
-        {/* Kim ekaningiz va o'rningiz */}
-        <div className="relative overflow-hidden hero-board rounded-3xl p-5 text-white sm:p-6">
+      <section className="mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-8">
+        {/* Kim ekaningiz */}
+        <div className="flex items-center gap-4">
+          <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-mb-brand text-xl font-extrabold text-white ring-4 ring-mb-tint">
+            {initials || "O"}
+          </span>
 
-          <div className="relative flex flex-wrap items-center gap-4">
-            <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-white/15 text-xl font-bold ring-1 ring-white/25 sm:h-20 sm:w-20 sm:text-2xl">
-              {initials || "O"}
-            </span>
+          <div className="min-w-0 flex-1">
+            <h2 className="truncate text-xl font-extrabold text-mb-ink sm:text-2xl">
+              {fullName}
+            </h2>
 
-            <div className="min-w-0 flex-1">
-              <h1 className="truncate text-xl font-bold sm:text-2xl">
-                {fullName}
-              </h1>
+            <p className="truncate text-sm text-mb-muted">
+              {user.email ?? "Email körsatilmagan"}
+            </p>
 
-              <p className="mt-0.5 truncate text-sm text-blue-100">
-                {user.email ?? "Email körsatilmagan"}
-              </p>
+            <div className="mt-1.5 flex flex-wrap gap-1.5">
+              <Tag tone={hasPremium && !isAdmin ? "accent" : "neutral"}>
+                {isAdmin
+                  ? "Administrator"
+                  : hasPremium
+                    ? "Premium"
+                    : "Bepul tarif"}
+              </Tag>
 
-              <div className="mt-2 flex flex-wrap gap-1.5">
-                <span className="rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-bold text-white ring-1 ring-white/20">
-                  {isAdmin
-                    ? "Administrator"
-                    : hasPremium
-                      ? "Premium"
-                      : "Bepul tarif"}
-                </span>
-
-                {!isAdmin && isRanked && (
-                  <span className="rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-bold text-white ring-1 ring-white/20">
-                    Reytingda {overallRank}-örin
-                    <span className="font-medium text-blue-100">
-                      {" "}
-                      / {overallParticipants}
-                    </span>
-                  </span>
-                )}
-              </div>
+              {!isAdmin && isRanked && (
+                <Tag tone="brand">
+                  Reytingda {overallRank}-örin · {overallParticipants} içida
+                </Tag>
+              )}
             </div>
           </div>
         </div>
 
         {/* Tarif */}
-        <div
-          className={
-            hasPremium
-              ? "mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4"
-              : "mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-mb-line bg-white p-4 shadow-sm"
-          }
-        >
-          <div className="min-w-0">
-            <p className="text-sm font-bold text-mb-ink">
+        <div className="mt-5 flex flex-wrap items-center gap-3 rounded-2xl border border-mb-line bg-white p-3.5">
+          <GlyphTile name="premium" size="sm" />
+
+          <div className="min-w-0 flex-1">
+            <p className="text-[15px] font-bold leading-5 text-mb-ink">
               {isAdmin
                 ? "Barça materiallar oçiq"
                 : hasPremium
@@ -656,132 +648,117 @@ const latestPlan =
                   : "Bepul dars va testlar oçiq"}
             </p>
 
-            <p className="mt-0.5 text-sm text-mb-muted">
+            <p className="num mt-0.5 text-sm text-mb-muted">
               {isAdmin
                 ? "Admin hisobida muddat talab qilinmaydi."
                 : hasPremium
                   ? `${formatDate(profile.premium_until)} gaça · ${premiumDaysRemaining} kun qoldi`
-                  : "Qolgan dars va testlarni Premium oçadi."}
+                  : "Qolganini Premium oçadi."}
             </p>
           </div>
 
-          <div className="flex shrink-0 gap-2">
+          <div className="flex w-full gap-2 sm:w-auto">
             {!isAdmin && (
-              <Link
-                href="/pricing"
-                className={
-                  hasPremium
-                    ? "inline-flex min-h-11 items-center rounded-xl bg-amber-500 px-4 text-sm font-bold text-white hover:bg-amber-600"
-                    : "inline-flex min-h-11 items-center rounded-xl bg-mb-brand px-4 text-sm font-bold text-white hover:bg-mb-brandDark"
-                }
-              >
+              <Link href="/pricing" className={`${btnAccent} flex-1`}>
                 {hasPremium ? "Uzaytiriş" : "Premium oliş"}
               </Link>
             )}
 
-            <Link
-              href="/profile/payments"
-              className="inline-flex min-h-11 items-center rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-            >
+            <Link href="/profile/payments" className={`${btnGhost} flex-1`}>
               Tölovlarim
             </Link>
           </div>
         </div>
 
-        {/* Statistika */}
-        <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3">
-          {[
-            {
-              label: "Işlangan test",
-              value: String(testsCompleted),
-              hint: `${rankingTestsTotal} tadan`,
-              tone: "text-mb-brand",
-            },
-            {
-              label: "Örtaça",
-              value: `${formatPercentage(averagePercentage)}%`,
-              hint: "eng yaxşi natijalar",
-              tone: "text-mb-brand",
-            },
-            {
-              label: "Eng yuqori",
-              value: `${formatPercentage(highestPercentage)}%`,
-              hint: `${excellentTests} ta test 90%+`,
-              tone: "text-emerald-600",
-            },
-            {
-              label: "Reyting bali",
-              value: formatPercentage(ratingPoints),
-              hint: `maksimal ${maximumRatingPoints}`,
-              tone: "text-red-600",
-            },
-          ].map((card) => (
-            <div
-              key={card.label}
-              className="rounded-2xl border border-mb-line bg-white px-3 py-3 text-center shadow-sm"
+        {/* Statistika: halqa — örtaça, yonida uçta son */}
+        <div className="mt-3 rounded-2xl border border-mb-line bg-white p-4">
+          <div className="flex items-center gap-4">
+            <ProgressRing
+              value={averagePercentage}
+              size={76}
+              stroke={8}
+              tone={averagePercentage >= 90 ? "success" : "brand"}
             >
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-mb-muted">
-                {card.label}
-              </p>
+              <span className="num text-base font-extrabold text-mb-ink">
+                {formatPercentage(averagePercentage)}%
+              </span>
+            </ProgressRing>
 
-              <p className={`mt-1 text-2xl font-bold ${card.tone}`}>
-                {card.value}
-              </p>
-
-              <p className="mt-0.5 text-[11px] text-mb-muted">
-                {card.hint}
+            <div className="min-w-0 flex-1">
+              <p className="eyebrow">Örtaça natija</p>
+              <p className="num mt-1 text-sm leading-5 text-mb-muted">
+                {testsCompleted} / {rankingTestsTotal} reyting testi işlangan
+                {excellentTests > 0 ? ` · ${excellentTests} tasi 90%+` : ""}
               </p>
             </div>
-          ))}
+          </div>
+
+          <dl className="num mt-4 grid grid-cols-3 gap-2 text-center">
+            {[
+              ["Işlangan test", String(testsCompleted)],
+              ["Eng yuqori", `${formatPercentage(highestPercentage)}%`],
+              ["Reyting bali", formatPercentage(ratingPoints)],
+            ].map(([label, value]) => (
+              <div key={label} className="rounded-xl bg-slate-50 px-2 py-2.5">
+                <dt className="text-xs font-semibold text-mb-muted">{label}</dt>
+                <dd className="mt-0.5 text-xl font-extrabold text-mb-ink">
+                  {value}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
 
         {/* Darslar progressi */}
-        <div className="mt-4 rounded-2xl border border-mb-line bg-white p-4 shadow-sm">
-          <div className="flex items-end justify-between gap-3">
-            <div>
-              <p className="text-sm font-bold text-mb-ink">
-                Darslar progressi
-              </p>
+        <Link
+          href="/lessons"
+          className="edge group mt-3 flex items-center gap-3 rounded-2xl border border-mb-line bg-white p-3.5"
+        >
+          <GlyphTile name="lessons" size="sm" />
 
-              <p className="mt-0.5 text-sm text-mb-muted">
-                {completedLessons} / {lessons.length} dars tugallangan
-              </p>
-            </div>
+          <span className="min-w-0 flex-1">
+            <span className="flex items-baseline justify-between gap-2">
+              <span className="text-[15px] font-bold text-mb-ink">
+                Darslar
+              </span>
+              <span className="num text-[13px] text-mb-muted">
+                {completedLessons} / {lessons.length}
+              </span>
+            </span>
 
-            <Link
-              href="/lessons"
-              className="inline-flex min-h-10 items-center rounded-xl bg-mb-brand px-4 text-sm font-bold text-white hover:bg-mb-brandDark"
-            >
-              Davom etiş
-            </Link>
-          </div>
+            <span className="mt-2 block h-2 overflow-hidden rounded-full bg-slate-100">
+              <span
+                className="block h-full rounded-full bg-mb-brand"
+                style={{ width: `${lessonPercentage}%` }}
+              />
+            </span>
+          </span>
 
-          <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-blue-100">
-            <div
-              className="h-full rounded-full bg-mb-brand"
-              style={{ width: `${lessonPercentage}%` }}
-            />
-          </div>
-        </div>
+          <ChevronRight
+            className="h-5 w-5 shrink-0 text-slate-400 transition-transform group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
+        </Link>
 
         {/* Testlar bo'yicha o'rin */}
-        <h2 className="mt-7 text-lg font-bold">Testlardagi örningiz</h2>
+        <h2 className="eyebrow mt-7">Testlardagi örningiz</h2>
 
         {testRankingRows.length === 0 ? (
-          <div className="mt-3 rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-10 text-center">
-            <p className="font-bold text-slate-800">
-              Hali reyting natijasi yöq
-            </p>
-
-            <Link
-              href="/tests"
-              className="mt-3 inline-flex min-h-11 items-center rounded-xl bg-mb-brand px-5 text-sm font-bold text-white hover:bg-mb-brandDark"
-            >
-              Test işlaş
-            </Link>
-          </div>
+          <EmptyState
+            glyph="ranking"
+            title="Hali reyting natijasi yöq"
+            className="mt-3"
+            action={
+              <Link href="/tests" className={btnPrimary}>
+                Test işlaş
+              </Link>
+            }
+          >
+            Reyting testini işlasangiz, har bir testdagi örningiz şu yerda
+            çiqadi.
+          </EmptyState>
         ) : (
-          <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+          <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white">
             {testRankingRows.map((row, index) => (
               <div
                 key={row.test_id}
@@ -792,11 +769,11 @@ const latestPlan =
                 }
               >
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-[15px] font-semibold text-mb-ink">
+                  <p className="truncate text-[15px] font-bold text-mb-ink">
                     {row.title}
                   </p>
 
-                  <p className="mt-0.5 text-xs text-mb-muted">
+                  <p className="num mt-0.5 text-[13px] text-mb-muted">
                     {formatPercentage(row.attempts_count)} uriniş ·
                     eng yaxşi vaqt{" "}
                     {formatDuration(row.best_duration_seconds)}
@@ -804,21 +781,21 @@ const latestPlan =
                 </div>
 
                 <div className="flex shrink-0 items-center gap-2">
-                  <span className="rounded-xl bg-emerald-50 px-2.5 py-1.5 text-sm font-bold text-emerald-700">
+                  <span className="num text-base font-extrabold text-mb-ink">
                     {formatPercentage(row.best_percentage)}%
                   </span>
 
-                  <span className="rounded-xl bg-mb-tintSoft px-2.5 py-1.5 text-sm font-bold text-mb-brand">
-                    {formatPercentage(row.test_rank)}/
+                  <Tag tone="brand">
+                    {formatPercentage(row.test_rank)}-örin ·{" "}
                     {formatPercentage(row.test_participants)}
-                  </span>
+                  </Tag>
 
                   {row.best_attempt_id && (
                     <Link
                       href={`/results/view?attemptId=${row.best_attempt_id}`}
-                      className="inline-flex min-h-10 items-center rounded-xl border border-slate-200 px-3 text-xs font-semibold text-slate-600 hover:bg-slate-50"
+                      className="inline-flex min-h-10 items-center rounded-lg px-2.5 text-sm font-semibold text-mb-brandDark hover:bg-mb-tintSoft"
                     >
-                      Köriş
+                      Tahlil
                     </Link>
                   )}
                 </div>
@@ -831,17 +808,17 @@ const latestPlan =
         {recentAttempts.length > 0 && (
           <>
             <div className="mt-7 flex items-end justify-between gap-3">
-              <h2 className="text-lg font-bold">Sönggi natijalar</h2>
+              <h2 className="eyebrow">Sönggi natijalar</h2>
 
               <Link
                 href="/results"
-                className="text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
+                className="text-sm font-semibold text-mb-brandDark hover:underline"
               >
                 Barçasi
               </Link>
             </div>
 
-            <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+            <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white">
               {recentAttempts.map((attempt, index) => {
                 const percentage = toNumber(attempt.percentage);
 
@@ -856,12 +833,12 @@ const latestPlan =
                     }
                   >
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate text-[15px] font-semibold text-mb-ink">
+                      <span className="block truncate text-[15px] font-bold text-mb-ink">
                         {rankingTestTitleMap.get(attempt.test_id) ??
                           "Noma’lum test"}
                       </span>
 
-                      <span className="mt-0.5 block text-xs text-mb-muted">
+                      <span className="num mt-0.5 block text-[13px] text-mb-muted">
                         {formatDate(attempt.completed_at)} ·{" "}
                         {attempt.score}/{attempt.total_questions} ball
                       </span>
@@ -869,11 +846,11 @@ const latestPlan =
 
                     <span
                       className={
-                        percentage >= 80
-                          ? "shrink-0 rounded-full bg-emerald-50 px-2.5 py-1 text-sm font-bold text-emerald-700"
+                        percentage >= 90
+                          ? "num shrink-0 text-base font-extrabold text-vp-success"
                           : percentage >= 60
-                            ? "shrink-0 rounded-full bg-blue-50 px-2.5 py-1 text-sm font-bold text-blue-700"
-                            : "shrink-0 rounded-full bg-red-50 px-2.5 py-1 text-sm font-bold text-red-700"
+                            ? "num shrink-0 text-base font-extrabold text-mb-ink"
+                            : "num shrink-0 text-base font-extrabold text-vp-danger"
                       }
                     >
                       {formatPercentage(attempt.percentage)}%
@@ -886,8 +863,8 @@ const latestPlan =
         )}
 
         {/* Reyting qoidasi — kerak bo'lsa ochiladi */}
-        <details className="mt-4 rounded-2xl border border-mb-line bg-white px-4 py-3 shadow-sm">
-          <summary className="cursor-pointer list-none text-sm font-semibold text-mb-brand">
+        <details className="mt-4 rounded-2xl border border-mb-line bg-white px-4 py-3">
+          <summary className="cursor-pointer list-none text-sm font-bold text-mb-ink [&::-webkit-details-marker]:hidden">
             Reyting qanday hisoblanadi?
           </summary>
 
@@ -900,7 +877,7 @@ const latestPlan =
         </details>
 
         {/* Sozlamalar */}
-        <h2 className="mt-7 text-lg font-bold">Sozlamalar</h2>
+        <h2 className="eyebrow mt-7">Sozlamalar</h2>
 
         <div className="mt-3">
           <ProfileForm

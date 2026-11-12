@@ -66,7 +66,7 @@ export default function TestStartScreen({
           </AppAlert>
         )}
 
-        <div className="mt-3 rounded-2xl border border-mb-line bg-white p-5 shadow-sm sm:p-7">
+        <div className="mt-3 rounded-2xl border border-mb-line bg-white p-5 sm:p-7">
           <h1 className="text-xl font-bold leading-snug text-mb-ink sm:text-2xl">
             {title}
           </h1>

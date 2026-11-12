@@ -685,7 +685,7 @@ for (
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
         <form
           method="get"
-          className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5"
+          className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5"
         >
           <div className="grid gap-3 md:grid-cols-[1fr_230px_auto]">
             <div>
@@ -701,7 +701,7 @@ for (
                 name="q"
                 defaultValue={query}
                 placeholder="Masalan: Ali yoki email@gmail.com"
-                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
+                className="mt-2 min-h-12 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               />
             </div>
 
@@ -717,7 +717,7 @@ for (
                 id="users-state"
                 name="state"
                 defaultValue={selectedState}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
+                className="mt-2 min-h-12 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               >
                 <option value="all">
                   Barçasi
@@ -751,7 +751,7 @@ for (
 
             <SubmitButton
 
-              className="min-h-12 self-end rounded-2xl bg-mb-brand px-6 py-3 font-bold text-white hover:bg-mb-brandDark"
+              className="min-h-12 self-end rounded-xl bg-mb-brand px-6 py-3 font-bold text-white hover:bg-mb-brandDark"
             >
               Qidiriş
             </SubmitButton>

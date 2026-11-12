@@ -122,7 +122,7 @@ export default async function GroupAssignments({
       ) : (
         <form
           action={createAssignment}
-          className="mt-3 rounded-2xl border border-mb-line bg-white p-4 shadow-sm"
+          className="mt-3 rounded-2xl border border-mb-line bg-white p-4"
         >
           {hidden}
 
@@ -197,7 +197,7 @@ export default async function GroupAssignments({
       <h2 className="mt-8 text-lg font-bold">Berilgan vazifalar</h2>
 
       {assignments.length > 0 ? (
-        <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+        <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white">
           {assignments.map((assignment, index) => (
             <div
               key={assignment.id}

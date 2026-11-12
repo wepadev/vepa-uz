@@ -12,7 +12,7 @@ import { Compass, House, Search } from "lucide-react";
 export default function NotFound() {
   return (
     <main className="grid min-h-screen place-items-center bg-slate-50 px-4 py-10 text-slate-900">
-      <div className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-5 text-center shadow-xl shadow-slate-200/60 sm:p-8">
+      <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-5 text-center shadow-xl shadow-slate-200/60 sm:p-8">
         <span className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-mb-tint text-mb-brand">
           <Compass className="h-8 w-8" strokeWidth={1.9} aria-hidden="true" />
         </span>
@@ -33,7 +33,7 @@ export default function NotFound() {
         <div className="mt-6 grid gap-2 sm:grid-cols-2">
           <Link
             href="/"
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-mb-brand px-5 font-bold text-white transition hover:bg-mb-brandDark"
+            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-mb-brand px-5 font-bold text-white transition hover:bg-mb-brandDark"
           >
             <House className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
             Boş sahifa

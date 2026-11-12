@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Check, Crown } from "lucide-react";
+import { Check, Lock } from "lucide-react";
 
 import { createPaymentOrderAction } from "@/app/pricing/actions";
 import PaymentSubmitButton from "@/components/payment-submit-button";
@@ -8,6 +8,9 @@ import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import { asRpcClient } from "@/lib/supabase/rpc";
 import PageHeader, { headerButton } from "@/components/ui/page-header";
+import { Tag } from "@/components/ui/row";
+import { btnGhost, btnPrimary } from "@/lib/ui";
+import { cn } from "@/lib/utils";
 
 export const dynamic =
   "force-dynamic";
@@ -193,12 +196,30 @@ export default async function PricingPage({
     "Yangi testlar birinçi bölib",
   ];
 
+  /* Bir oylik tarifga nisbatan tejaş foizi */
+  const baseMonthly = plans
+    .filter((plan) => Math.max(1, toNumber(plan.duration_months)) === 1)
+    .map(monthlyPrice)[0];
+
+  const savingOf = (plan: PlanRow) =>
+    baseMonthly && baseMonthly > 0
+      ? Math.round((1 - monthlyPrice(plan) / baseMonthly) * 100)
+      : 0;
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <PageHeader
         backHref="/"
         backLabel="Boş sahifa"
+        glyph="premium"
         title="Premium"
+        subtitle={
+          premiumStatus?.is_admin
+            ? "Administrator hisobi"
+            : hasPremium
+              ? `Faol · ${formatDate(premiumStatus?.premium_until ?? null)} gaça (${toNumber(premiumStatus?.days_remaining)} kun)`
+              : "Hozir: bepul tarif"
+        }
         width="3xl"
         action={
           user ? (
@@ -209,129 +230,99 @@ export default async function PricingPage({
         }
       />
 
-      {/*
-        Mobil ekranga sig'ishi uchun hamma narsa ixcham: sarlavha
-        kichik, afzalliklar bitta qatorda, tariflar esa baland karta
-        emas — qatorlar. Odam pastga tushirmasdan narxni ko'radi va
-        darrov tugmani bosadi.
-      */}
-      <section className="mx-auto max-w-3xl px-3 pb-6 pt-3 sm:px-6 sm:pt-5">
-        <div className="relative overflow-hidden hero-board rounded-2xl p-4 text-white sm:p-6">
-
-          <div className="relative">
-            <p className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-bold text-blue-100 ring-1 ring-white/20">
-              <Crown
-                className="h-3 w-3"
-                strokeWidth={2.6}
-                aria-hidden="true"
-              />
-              {premiumStatus?.is_admin
-                ? "Administrator"
-                : hasPremium
-                  ? `Faol · ${toNumber(premiumStatus?.days_remaining)} kun qoldi`
-                  : "Bepul tarif"}
-            </p>
-
-            <h1 className="mt-2 text-xl font-bold leading-tight sm:text-3xl">
-              Hamma dars va test bir obunada
-            </h1>
-
-            <p className="mt-1.5 text-sm leading-5 text-blue-100">
-              {hasPremium
-                ? `${formatDate(premiumStatus?.premium_until ?? null)} gaça amal qiladi.`
-                : "Bepul belgisi bor dars va testlar oçiq. Qolganini Premium oçadi."}
-            </p>
-
-            <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1">
-              {benefits.map((item) => (
-                <span
-                  key={item}
-                  className="inline-flex items-center gap-1 text-xs font-medium text-white"
-                >
-                  <Check
-                    className="h-3.5 w-3.5 shrink-0 text-emerald-300"
-                    strokeWidth={3}
-                    aria-hidden="true"
-                  />
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-
+      <section className="mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-8">
         {locked && (
-          <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">
-            Siz oçmoqçi bölgan {locked === "test" ? "test" : "dars"}{" "}
-            Premium tarifga kiradi.
+          <div className="mb-3 flex items-center gap-2.5 rounded-2xl border border-vp-warning-line bg-vp-warning-soft px-4 py-3 text-sm font-semibold text-vp-warning">
+            <Lock className="h-4 w-4 shrink-0" aria-hidden="true" />
+            Siz oçmoqçi bölgan {locked === "test" ? "test" : "dars"} Premium
+            tarifga kiradi.
           </div>
         )}
 
         {errorMessage && (
-          <div className="mt-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700">
+          <div className="mb-3 rounded-2xl border border-vp-danger-line bg-vp-danger-soft px-4 py-3 text-sm font-semibold text-vp-danger">
             {errorMessage}
           </div>
         )}
 
-        {/* Tariflar — qatorlar ko'rinishida */}
-        <div className="mt-3 space-y-2">
+        {/* Nima olasiz */}
+        <div className="rounded-2xl border border-mb-line bg-white p-4 sm:p-5">
+          <h2 className="text-xl font-extrabold leading-tight text-mb-ink sm:text-2xl">
+            Hamma dars va test — bitta obunada
+          </h2>
+
+          <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+            {benefits.map((item) => (
+              <li
+                key={item}
+                className="flex items-center gap-2.5 text-[15px] text-slate-700"
+              >
+                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-vp-success-soft text-vp-success">
+                  <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                </span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <h2 className="eyebrow mt-6">Muddatni tanlang</h2>
+
+        <div className="mt-3 grid gap-3">
           {plans.map((plan) => {
             const months = Math.max(1, toNumber(plan.duration_months));
             const isBest = plan.code === bestPlanCode;
             const isSelected = selectedPlan === plan.code;
+            const saving = savingOf(plan);
 
             return (
               <form
                 key={plan.plan_id}
                 action={createPaymentOrderAction}
-                className={
+                className={cn(
+                  "relative flex items-center gap-3 rounded-2xl border bg-white p-3.5",
                   isBest
-                    ? "flex items-center gap-3 rounded-2xl border-2 border-blue-400 bg-white p-3 shadow-sm"
+                    ? "border-vp-accent shadow-[0_0_0_1px_var(--vp-accent)]"
                     : isSelected
-                      ? "flex items-center gap-3 rounded-2xl border-2 border-blue-300 bg-white p-3 shadow-sm"
-                      : "flex items-center gap-3 rounded-2xl border border-mb-line bg-white p-3 shadow-sm"
-                }
+                      ? "border-mb-brand"
+                      : "border-mb-line",
+                )}
               >
                 <input type="hidden" name="planCode" value={plan.code} />
 
                 <span
-                  className={
+                  className={cn(
+                    "num grid h-14 w-14 shrink-0 place-content-center rounded-xl text-center",
                     isBest
-                      ? "grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-mb-brand text-white"
-                      : "grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-slate-100 text-slate-600"
-                  }
+                      ? "bg-vp-accent text-vp-on-accent"
+                      : "bg-slate-100 text-slate-700",
+                  )}
                 >
-                  <span className="text-lg font-bold leading-none">
+                  <span className="block text-xl font-extrabold leading-none">
                     {months}
                   </span>
-                  <span className="text-[9px] font-bold uppercase">oy</span>
+                  <span className="mt-0.5 block text-[11px] font-bold leading-none">
+                    oy
+                  </span>
                 </span>
 
                 <span className="min-w-0 flex-1">
-                  <span className="flex flex-wrap items-center gap-1.5">
-                    <span className="text-[15px] font-bold text-mb-ink">
-                      {plan.name}
-                    </span>
-
-                    {isBest && (
-                      <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700">
-                        Eng foydali
-                      </span>
-                    )}
-                  </span>
-
-                  <span className="mt-0.5 block text-lg font-bold leading-6 text-mb-ink">
+                  <span className="num block text-xl font-extrabold leading-6 text-mb-ink">
                     {formatMoney(plan.price_uzs)}
-                    <span className="ml-1 text-xs font-bold text-mb-muted">
+                    <span className="ml-1 text-sm font-semibold text-mb-muted">
                       söm
                     </span>
                   </span>
 
-                  {months > 1 && (
-                    <span className="block text-[11px] font-semibold text-emerald-700">
-                      oyiga ≈ {formatMoney(Math.round(monthlyPrice(plan)))} söm
-                    </span>
-                  )}
+                  <span className="num mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-mb-muted">
+                    {months > 1
+                      ? `oyiga ≈ ${formatMoney(Math.round(monthlyPrice(plan)))} söm`
+                      : plan.name}
+
+                    {saving > 0 && <Tag tone="free">−{saving}%</Tag>}
+
+                    {isBest && <Tag tone="accent">Eng foydali</Tag>}
+                  </span>
                 </span>
 
                 {user ? (
@@ -339,7 +330,7 @@ export default async function PricingPage({
                 ) : (
                   <Link
                     href={`/auth/login?mode=signup&next=${encodeURIComponent(`/pricing?plan=${plan.code}`)}`}
-                    className="inline-flex min-h-11 shrink-0 items-center rounded-xl bg-mb-brand px-4 text-sm font-bold text-white hover:bg-mb-brandDark"
+                    className={isBest ? btnPrimary : btnGhost}
                   >
                     Oliş
                   </Link>
@@ -349,10 +340,27 @@ export default async function PricingPage({
           })}
         </div>
 
-        <p className="mt-3 text-center text-[11px] leading-5 text-mb-muted">
-          Tarifni tanlaysiz → Telegramda tölaysiz → Premium darrov
-          yoqiladi.
-        </p>
+        <h2 className="eyebrow mt-6">Qanday tölanadi</h2>
+
+        <ol className="mt-3 grid gap-2 sm:grid-cols-3">
+          {[
+            "Muddatni tanlaysiz",
+            "Telegramda tölaysiz",
+            "Premium darrov yoqiladi",
+          ].map((step, index) => (
+            <li
+              key={step}
+              className="flex items-center gap-3 rounded-xl border border-mb-line bg-white px-3 py-2.5"
+            >
+              <span className="num grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-mb-tint text-sm font-bold text-mb-brandDark">
+                {index + 1}
+              </span>
+              <span className="text-sm font-semibold text-slate-700">
+                {step}
+              </span>
+            </li>
+          ))}
+        </ol>
       </section>
     </main>
   );

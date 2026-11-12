@@ -50,3 +50,24 @@ export function examIcon(code: string): LucideIcon {
 export function examAccent(code: string): Accent {
   return EXAM_ACCENTS[code as ExamCode] ?? "tests";
 }
+
+/**
+ * Öquvçi sahifalari uçun yönaliş belgisi (components/ui/glyph.tsx).
+ * Admin panel lucide ikonkasida qoladi, öquvçi tomoni öz belgisida.
+ */
+export function examGlyph(
+  code: string,
+): "attestation" | "certificate" | "sat" | "homework" | "tests" {
+  switch (code) {
+    case "attestatsiya":
+      return "attestation";
+    case "milliy-sertifikat":
+      return "certificate";
+    case "sat":
+      return "sat";
+    case "guruh-testlari":
+      return "homework";
+    default:
+      return "tests";
+  }
+}

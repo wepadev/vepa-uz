@@ -449,7 +449,7 @@ export default async function AdminSectionTopicsPage({
         <CreatePanel label="Yangi mavzu" defaultOpen={topics.length === 0}>
           <form
             action={createTopic}
-            className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+            className="rounded-2xl border border-slate-200 bg-white p-6"
           >
             <input type="hidden" name="sectionId" value={section.id} />
             <h2 className="text-2xl font-bold">Yangi mavzu</h2>
@@ -569,7 +569,7 @@ export default async function AdminSectionTopicsPage({
                 return (
                   <article
                     key={topic.id}
-                    className="rounded-2xl border border-mb-line bg-white px-3 py-3 shadow-sm sm:px-4"
+                    className="rounded-2xl border border-mb-line bg-white px-3 py-3 sm:px-4"
                   >
                     <div className="flex items-center gap-3">
                       <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-blue-50 text-sm font-bold text-blue-700">

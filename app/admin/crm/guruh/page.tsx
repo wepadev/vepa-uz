@@ -192,7 +192,7 @@ function SideLink({
   return (
     <Link
       href={href}
-      className="flex items-center gap-3 rounded-2xl border border-mb-line bg-white px-4 py-3 shadow-sm transition hover:border-mb-brand"
+      className="flex items-center gap-3 rounded-2xl border border-mb-line bg-white px-4 py-3 transition hover:border-mb-brand"
     >
       <Icon
         className="h-5 w-5 shrink-0 text-mb-muted"
@@ -354,7 +354,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
           <>
             <Link
               href={`/admin/crm/dars?guruh=${groupId}&sana=${today}`}
-              className="mt-5 flex items-center gap-4 rounded-2xl bg-mb-brand px-5 py-5 text-white shadow-sm transition hover:bg-mb-brandDark"
+              className="mt-5 flex items-center gap-4 rounded-xl bg-mb-brand px-5 py-5 text-white shadow-sm transition hover:bg-mb-brandDark"
             >
               <CalendarDays
                 className="h-9 w-9 shrink-0"
@@ -412,7 +412,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                 “Öquvçilar” tabida öquvçilarni qöşing.
               </AppAlert>
             ) : (
-              <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+              <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white">
                 {ranking.map((row, index) => {
                   const attendanceRate =
                     row.lessons_count > 0
@@ -495,7 +495,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
           <div className="mt-6">
             {/* Qo'shilish kodi */}
             {group.join_code && (
-              <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl border border-mb-line bg-white px-4 py-3 shadow-sm">
+              <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl border border-mb-line bg-white px-4 py-3">
                 <KeyRound
                   className="h-5 w-5 shrink-0 text-mb-muted"
                   strokeWidth={2}
@@ -526,7 +526,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
 
               <form
                 action={addCrmStudent}
-                className="mt-3 rounded-2xl border border-mb-line bg-white p-4 shadow-sm"
+                className="mt-3 rounded-2xl border border-mb-line bg-white p-4"
               >
                 <input type="hidden" name="groupId" value={groupId} />
                 <input type="hidden" name="tab" value="oquvchilar" />
@@ -562,7 +562,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                 {students.map((student) => (
                   <details
                     key={student.id}
-                    className="overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm"
+                    className="overflow-hidden rounded-2xl border border-mb-line bg-white"
                   >
                     <summary className="cursor-pointer list-none px-4 py-3 text-sm font-semibold text-mb-ink">
                       {student.full_name}
@@ -718,7 +718,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
 
             {/* Dublikatlarni birlashtirish */}
             {students.length > 1 && (
-              <details className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+              <details className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white">
                 <summary className="cursor-pointer list-none px-4 py-3 text-sm font-semibold text-mb-ink">
                   <span className="inline-flex items-center gap-2">
                     <Merge
@@ -828,7 +828,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
               Ball qoidalari
             </h2>
 
-            <div className="mt-3 rounded-2xl border border-mb-line bg-white px-4 py-4 shadow-sm">
+            <div className="mt-3 rounded-2xl border border-mb-line bg-white px-4 py-4">
               <div className="border-t border-mb-line px-4 py-4">
                 <p className="text-sm leading-6 text-mb-muted">
                   Qoida özgartirilsa faqat <b>keyingi</b> darslarga
@@ -893,7 +893,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
             {/* Guruh ma'lumotlari */}
             <h2 className="mt-8 text-lg font-bold">Guruh ma’lumotlari</h2>
 
-            <div className="mt-3 rounded-2xl border border-mb-line bg-white px-4 py-4 shadow-sm">
+            <div className="mt-3 rounded-2xl border border-mb-line bg-white px-4 py-4">
               <div className="border-t border-mb-line px-4 py-4">
                 <form action={updateCrmGroup} className="space-y-3">
                   <input type="hidden" name="groupId" value={groupId} />

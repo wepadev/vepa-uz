@@ -1,0 +1,16 @@
+/* --- Qöl bilan yozilgan qoidalar (scripts/dark-theme-extras.css) ---
+ * Generator tuşunmaydigan klasslar: şaffoflik bilan berilgan loyiha
+ * tokenlari va group-hover. Yangi kodda iloji boriça vp-* klasslarini
+ * işlating — ular tun rejimida özi almaşadi va bu yerga yoziş şart emas.
+ */
+@media screen {
+.dark .border-mb-brand\/40 { border-color: rgb(118 162 254 / 0.4); }
+.dark .bg-mb-ink { background-color: rgb(18 25 40); }
+.dark .bg-white\/60 { background-color: rgb(18 25 40 / 0.6); }
+.dark .hover\:bg-white:hover { background-color: rgb(26 35 51); }
+.dark .group:hover .group-hover\:text-mb-brand { color: rgb(167 196 254); }
+.dark .text-amber-950 { color: rgb(255 248 239); }
+/* Kök karta ustidagi oq tugma tun rejimida ham oq qoladi */
+.dark .spotlight .bg-white { background-color: rgb(255 255 255); }
+.dark .spotlight .text-blue-700 { color: rgb(25 72 194); }
+}

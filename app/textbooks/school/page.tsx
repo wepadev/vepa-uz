@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { ChevronRight, School } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
-import AppAlert from "@/components/ui/app-alert";
+import EmptyState from "@/components/ui/empty-state";
+import { Glyph } from "@/components/ui/glyph";
 import TextbooksHeader from "@/components/textbooks-header";
 import { requireSectionAccess } from "@/lib/require-section-access";
 
@@ -113,33 +114,23 @@ export default async function TextbookSectionPage() {
       <TextbooksHeader
         backHref="/textbooks"
         backLabel="Darslik yeçimlari"
+        glyph="school"
         title="Maktab darsliklari"
-        subtitle="Sinfingizni tanlang"
-        chips={[
-          `${textbooks.length} ta darslik`,
-          `${totalTopics} ta mavzu`,
-        ]}
+        subtitle={`${textbooks.length} darslik · ${totalTopics} mavzu`}
       />
 
-      <section className="mx-auto max-w-5xl px-3 py-5 sm:px-6 sm:py-8">
+      <section className="mx-auto max-w-5xl px-4 py-5 sm:px-6 sm:py-8">
         {textbooks.length === 0 ? (
-          <AppAlert
-            variant="info"
-            title="Hozirça darslik mavjud emas"
-          >
-            Ustozingiz darslik qöşgaç şu yerda körinadi.
-          </AppAlert>
+          <EmptyState glyph="school" title="Hozirça darslik yöq">
+            Darslik qöşilişi bilan şu yerda körinadi.
+          </EmptyState>
         ) : (
           <div className="space-y-7">
             {grades.map((grade) => (
               <div key={grade ?? "boshqa"}>
-                <div className="flex items-center gap-3">
-                  <h2 className="text-sm font-bold uppercase tracking-wide text-mb-muted">
-                    {grade ? `${grade}-sinf` : "Boşqa"}
-                  </h2>
-
-                  <span className="h-px flex-1 bg-slate-200" />
-                </div>
+                <h2 className="eyebrow">
+                  {grade ? `${grade}-sinf` : "Boşqa"}
+                </h2>
 
                 <div className="mt-3 grid gap-3 sm:grid-cols-2">
                   {textbooks
@@ -168,12 +159,8 @@ export default async function TextbookSectionPage() {
                               className="h-24 w-[70px] shrink-0 rounded-xl border border-slate-200 bg-white object-contain p-0.5"
                             />
                           ) : (
-                            <span className="grid h-24 w-[70px] shrink-0 place-items-center rounded-xl border border-amber-100 bg-amber-50 text-amber-700">
-                              <School
-                                className="h-7 w-7"
-                                strokeWidth={1.7}
-                                aria-hidden="true"
-                              />
+                            <span className="grid-plane grid h-24 w-[70px] shrink-0 place-items-center rounded-xl border border-mb-line bg-mb-tintSoft">
+                              <Glyph name="school" className="h-9 w-9" />
                             </span>
                           )}
 
@@ -188,17 +175,16 @@ export default async function TextbookSectionPage() {
                               </span>
                             )}
 
-                            <span className="mt-auto pt-2 text-sm font-semibold text-mb-muted">
+                            <span className="num mt-auto pt-2 text-[13px] text-mb-muted">
                               {empty
-                                ? "Mavzu qöşilmagan"
-                                : `${topicCount} ta mavzu`}
+                                ? "Tayyorlanmoqda"
+                                : `${topicCount} mavzu`}
                             </span>
                           </span>
 
                           {!empty && (
                             <ChevronRight
-                              className="h-5 w-5 shrink-0 self-center text-mb-muted"
-                              strokeWidth={2.2}
+                              className="h-5 w-5 shrink-0 self-center text-slate-400 transition-transform group-hover:translate-x-0.5"
                               aria-hidden="true"
                             />
                           )}
@@ -208,7 +194,7 @@ export default async function TextbookSectionPage() {
                       return empty ? (
                         <div
                           key={textbook.id}
-                          className="flex gap-3 rounded-2xl border border-mb-line bg-white p-3 opacity-60 shadow-sm"
+                          className="flex gap-3 rounded-2xl border border-dashed border-slate-300 p-3 opacity-70"
                         >
                           {card}
                         </div>
@@ -216,7 +202,7 @@ export default async function TextbookSectionPage() {
                         <Link
                           key={textbook.id}
                           href={`/textbooks/topics?textbookId=${textbook.id}`}
-                          className="flex gap-3 rounded-2xl border border-mb-line bg-white p-3 shadow-sm transition sm:hover:-translate-y-0.5 sm:hover:border-blue-300 sm:hover:shadow-md"
+                          className="edge group flex gap-3 rounded-2xl border border-mb-line bg-white p-3"
                         >
                           {card}
                         </Link>

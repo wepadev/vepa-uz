@@ -223,7 +223,7 @@ export default async function AdminTestsPage() {
               return (
                 <details
                   key={examType.id}
-                  className="group overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm"
+                  className="group overflow-hidden rounded-2xl border border-mb-line bg-white"
                 >
                   <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-4 sm:px-5">
                     <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-mb-tint text-mb-brand">

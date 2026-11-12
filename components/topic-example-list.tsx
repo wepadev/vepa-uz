@@ -29,7 +29,7 @@ export default function TopicExampleList({
   const [openId, setOpenId] = useState<number | null>(null);
 
   return (
-    <ol className="grid gap-2.5">
+    <ol className="divide-y divide-mb-line overflow-hidden rounded-2xl border border-mb-line bg-white">
       {examples.map((example) => {
         const empty = !example.videoUrl;
         const open = openId === example.id;
@@ -38,21 +38,26 @@ export default function TopicExampleList({
           <span
             className={
               empty
-                ? "grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-slate-100 text-slate-400"
-                : "grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-mb-brand text-white shadow-sm"
+                ? "grid h-10 w-10 shrink-0 place-items-center rounded-full bg-slate-100 text-slate-400"
+                : "grid h-10 w-10 shrink-0 place-items-center rounded-full bg-mb-tint text-mb-brandDark"
             }
           >
-            <Play className="h-5 w-5" strokeWidth={2.4} aria-hidden="true" />
+            <Play
+              className="ml-0.5 h-4 w-4"
+              fill="currentColor"
+              strokeWidth={0}
+              aria-hidden="true"
+            />
           </span>
         );
 
         const label = (
           <span className="min-w-0 flex-1 text-left">
-            <span className="block text-[15px] font-semibold leading-6 text-mb-ink">
+            <span className="block text-[15px] font-bold leading-6 text-mb-ink">
               {example.label}
             </span>
 
-            <span className="mt-0.5 block text-xs text-mb-muted">
+            <span className="block text-[13px] text-mb-muted">
               {empty ? "Video hali yöq" : "Videoyeçim"}
             </span>
           </span>
@@ -62,7 +67,7 @@ export default function TopicExampleList({
           return (
             <li
               key={example.id}
-              className="flex items-center gap-3 rounded-2xl border border-mb-line bg-slate-50 px-3 py-3 shadow-sm"
+              className="flex items-center gap-3 px-3.5 py-3 opacity-70"
             >
               {icon}
               {label}
@@ -73,13 +78,12 @@ export default function TopicExampleList({
         return (
           <li
             key={example.id}
-            className="overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm"
           >
             <button
               type="button"
               aria-expanded={open}
               onClick={() => setOpenId(open ? null : example.id)}
-              className="flex min-h-11 w-full items-center gap-3 px-3 py-3 text-left transition sm:hover:bg-slate-50"
+              className="flex min-h-11 w-full items-center gap-3 px-3.5 py-3 text-left transition-colors hover:bg-slate-50"
             >
               {icon}
               {label}
@@ -88,15 +92,14 @@ export default function TopicExampleList({
                 className={
                   open
                     ? "h-5 w-5 shrink-0 rotate-180 text-mb-brand transition-transform"
-                    : "h-5 w-5 shrink-0 text-mb-muted transition-transform"
+                    : "h-5 w-5 shrink-0 text-slate-400 transition-transform"
                 }
-                strokeWidth={2.2}
                 aria-hidden="true"
               />
             </button>
 
             {open && (
-              <div className="border-t border-mb-line p-3">
+              <div className="bg-slate-50 p-3">
                 <YouTubeEmbed
                   url={example.videoUrl}
                   title={`${example.label} — videoyeçim`}

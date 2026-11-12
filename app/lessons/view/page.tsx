@@ -20,8 +20,11 @@ import {
   testLabel,
   type TestWithTopic,
 } from "@/lib/test-label";
-import { ChevronLeft, ChevronRight, Lock } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Lock } from "lucide-react";
 import PageHeader from "@/components/ui/page-header";
+import ProgressRing from "@/components/ui/progress-ring";
+import { RowIndex } from "@/components/ui/row";
+import { btnAccent, btnGhost, btnPrimary } from "@/lib/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -368,147 +371,152 @@ export default async function LessonViewPage({
       );
   }
 
+  const hasTests = attachedTests.length > 0;
+  const averageValue = averageScore ?? 0;
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <PageHeader
         backHref={`/lessons/category?categoryId=${currentLesson.category_id}`}
         backLabel={category.title}
         backNative
-        title={
-          <>
-            {currentLesson.order_number}. {currentLesson.title}
-          </>
+        title={currentLesson.title}
+        subtitle={`${currentLesson.order_number}-dars · ${lessons.length} darsdan`}
+        width="4xl"
+        action={
+          currentCompleted ? (
+            <span className="inline-flex items-center gap-1.5 rounded-lg bg-vp-success-soft px-2.5 py-1.5 text-sm font-semibold text-vp-success">
+              <Check className="h-4 w-4" aria-hidden="true" />
+              Ötilgan
+            </span>
+          ) : null
         }
-        width="6xl"
-        chips={[
-          <span
-            key="tarif"
-            className={currentLesson.is_free ? "text-emerald-700" : "text-amber-700"}
-          >
-            {currentLesson.is_free ? "Bepul" : "Premium"}
-          </span>,
-          <span
-            key="holat"
-            className={currentCompleted ? "text-emerald-700" : "text-mb-brand"}
-          >
-            {currentCompleted
-              ? "Tugallangan"
-              : (testsByLesson.get(currentLesson.id) ?? []).length === 0
-                ? "Testsiz dars"
-                : "Jarayonda"}
-          </span>,
-        ]}
       />
 
-      <section className="mx-auto max-w-5xl px-3 py-5 sm:px-6 sm:py-12">
-        {currentLesson.description && (
-          <p className="mb-4 max-w-3xl text-sm leading-6 text-slate-600">
-            {currentLesson.description}
-          </p>
-        )}
-
+      <section className="mx-auto max-w-4xl px-4 py-5 sm:px-6 sm:py-8">
         {currentLesson.video_url ? (
           <YouTubeEmbed
             url={currentLesson.video_url}
             title={currentLesson.title}
           />
         ) : (
-          <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+          <div className="rounded-2xl border border-vp-warning-line bg-vp-warning-soft px-4 py-3 text-sm font-medium text-vp-warning">
             Bu darsga video biriktirilmagan.
           </div>
         )}
 
+        {currentLesson.description && (
+          <p className="mt-4 max-w-3xl text-[15px] leading-7 text-slate-700">
+            {currentLesson.description}
+          </p>
+        )}
+
         {currentLesson.content && (
-          <article className="mt-5 rounded-2xl border border-blue-100 bg-white p-4 shadow-sm sm:p-5">
-            <p className="text-xs font-bold uppercase tracking-wide text-mb-brand">
-              Nazariy qism
-            </p>
+          <article className="mt-5 rounded-2xl border border-mb-line bg-white p-4 sm:p-6">
+            <p className="eyebrow">Nazariy qism</p>
 
             <div className="mt-3 leading-8 text-slate-800">
-              <MathText
-                content={
-                  currentLesson.content
-                }
-              />
+              <MathText content={currentLesson.content} />
             </div>
           </article>
         )}
 
-        {attachedTests.length > 0 && (
-          <section className="mt-5 overflow-hidden rounded-2xl border border-blue-200 bg-white">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-blue-100 bg-blue-50 px-4 py-3">
-              <p className="text-sm font-bold text-blue-900">
-                Dars testlari
-              </p>
+        {hasTests && (
+          <section className="mt-5 overflow-hidden rounded-2xl border border-mb-line bg-white">
+            {/* Darvoza: keyingi dars oçilişi uçun nima qoldi */}
+            <div className="flex items-center gap-4 border-b border-mb-line p-4 sm:p-5">
+              <ProgressRing
+                value={averageValue}
+                size={64}
+                stroke={7}
+                tone={currentCompleted ? "success" : "brand"}
+              >
+                <span className="num text-sm font-bold text-mb-ink">
+                  {formatPercentage(averageValue)}%
+                </span>
+              </ProgressRing>
 
-              <p className="text-sm font-semibold text-blue-800">
-                Örtaça:{" "}
-                <span
-                  className={
-                    currentCompleted
-                      ? "text-emerald-700"
-                      : "text-blue-700"
-                  }
-                >
-                  {formatPercentage(averageScore ?? 0)}%
-                </span>
-                <span className="font-medium text-mb-brand">
-                  {" "}/ 90%
-                </span>
-              </p>
+              <div className="min-w-0 flex-1">
+                <h2 className="text-lg font-bold leading-snug text-mb-ink">
+                  {currentCompleted
+                    ? "Dars ötildi"
+                    : averageValue > 0
+                      ? `90% gaça yana ${formatPercentage(Math.max(0, 90 - averageValue))}% qoldi`
+                      : "Endi darsni test bilan mustahkamlang"}
+                </h2>
+                <p className="mt-0.5 text-sm leading-5 text-mb-muted">
+                  {currentCompleted
+                    ? nextLesson
+                      ? "Keyingi dars oçildi."
+                      : "Bu kursning oxirgi darsi edi."
+                    : "Testlar örtaçasi 90% ga yetganda keyingi dars oçiladi."}
+                </p>
+              </div>
             </div>
 
-            <div className="divide-y divide-slate-100">
-              {attachedTests.map((test) => {
+            <ol className="divide-y divide-mb-line">
+              {attachedTests.map((test, index) => {
                 const score = bestScoreMap.get(test.id) ?? 0;
+                const passed = score >= 90;
 
                 return (
-                  <div
+                  <li
                     key={test.id}
-                    className="flex flex-wrap items-center justify-between gap-3 px-4 py-3"
+                    className="flex items-center gap-3 px-3.5 py-3 sm:px-5"
                   >
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold text-mb-ink">
+                    <RowIndex
+                      value={index + 1}
+                      tone={passed ? "done" : "plain"}
+                    />
+
+                    <div className="min-w-0 flex-1">
+                      <p className="line-clamp-2 text-[15px] font-bold leading-snug text-mb-ink">
                         {testLabel(test)}
                       </p>
 
-                      <p className="mt-0.5 text-xs text-mb-muted">
-                        Natijangiz: {formatPercentage(score)}%
+                      <p className="num mt-0.5 text-[13px] text-mb-muted">
+                        {score > 0
+                          ? `Eng yaxşi natija ${formatPercentage(score)}%`
+                          : "Hali işlanmagan"}
                       </p>
                     </div>
 
                     {test.is_published ? (
                       <a
                         href={`/tests/take?testId=${test.id}&lessonId=${currentLesson.id}`}
-                        className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-xl bg-mb-brand px-4 text-sm font-bold text-white hover:bg-mb-brandDark"
+                        className={
+                          score > 0
+                            ? `${btnGhost} min-h-10 shrink-0`
+                            : `${btnPrimary} min-h-10 shrink-0`
+                        }
                       >
                         {score > 0 ? "Qayta işlaş" : "Boşlaş"}
                       </a>
                     ) : (
-                      <span className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-xl bg-slate-100 px-4 text-sm font-bold text-slate-500">
+                      <span className="shrink-0 rounded-lg bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-500">
                         Yopiq
                       </span>
                     )}
-                  </div>
+                  </li>
                 );
               })}
-            </div>
+            </ol>
           </section>
         )}
 
-        <div className="mt-8 grid gap-3 sm:grid-cols-2">
+        <nav className="mt-6 grid grid-cols-2 gap-3" aria-label="Darslar orasida ötiş">
           {previousLesson ? (
             <a
               href={`/lessons/view?lessonId=${previousLesson.id}`}
-              className="gap-1.5 inline-flex min-h-12 items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 py-3 text-center font-semibold text-slate-700 hover:bg-slate-50"
+              className={`${btnGhost} min-h-12`}
             >
-              <ChevronLeft className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
+              <ChevronLeft className="h-4 w-4 shrink-0" aria-hidden="true" />
               Oldingi dars
             </a>
           ) : (
             <a
               href={`/lessons/category?categoryId=${currentLesson.category_id}`}
-              className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 py-3 text-center font-semibold text-slate-700 hover:bg-slate-50"
+              className={`${btnGhost} min-h-12`}
             >
               Darslar röyxati
             </a>
@@ -518,34 +526,31 @@ export default async function LessonViewPage({
             !nextLessonHasAccess ? (
               <Link
                 href={`/pricing?locked=lesson&lessonId=${nextLesson.id}`}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-amber-500 px-5 py-3 text-center font-bold text-white hover:bg-amber-600"
+                className={`${btnAccent} min-h-12`}
               >
-                <Lock className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
+                <Lock className="h-4 w-4 shrink-0" aria-hidden="true" />
                 Keyingi dars Premium
               </Link>
             ) : nextLessonUnlocked ? (
               <a
                 href={`/lessons/view?lessonId=${nextLesson.id}`}
-                className="gap-1.5 inline-flex min-h-12 items-center justify-center rounded-2xl bg-mb-brand px-5 py-3 text-center font-bold text-white hover:bg-mb-brandDark"
+                className={`${btnPrimary} min-h-12`}
               >
                 Keyingi dars
-                <ChevronRight className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
+                <ChevronRight className="h-4 w-4 shrink-0" aria-hidden="true" />
               </a>
             ) : (
-              <div className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-slate-200 px-5 py-3 text-center font-bold text-slate-600">
-                <Lock className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
+              <div className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-dashed border-slate-300 px-4 text-center text-sm font-semibold text-slate-500">
+                <Lock className="h-4 w-4 shrink-0" aria-hidden="true" />
                 Keyingi dars yopiq
               </div>
             )
           ) : (
-            <Link
-              href="/lessons"
-              className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-emerald-600 px-5 py-3 text-center font-bold text-white hover:bg-emerald-700"
-            >
-              Barça dars bölimlari
+            <Link href="/lessons" className={`${btnPrimary} min-h-12`}>
+              Barça kurslar
             </Link>
           )}
-        </div>
+        </nav>
       </section>
     </main>
   );

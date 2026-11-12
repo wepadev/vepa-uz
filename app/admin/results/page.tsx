@@ -510,7 +510,7 @@ export default async function AdminResultsPage({
 
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <article className="rounded-2xl border border-slate-200 bg-white p-5">
             <p className="text-sm font-semibold text-slate-500">
               Tugallangan urinişlar
             </p>
@@ -525,7 +525,7 @@ export default async function AdminResultsPage({
             </p>
           </article>
 
-          <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <article className="rounded-2xl border border-slate-200 bg-white p-5">
             <p className="text-sm font-semibold text-slate-500">
               Öquvçilar
             </p>
@@ -540,7 +540,7 @@ export default async function AdminResultsPage({
             </p>
           </article>
 
-          <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <article className="rounded-2xl border border-slate-200 bg-white p-5">
             <p className="text-sm font-semibold text-slate-500">
               Örtaça natija
             </p>
@@ -557,7 +557,7 @@ export default async function AdminResultsPage({
             </p>
           </article>
 
-          <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <article className="rounded-2xl border border-slate-200 bg-white p-5">
             <p className="text-sm font-semibold text-slate-500">
               Eng yuqori natija
             </p>
@@ -577,7 +577,7 @@ export default async function AdminResultsPage({
 
         <form
           method="get"
-          className="mt-7 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+          className="mt-7 rounded-2xl border border-slate-200 bg-white p-5"
         >
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <div className="md:col-span-2">
@@ -596,7 +596,7 @@ export default async function AdminResultsPage({
                   single(params.q) ?? ""
                 }
                 placeholder="Ism, email yoki test nomi"
-                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
+                className="mt-2 min-h-12 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               />
             </div>
 
@@ -618,7 +618,7 @@ export default async function AdminResultsPage({
                       )
                     : "all"
                 }
-                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
+                className="mt-2 min-h-12 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               >
                 <option value="all">
                   Barça testlar
@@ -647,7 +647,7 @@ export default async function AdminResultsPage({
                 id="results-status"
                 name="status"
                 defaultValue={status}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
+                className="mt-2 min-h-12 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               >
                 <option value="all">
                   Barçasi
@@ -675,7 +675,7 @@ export default async function AdminResultsPage({
                 id="results-sort"
                 name="sort"
                 defaultValue={sort}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
+                className="mt-2 min-h-12 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               >
                 <option value="newest">
                   Eng yangi
@@ -708,7 +708,7 @@ export default async function AdminResultsPage({
                 name="dateFrom"
                 type="date"
                 defaultValue={dateFrom}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
+                className="mt-2 min-h-12 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               />
             </div>
 
@@ -725,7 +725,7 @@ export default async function AdminResultsPage({
                 name="dateTo"
                 type="date"
                 defaultValue={dateTo}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
+                className="mt-2 min-h-12 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               />
             </div>
           </div>
@@ -741,7 +741,7 @@ export default async function AdminResultsPage({
             )}
 
             <SubmitButton
-              className="min-h-12 rounded-2xl bg-mb-brand px-7 py-3 font-bold text-white hover:bg-mb-brandDark"
+              className="min-h-12 rounded-xl bg-mb-brand px-7 py-3 font-bold text-white hover:bg-mb-brandDark"
             >
               Qöllaş
             </SubmitButton>
@@ -780,7 +780,7 @@ export default async function AdminResultsPage({
               </p>
             </div>
           ) : (
-            <div className="overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+            <div className="overflow-hidden rounded-2xl border border-mb-line bg-white">
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[1240px] text-left">
                   <thead className="border-b border-slate-200 bg-slate-50 text-sm text-slate-600">

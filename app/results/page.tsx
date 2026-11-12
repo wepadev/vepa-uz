@@ -3,7 +3,13 @@ import { redirect } from "next/navigation";
 
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
+import { ChevronRight } from "lucide-react";
+import EmptyState from "@/components/ui/empty-state";
 import Pagination from "@/components/ui/pagination";
+import ProgressRing from "@/components/ui/progress-ring";
+import { Tag } from "@/components/ui/row";
+import { btnPrimary } from "@/lib/ui";
+import { cn } from "@/lib/utils";
 import { getSingleValue } from "@/lib/stats-format";
 import type {
   RankingTestRpcRow,
@@ -868,6 +874,7 @@ export default async function MyResultsPage({
       <PageHeader
         backHref="/"
         backLabel="Boş sahifa"
+        glyph="results"
         title="Natijalarim"
         action={
           <Link href="/tests" className={headerPrimaryButton}>
@@ -876,378 +883,204 @@ export default async function MyResultsPage({
         }
       />
 
-      <section className="mx-auto max-w-5xl px-3 py-5 sm:px-6 sm:py-8">
-        {/* Umumiy o'rin */}
-        <div className="relative overflow-hidden hero-board rounded-3xl p-5 text-white sm:p-6">
+      <section className="mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-8">
+        {/* Umumiy holat: örtaça natija, örin va sonlar bitta kartada */}
+        <div className="rounded-2xl border border-mb-line bg-white p-4 sm:p-5">
+          <div className="flex items-center gap-4">
+            <ProgressRing
+              value={averageRankingPercentage}
+              size={76}
+              stroke={8}
+              tone={averageRankingPercentage >= 90 ? "success" : "brand"}
+            >
+              <span className="num text-base font-extrabold text-mb-ink">
+                {formatPercentage(averageRankingPercentage)}%
+              </span>
+            </ProgressRing>
 
-          <div className="relative flex flex-wrap items-center justify-between gap-4">
-            <div className="min-w-0">
-              <p className="text-sm font-semibold text-blue-100">
-                Umumiy reyting
-              </p>
+            <div className="min-w-0 flex-1">
+              <p className="eyebrow">Örtaça natija</p>
 
               {profile.role === "admin" ? (
-                <p className="mt-1 text-lg font-bold">
-                  Admin hisobiga reyting berilmaydi
+                <p className="mt-1 text-sm text-mb-muted">
+                  Admin hisobiga reyting berilmaydi.
                 </p>
               ) : currentOverall ? (
-                <>
-                  <p className="mt-1 text-4xl font-bold leading-none sm:text-5xl">
-                    {currentOverallRank}
-                    <span className="text-2xl font-bold">-örin</span>
-                  </p>
-
-                  <p className="mt-1.5 text-sm text-blue-100">
-                    {overallParticipants} öquvçi içida ·{" "}
-                    {formatPercentage(
-                      currentOverall.ratingPoints,
-                    )}{" "}
-                    ball
-                  </p>
-                </>
+                <Link
+                  href="/leaderboard"
+                  className="group mt-1 inline-flex items-center gap-1 text-lg font-bold text-mb-ink"
+                >
+                  <span className="num">
+                    {currentOverallRank}-örin
+                    <span className="font-normal text-mb-muted">
+                      {" "}
+                      · {overallParticipants} öquvçi içida
+                    </span>
+                  </span>
+                  <ChevronRight
+                    className="h-5 w-5 text-slate-400 transition-transform group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  />
+                </Link>
               ) : (
-                <>
-                  <p className="mt-1 text-2xl font-bold sm:text-3xl">
-                    Hali reytingda emassiz
-                  </p>
-
-                  <p className="mt-1.5 text-sm text-blue-100">
-                    Reyting testlarini işlang — örningiz şu yerda
-                    çiqadi.
-                  </p>
-                </>
+                <p className="mt-1 text-sm leading-5 text-mb-muted">
+                  Reyting testini işlang — örningiz şu yerda çiqadi.
+                </p>
               )}
             </div>
-
-            <Link
-              href="/leaderboard"
-              className="inline-flex min-h-11 items-center rounded-2xl bg-white/15 px-4 text-sm font-bold text-white ring-1 ring-white/25 transition hover:bg-white/25"
-            >
-              Reyting jadvali
-            </Link>
           </div>
-        </div>
 
-        <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3">
-          {[
-            {
-              label: "Tugallangan",
-              value: String(completedResults.length),
-              tone: "text-mb-ink",
-            },
-            {
-              label: "Reyting testi",
-              value: String(userBestRankingAttempts.length),
-              tone: "text-mb-brand",
-            },
-            {
-              label: "Örtaça",
-              value: `${formatPercentage(averageRankingPercentage)}%`,
-              tone: "text-mb-brand",
-            },
-            {
-              label: "Eng yuqori",
-              value: `${formatPercentage(highestRankingPercentage)}%`,
-              tone: "text-emerald-600",
-            },
-          ].map((card) => (
-            <div
-              key={card.label}
-              className="rounded-2xl border border-mb-line bg-white px-3 py-3 text-center shadow-sm sm:px-4"
-            >
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-mb-muted">
-                {card.label}
-              </p>
-
-              <p className={`mt-1 text-2xl font-bold ${card.tone}`}>
-                {card.value}
-              </p>
-            </div>
-          ))}
+          <dl className="num mt-4 grid grid-cols-3 gap-2 text-center">
+            {[
+              ["Tugallangan", String(completedResults.length)],
+              ["Reyting testi", String(userBestRankingAttempts.length)],
+              ["Eng yuqori", `${formatPercentage(highestRankingPercentage)}%`],
+            ].map(([label, value]) => (
+              <div key={label} className="rounded-xl bg-slate-50 px-2 py-2.5">
+                <dt className="text-xs font-semibold text-mb-muted">{label}</dt>
+                <dd className="mt-0.5 text-xl font-extrabold text-mb-ink">
+                  {value}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
 
         <section className="mt-6">
-          <div className="flex flex-col gap-3">
-            <h2 className="text-lg font-bold sm:text-xl">
-              Natijalar tarixi
-            </h2>
+          <h2 className="eyebrow">Natijalar tarixi</h2>
 
-            <div className="grid grid-cols-3 gap-2 rounded-2xl border border-slate-200 bg-white p-2 shadow-sm">
-              {filterTabs.map((tab) => {
-                const isActive =
-                  activeView === tab.key;
+          <div className="mt-3 grid grid-cols-3 gap-1 rounded-xl bg-slate-200/70 p-1">
+            {filterTabs.map((tab) => {
+              const isActive = activeView === tab.key;
 
-                return (
-                  <Link
-                    key={tab.key}
-                    href={tab.href}
-                    className={
-                      isActive
-                        ? "inline-flex min-h-11 items-center justify-center gap-1 rounded-xl bg-slate-900 px-3 py-2 text-center text-xs font-bold text-white sm:text-sm"
-                        : "inline-flex min-h-11 items-center justify-center gap-1 rounded-xl px-3 py-2 text-center text-xs font-bold text-slate-600 hover:bg-slate-100 sm:text-sm"
-                    }
-                  >
-                    <span>
-                      {tab.title}
-                    </span>
-
-                    <span
-                      className={
-                        isActive
-                          ? "rounded-full bg-white/15 px-2 py-0.5 text-[10px]"
-                          : "rounded-full bg-slate-100 px-2 py-0.5 text-[10px] text-slate-500"
-                      }
-                    >
-                      {tab.count}
-                    </span>
-                  </Link>
-                );
-              })}
-            </div>
+              return (
+                <Link
+                  key={tab.key}
+                  href={tab.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={cn(
+                    "num inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg px-2 text-center text-[13px] font-semibold leading-4 transition-colors",
+                    isActive
+                      ? "bg-white text-mb-ink shadow-sm"
+                      : "text-slate-600 hover:text-slate-900",
+                  )}
+                >
+                  {tab.title}
+                  <span className="text-slate-400">{tab.count}</span>
+                </Link>
+              );
+            })}
           </div>
 
-          {filteredResults.length ===
-          0 ? (
-            <div className="mt-5 rounded-3xl border border-dashed border-slate-300 bg-white px-5 py-14 text-center sm:px-6 sm:py-16">
-              <h3 className="text-lg font-bold">
-                Bu bölimda natija yöq
-              </h3>
-
-              <p className="mt-2 text-sm leading-6 text-slate-500">
-                Test işlaganingizdan
-                keyin natija şu yerda
-                çiqadi.
-              </p>
-
-              <Link
-                href="/tests"
-                className="mt-6 inline-flex min-h-12 items-center justify-center rounded-2xl bg-mb-brand px-6 py-3 font-bold text-white hover:bg-mb-brandDark"
-              >
-                Testlarni köriş
-              </Link>
-            </div>
+          {filteredResults.length === 0 ? (
+            <EmptyState
+              glyph="results"
+              title="Bu bölimda natija yöq"
+              className="mt-4"
+              action={
+                <Link href="/tests" className={btnPrimary}>
+                  Testlarni köriş
+                </Link>
+              }
+            >
+              Test işlaganingizdan keyin natija va xatolar tahlili şu yerda
+              çiqadi.
+            </EmptyState>
           ) : (
-            <div className="mt-5 space-y-4">
-              {visibleResults.map(
-                (result) => {
-                  const isCompleted =
-                    Boolean(
-                      result.completed_at,
-                    );
+            <ol className="mt-4 grid gap-3">
+              {visibleResults.map((result) => {
+                const isCompleted = Boolean(result.completed_at);
+                const percentage = result.percentageNumber;
 
-                  return (
-                    <article
-                      key={result.id}
-                      className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm"
+                const body = (
+                  <>
+                    <ProgressRing
+                      value={isCompleted ? percentage : 0}
+                      size={52}
+                      stroke={6}
+                      tone={
+                        percentage >= 90
+                          ? "success"
+                          : percentage >= 60
+                            ? "brand"
+                            : "danger"
+                      }
                     >
-                      <div
-                        className={
-                          result.testKind ===
-                          "lesson"
-                            ? "h-1.5 bg-mb-brand"
-                            : isCompleted
-                              ? "h-1.5 bg-emerald-500"
-                              : "h-1.5 bg-amber-500"
-                        }
-                      />
+                      <span className="num text-xs font-extrabold text-mb-ink">
+                        {isCompleted
+                          ? `${Math.round(percentage)}%`
+                          : "…"}
+                      </span>
+                    </ProgressRing>
 
-                      <div className="p-5 sm:p-6">
-                        <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
-                          <div className="min-w-0">
-                            <div className="flex flex-wrap items-center gap-2">
-                              <h3 className="text-lg font-bold leading-7 sm:text-xl">
-                                {
-                                  result.testTitle
-                                }
-                              </h3>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-[15px] font-bold leading-snug text-mb-ink sm:text-base">
+                        {result.testTitle}
+                      </span>
 
-                              <span
-                                className={
-                                  result.testKind ===
-                                  "ranking"
-                                    ? "rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700"
-                                    : result.testKind ===
-                                        "lesson"
-                                      ? "rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700"
-                                      : "rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600"
-                                }
-                              >
-                                {resultKindLabel(
-                                  result.testKind,
-                                )}
-                              </span>
+                      <span className="num mt-0.5 block text-[13px] text-mb-muted">
+                        {formatDate(result.completed_at ?? result.started_at)}
+                        {" · "}
+                        {resultKindLabel(result.testKind)}
+                      </span>
 
-                              {result.testKind ===
-                                "lesson" && (
-                                <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-700">
-                                  Reytingga
-                                  kirmaydi
-                                </span>
-                              )}
+                      <span className="num mt-1.5 block text-[13px] font-semibold text-slate-700">
+                        Töğri {result.correctCount}/{result.totalAnswerCount}
+                        <span className="font-normal text-mb-muted">
+                          {" · "}
+                          {result.score}/{result.total_questions} ball ·{" "}
+                          {result.elapsedTime}
+                        </span>
+                      </span>
 
-                              {result.isBestAttempt && (
-                                <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">
-                                  Eng yaxşi
-                                  uriniş
-                                </span>
-                              )}
+                      <span className="mt-2 flex flex-wrap gap-1.5 empty:hidden">
+                        {!isCompleted && <Tag tone="accent">Tugallanmagan</Tag>}
 
-                              <span
-                                className={
-                                  isCompleted
-                                    ? "rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700"
-                                    : "rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-700"
-                                }
-                              >
-                                {isCompleted
-                                  ? "Tugallangan"
-                                  : "Jarayonda"}
-                              </span>
-                            </div>
+                        {result.isBestAttempt && (
+                          <Tag tone="free">Eng yaxşi uriniş</Tag>
+                        )}
 
-                            <p className="mt-2 text-sm font-medium text-slate-500">
-                              {formatDate(
-                                result.completed_at ??
-                                  result.started_at,
-                              )}
-                            </p>
-                          </div>
-
-                          {result.testKind ===
-                            "ranking" &&
-                            result.testRank >
-                              0 && (
-                              <div className="rounded-2xl bg-mb-brand px-5 py-3 text-center text-white">
-                                <p className="text-[11px] font-bold uppercase tracking-wide text-blue-100">
-                                  Test reytingi
-                                </p>
-
-                                <p className="mt-1 text-2xl font-bold">
-                                  {
-                                    result.testRank
-                                  }
-                                  /
-                                  {
-                                    result.testParticipants
-                                  }
-                                </p>
-                              </div>
-                            )}
-                        </div>
-
-                        <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
-                          <div className="rounded-2xl bg-blue-50 p-3">
-                            <p className="text-xs font-bold text-mb-brand">
-                              Foiz
-                            </p>
-
-                            <p
-                              className={
-                                result.percentageNumber >=
-                                80
-                                  ? "mt-1 text-xl font-bold text-emerald-600"
-                                  : result.percentageNumber >=
-                                      60
-                                    ? "mt-1 text-xl font-bold text-blue-700"
-                                    : "mt-1 text-xl font-bold text-red-600"
-                              }
-                            >
-                              {formatPercentage(
-                                result.percentage,
-                              )}
-                              %
-                            </p>
-                          </div>
-
-                          <div className="rounded-2xl bg-emerald-50 p-3">
-                            <p className="text-xs font-bold text-emerald-700">
-                              Töğri
-                            </p>
-
-                            <p className="mt-1 text-xl font-bold text-emerald-700">
-                              {
-                                result.correctCount
-                              }
-                              /
-                              {
-                                result.totalAnswerCount
-                              }
-                            </p>
-                          </div>
-
-                          <div className="rounded-2xl bg-blue-50 p-3">
-                            <p className="text-xs font-bold text-blue-700">
-                              Ball
-                            </p>
-
-                            <p className="mt-1 text-xl font-bold text-blue-700">
-                              {result.score}/
-                              {
-                                result.total_questions
-                              }
-                            </p>
-                          </div>
-
-                          <div className="rounded-2xl bg-slate-100 p-3">
-                            <p className="text-xs font-bold text-slate-600">
-                              Vaqt
-                            </p>
-
-                            <p className="mt-1 font-mono text-lg font-bold tabular-nums text-slate-800">
-                              {
-                                result.elapsedTime
-                              }
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="mt-4 flex flex-col gap-4 border-t border-slate-100 pt-4 lg:flex-row lg:items-center lg:justify-between">
-                          <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs font-medium text-slate-500 sm:text-sm">
-                            <span>
-                              Javob berilgan:{" "}
-                              {
-                                result.answeredCount
-                              }
-                              /
-                              {
-                                result.totalAnswerCount
-                              }
-                            </span>
-
-                            <span>
-                              Jami uriniş:{" "}
-                              {
-                                result.attemptsForTest
-                              }
-                            </span>
-
-                            {result.testKind ===
-                              "ranking" && (
-                              <span>
-                                Eng yaxşi:{" "}
-                                {formatPercentage(
-                                  result.bestPercentage,
-                                )}
-                                %
-                              </span>
-                            )}
-                          </div>
-
-                          {isCompleted && (
-                            <Link
-                              href={`/results/view?attemptId=${result.id}`}
-                              className="inline-flex min-h-11 items-center justify-center rounded-xl bg-mb-brand px-5 py-2.5 text-center text-sm font-bold text-white transition hover:bg-mb-brandDark"
-                            >
-                              Batafsil köriş
-                            </Link>
+                        {result.testKind === "ranking" &&
+                          result.testRank > 0 && (
+                            <Tag tone="brand">
+                              {result.testRank}-örin · {result.testParticipants}{" "}
+                              kişidan
+                            </Tag>
                           )}
-                        </div>
+
+                        {result.attemptsForTest > 1 && (
+                          <Tag>{result.attemptsForTest} uriniş</Tag>
+                        )}
+                      </span>
+                    </span>
+
+                    {isCompleted && (
+                      <ChevronRight
+                        className="h-5 w-5 shrink-0 self-center text-slate-400 transition-transform group-hover:translate-x-0.5"
+                        aria-hidden="true"
+                      />
+                    )}
+                  </>
+                );
+
+                return (
+                  <li key={result.id}>
+                    {isCompleted ? (
+                      <Link
+                        href={`/results/view?attemptId=${result.id}`}
+                        className="edge group flex items-start gap-3 rounded-2xl border border-mb-line bg-white p-3.5 sm:p-4"
+                      >
+                        {body}
+                      </Link>
+                    ) : (
+                      <div className="flex items-start gap-3 rounded-2xl border border-dashed border-slate-300 p-3.5 sm:p-4">
+                        {body}
                       </div>
-                    </article>
-                  );
-                },
-              )}
-            </div>
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
           )}
 
           <Pagination

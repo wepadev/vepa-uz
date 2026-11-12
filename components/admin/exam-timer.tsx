@@ -390,7 +390,7 @@ export default function ExamTimer() {
       {/* ---------------- Boshqaruv ---------------- */}
       {!isFullscreen && (
         <div className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
-          <div className="rounded-2xl border border-mb-line bg-white p-5 shadow-sm">
+          <div className="rounded-2xl border border-mb-line bg-white p-5">
             <p className="text-sm font-semibold text-mb-ink">Muddat</p>
 
             <div className="mt-2.5 flex flex-wrap gap-2">

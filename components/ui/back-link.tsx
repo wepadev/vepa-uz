@@ -34,8 +34,8 @@ export default function BackLink({
 }) {
   const classes = cn(
     iconOnly
-      ? "group inline-grid h-9 w-9 shrink-0 place-items-center rounded-full border border-mb-line bg-white text-mb-brand shadow-sm transition hover:border-mb-brand/40 hover:bg-mb-tintSoft active:scale-[0.95]"
-      : "group inline-flex h-9 max-w-full items-center gap-1.5 rounded-full border border-mb-line bg-white py-1 pl-1 pr-3.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-mb-brand/40 hover:bg-mb-tintSoft hover:text-mb-brand active:scale-[0.97]",
+      ? "group inline-grid h-9 w-9 shrink-0 place-items-center rounded-lg text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 active:scale-[0.95]"
+      : "group -ml-2 inline-flex h-9 max-w-full items-center gap-0.5 rounded-lg pl-1 pr-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 active:scale-[0.97]",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mb-brand/50",
     /* Ko'rinishi 36 px, lekin barmoq uchun bosish maydoni 48 px */
     "relative before:absolute before:-inset-1.5 before:content-['']",
@@ -50,9 +50,10 @@ export default function BackLink({
     />
   ) : (
     <>
-      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-mb-tintSoft text-mb-brand transition group-hover:-translate-x-0.5 group-hover:bg-mb-tint">
-        <ChevronLeft className="h-4 w-4" strokeWidth={2.6} aria-hidden="true" />
-      </span>
+      <ChevronLeft
+        className="h-5 w-5 transition group-hover:-translate-x-0.5"
+        aria-hidden="true"
+      />
       <span className="truncate">{label}</span>
     </>
   );

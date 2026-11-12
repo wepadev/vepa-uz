@@ -244,7 +244,7 @@ export default function ProfileForm({
   return (
     <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
       <div className="space-y-6">
-        <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+        <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-7">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-mb-brand">
             Profil ma’lumotlari
           </p>
@@ -281,7 +281,7 @@ export default function ProfileForm({
                   )
                 }
                 maxLength={120}
-                className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3.5 text-slate-900 outline-none transition focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
+                className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3.5 text-slate-900 outline-none transition focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
                 required
               />
             </div>
@@ -307,7 +307,7 @@ export default function ProfileForm({
             <button
               type="submit"
               disabled={nameLoading}
-              className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-mb-brand px-5 py-3.5 font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-wait disabled:opacity-60"
+              className="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-mb-brand px-5 py-3.5 font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-wait disabled:opacity-60"
             >
               {nameLoading ? (
                 <LoadingLabel>
@@ -320,7 +320,7 @@ export default function ProfileForm({
           </form>
         </section>
 
-        <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+        <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-7">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-mb-brand">
             Akkaunt xavfsizligi
           </p>
@@ -371,7 +371,7 @@ export default function ProfileForm({
                     }
                     minLength={8}
                     placeholder="Kamida 8 ta belgi"
-                    className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3.5 pr-20 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
+                    className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3.5 pr-20 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
                     required
                   />
 
@@ -416,7 +416,7 @@ export default function ProfileForm({
                   }
                   minLength={8}
                   placeholder="Parolni qayta kiriting"
-                  className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
+                  className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
                   required
                 />
               </div>
@@ -442,7 +442,7 @@ export default function ProfileForm({
               <button
                 type="submit"
                 disabled={passwordLoading}
-                className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-mb-brand px-5 py-3.5 font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-wait disabled:opacity-60"
+                className="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-mb-brand px-5 py-3.5 font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-wait disabled:opacity-60"
               >
                 {passwordLoading ? (
                   <LoadingLabel>
@@ -455,7 +455,7 @@ export default function ProfileForm({
 
               <a
                 href="/auth/forgot-password"
-                className="inline-flex min-h-11 w-full items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                className="inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
               >
                 Email orqali tiklaş
               </a>
@@ -465,7 +465,7 @@ export default function ProfileForm({
       </div>
 
       <aside className="space-y-6">
-        <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+        <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-7">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
             Akkaunt
           </p>
@@ -504,7 +504,7 @@ export default function ProfileForm({
           </div>
         </section>
 
-        <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+        <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-7">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-600">
             Ruxsatlar
           </p>

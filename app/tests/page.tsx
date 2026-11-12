@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { ArrowRight, History, Sparkles, Trophy } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
-import { accents } from "@/components/ui/section-visual";
-import { examAccent, examIcon } from "@/lib/exam-visuals";
+import EmptyState from "@/components/ui/empty-state";
+import { GlyphTile } from "@/components/ui/glyph";
+import { examGlyph } from "@/lib/exam-visuals";
 
 import { requireSectionAccess } from "@/lib/require-section-access";
 import PageHeader, { headerButton } from "@/components/ui/page-header";
@@ -117,8 +118,13 @@ export default async function TestsPage() {
     );
   }
 
-  const totalTests = [...testCountBySection.values()].reduce(
-    (sum, value) => sum + value,
+  /* Faqat körinib turgan yönalişlardagi testlar sanaladi */
+  const visibleExamIds = new Set(examTypes.map((examType) => examType.id));
+  const totalTests = sections.reduce(
+    (sum, section) =>
+      visibleExamIds.has(section.exam_type_id)
+        ? sum + (testCountBySection.get(section.id) ?? 0)
+        : sum,
     0,
   );
 
@@ -127,8 +133,13 @@ export default async function TestsPage() {
       <PageHeader
         backHref="/"
         backLabel="Boş sahifa"
+        glyph="tests"
         title="Testlar"
-        subtitle="Yönalişni tanlang"
+        subtitle={
+          totalTests > 0
+            ? `${totalTests} ta test · natija darrov çiqadi`
+            : "Yönalişni tanlang"
+        }
         action={
           profile.role === "admin" ? (
             <Link href="/admin/tests" className={headerButton}>
@@ -138,38 +149,15 @@ export default async function TestsPage() {
         }
       />
 
-      <section className="mx-auto max-w-5xl px-3 py-5 sm:px-6 sm:py-8">
-        <div className="relative overflow-hidden hero-board rounded-3xl p-5 text-white sm:p-7">
-
-          <div className="relative">
-            <p className="inline-flex items-center gap-2 text-sm font-semibold text-blue-100">
-              <Sparkles
-                className="h-4 w-4"
-                strokeWidth={2.2}
-                aria-hidden="true"
-              />
-              {totalTests} ta test tayyor
-            </p>
-
-            <h1 className="mt-1.5 text-2xl font-bold leading-tight sm:text-4xl">
-              Bilimingizni sinab köring
-            </h1>
-
-            <p className="mt-2 max-w-lg text-sm leading-6 text-blue-100">
-              Yönalişni tanlang, içidan bölim va testni oçing.
-              Natija test tugagaç darrov çiqadi.
-            </p>
-          </div>
-        </div>
+      <section className="mx-auto max-w-5xl px-4 py-5 sm:px-6 sm:py-8">
+        <p className="eyebrow">Yönalişni tanlang</p>
 
         {!examTypes.length ? (
-          <div className="mt-5 rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-14 text-center">
-            <p className="text-lg font-bold text-slate-700">
-              Hozirça test yöq
-            </p>
-          </div>
+          <EmptyState glyph="tests" title="Hozirça test yöq" className="mt-3">
+            Testlar qöşilişi bilan şu yerda çiqadi.
+          </EmptyState>
         ) : (
-          <div className="mt-4 grid gap-2.5 sm:mt-5 sm:gap-3">
+          <div className="mt-3 grid gap-3 lg:grid-cols-3">
             {examTypes.map((examType) => {
               const examSections = sections.filter(
                 (section) => section.exam_type_id === examType.id,
@@ -181,87 +169,99 @@ export default async function TestsPage() {
                 0,
               );
 
-              const Icon = examIcon(examType.code);
-              const visual = accents[examAccent(examType.code)];
+              const sectionCount = sectionCountByExam.get(examType.id) ?? 0;
               const empty = testCount === 0;
 
               return (
                 <Link
                   key={examType.id}
                   href={`/tests/sections?exam=${encodeURIComponent(examType.code)}`}
-                  className="group flex items-center gap-3.5 rounded-2xl border border-mb-line bg-white p-3.5 shadow-sm transition sm:p-4 sm:hover:border-slate-300 sm:hover:shadow-md"
+                  className="edge group flex items-center gap-4 rounded-2xl border border-mb-line bg-white p-4 lg:flex-col lg:items-start lg:gap-5 lg:p-5"
                 >
-                  <span
-                    className={`grid h-14 w-14 shrink-0 place-items-center rounded-2xl ${visual.softBox}`}
-                  >
-                    <Icon
-                      className="h-7 w-7"
-                      strokeWidth={1.8}
-                      aria-hidden="true"
-                    />
-                  </span>
+                  <GlyphTile name={examGlyph(examType.code)} size="lg" />
 
-                  <span className="min-w-0 flex-1">
-                    <span className="flex flex-wrap items-center gap-2">
-                      <span className="text-[17px] font-bold leading-6 text-mb-ink">
+                  <span className="min-w-0 flex-1 lg:w-full">
+                    <span className="flex items-center justify-between gap-2">
+                      <span className="text-lg font-bold leading-6 text-mb-ink">
                         {examType.title}
                       </span>
+
+                      <ChevronRight
+                        className="h-5 w-5 shrink-0 text-slate-400 transition-transform group-hover:translate-x-0.5"
+                        aria-hidden="true"
+                      />
                     </span>
 
                     {examType.description && (
-                      <span className="mt-0.5 block line-clamp-1 text-sm text-mb-muted">
+                      <span className="mt-0.5 block line-clamp-2 text-sm leading-5 text-mb-muted">
                         {examType.description}
                       </span>
                     )}
 
-                    <span className="mt-1 block text-xs font-semibold text-mb-muted">
-                      {empty
-                        ? "Test qöşilmagan"
-                        : `${sectionCountByExam.get(examType.id) ?? 0} bölim · ${testCount} test`}
+                    <span className="num mt-2 flex flex-wrap gap-1.5 text-xs font-semibold">
+                      {empty ? (
+                        <span className="rounded-md bg-slate-100 px-2 py-0.5 text-slate-500">
+                          Tez orada
+                        </span>
+                      ) : (
+                        <>
+                          <span className="rounded-md bg-slate-100 px-2 py-0.5 text-slate-600">
+                            {sectionCount} bölim
+                          </span>
+                          <span className="rounded-md bg-mb-tintSoft px-2 py-0.5 text-mb-brandDark">
+                            {testCount} test
+                          </span>
+                        </>
+                      )}
                     </span>
                   </span>
-
-                  <ArrowRight
-                    className="h-5 w-5 shrink-0 text-mb-muted transition-transform group-hover:translate-x-0.5"
-                    strokeWidth={2.2}
-                    aria-hidden="true"
-                  />
                 </Link>
               );
             })}
           </div>
         )}
 
-        <div className="mt-5 grid grid-cols-2 gap-2 sm:gap-3">
-          <Link
-            href="/results"
-            className="flex items-center gap-2.5 rounded-2xl border border-mb-line bg-white px-4 py-3 shadow-sm transition sm:hover:border-slate-300 sm:hover:shadow-md"
-          >
-            <History
-              className="h-5 w-5 shrink-0 text-mb-brand"
-              strokeWidth={2}
-              aria-hidden="true"
-            />
+        <p className="eyebrow mt-8">Sizning işlaringiz</p>
 
-            <span className="text-sm font-semibold text-mb-ink">
-              Natijalarim
-            </span>
-          </Link>
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          {(
+            [
+              {
+                href: "/results",
+                glyph: "results",
+                title: "Natijalarim",
+                text: "Işlangan testlar va xatolar tahlili",
+              },
+              {
+                href: "/leaderboard",
+                glyph: "ranking",
+                title: "Reyting",
+                text: "Boşqalar orasida örningiz",
+              },
+            ] as const
+          ).map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="edge group flex items-center gap-3 rounded-2xl border border-mb-line bg-white p-3"
+            >
+              <GlyphTile name={item.glyph} size="sm" />
 
-          <Link
-            href="/leaderboard"
-            className="flex items-center gap-2.5 rounded-2xl border border-mb-line bg-white px-4 py-3 shadow-sm transition sm:hover:border-slate-300 sm:hover:shadow-md"
-          >
-            <Trophy
-              className="h-5 w-5 shrink-0 text-amber-500"
-              strokeWidth={2}
-              aria-hidden="true"
-            />
+              <span className="min-w-0 flex-1">
+                <span className="block font-bold leading-5 text-mb-ink">
+                  {item.title}
+                </span>
+                <span className="block truncate text-sm text-mb-muted">
+                  {item.text}
+                </span>
+              </span>
 
-            <span className="text-sm font-semibold text-mb-ink">
-              Reyting
-            </span>
-          </Link>
+              <ChevronRight
+                className="h-5 w-5 shrink-0 text-slate-400"
+                aria-hidden="true"
+              />
+            </Link>
+          ))}
         </div>
       </section>
     </main>

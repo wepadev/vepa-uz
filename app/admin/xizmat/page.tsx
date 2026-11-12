@@ -172,7 +172,7 @@ export default async function AdminMaintenancePage({
         {/* Tozalash */}
         <form
           action={runCleanup}
-          className="mt-4 rounded-2xl border border-mb-line bg-white p-4 shadow-sm sm:p-5"
+          className="mt-4 rounded-2xl border border-mb-line bg-white p-4 sm:p-5"
         >
           <label
             htmlFor="days"
@@ -219,7 +219,7 @@ export default async function AdminMaintenancePage({
           <>
             <h2 className="mt-7 text-lg font-bold">Eng katta jadvallar</h2>
 
-            <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+            <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white">
               {storage.map((row, index) => (
                 <div
                   key={row.table_name}

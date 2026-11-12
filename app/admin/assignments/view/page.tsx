@@ -234,21 +234,21 @@ export default async function AdminAssignmentViewPage({
         )}
 
         <div className="mt-5 grid grid-cols-3 gap-3">
-          <div className="rounded-2xl border border-mb-line bg-white p-4 text-center shadow-sm">
+          <div className="rounded-2xl border border-mb-line bg-white p-4 text-center">
             <p className="text-xs font-semibold text-mb-muted">Işladi</p>
             <p className="mt-1 text-2xl font-bold text-emerald-600">
               {doneCount}
             </p>
           </div>
 
-          <div className="rounded-2xl border border-mb-line bg-white p-4 text-center shadow-sm">
+          <div className="rounded-2xl border border-mb-line bg-white p-4 text-center">
             <p className="text-xs font-semibold text-mb-muted">Işlamadi</p>
             <p className="mt-1 text-2xl font-bold text-red-600">
               {rows.length - doneCount}
             </p>
           </div>
 
-          <div className="rounded-2xl border border-mb-line bg-white p-4 text-center shadow-sm">
+          <div className="rounded-2xl border border-mb-line bg-white p-4 text-center">
             <p className="text-xs font-semibold text-mb-muted">Örtaça</p>
             <p className="mt-1 text-2xl font-bold text-mb-brand">
               {averagePercentage}%
@@ -261,7 +261,7 @@ export default async function AdminAssignmentViewPage({
             Avval öquvçilarni guruhga qöşing.
           </AppAlert>
         ) : (
-          <div className="mt-6 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+          <div className="mt-6 overflow-hidden rounded-2xl border border-mb-line bg-white">
             {rows.map((row, index) => (
               <div
                 key={row.userId}
@@ -338,7 +338,7 @@ export default async function AdminAssignmentViewPage({
               şu mavzularni takrorlang.
             </p>
 
-            <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+            <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white">
               {questionStats.map((stat, index) => {
                 const percent = Math.round(Number(stat.correct_percent ?? 0));
 

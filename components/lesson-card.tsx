@@ -1,64 +1,41 @@
 import Link from "next/link";
-import {
-  BookOpen,
-  Check,
-  Crown,
-  Layers,
-  Lock,
-  Play,
-  SignalHigh,
-} from "lucide-react";
+import { Check, ChevronRight, Lock, Play } from "lucide-react";
 
 import { getYouTubeThumbnail } from "@/lib/youtube";
 import { cn } from "@/lib/utils";
 
+/**
+ * Dars qadami — kurs yölidagi bitta bekat.
+ *
+ * Ilgari darslar bir xil kartalar töri edi: qaysi dars ötilgan, qaysi
+ * biri navbatda — öqib çiqmaguncha bilinmasdi. Saytning qoidasi esa
+ * aniq: dars testi 90% ga işlansa, keyingi dars oçiladi. Endi sahifa
+ * şu qoidaning özini körsatadi — yuqoridan pastga yöl:
+ *
+ *   ✓  ötilgan dars      (yaşil belgi, natija foizi)
+ *   ●  navbatdagi dars   (kök, katta rasm va bitta tugma)
+ *   🔒 yopiq dars        (kulrang; nega yopiqligi yozilgan)
+ */
 type LessonCardProps = {
   lessonId: number;
   orderNumber: number;
   title: string;
   description?: string | null;
   videoUrl?: string | null;
-  categoryTitle: string;
   isFree: boolean;
   isCompleted: boolean;
-  /** Tarif bo'yicha kirish huquqi bor */
+  /** Tarif böyiça kiriş huquqi bor */
   hasContentAccess: boolean;
   /** Oldingi darslar bajarilgan */
   isSequenceUnlocked: boolean;
   /** Darsga biriktirilgan testlar soni */
   testCount: number;
-  /** Testlarning o'rtacha natijasi (test yo'q bo'lsa null) */
+  /** Testlarning örtaça natijasi (test yöq bölsa null) */
   averageScore: number | null;
+  /** Navbatdagi dars — yölda bitta */
+  isCurrent: boolean;
+  isLast: boolean;
 };
-
-function Pill({
-  tone,
-  icon,
-  children,
-}: {
-  tone: "emerald" | "amber" | "blue" | "slate";
-  icon?: React.ReactNode;
-  children: React.ReactNode;
-}) {
-  const tones = {
-    emerald: "bg-emerald-50 text-emerald-700",
-    amber: "bg-amber-50 text-amber-700",
-    blue: "bg-blue-50 text-blue-700",
-    slate: "bg-slate-100 text-slate-600",
-  } as const;
-
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold",
-        tones[tone],
-      )}
-    >
-      {icon}
-      {children}
-    </span>
-  );
-}
 
 export default function LessonCard({
   lessonId,
@@ -66,157 +43,206 @@ export default function LessonCard({
   title,
   description,
   videoUrl,
-  categoryTitle,
   isFree,
   isCompleted,
   hasContentAccess,
   isSequenceUnlocked,
   testCount,
   averageScore,
+  isCurrent,
+  isLast,
 }: LessonCardProps) {
   const thumbnail = getYouTubeThumbnail(videoUrl);
-
   const isOpen = hasContentAccess && isSequenceUnlocked;
+  const score = averageScore === null ? null : Math.round(averageScore);
 
-  const progressValue =
-    averageScore === null ? 0 : Math.round(averageScore);
+  const meta = !hasContentAccess
+    ? "Premium bilan oçiladi"
+    : !isSequenceUnlocked
+      ? "Oldingi dars testini 90% ga işlang"
+      : testCount > 0
+        ? score !== null && score > 0
+          ? `${testCount} test · natija ${score}%`
+          : `Video · ${testCount} test`
+        : "Video";
 
-  const progressLabel =
-    averageScore === null
-      ? "Testsiz dars"
-      : `Natija: ${progressValue}%`;
-
-  return (
-    <article
+  const node = (
+    <span
       className={cn(
-        "overflow-hidden rounded-2xl border border-mb-line bg-white p-2.5 shadow-[0_1px_2px_rgba(16,24,40,0.05)] transition",
-        isOpen ? "sm:hover:shadow-[0_8px_24px_rgba(16,24,40,0.10)]" : "opacity-90",
+        "num relative z-10 grid h-9 w-9 shrink-0 place-items-center rounded-full text-sm font-bold",
+        isCompleted
+          ? "bg-vp-success text-white"
+          : isCurrent
+            ? "bg-mb-brand text-white ring-4 ring-mb-tint"
+            : isOpen
+              ? "border-2 border-mb-brand bg-white text-mb-brandDark"
+              : "border border-slate-300 bg-slate-100 text-slate-400",
       )}
     >
-      <div className="relative aspect-video overflow-hidden rounded-xl bg-mb-tint">
-        {thumbnail ? (
-          <img
-            src={thumbnail}
-            alt=""
-            loading="lazy"
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="grid h-full w-full place-items-center">
-            <span className="grid h-16 w-16 place-items-center rounded-2xl bg-white text-xl font-bold text-mb-brand shadow-sm">
-              {orderNumber}
-            </span>
-          </div>
-        )}
+      {isCompleted ? (
+        <Check className="h-[18px] w-[18px]" aria-hidden="true" />
+      ) : isOpen ? (
+        orderNumber
+      ) : (
+        <Lock className="h-4 w-4" aria-hidden="true" />
+      )}
+    </span>
+  );
 
-        {!isOpen && (
-          <div className="absolute inset-0 grid place-items-center bg-slate-900/45 text-white backdrop-blur-[1px]">
-            <Lock className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
-          </div>
-        )}
-
-        <span className="absolute bottom-2 right-2 inline-flex items-center gap-1.5 rounded-lg bg-slate-900/75 px-2 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
-          <Layers className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-          {orderNumber}-dars
+  const thumb = (large: boolean) => (
+    <span
+      className={cn(
+        "relative block shrink-0 overflow-hidden bg-mb-tint",
+        large
+          ? "aspect-video w-full rounded-xl"
+          : "aspect-video w-[92px] rounded-lg sm:w-28",
+      )}
+    >
+      {thumbnail ? (
+        <img
+          src={thumbnail}
+          alt=""
+          loading="lazy"
+          className={cn(
+            "h-full w-full object-cover",
+            !isOpen && "opacity-50 grayscale",
+          )}
+        />
+      ) : (
+        <span className="grid-plane grid h-full w-full place-items-center">
+          <span className="num text-lg font-bold text-mb-brandDark">
+            {orderNumber}
+          </span>
         </span>
-      </div>
+      )}
 
-      <div className="px-1.5 pb-1 pt-3">
-        <h3 className="text-[17px] font-bold leading-snug text-mb-ink">
-          {title}
-        </h3>
-
-        {description && (
-          <p className="mt-1 line-clamp-2 text-sm leading-6 text-mb-muted">
-            {description}
-          </p>
-        )}
-
-        <div className="mt-2.5 flex flex-wrap gap-1.5">
-          {isCompleted ? (
-            <Pill tone="emerald" icon={<Check className="h-3.5 w-3.5" strokeWidth={2.6} aria-hidden="true" />}>
-              Tugallangan
-            </Pill>
-          ) : (
-            <Pill tone={isOpen ? "blue" : "slate"}>
-              {isOpen ? "Oçiq" : "Yopiq"}
-            </Pill>
-          )}
-
-          {isFree ? (
-            <Pill tone="emerald">Bepul</Pill>
-          ) : (
-            <Pill tone="amber" icon={<Crown className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />}>
-              Premium
-            </Pill>
-          )}
-        </div>
-
-        <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] font-medium text-mb-muted">
-          <span className="inline-flex items-center gap-1.5">
-            <BookOpen className="h-[15px] w-[15px]" strokeWidth={2} aria-hidden="true" />
-            {categoryTitle}
-          </span>
-
-          <span className="inline-flex items-center gap-1.5">
-            <SignalHigh className="h-[15px] w-[15px]" strokeWidth={2} aria-hidden="true" />
-            {testCount > 0
-              ? `${testCount} ta test`
-              : "Videodars"}
-          </span>
-        </div>
-
-        {averageScore !== null && (
-        <div className="mt-2 flex items-center gap-2">
-          <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-mb-tintSoft">
-            <div
-              className={
-                progressValue >= 90
-                  ? "h-full rounded-full bg-emerald-500"
-                  : "h-full rounded-full bg-mb-brand"
-              }
-              style={{
-                width: `${Math.min(100, Math.max(0, progressValue))}%`,
-              }}
+      {large && (
+        <span className="absolute inset-0 grid place-items-center bg-slate-950/20">
+          <span className="grid h-14 w-14 place-items-center rounded-full bg-white text-mb-brand shadow-lg">
+            <Play
+              className="ml-0.5 h-6 w-6"
+              fill="currentColor"
+              strokeWidth={0}
+              aria-hidden="true"
             />
-          </div>
-
-          <span className="shrink-0 text-[12px] font-medium text-mb-muted">
-            {progressLabel}
           </span>
-        </div>
-        )}
+        </span>
+      )}
+    </span>
+  );
 
-        <div className="mt-3 border-t border-mb-line pt-3">
-          {!hasContentAccess ? (
-            <Link
-              href={`/pricing?locked=lesson&lessonId=${lessonId}`}
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 text-sm font-bold text-white transition hover:bg-amber-600"
-            >
-              <Lock className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
-              Premiumga ötiş
-            </Link>
-          ) : isSequenceUnlocked ? (
-            <Link
-              href={`/lessons/view?lessonId=${lessonId}`}
-              className={cn(
-                "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-4 text-sm font-bold text-white transition",
-                isCompleted
-                  ? "bg-emerald-600 hover:bg-emerald-700"
-                  : "bg-mb-brand hover:bg-mb-brandDark",
-              )}
-            >
-              <Play className="h-4 w-4" fill="currentColor" strokeWidth={0} aria-hidden="true" />
-              {isCompleted ? "Qayta köriş" : "Köriş"}
-            </Link>
-          ) : (
-            <span className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-slate-100 px-4 text-sm font-bold text-slate-500">
-              <Lock className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
-              Oldingi darsni tugating
+  let content: React.ReactNode;
+
+  if (isCurrent) {
+    content = (
+      <Link
+        href={`/lessons/view?lessonId=${lessonId}`}
+        className="edge group block rounded-2xl border border-mb-brand/40 bg-white p-3 sm:flex sm:items-center sm:gap-4"
+      >
+        <span className="block sm:w-64 sm:shrink-0">{thumb(true)}</span>
+
+        <span className="mt-3 block min-w-0 flex-1 sm:mt-0">
+          <span className="eyebrow block text-[11px] text-mb-brand">
+            Navbatdagi dars · {orderNumber}-dars
+          </span>
+          <span className="mt-1 block text-lg font-bold leading-snug text-mb-ink">
+            {title}
+          </span>
+
+          {description && (
+            <span className="mt-1 line-clamp-2 block text-sm leading-5 text-mb-muted">
+              {description}
             </span>
           )}
-        </div>
-      </div>
-    </article>
+
+          <span className="num mt-1.5 block text-[13px] text-mb-muted">
+            {meta}
+          </span>
+
+          <span className="press btn-solid mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-mb-brand px-5 text-sm font-bold text-white sm:w-auto">
+            <Play
+              className="h-4 w-4"
+              fill="currentColor"
+              strokeWidth={0}
+              aria-hidden="true"
+            />
+            Darsni köriş
+          </span>
+        </span>
+      </Link>
+    );
+  } else {
+    const inner = (
+      <>
+        {thumb(false)}
+
+        <span className="min-w-0 flex-1">
+          <span
+            className={cn(
+              "line-clamp-2 block text-[15px] font-bold leading-snug",
+              isOpen ? "text-mb-ink" : "text-slate-500",
+            )}
+          >
+            {title}
+          </span>
+          <span className="num mt-0.5 block text-[13px] text-mb-muted">
+            {meta}
+          </span>
+        </span>
+
+        {isFree && !isCompleted && isOpen && (
+          <span className="shrink-0 rounded-md bg-vp-success-soft px-2 py-0.5 text-xs font-semibold text-vp-success">
+            Bepul
+          </span>
+        )}
+
+        {(isOpen || !hasContentAccess) && (
+          <ChevronRight
+            className="h-5 w-5 shrink-0 text-slate-400 transition-transform group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
+        )}
+      </>
+    );
+
+    const shell =
+      "group flex min-h-[68px] items-center gap-3 rounded-2xl border p-2.5 pr-3";
+
+    content = isOpen ? (
+      <Link
+        href={`/lessons/view?lessonId=${lessonId}`}
+        className={cn(shell, "edge border-mb-line bg-white")}
+      >
+        {inner}
+      </Link>
+    ) : !hasContentAccess ? (
+      <Link
+        href={`/pricing?locked=lesson&lessonId=${lessonId}`}
+        className={cn(shell, "border-mb-line bg-white/60 hover:bg-white")}
+      >
+        {inner}
+      </Link>
+    ) : (
+      <div className={cn(shell, "border-dashed border-slate-300")}>{inner}</div>
+    );
+  }
+
+  return (
+    <li className="relative flex gap-3 pb-3 last:pb-0">
+      {/* Yöl çiziği: ötilgan qismi yaşil */}
+      {!isLast && (
+        <span
+          aria-hidden="true"
+          className={cn(
+            "absolute bottom-0 left-[17px] top-9 w-0.5",
+            isCompleted ? "bg-vp-success" : "bg-slate-200",
+          )}
+        />
+      )}
+
+      <span className={cn("flex", isCurrent ? "pt-3" : "pt-4")}>{node}</span>
+
+      <div className="min-w-0 flex-1">{content}</div>
+    </li>
   );
 }

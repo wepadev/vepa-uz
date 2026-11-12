@@ -1064,7 +1064,7 @@ export default function PdfInkEditor() {
           disabled={loading}
           {...dropProps}
           className={cn(
-            "flex w-full flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed bg-white px-6 py-16 text-center transition",
+            "flex w-full flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed bg-white px-6 py-16 text-center transition",
             dragOver ? "border-mb-brand bg-mb-tintSoft" : "border-mb-line hover:border-mb-brand",
           )}
         >

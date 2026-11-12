@@ -3,7 +3,10 @@ import { redirect } from "next/navigation";
 
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
-import { Trophy } from "lucide-react";
+import { ChevronDown, Play } from "lucide-react";
+import { Tag } from "@/components/ui/row";
+import { btnGhost } from "@/lib/ui";
+import { cn } from "@/lib/utils";
 import Pagination from "@/components/ui/pagination";
 import { formatDate, getSingleValue, toNumber } from "@/lib/stats-format";
 import type {
@@ -121,38 +124,31 @@ function formatDuration(
     .join(":");
 }
 
-function Medal({
-  rank,
-}: {
-  rank: number;
-}) {
-  if (rank > 3) {
-    return (
-      <span className="inline-flex h-9 min-w-9 items-center justify-center rounded-xl bg-slate-100 px-2 text-sm font-bold text-slate-700">
-        {rank}
-      </span>
-    );
-  }
-
-  const className =
-    rank === 1
-      ? "bg-amber-100 text-amber-700"
-      : rank === 2
-        ? "bg-slate-200 text-slate-700"
-        : "bg-amber-100 text-amber-700";
-
+/**
+ * Örin plitkasi. Emoji medallar olib taşlandi: ular telefonlarda har
+ * xil çiqardi va sahifadagi yagona rangli narsa bölib qolardi. Endi
+ * 1-örin — sariq urğu, 2–3-örin — oçiq kök, qolganlari kulrang.
+ */
+function Rank({ rank }: { rank: number }) {
   return (
     <span
-      className={`inline-flex h-10 min-w-10 items-center justify-center rounded-2xl px-2 text-lg font-bold ${className}`}
+      className={cn(
+        "num grid h-9 w-9 shrink-0 place-items-center rounded-xl text-sm font-bold",
+        rank === 1
+          ? "bg-vp-accent text-vp-on-accent"
+          : rank <= 3
+            ? "bg-mb-tint text-mb-brandDark"
+            : "bg-slate-100 text-slate-600",
+      )}
       aria-label={`${rank}-örin`}
     >
-      {rank === 1
-        ? "🥇"
-        : rank === 2
-          ? "🥈"
-          : "🥉"}
+      {rank}
     </span>
   );
+}
+
+function initialOf(name: string | null | undefined) {
+  return (name ?? "").trim().charAt(0).toUpperCase() || "?";
 }
 
 export default async function LeaderboardPage({
@@ -454,12 +450,28 @@ export default async function LeaderboardPage({
       currentSummary?.is_ranked,
     );
 
+  const showPodium = topThree.length === 3;
+  const listRows = showPodium ? overallRows.slice(3) : overallRows;
+
+  /* Şohsupa tartibi: 2 — 1 — 3 */
+  const podium = showPodium
+    ? [
+        { row: topThree[1], height: "h-16", tone: "bg-mb-tint text-mb-brandDark" },
+        { row: topThree[0], height: "h-24", tone: "bg-vp-accent text-vp-on-accent" },
+        { row: topThree[2], height: "h-12", tone: "bg-mb-tint text-mb-brandDark" },
+      ]
+    : [];
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <PageHeader
         backHref="/"
         backLabel="Boş sahifa"
+        glyph="ranking"
         title="Reyting"
+        subtitle={
+          overallTotal > 0 ? `${formatNumber(overallTotal)} öquvçi` : undefined
+        }
         action={
           <Link href="/results" className={headerButton}>
             Natijalarim
@@ -467,661 +479,303 @@ export default async function LeaderboardPage({
         }
       />
 
-      <section className="mx-auto max-w-5xl px-3 py-5 sm:px-6 sm:py-8">
-        {/* Sizning o'rningiz */}
-        <div className="relative overflow-hidden hero-board rounded-3xl p-5 text-white sm:p-6">
-
-          <div className="relative flex flex-wrap items-center justify-between gap-4">
-            <div className="min-w-0">
-              <p className="inline-flex items-center gap-2 text-sm font-semibold text-blue-100">
-                <Trophy
-                  className="h-4 w-4"
-                  strokeWidth={2.2}
-                  aria-hidden="true"
-                />
-                Sizning örningiz
-              </p>
-
-              {isAdmin ? (
-                <p className="mt-1.5 text-xl font-bold">
-                  Admin reytingga kirmaydi
-                </p>
-              ) : isRanked ? (
-                <>
-                  <p className="mt-1 text-4xl font-bold leading-none sm:text-5xl">
-                    {formatNumber(currentSummary?.overall_rank)}
-                    <span className="text-2xl font-bold">-örin</span>
-                  </p>
-
-                  <p className="mt-1.5 text-sm text-blue-100">
-                    {formatNumber(
-                      currentSummary?.overall_participants,
-                    )}{" "}
-                    öquvçi içida ·{" "}
-                    {formatNumber(currentSummary?.rating_points)} ball
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p className="mt-1 text-2xl font-bold sm:text-3xl">
-                    Hali reytingda emassiz
-                  </p>
-
-                  <p className="mt-1.5 text-sm text-blue-100">
-                    Testlar bölimidan bitta test işlang — örningiz
-                    şu yerda çiqadi.
-                  </p>
-                </>
-              )}
-            </div>
-
-            <Link
-              href="/tests"
-              className="inline-flex min-h-11 items-center rounded-2xl bg-white px-5 text-sm font-bold text-blue-700 shadow-sm transition hover:bg-blue-50"
-            >
-              Test işlaş
-            </Link>
-          </div>
-        </div>
-
-        {topThree.length > 0 && (
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {topThree.map((row) => {
-              const rank =
-                toNumber(
-                  row.overall_rank,
-                );
-
-              return (
-                <article
-                  key={row.user_id}
-                  className={
-                    rank === 1
-                      ? "rounded-3xl border border-amber-200 bg-amber-50 p-5 shadow-sm"
-                      : rank === 2
-                        ? "rounded-3xl border border-slate-300 bg-white p-5 shadow-sm"
-                        : "rounded-3xl border border-amber-200 bg-amber-50 p-5 shadow-sm"
-                  }
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <Medal
-                      rank={rank}
-                    />
-
-                    <span className="text-sm font-bold text-slate-500">
-                      {formatNumber(
-                        row.rating_points,
-                      )}{" "}
-                      ball
-                    </span>
-                  </div>
-
-                  <h2 className="mt-4 break-words text-xl font-bold text-slate-950">
-                    {row.full_name}
-                  </h2>
-
-                  <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                    <div>
-                      <p className="font-medium text-slate-500">
-                        Testlar
-                      </p>
-
-                      <p className="mt-1 font-bold">
-                        {formatNumber(
-                          row.tests_completed,
-                        )}
-                      </p>
-                    </div>
-
-                    <div>
-                      <p className="font-medium text-slate-500">
-                        Örtaça
-                      </p>
-
-                      <p className="mt-1 font-bold">
-                        {formatNumber(
-                          row.average_percentage,
-                        )}
-                        %
-                      </p>
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        )}
-
-        {isRanked && (
-          <article className="mt-6 rounded-3xl border border-blue-200 bg-blue-50 p-5 sm:p-6">
-            <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+      <section className="mx-auto max-w-5xl px-4 py-5 sm:px-6 sm:py-8">
+        {/* Sizning örningiz — sahifadagi yagona kök karta */}
+        {isAdmin ? (
+          <p className="rounded-2xl border border-mb-line bg-white px-4 py-3 text-sm text-mb-muted">
+            Admin hisobi reytingga kirmaydi.
+          </p>
+        ) : isRanked ? (
+          <div className="spotlight rounded-2xl p-5 sm:p-6">
+            <div className="relative flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
               <div>
-                <p className="text-sm font-bold text-blue-700">
-                  Sizning umumiy
-                  natijangiz
+                <p className="eyebrow !text-white/80">Sizning örningiz</p>
+
+                <p className="num mt-1 text-5xl font-extrabold leading-none">
+                  {formatNumber(currentSummary?.overall_rank)}
+                  <span className="text-2xl font-bold">-örin</span>
                 </p>
 
-                <h2 className="mt-1 text-2xl font-bold text-blue-950">
-                  {formatNumber(
-                    currentSummary
-                      ?.overall_rank,
-                  )}
-                  -örin
-                </h2>
+                <p className="num mt-2 text-sm text-white/80">
+                  {formatNumber(currentSummary?.overall_participants)} öquvçi
+                  içida
+                </p>
               </div>
 
-              <div className="grid grid-cols-3 gap-3 text-center">
-                <div className="rounded-2xl bg-white px-4 py-3">
-                  <p className="text-[11px] font-bold uppercase text-slate-500">
-                    Ball
-                  </p>
-
-                  <p className="mt-1 font-bold text-blue-700">
-                    {formatNumber(
-                      currentSummary
-                        ?.rating_points,
-                    )}
-                  </p>
-                </div>
-
-                <div className="rounded-2xl bg-white px-4 py-3">
-                  <p className="text-[11px] font-bold uppercase text-slate-500">
-                    Test
-                  </p>
-
-                  <p className="mt-1 font-bold text-blue-700">
-                    {formatNumber(
-                      currentSummary
-                        ?.tests_completed,
-                    )}
-                  </p>
-                </div>
-
-                <div className="rounded-2xl bg-white px-4 py-3">
-                  <p className="text-[11px] font-bold uppercase text-slate-500">
-                    90%+
-                  </p>
-
-                  <p className="mt-1 font-bold text-emerald-700">
-                    {formatNumber(
-                      currentSummary
-                        ?.excellent_tests,
-                    )}
-                  </p>
-                </div>
-              </div>
+              <dl className="num grid grid-cols-3 gap-2 text-center">
+                {[
+                  ["Ball", formatNumber(currentSummary?.rating_points)],
+                  ["Test", formatNumber(currentSummary?.tests_completed)],
+                  ["90%+", formatNumber(currentSummary?.excellent_tests)],
+                ].map(([label, value]) => (
+                  <div
+                    key={label}
+                    className="min-w-[76px] rounded-xl bg-white/10 px-3 py-2.5"
+                  >
+                    <dt className="text-xs font-semibold text-white/80">
+                      {label}
+                    </dt>
+                    <dd className="mt-0.5 text-lg font-extrabold">{value}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
-          </article>
+          </div>
+        ) : (
+          <div className="spotlight rounded-2xl p-5 sm:p-6">
+            <div className="relative flex flex-wrap items-center justify-between gap-4">
+              <div className="min-w-0">
+                <p className="eyebrow !text-white/80">Sizning örningiz</p>
+
+                <p className="mt-1 text-2xl font-extrabold leading-tight">
+                  Hali reytingda emassiz
+                </p>
+
+                <p className="mt-1.5 max-w-md text-sm leading-5 text-white/80">
+                  Bitta test işlang — örningiz şu yerda çiqadi.
+                </p>
+              </div>
+
+              <Link
+                href="/tests"
+                className="press inline-flex min-h-11 items-center gap-2 rounded-xl bg-white px-5 text-sm font-bold text-blue-700 shadow-[inset_0_-3px_0_rgb(3_22_80/0.14)]"
+              >
+                <Play className="h-4 w-4" aria-hidden="true" />
+                Test işlaş
+              </Link>
+            </div>
+          </div>
         )}
 
-        <div className="mt-8 grid gap-6 xl:grid-cols-2">
-          <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-            <div className="border-b border-slate-200 px-5 py-5 sm:px-6">
-              <h2 className="text-2xl font-bold">
-                Umumiy reyting
-              </h2>
+        {/* Şohsupa: birinçi uç örin */}
+        {showPodium && (
+          <div className="mt-6 rounded-2xl border border-mb-line bg-white px-3 pt-5 sm:px-6">
+            <p className="eyebrow text-center">Eng yuqori uç örin</p>
 
-              <p className="mt-1 text-sm text-slate-500">
-                Har testdagi eng
-                yaxşi foizlar
-                yiğindisi
+            <ol className="mx-auto mt-4 grid max-w-lg grid-cols-3 items-end gap-2 sm:gap-4">
+              {podium.map(({ row, height, tone }) => {
+                const rank = toNumber(row.overall_rank);
+                const isCurrentUser = row.user_id === user.id;
+
+                return (
+                  <li
+                    key={row.user_id}
+                    className="flex min-w-0 flex-col items-center text-center"
+                  >
+                    <span
+                      className={cn(
+                        "grid place-items-center rounded-full bg-slate-100 font-extrabold text-slate-700",
+                        rank === 1
+                          ? "h-16 w-16 text-2xl ring-4 ring-vp-accent"
+                          : "h-12 w-12 text-lg ring-2 ring-mb-tint",
+                        isCurrentUser && "bg-mb-brand text-white",
+                      )}
+                      aria-hidden="true"
+                    >
+                      {initialOf(row.full_name)}
+                    </span>
+
+                    <p className="mt-2 line-clamp-2 w-full break-words text-[13px] font-bold leading-4 text-mb-ink sm:text-sm">
+                      {row.full_name}
+                    </p>
+
+                    <p className="num mt-0.5 text-[13px] font-semibold text-mb-muted">
+                      {formatNumber(row.rating_points)} ball
+                    </p>
+
+                    <span
+                      className={cn(
+                        "num mt-2 grid w-full place-items-center rounded-t-xl text-2xl font-extrabold",
+                        height,
+                        tone,
+                      )}
+                    >
+                      {rank}
+                    </span>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        )}
+
+        <div className="mt-6 grid gap-6 lg:grid-cols-2 lg:items-start">
+          <section className="overflow-hidden rounded-2xl border border-mb-line bg-white">
+            <div className="border-b border-mb-line px-4 py-3.5 sm:px-5">
+              <h2 className="text-lg font-bold text-mb-ink">Umumiy reyting</h2>
+
+              <p className="mt-0.5 text-sm text-mb-muted">
+                Har testdagi eng yaxşi foizlar yiğindisi
               </p>
             </div>
 
-            {overallRows.length ===
-            0 ? (
-              <div className="px-5 py-14 text-center text-sm font-medium text-slate-500">
-                Hozirça reyting
-                natijasi yöq.
-              </div>
+            {overallRows.length === 0 ? (
+              <p className="px-5 py-12 text-center text-sm text-mb-muted">
+                Hozirça reyting natijasi yöq.
+              </p>
             ) : (
               <>
-              {/* Mobil: jadval o‘rniga karta ro‘yxati */}
-              <div className="divide-y divide-slate-100 md:hidden">
-                {overallRows.map((row) => {
-                  const rank = toNumber(
-                    row.overall_rank,
-                  );
+                {listRows.length > 0 && (
+                  <ol className="divide-y divide-mb-line">
+                    {listRows.map((row) => {
+                      const rank = toNumber(row.overall_rank);
+                      const isCurrentUser = row.user_id === user.id;
 
-                  const isCurrentUser =
-                    row.user_id === user.id;
+                      return (
+                        <li
+                          key={row.user_id}
+                          className={cn(
+                            "flex items-center gap-3 px-4 py-3 sm:px-5",
+                            isCurrentUser && "bg-mb-tintSoft",
+                          )}
+                        >
+                          <Rank rank={rank} />
 
-                  return (
-                    <div
-                      key={row.user_id}
-                      className={
-                        isCurrentUser
-                          ? "flex items-center gap-3 bg-blue-50 px-4 py-3"
-                          : "flex items-center gap-3 px-4 py-3"
-                      }
-                    >
-                      <Medal rank={rank} />
+                          <div className="min-w-0 flex-1">
+                            <p className="flex items-center gap-2 text-[15px] font-bold text-mb-ink">
+                              <span className="truncate">{row.full_name}</span>
+                              {isCurrentUser && <Tag tone="brand">Siz</Tag>}
+                            </p>
 
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-bold text-slate-950">
-                          {row.full_name}
-                          {isCurrentUser && (
-                            <span className="ml-2 inline-flex rounded-full bg-mb-brand px-2 py-0.5 text-[10px] font-bold text-white">
-                              Siz
+                            <p className="num mt-0.5 text-[13px] text-mb-muted">
+                              {formatNumber(row.tests_completed)} test ·{" "}
+                              {formatNumber(row.average_percentage)}% örtaça
+                            </p>
+                          </div>
+
+                          <p className="num shrink-0 text-right text-base font-extrabold text-mb-ink">
+                            {formatNumber(row.rating_points)}
+                            <span className="ml-1 text-xs font-semibold text-mb-muted">
+                              ball
                             </span>
-                          )}
-                        </p>
+                          </p>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                )}
 
-                        <p className="mt-0.5 text-xs text-slate-500">
-                          {formatNumber(
-                            row.tests_completed,
-                          )}{" "}
-                          ta test ·{" "}
-                          {formatNumber(
-                            row.average_percentage,
-                          )}
-                          % örtaça
-                        </p>
-                      </div>
-
-                      <div className="shrink-0 text-right">
-                        <p className="text-base font-bold text-blue-700">
-                          {formatNumber(
-                            row.rating_points,
-                          )}
-                        </p>
-                        <p className="text-[10px] font-semibold uppercase text-mb-muted">
-                          ball
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="hidden overflow-x-auto md:block">
-                <table className="w-full min-w-[620px] text-left">
-                  <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
-                    <tr>
-                      <th className="px-5 py-4 font-bold">
-                        Örin
-                      </th>
-
-                      <th className="px-5 py-4 font-bold">
-                        Öquvçi
-                      </th>
-
-                      <th className="px-5 py-4 text-center font-bold">
-                        Test
-                      </th>
-
-                      <th className="px-5 py-4 text-center font-bold">
-                        Örtaça
-                      </th>
-
-                      <th className="px-5 py-4 text-right font-bold">
-                        Ball
-                      </th>
-                    </tr>
-                  </thead>
-
-                  <tbody className="divide-y divide-slate-100">
-                    {overallRows.map(
-                      (row) => {
-                        const rank =
-                          toNumber(
-                            row.overall_rank,
-                          );
-
-                        return (
-                          <tr
-                            key={row.user_id}
-                            className={
-                              row.user_id ===
-                              user.id
-                                ? "bg-blue-50"
-                                : "hover:bg-slate-50"
-                            }
-                          >
-                            <td className="px-5 py-4">
-                              <Medal
-                                rank={rank}
-                              />
-                            </td>
-
-                            <td className="px-5 py-4">
-                              <p className="font-bold text-slate-950">
-                                {
-                                  row.full_name
-                                }
-                              </p>
-
-                              {row.user_id ===
-                                user.id && (
-                                <span className="mt-1 inline-flex rounded-full bg-mb-brand px-2.5 py-1 text-[10px] font-bold text-white">
-                                  Siz
-                                </span>
-                              )}
-                            </td>
-
-                            <td className="px-5 py-4 text-center font-bold text-blue-700">
-                              {formatNumber(
-                                row.tests_completed,
-                              )}
-                            </td>
-
-                            <td className="px-5 py-4 text-center font-bold text-emerald-700">
-                              {formatNumber(
-                                row.average_percentage,
-                              )}
-                              %
-                            </td>
-
-                            <td className="px-5 py-4 text-right text-lg font-bold text-blue-700">
-                              {formatNumber(
-                                row.rating_points,
-                              )}
-                            </td>
-                          </tr>
-                        );
-                      },
-                    )}
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="px-5 pb-5 sm:px-6">
-                <Pagination
-                  currentPage={overallPage}
-                  totalPages={overallTotalPages}
-                  totalItems={overallTotal}
-                  pageSize={LEADERBOARD_PAGE_SIZE}
-                  hrefFor={(page) => hrefWith({ page })}
-                />
-              </div>
+                <div className="px-4 pb-4 sm:px-5">
+                  <Pagination
+                    currentPage={overallPage}
+                    totalPages={overallTotalPages}
+                    totalItems={overallTotal}
+                    pageSize={LEADERBOARD_PAGE_SIZE}
+                    hrefFor={(page) => hrefWith({ page })}
+                  />
+                </div>
               </>
             )}
           </section>
 
-          <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-            <div className="border-b border-slate-200 px-5 py-5 sm:px-6">
-              <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-                <div>
-                  <h2 className="text-2xl font-bold">
-                    Test reytingi
-                  </h2>
+          <section className="overflow-hidden rounded-2xl border border-mb-line bg-white">
+            <div className="border-b border-mb-line px-4 py-3.5 sm:px-5">
+              <h2 className="text-lg font-bold text-mb-ink">Test reytingi</h2>
 
-                  <p className="mt-1 text-sm text-slate-500">
-                    Testni tanlab TOP
-                    natijalarni köring
-                  </p>
-                </div>
+              {rankingTests.length > 0 ? (
+                <form method="get" className="mt-2.5 flex gap-2">
+                  {/* Umumiy reyting sahifasi saqlansin */}
+                  {overallPage > 1 && (
+                    <input type="hidden" name="page" value={overallPage} />
+                  )}
 
-                {rankingTests.length >
-                  0 && (
-                  <form
-                    method="get"
-                    className="flex gap-2"
+                  <select
+                    name="testId"
+                    aria-label="Testni tanlang"
+                    defaultValue={
+                      selectedTest ? toNumber(selectedTest.test_id) : undefined
+                    }
+                    className="min-h-11 min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-3 text-sm font-semibold outline-none focus:border-mb-brand"
                   >
-                    {/* Umumiy reyting sahifasi saqlansin */}
-                    {overallPage > 1 && (
-                      <input
-                        type="hidden"
-                        name="page"
-                        value={overallPage}
-                      />
-                    )}
+                    {rankingTests.map((test) => (
+                      <option key={test.test_id} value={test.test_id}>
+                        {test.title}
+                      </option>
+                    ))}
+                  </select>
 
-                    <select
-                      name="testId"
-                      aria-label="Testni tanlang"
-                      defaultValue={
-                        selectedTest
-                          ? toNumber(
-                              selectedTest.test_id,
-                            )
-                          : undefined
-                      }
-                      className="min-h-11 min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-bold outline-none focus:border-mb-brand sm:w-56"
-                    >
-                      {rankingTests.map(
-                        (test) => (
-                          <option
-                            key={
-                              test.test_id
-                            }
-                            value={
-                              test.test_id
-                            }
-                          >
-                            {test.title}
-                          </option>
-                        ),
-                      )}
-                    </select>
-
-                    <button
-                      type="submit"
-                      className="min-h-11 rounded-xl bg-mb-brand px-4 py-2 text-sm font-bold text-white hover:bg-mb-brandDark"
-                    >
-                      Köriş
-                    </button>
-                  </form>
-                )}
-              </div>
+                  <button type="submit" className={btnGhost}>
+                    Köriş
+                  </button>
+                </form>
+              ) : (
+                <p className="mt-0.5 text-sm text-mb-muted">
+                  Faol reyting testi yöq
+                </p>
+              )}
             </div>
 
-            {!selectedTest ? (
-              <div className="px-5 py-14 text-center">
-                <p className="font-bold text-slate-800">
-                  Faol reyting testi
-                  yöq
-                </p>
-              </div>
-            ) : testRows.length ===
-              0 ? (
-              <div className="px-5 py-14 text-center">
-                <p className="font-bold text-slate-800">
-                  {selectedTest.title}
-                </p>
+            {!selectedTest ? null : testRows.length === 0 ? (
+              <div className="px-5 py-12 text-center">
+                <p className="font-bold text-mb-ink">{selectedTest.title}</p>
 
-                <p className="mt-2 text-sm text-slate-500">
-                  Bu testni hali heç
-                  kim tugatmagan.
+                <p className="mt-1 text-sm text-mb-muted">
+                  Bu testni hali heç kim tugatmagan.
                 </p>
               </div>
             ) : (
               <>
                 {currentTestStatistics &&
-                  toNumber(
-                    currentTestStatistics
-                      .test_rank,
-                  ) > 0 && (
-                    <div className="border-b border-blue-200 bg-blue-50 px-5 py-4 sm:px-6">
-                      <p className="text-sm font-bold text-blue-700">
-                        Siz:{" "}
-                        {formatNumber(
-                          currentTestStatistics
-                            .test_rank,
-                        )}
-                        -örin ·{" "}
-                        {formatNumber(
-                          currentTestStatistics
-                            .best_percentage,
-                        )}
-                        % ·{" "}
-                        {formatDuration(
-                          currentTestStatistics
-                            .best_duration_seconds,
-                        )}
-                      </p>
-                    </div>
+                  toNumber(currentTestStatistics.test_rank) > 0 && (
+                    <p className="num border-b border-mb-line bg-mb-tintSoft px-4 py-3 text-sm font-semibold text-mb-brandDark sm:px-5">
+                      Siz: {formatNumber(currentTestStatistics.test_rank)}-örin ·{" "}
+                      {formatNumber(currentTestStatistics.best_percentage)}% ·{" "}
+                      {formatDuration(
+                        currentTestStatistics.best_duration_seconds,
+                      )}
+                    </p>
                   )}
 
-                {/* Mobil: jadval o‘rniga karta ro‘yxati */}
-                <div className="divide-y divide-slate-100 md:hidden">
+                <ol className="divide-y divide-mb-line">
                   {testRows.map((row) => {
-                    const rank = toNumber(
-                      row.test_rank,
-                    );
-
-                    const isCurrentUser =
-                      row.user_id === user.id;
+                    const rank = toNumber(row.test_rank);
+                    const isCurrentUser = row.user_id === user.id;
 
                     return (
-                      <div
+                      <li
                         key={row.user_id}
-                        className={
-                          isCurrentUser
-                            ? "flex items-center gap-3 bg-blue-50 px-4 py-3"
-                            : "flex items-center gap-3 px-4 py-3"
-                        }
+                        className={cn(
+                          "flex items-center gap-3 px-4 py-3 sm:px-5",
+                          isCurrentUser && "bg-mb-tintSoft",
+                        )}
                       >
-                        <Medal rank={rank} />
+                        <Rank rank={rank} />
 
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-bold text-slate-950">
-                            {row.full_name}
-                            {isCurrentUser && (
-                              <span className="ml-2 inline-flex rounded-full bg-mb-brand px-2 py-0.5 text-[10px] font-bold text-white">
-                                Siz
-                              </span>
-                            )}
+                          <p className="flex items-center gap-2 text-[15px] font-bold text-mb-ink">
+                            <span className="truncate">{row.full_name}</span>
+                            {isCurrentUser && <Tag tone="brand">Siz</Tag>}
                           </p>
 
-                          <p className="mt-0.5 text-xs text-slate-500">
-                            <span className="font-mono tabular-nums">
-                              {formatDuration(
-                                row.duration_seconds,
-                              )}
-                            </span>{" "}
-                            ·{" "}
-                            {formatNumber(
-                              row.attempts_count,
-                            )}{" "}
-                            uriniş ·{" "}
-                            {formatDate(
-                              row.completed_at,
-                            )}
+                          <p className="num mt-0.5 truncate text-[13px] text-mb-muted">
+                            {formatDuration(row.duration_seconds)} ·{" "}
+                            {formatNumber(row.attempts_count)} uriniş ·{" "}
+                            {formatDate(row.completed_at)}
                           </p>
                         </div>
 
-                        <p className="shrink-0 text-base font-bold text-emerald-700">
-                          {formatNumber(
-                            row.percentage,
+                        <p
+                          className={cn(
+                            "num shrink-0 text-base font-extrabold",
+                            toNumber(row.percentage) >= 90
+                              ? "text-vp-success"
+                              : "text-mb-ink",
                           )}
-                          %
+                        >
+                          {formatNumber(row.percentage)}%
                         </p>
-                      </div>
+                      </li>
                     );
                   })}
-                </div>
+                </ol>
 
-                <div className="hidden overflow-x-auto md:block">
-                  <table className="w-full min-w-[680px] text-left">
-                    <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
-                      <tr>
-                        <th className="px-5 py-4 font-bold">
-                          Örin
-                        </th>
-
-                        <th className="px-5 py-4 font-bold">
-                          Öquvçi
-                        </th>
-
-                        <th className="px-5 py-4 text-center font-bold">
-                          Foiz
-                        </th>
-
-                        <th className="px-5 py-4 text-center font-bold">
-                          Vaqt
-                        </th>
-
-                        <th className="px-5 py-4 text-center font-bold">
-                          Uriniş
-                        </th>
-
-                        <th className="px-5 py-4 text-right font-bold">
-                          Sana
-                        </th>
-                      </tr>
-                    </thead>
-
-                    <tbody className="divide-y divide-slate-100">
-                      {testRows.map(
-                        (row) => {
-                          const rank =
-                            toNumber(
-                              row.test_rank,
-                            );
-
-                          return (
-                            <tr
-                              key={row.user_id}
-                              className={
-                                row.user_id ===
-                                user.id
-                                  ? "bg-blue-50"
-                                  : "hover:bg-slate-50"
-                              }
-                            >
-                              <td className="px-5 py-4">
-                                <Medal
-                                  rank={rank}
-                                />
-                              </td>
-
-                              <td className="px-5 py-4">
-                                <p className="font-bold text-slate-950">
-                                  {
-                                    row.full_name
-                                  }
-                                </p>
-
-                                {row.user_id ===
-                                  user.id && (
-                                  <span className="mt-1 inline-flex rounded-full bg-mb-brand px-2.5 py-1 text-[10px] font-bold text-white">
-                                    Siz
-                                  </span>
-                                )}
-                              </td>
-
-                              <td className="px-5 py-4 text-center text-lg font-bold text-emerald-700">
-                                {formatNumber(
-                                  row.percentage,
-                                )}
-                                %
-                              </td>
-
-                              <td className="px-5 py-4 text-center font-mono font-bold tabular-nums text-slate-700">
-                                {formatDuration(
-                                  row.duration_seconds,
-                                )}
-                              </td>
-
-                              <td className="px-5 py-4 text-center font-bold text-blue-700">
-                                {formatNumber(
-                                  row.attempts_count,
-                                )}
-                              </td>
-
-                              <td className="px-5 py-4 text-right text-xs font-medium text-slate-500">
-                                {formatDate(
-                                  row.completed_at,
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        },
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-
-                <div className="px-5 pb-5 sm:px-6">
+                <div className="px-4 pb-4 sm:px-5">
                   <Pagination
                     currentPage={testPage}
                     totalPages={testTotalPages}
                     totalItems={testTotal}
                     pageSize={LEADERBOARD_PAGE_SIZE}
-                    hrefFor={(page) =>
-                      hrefWith({ testPage: page })
-                    }
+                    hrefFor={(page) => hrefWith({ testPage: page })}
                   />
                 </div>
               </>
@@ -1129,29 +783,27 @@ export default async function LeaderboardPage({
           </section>
         </div>
 
-        <section className="mt-8 rounded-3xl border border-blue-200 bg-blue-50 p-5 sm:p-6">
-          <h2 className="text-lg font-bold text-blue-950">
-            Reyting qoidasi
-          </h2>
+        <details className="group mt-6 rounded-2xl border border-mb-line bg-white">
+          <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 text-sm font-bold text-mb-ink sm:px-5 [&::-webkit-details-marker]:hidden">
+            Reyting qanday hisoblanadi?
+            <ChevronDown
+              className="h-5 w-5 text-slate-400 transition-transform group-open:rotate-180"
+              aria-hidden="true"
+            />
+          </summary>
 
-          <p className="mt-2 text-sm leading-6 text-blue-900">
-            Har bir testda faqat
-            eng yaxşi uriniş
-            olinadi. Teng foizda
-            testni tezroq tugatgan
-            öquvçi yuqorida
-            turadi. Umumiy
-            reytingda barça
-            reyting testlaridagi
-            eng yaxşi foizlar
-            qöşiladi.
-          </p>
+          <div className="border-t border-mb-line px-4 py-3.5 text-sm leading-6 text-slate-700 sm:px-5">
+            <p>
+              Har bir testda faqat eng yaxşi uriniş olinadi. Teng foizda
+              testni tezroq tugatgan öquvçi yuqorida turadi. Umumiy reytingda
+              barça reyting testlaridagi eng yaxşi foizlar qöşiladi.
+            </p>
 
-          <p className="mt-2 text-sm font-bold leading-6 text-blue-950">
-            Dars testlari reytingga
-            mutlaqo qöşilmaydi.
-          </p>
-        </section>
+            <p className="mt-2 font-semibold text-mb-ink">
+              Dars testlari reytingga qöşilmaydi.
+            </p>
+          </div>
+        </details>
       </section>
     </main>
   );

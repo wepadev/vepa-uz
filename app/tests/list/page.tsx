@@ -1,6 +1,12 @@
 import Link from "next/link";
-import { ClipboardCheck, Crown, Trophy } from "lucide-react";
+import { Lock, Play, RotateCcw } from "lucide-react";
 import { notFound, redirect } from "next/navigation";
+
+import EmptyState from "@/components/ui/empty-state";
+import PremiumNote from "@/components/ui/premium-note";
+import ProgressRing from "@/components/ui/progress-ring";
+import { RowIndex, Tag } from "@/components/ui/row";
+import { btnGhost, btnPrimary } from "@/lib/ui";
 
 import { requireSectionAccess } from "@/lib/require-section-access";
 import PageHeader, { headerButton } from "@/components/ui/page-header";
@@ -385,15 +391,19 @@ export default async function TestListPage({ searchParams }: PageProps) {
   const isFreeTopic = isAutoFreeTopic || topic.is_free;
   const isAdmin = profile.role === "admin";
 
+  const solvedCount = tests.filter(
+    (test) => statisticsByTest.get(test.id)?.best_attempt_id,
+  ).length;
+  const topicLocked = !isAdmin && !isPremium && !isFreeTopic;
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <PageHeader
         backHref={`/tests/topics?sectionId=${section.id}`}
-        backLabel={`${section.title} mavzulari`}
+        backLabel={section.title}
         title={topic.title}
-        subtitle={topic.description || "Testni tanlang va işlaşni boşlang."}
-        width="7xl"
-        chips={[isAdmin ? "Admin" : isPremium ? "Premium faol" : "Bepul tarif"]}
+        subtitle={`${examType.title} · ${tests.length} test`}
+        width="3xl"
         action={
           <Link href="/results" className={headerButton}>
             Natijalarim
@@ -401,192 +411,186 @@ export default async function TestListPage({ searchParams }: PageProps) {
         }
       />
 
-      <section className="mx-auto max-w-7xl px-3 py-5 sm:px-6 sm:py-12">
-        <div className="hero-board rounded-3xl p-6 text-white sm:p-8">
-          <p className="text-sm font-bold text-blue-100">
-            {examType.title} · {section.title}
-          </p>
-          <h2 className="mt-2 text-3xl font-bold">{topic.title} testlari</h2>
-          <p className="mt-3 max-w-3xl text-sm leading-6 text-blue-100">
-            {isAutoFreeTopic
-              ? "Bu yönalişning birinçi mavzusi — undagi barça testlar bepul."
-              : topic.is_free
-                ? "Bu mavzudagi barça testlar bepul oçilgan."
-                : "Uşbu mavzudagi testlar Premium tarifga kiradi."}
-          </p>
-        </div>
-
+      <section className="mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-8">
         {!tests.length ? (
-          <div className="mt-7 rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
-            <p className="text-lg font-bold text-slate-700">
-              Hozirça faol test yöq
-            </p>
-            <p className="mt-2 text-sm text-slate-500">
-              Administrator testni naşr qilganda şu yerda körinadi.
-            </p>
-          </div>
+          <EmptyState glyph="tests" title="Hozirça faol test yöq">
+            Test naşr qilinganda şu yerda körinadi.
+          </EmptyState>
         ) : (
-          <div className="mt-5 grid gap-2.5 sm:mt-7 sm:gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {tests.map((test) => {
-              const metrics = metricsByTest.get(test.id) ?? {
-                displayQuestionCount: 0,
-                maxScore: 0,
-              };
-              const stats = statisticsByTest.get(test.id);
-              const bestAttemptId = stats?.best_attempt_id ?? null;
-              const bestPercentage = toNumber(stats?.best_percentage);
-              const passed = bestPercentage >= PASS_PERCENTAGE;
-              const isFree = test.is_free || isFreeTopic;
-              const canStart = isAdmin || isPremium || isFree;
+          <>
+            {/* Mavzu böyiça umumiy holat: neçta testdan neçtasi işlangan */}
+            <div className="flex items-center gap-4 rounded-2xl border border-mb-line bg-white p-4">
+              <ProgressRing
+                value={(solvedCount / tests.length) * 100}
+                size={56}
+                stroke={6}
+                tone={solvedCount === tests.length ? "success" : "brand"}
+              >
+                <span className="num text-sm font-bold text-mb-ink">
+                  {solvedCount}/{tests.length}
+                </span>
+              </ProgressRing>
 
-              return (
-                <article
-                  key={test.id}
-                  className="flex h-full flex-col overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm transition sm:rounded-3xl sm:hover:shadow-[0_8px_24px_rgba(16,24,40,0.10)]"
-                >
-                  <div
-                    className={
-                      isFree
-                        ? "hidden h-1.5 bg-emerald-500 sm:block"
-                        : "hidden h-1.5 bg-mb-brand sm:block"
-                    }
-                  />
-                  <div className="flex flex-1 flex-col p-3.5 sm:p-6">
-                    <div className="flex items-start justify-between gap-4">
-                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-mb-tint text-mb-brand sm:h-12 sm:w-12 sm:rounded-2xl">
-                        <ClipboardCheck className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={1.9} aria-hidden="true" />
-                      </span>
-                      <div className="flex flex-wrap justify-end gap-2">
-                        <span
-                          className={
-                            isFree
-                              ? "rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700"
-                              : "inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-[11px] font-semibold text-blue-700"
-                          }
+              <div className="min-w-0 flex-1">
+                <p className="font-bold leading-5 text-mb-ink">
+                  {solvedCount === 0
+                    ? "Bu mavzuda hali test işlamadingiz"
+                    : solvedCount === tests.length
+                      ? "Mavzudagi hamma test işlangan"
+                      : `${tests.length - solvedCount} ta test qoldi`}
+                </p>
+                <p className="mt-0.5 text-sm text-mb-muted">
+                  {isFreeTopic
+                    ? "Bu mavzudagi barça testlar bepul."
+                    : isPremium || isAdmin
+                      ? "Natija va tahlil test tugaşi bilan çiqadi."
+                      : "Bu mavzu Premium tarifga kiradi."}
+                </p>
+              </div>
+            </div>
+
+            {topicLocked && tests.some((test) => !test.is_free) && (
+              <PremiumNote className="mt-3">
+                Qulfli testlar{" "}
+                <b className="font-semibold text-vp-ink">Premium</b> bilan
+                oçiladi.
+              </PremiumNote>
+            )}
+
+            <ol className="mt-4 grid gap-3">
+              {tests.map((test, index) => {
+                const metrics = metricsByTest.get(test.id) ?? {
+                  displayQuestionCount: 0,
+                  maxScore: 0,
+                };
+                const stats = statisticsByTest.get(test.id);
+                const bestAttemptId = stats?.best_attempt_id ?? null;
+                const bestPercentage = toNumber(stats?.best_percentage);
+                const passed = bestPercentage >= PASS_PERCENTAGE;
+                const isFree = test.is_free || isFreeTopic;
+                const canStart = isAdmin || isPremium || isFree;
+                const attempts = toNumber(stats?.attempts_count);
+
+                return (
+                  <li
+                    key={test.id}
+                    className="rounded-2xl border border-mb-line bg-white"
+                  >
+                    <div className="flex items-start gap-3 p-3.5 sm:p-4">
+                      {bestAttemptId ? (
+                        <ProgressRing
+                          value={bestPercentage}
+                          size={44}
+                          stroke={5}
+                          tone={passed ? "success" : "brand"}
                         >
-                          {isFree ? (
-                            "Bepul"
-                          ) : (
-                            <>
-                              <Crown className="h-3 w-3" strokeWidth={2} aria-hidden="true" />
-                              Premium
-                            </>
-                          )}
-                        </span>
-                        {passed && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-semibold text-amber-700">
-                            <Trophy className="h-3 w-3" strokeWidth={2} aria-hidden="true" />
-                            90%+
+                          <span className="num text-[11px] font-bold text-mb-ink">
+                            {Math.round(bestPercentage)}
                           </span>
+                        </ProgressRing>
+                      ) : (
+                        <RowIndex
+                          value={index + 1}
+                          tone={canStart ? "plain" : "locked"}
+                          className="h-11 w-11"
+                        />
+                      )}
+
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-2">
+                          <h2 className="text-base font-bold leading-snug text-mb-ink">
+                            {test.title}
+                          </h2>
+
+                          {isFree && !isPremium && !isAdmin && (
+                            <Tag tone="free">Bepul</Tag>
+                          )}
+                        </div>
+
+                        <p className="num mt-0.5 text-[13px] text-mb-muted">
+                          {metrics.displayQuestionCount} savol ·{" "}
+                          {metrics.maxScore} ball ·{" "}
+                          {formatTimeLimit(test.time_limit_minutes)}
+                        </p>
+
+                        {bestAttemptId && (
+                          <p className="num mt-1.5 text-[13px] font-semibold text-slate-700">
+                            Eng yaxşi natija{" "}
+                            <span
+                              className={
+                                passed ? "text-vp-success" : "text-mb-brandDark"
+                              }
+                            >
+                              {formatPercentage(bestPercentage)}%
+                            </span>
+                            <span className="font-normal text-mb-muted">
+                              {" "}
+                              · {toNumber(stats?.test_rank)}-örin (
+                              {toNumber(stats?.test_participants)} kişidan)
+                            </span>
+                          </p>
                         )}
                       </div>
                     </div>
 
-                    <h3 className="mt-2.5 text-[15px] font-bold leading-snug text-mb-ink sm:mt-5 sm:text-xl sm:leading-7">
-                      {test.title}
-                    </h3>
-                    <p className="mt-1 line-clamp-1 flex-1 text-[13px] leading-5 text-mb-muted sm:mt-2 sm:line-clamp-none sm:text-sm sm:leading-6">
-                      {test.description || "Matematika testi"}
-                    </p>
-
-                    <p className="mt-2 text-[12px] font-medium text-mb-muted sm:hidden">
-                      {metrics.displayQuestionCount} savol · {metrics.maxScore} ball ·{" "}
-                      {formatTimeLimit(test.time_limit_minutes)}
-                    </p>
-
-                    <div className="mt-5 hidden grid-cols-3 gap-2 sm:grid">
-                      <div className="rounded-2xl bg-slate-50 p-3 text-center">
-                        <p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">
-                          Savollar
-                        </p>
-                        <p className="mt-1 font-bold">
-                          {metrics.displayQuestionCount}
-                        </p>
-                      </div>
-                      <div className="rounded-2xl bg-slate-50 p-3 text-center">
-                        <p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">
-                          Ball
-                        </p>
-                        <p className="mt-1 font-bold text-blue-700">
-                          {metrics.maxScore}
-                        </p>
-                      </div>
-                      <div className="rounded-2xl bg-slate-50 p-3 text-center">
-                        <p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">
-                          Vaqt
-                        </p>
-                        <p className="mt-1 text-xs font-bold text-blue-700">
-                          {formatTimeLimit(test.time_limit_minutes)}
-                        </p>
-                      </div>
-                    </div>
-
-                    {bestAttemptId && (
-                      <div className="mt-2.5 rounded-xl border border-blue-100 bg-blue-50 p-2.5 sm:mt-4 sm:rounded-2xl sm:p-4">
-                        <div className="flex items-end justify-between gap-3">
-                          <div>
-                            <p className="text-[10px] font-semibold uppercase tracking-wide text-mb-brand sm:text-[11px]">
-                              Eng yaxşi natija
-                            </p>
-                            <p
-                              className={
-                                passed
-                                  ? "mt-0.5 text-lg font-bold text-emerald-600 sm:mt-1 sm:text-2xl"
-                                  : "mt-0.5 text-lg font-bold text-blue-700 sm:mt-1 sm:text-2xl"
-                              }
-                            >
-                              {formatPercentage(bestPercentage)}%
-                            </p>
-                          </div>
-                          <p className="text-sm font-bold text-blue-900">
-                            {toNumber(stats?.test_rank)}/
-                            {toNumber(stats?.test_participants)}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    {canStart ? (
-                      <Link
-                        href={`/tests/take?testId=${test.id}`}
-                        className="mt-3 inline-flex min-h-11 items-center justify-center rounded-xl bg-mb-brand px-5 text-center text-sm font-bold text-white transition hover:bg-mb-brandDark sm:mt-5 sm:min-h-12 sm:rounded-2xl sm:text-base"
-                      >
-                        {bestAttemptId ? "Qayta işlaş" : "Testni boşlaş"}
-                      </Link>
-                    ) : (
-                      <Link
-                        href="/pricing"
-                        className="mt-3 inline-flex min-h-11 items-center justify-center rounded-xl bg-mb-brand px-5 text-center text-sm font-bold text-white transition hover:bg-mb-brandDark sm:mt-5 sm:min-h-12 sm:rounded-2xl sm:text-base"
-                      >
-                        Premium orqali oçiş
-                      </Link>
-                    )}
-
-                    <div className="mt-2 grid grid-cols-2 gap-2">
+                    <div className="flex items-center gap-1 border-t border-mb-line px-2 py-2 sm:px-3">
                       <Link
                         href={`/leaderboard?testId=${test.id}`}
-                        className="inline-flex min-h-11 items-center justify-center rounded-xl border border-blue-200 bg-blue-50 px-3 py-2.5 text-center text-sm font-bold text-blue-700 hover:bg-blue-100"
+                        className="inline-flex min-h-10 items-center rounded-lg px-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                       >
                         Reyting
                       </Link>
-                      {bestAttemptId ? (
+
+                      {bestAttemptId && (
                         <Link
                           href={`/results/view?attemptId=${bestAttemptId}`}
-                          className="inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-center text-sm font-bold text-slate-700 hover:bg-slate-50"
+                          className="inline-flex min-h-10 items-center rounded-lg px-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                         >
-                          Natijam
+                          Tahlil
                         </Link>
-                      ) : (
-                        <span className="inline-flex min-h-11 items-center justify-center rounded-xl bg-slate-100 px-3 py-2.5 text-center text-sm font-bold text-slate-500">
-                          Uriniş: {toNumber(stats?.attempts_count)}
+                      )}
+
+                      {attempts > 0 && (
+                        <span className="num hidden px-2 text-[13px] text-mb-muted sm:inline">
+                          {attempts} uriniş
                         </span>
                       )}
+
+                      <span className="flex-1" />
+
+                      {canStart ? (
+                        <Link
+                          href={`/tests/take?testId=${test.id}`}
+                          className={
+                            bestAttemptId
+                              ? `${btnGhost} min-h-10`
+                              : `${btnPrimary} min-h-10`
+                          }
+                        >
+                          {bestAttemptId ? (
+                            <>
+                              <RotateCcw className="h-4 w-4" aria-hidden="true" />
+                              Qayta işlaş
+                            </>
+                          ) : (
+                            <>
+                              <Play className="h-4 w-4" aria-hidden="true" />
+                              Boşlaş
+                            </>
+                          )}
+                        </Link>
+                      ) : (
+                        <Link href="/pricing" className={`${btnGhost} min-h-10`}>
+                          <Lock className="h-4 w-4" aria-hidden="true" />
+                          Oçiş
+                        </Link>
+                      )}
                     </div>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </>
         )}
       </section>
     </main>

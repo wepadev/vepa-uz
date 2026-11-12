@@ -1112,7 +1112,7 @@ const differenceLabel =
           Ilgari 2×2 katta kartalar edi va telefonda vaqt qiymati
           ikki qatorga bo'linib ketardi ("00:01:3" / "0").
         */}
-        <div className="grid grid-cols-4 divide-x divide-slate-200 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="grid grid-cols-4 divide-x divide-slate-200 overflow-hidden rounded-2xl border border-slate-200 bg-white">
           <div className="px-1.5 py-3 text-center sm:px-4 sm:py-4">
             <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 sm:text-xs sm:normal-case sm:tracking-normal">
               Foiz
@@ -1169,7 +1169,7 @@ const differenceLabel =
 
 
 {isRankingTest ? (
-  <section className="mt-6 overflow-hidden rounded-3xl border border-blue-200 bg-white shadow-sm">
+  <section className="mt-6 overflow-hidden rounded-2xl border border-blue-200 bg-white shadow-sm">
     <div className="bg-mb-brand p-5 text-white sm:p-6">
       <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
         <div>
@@ -1286,7 +1286,7 @@ const differenceLabel =
     <div className="flex flex-col gap-3 border-t border-slate-100 p-5 sm:flex-row sm:p-6">
       <Link
         href={retryHref}
-        className="inline-flex min-h-12 flex-1 items-center justify-center rounded-2xl bg-mb-brand px-5 py-3 text-center font-bold text-white transition hover:bg-mb-brandDark"
+        className="inline-flex min-h-12 flex-1 items-center justify-center rounded-xl bg-mb-brand px-5 py-3 text-center font-bold text-white transition hover:bg-mb-brandDark"
       >
         {retryLabel}
       </Link>
@@ -1325,7 +1325,7 @@ const differenceLabel =
 
       <Link
         href={retryHref}
-        className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-2xl bg-mb-brand px-6 py-3 text-center font-bold text-white transition hover:bg-mb-brandDark"
+        className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-xl bg-mb-brand px-6 py-3 text-center font-bold text-white transition hover:bg-mb-brandDark"
       >
         {lessonRetryLabel}
       </Link>
@@ -1431,7 +1431,7 @@ const differenceLabel =
           </section>
         )}
 
-        <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5">
           <div className="grid grid-cols-2 gap-4 text-sm sm:gap-5 lg:grid-cols-5">
             <div>
               <p className="text-slate-500">
@@ -1532,8 +1532,8 @@ const differenceLabel =
                   key={`question-${question.id}`}
                   className={
                     isCorrect
-                      ? "rounded-3xl border border-emerald-200 bg-white p-5 shadow-sm sm:p-6"
-                      : "rounded-3xl border border-red-200 bg-white p-5 shadow-sm sm:p-6"
+                      ? "rounded-2xl border border-emerald-200 bg-white p-5 shadow-sm sm:p-6"
+                      : "rounded-2xl border border-red-200 bg-white p-5 shadow-sm sm:p-6"
                   }
                 >
                   <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
@@ -1694,7 +1694,7 @@ const differenceLabel =
               return (
                 <article
                   key={`block-${block.id}`}
-                  className="rounded-3xl border border-dashed border-slate-300 bg-white p-5 shadow-sm sm:p-6"
+                  className="rounded-2xl border border-dashed border-slate-300 bg-white p-5 shadow-sm sm:p-6"
                 >
                   <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
                     Mustaqil iş · ball berilmaydi
@@ -1754,7 +1754,7 @@ const differenceLabel =
             return (
               <article
                 key={`block-${block.id}`}
-                className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
+                className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>

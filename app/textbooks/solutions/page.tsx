@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { ChevronLeft, ChevronRight, Video } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import AppAlert from "@/components/ui/app-alert";
+import EmptyState from "@/components/ui/empty-state";
 import TextbookLockedScreen from "@/components/textbook-locked-screen";
 import TextbooksHeader from "@/components/textbooks-header";
 import TopicExampleList, {
@@ -171,18 +171,10 @@ export default async function TextbookSolutionsPage({
         backHref={`/textbooks/topics?textbookId=${textbookId}`}
         backLabel="Mavzular"
         title={topic.title}
-        subtitle={textbook.title}
-        chips={
-          isPopular && examples.length > 0
-            ? [
-                `${topic.order_number}-mavzu`,
-                `${examples.length} ta misol`,
-              ]
-            : [`${topic.order_number}-mavzu`]
-        }
+        subtitle={`${textbook.title} · ${topic.order_number}-mavzu`}
       />
 
-      <section className="mx-auto max-w-3xl px-3 py-5 sm:px-6 sm:py-8">
+      <section className="mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-8">
         {/*
           Maktab darsligi: mavzuga bitta video.
           TOP kitob: misollar ro'yxati, har birining o'z videosi —
@@ -190,40 +182,21 @@ export default async function TextbookSolutionsPage({
         */}
         {!isPopular &&
           (topic.video_url ? (
-            <div className="overflow-hidden rounded-2xl border border-blue-200 bg-white shadow-sm">
-              <div className="flex items-center gap-2 border-b border-blue-100 bg-blue-50 px-4 py-2.5">
-                <Video
-                  className="h-4 w-4 text-blue-700"
-                  strokeWidth={2.2}
-                  aria-hidden="true"
-                />
-
-                <p className="text-sm font-bold text-blue-800">
-                  Videoyeçim
-                </p>
-              </div>
-
-              <div className="p-3 sm:p-4">
-                <YouTubeEmbed url={topic.video_url} />
-              </div>
-            </div>
+            <YouTubeEmbed url={topic.video_url} />
           ) : (
-            <AppAlert variant="info" title="Video hali qöşilmagan">
-              Ustozingiz şu mavzuning videoyeçimini qöşgaç, u şu
-              yerda oçiladi.
-            </AppAlert>
+            <EmptyState glyph="lessons" title="Videoyeçim tayyorlanmoqda">
+              Şu mavzuning videoyeçimi qöşilişi bilan şu yerda oçiladi.
+            </EmptyState>
           ))}
 
         {isPopular &&
           (examples.length > 0 ? (
             <div>
               <div className="flex items-baseline justify-between gap-3">
-                <h2 className="text-base font-bold text-mb-ink">
-                  Misollar
-                </h2>
+                <h2 className="eyebrow">Misollar</h2>
 
-                <p className="shrink-0 text-xs font-semibold text-mb-muted">
-                  {withVideo} ta videoyeçim
+                <p className="num shrink-0 text-[13px] text-mb-muted">
+                  {examples.length} misol · {withVideo} videoyeçim
                 </p>
               </div>
 
@@ -232,13 +205,10 @@ export default async function TextbookSolutionsPage({
               </div>
             </div>
           ) : (
-            <AppAlert
-              variant="info"
-              title="Misollar hali qöşilmagan"
-            >
-              Ustozingiz şu mavzuning misollarini qöşgaç, har
-              birining videoyeçimi şu yerda oçiladi.
-            </AppAlert>
+            <EmptyState glyph="solutions" title="Misollar tayyorlanmoqda">
+              Misollar qöşilişi bilan har birining videoyeçimi şu yerda
+              oçiladi.
+            </EmptyState>
           ))}
 
         {/* Mavzular orasida yurish */}
@@ -246,9 +216,9 @@ export default async function TextbookSolutionsPage({
           {previous ? (
             <Link
               href={`/textbooks/solutions?textbookId=${textbookId}&topicId=${previous.id}`}
-              className="inline-flex min-h-11 max-w-[45%] items-center gap-1 rounded-xl border border-mb-line bg-white px-3 text-sm font-semibold text-mb-brand shadow-sm transition sm:hover:bg-slate-50"
+              className="edge inline-flex min-h-11 max-w-[48%] items-center gap-1 rounded-xl border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700"
             >
-              <ChevronLeft className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
+              <ChevronLeft className="h-4 w-4 shrink-0" aria-hidden="true" />
               <span className="truncate">{previous.title}</span>
             </Link>
           ) : (
@@ -258,10 +228,10 @@ export default async function TextbookSolutionsPage({
           {next ? (
             <Link
               href={`/textbooks/solutions?textbookId=${textbookId}&topicId=${next.id}`}
-              className="inline-flex min-h-11 max-w-[45%] items-center gap-1 rounded-xl border border-mb-line bg-white px-3 text-sm font-semibold text-mb-brand shadow-sm transition sm:hover:bg-slate-50"
+              className="edge inline-flex min-h-11 max-w-[48%] items-center gap-1 rounded-xl border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700"
             >
               <span className="truncate">{next.title}</span>
-              <ChevronRight className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
+              <ChevronRight className="h-4 w-4 shrink-0" aria-hidden="true" />
             </Link>
           ) : (
             <span />

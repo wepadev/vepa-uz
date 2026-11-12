@@ -151,7 +151,7 @@ export default async function PaymentHistoryPage() {
           className={
             premium?.is_premium
               ? "rounded-3xl border border-emerald-200 bg-emerald-50 p-6"
-              : "rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
+              : "rounded-2xl border border-slate-200 bg-white p-6"
           }
         >
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
@@ -196,7 +196,7 @@ export default async function PaymentHistoryPage() {
           </div>
 
           {orders.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-14 text-center">
+            <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-14 text-center">
               <p className="font-bold">
                 Hozirça buyurtma yöq
               </p>
@@ -213,7 +213,7 @@ export default async function PaymentHistoryPage() {
               {orders.map((order) => (
                 <article
                   key={order.order_id}
-                  className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
+                  className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6"
                 >
                   <div className="flex flex-col justify-between gap-5 md:flex-row md:items-center">
                     <div>

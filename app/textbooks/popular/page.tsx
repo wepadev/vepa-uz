@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { BookMarked, Crown } from "lucide-react";
+import { Lock } from "lucide-react";
 
-import AppAlert from "@/components/ui/app-alert";
+import EmptyState from "@/components/ui/empty-state";
+import { Glyph } from "@/components/ui/glyph";
+import PremiumNote from "@/components/ui/premium-note";
 import TextbooksHeader from "@/components/textbooks-header";
 import {
   hasActivePremium,
@@ -109,34 +111,24 @@ export default async function TextbookSectionPage() {
       <TextbooksHeader
         backHref="/textbooks"
         backLabel="Darslik yeçimlari"
+        glyph="top"
         title="TOP kitoblar"
-        subtitle="Imtihonga tayyorlaniş töplamlari"
-        chips={[
-          `${textbooks.length} ta kitob`,
-          `${totalTopics} ta mavzu`,
-        ]}
+        subtitle={`${textbooks.length} kitob · ${totalTopics} mavzu`}
       />
 
-      <section className="mx-auto max-w-5xl px-3 py-5 sm:px-6 sm:py-8">
+      <section className="mx-auto max-w-5xl px-4 py-5 sm:px-6 sm:py-8">
         {!hasPremium && textbooks.length > 0 && (
-          <div className="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4">
-            <Crown
-              className="h-5 w-5 shrink-0 text-amber-600"
-              strokeWidth={2}
-              aria-hidden="true"
-            />
-
-            <p className="text-sm leading-6 text-amber-900">
-              TOP kitoblar yeçimlari Premium tarifda oçiladi.
-              Maktab darsliklari esa hamma uçun bepul.
-            </p>
-          </div>
+          <PremiumNote>
+            TOP kitoblar yeçimlari{" "}
+            <b className="font-semibold text-vp-ink">Premium</b> bilan oçiladi.
+            Maktab darsliklari hamma uçun bepul.
+          </PremiumNote>
         )}
 
         {textbooks.length === 0 ? (
-          <AppAlert variant="info" title="Hozirça kitob mavjud emas">
-            Ustozingiz kitob qöşgaç şu yerda körinadi.
-          </AppAlert>
+          <EmptyState glyph="top" title="Hozirça kitob yöq">
+            Kitob qöşilişi bilan şu yerda körinadi.
+          </EmptyState>
         ) : (
           /*
            * Kitob javoni ko'rinishi: muqova katta, nom pastda.
@@ -150,7 +142,7 @@ export default async function TextbookSectionPage() {
 
               const card = (
                 <>
-                  <span className="relative block overflow-hidden rounded-2xl bg-slate-100">
+                  <span className="relative block overflow-hidden rounded-2xl border border-mb-line bg-white">
                     <span className="flex aspect-[3/4] items-center justify-center p-2">
                       {textbook.cover_url ? (
                         <img
@@ -162,22 +154,13 @@ export default async function TextbookSectionPage() {
                           className="h-full w-full object-contain drop-shadow-md transition-transform duration-300 sm:group-hover:scale-[1.03]"
                         />
                       ) : (
-                        <BookMarked
-                          className="h-12 w-12 text-blue-300"
-                          strokeWidth={1.4}
-                          aria-hidden="true"
-                        />
+                        <Glyph name="top" className="h-14 w-14" />
                       )}
                     </span>
 
                     {!hasPremium && !empty && (
-                      <span className="absolute right-2 top-2 inline-flex items-center gap-1 rounded-full bg-amber-400/95 px-2 py-0.5 text-[11px] font-bold text-amber-950 shadow-sm">
-                        <Crown
-                          className="h-3 w-3"
-                          strokeWidth={2.6}
-                          aria-hidden="true"
-                        />
-                        Premium
+                      <span className="absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full bg-white text-slate-500 shadow-sm ring-1 ring-mb-line">
+                        <Lock className="h-4 w-4" aria-label="Premium" />
                       </span>
                     )}
 
@@ -200,7 +183,7 @@ export default async function TextbookSectionPage() {
                     )}
 
                     <span className="mt-1 block text-xs font-semibold text-mb-muted">
-                      {empty ? "Mavzu yöq" : `${topicCount} ta mavzu`}
+                      {empty ? "Tayyorlanmoqda" : `${topicCount} mavzu`}
                     </span>
                   </span>
                 </>
@@ -214,7 +197,7 @@ export default async function TextbookSectionPage() {
                 <Link
                   key={textbook.id}
                   href={`/textbooks/topics?textbookId=${textbook.id}`}
-                  className="group block rounded-2xl transition sm:hover:-translate-y-1"
+                  className="press group block rounded-2xl"
                 >
                   {card}
                 </Link>

@@ -400,7 +400,7 @@ function describeNonJsonResponse(status: number, body: string) {
       {/* 1-bosqich: yuklash */}
       <form
         onSubmit={handleUpload}
-        className="rounded-2xl border border-mb-line bg-white p-4 shadow-sm sm:p-5"
+        className="rounded-2xl border border-mb-line bg-white p-4 sm:p-5"
       >
         <label
           htmlFor="pdf"
@@ -504,7 +504,7 @@ function describeNonJsonResponse(status: number, body: string) {
 
       {/* Variantlar ro'yxati */}
       {drafts.length > 1 && (
-        <div className="mt-5 rounded-2xl border border-mb-line bg-white p-4 shadow-sm">
+        <div className="mt-5 rounded-2xl border border-mb-line bg-white p-4">
           <p className="text-sm font-bold text-mb-ink">
             {drafts.length} ta variant topildi
             {savedCount > 0 && ` · ${savedCount} tasi saqlandi`}
@@ -606,7 +606,7 @@ function describeNonJsonResponse(status: number, body: string) {
             )}
           />
 
-          <div className="rounded-2xl border border-mb-line bg-white p-4 shadow-sm sm:p-5">
+          <div className="rounded-2xl border border-mb-line bg-white p-4 sm:p-5">
             <p className="inline-flex items-center gap-2 text-sm font-bold text-emerald-700">
               <CheckCircle2 className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
               {!single && `${activeIndex + 1}-variant · `}
@@ -812,7 +812,7 @@ function QuestionEditor({
     "mt-1 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-mb-brand focus:ring-4 focus:ring-blue-100";
 
   return (
-    <article className="rounded-2xl border border-mb-line bg-white p-4 shadow-sm">
+    <article className="rounded-2xl border border-mb-line bg-white p-4">
       <div className="flex items-start justify-between gap-3">
         <p className="text-sm font-bold text-mb-ink">
           {index + 1}-savol

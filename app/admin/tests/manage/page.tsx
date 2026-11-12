@@ -794,7 +794,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                   return (
                     <article
                       key={`question-${question.id}`}
-                      className="rounded-2xl border border-mb-line bg-white p-4 shadow-sm"
+                      className="rounded-2xl border border-mb-line bg-white p-4"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex min-w-0 items-start gap-2 font-semibold">
@@ -1090,7 +1090,7 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                 return (
                   <article
                     key={`block-${block.id}`}
-                    className="rounded-2xl border border-mb-line bg-white p-4 shadow-sm"
+                    className="rounded-2xl border border-mb-line bg-white p-4"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <p className="font-semibold">

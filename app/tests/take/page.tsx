@@ -737,7 +737,7 @@ export default async function TakeTestPage({
   if (questions.length === 0) {
     return (
       <main className="min-h-screen bg-slate-50 px-5 py-12 text-slate-900">
-        <div className="mx-auto max-w-xl rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center">
+        <div className="mx-auto max-w-xl rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
           <h1 className="text-2xl font-bold">
             Savollar mavjud emas
           </h1>

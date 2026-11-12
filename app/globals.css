@@ -35,15 +35,15 @@
   }
   .dark {
     /*
-     * Bu qiymatlar dark-theme.css dagi sirt ranglari bilan mos:
-     * 220 49% 8% = #0b1220 (sahifa), 220 35% 13% = #141d2e (karta).
+     * Bu qiymatlar design-system/palette.json dagi tun sirtlari bilan mos:
+     * 220 53% 7% = #080e1a (sahifa), 221 38% 11% = #121928 (karta).
      * Aks holda <body> foni sahifa foniga to'g'ri kelmasdi.
      */
-    --background: 220 49% 8%;
+    --background: 220 53% 7%;
     --foreground: 213 33% 95%;
-    --card: 220 35% 13%;
+    --card: 221 38% 11%;
     --card-foreground: 213 33% 95%;
-    --popover: 220 35% 13%;
+    --popover: 221 38% 11%;
     --popover-foreground: 213 33% 95%;
     --primary: 0 0% 98%;
     --primary-foreground: 0 0% 9%;
@@ -55,8 +55,8 @@
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 218 30% 18%;
-    --input: 218 30% 18%;
+    --border: 222 25% 21%;
+    --input: 222 25% 21%;
     --ring: 213 33% 80%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
@@ -291,7 +291,7 @@ body {
     "Segoe UI",
     Arial,
     sans-serif;
-  font-weight: 500;
+  font-weight: 450;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
@@ -342,22 +342,22 @@ h6 {
  * bor, shuning uchun ularga tegmaymiz (ular `outline-none` qo'yadi).
  */
 :focus-visible {
-  outline: 2px solid #1d47c9;
+  outline: 2px solid var(--vp-brand);
   outline-offset: 2px;
   border-radius: 2px;
 }
 .dark :focus-visible {
-  outline-color: #a9bbf6;
+  outline-color: var(--vp-brand);
 }
 
 /* Matn tanlanganda brend ohangi — standart ko'k o'rniga */
 ::selection {
-  background-color: #ffe27a;
-  color: #161b28;
+  background-color: rgb(var(--vp-accent-rgb) / 0.45);
+  color: var(--vp-ink);
 }
 .dark ::selection {
-  background-color: rgba(110, 168, 254, 0.28);
-  color: #eaf1fb;
+  background-color: rgb(var(--vp-accent-rgb) / 0.35);
+  color: #ffffff;
 }
 
 /*
@@ -505,136 +505,150 @@ html {
 }
 /* VEPA UX POLISH END */
 
-/* KATAKLI DAFTAR START
+/* VEPA TIZIMI START
  *
- * Vepa Ustoz dizayn tili (2026-11). Ğoya: matematikani qoğoz va
- * ruçka bilan işlaydigan öquvçining daftari.
- *   - fon: iliq qoğoz (#f7f5f0), kartalar oq varaq;
- *   - siyoh: logodagi kök (#1d47c9) va töq siyoh matn (#161b28);
- *   - ustoz ruçkasi: qizil (#d7362a) — faqat bezak, holat emas;
- *   - sarlavhalar — kitob şrifti (Literata), formulalar bilan bir oila;
- *   - interfeys — Onest; qöl yozuvi — Caveat (juda kam).
+ * Vepa Ustoz dizayn tili (2026-11, 2-talqin). Uçta qoida:
+ *
+ *   1. RANG — bitta oila. Hamma rang design-system/palette.json dan
+ *      (bitta OKLCH formulasi). Brend — logodagi kobalt kök; yagona
+ *      iliq urğu — sariq (yutuq, tanga, Premium). Yaşil va qizil
+ *      faqat "toğri / xato" holati uçun.
+ *   2. IKONKA — bitta qalam. Barça lucide ikonkalari ölçamidan qat'i
+ *      nazar bir xil qalinlikda (1.75px). Bölimlarning öz belgisi bor:
+ *      components/ui/glyph.tsx.
+ *   3. ŞAKL — bosiladigan narsa "qirrali": tugma va plitkaning pastki
+ *      qirrasi bor, bosganda u yöqoladi. Karta — oq, ingiçka çegara,
+ *      soyasiz.
  */
 body {
-  background-color: #f7f5f0;
-  color: #161b28;
-}
-.dark body {
-  background-color: #0b1220;
-  color: #eef2f7;
+  background-color: var(--vp-page);
+  color: var(--vp-ink);
 }
 
 h1,
-h2 {
-  font-family: var(--font-serif), Georgia, serif;
-  letter-spacing: -0.012em;
-  font-variant-numeric: lining-nums;
+h2,
+h3 {
+  letter-spacing: -0.022em;
 }
 
-/* Katakli daftar: 24px katak, juda nozik */
-.paper-grid {
-  background-color: #fbfaf6;
-  background-image:
-    linear-gradient(rgb(29 71 201 / 0.075) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(29 71 201 / 0.075) 1px, transparent 1px);
-  background-size: 24px 24px;
-  background-position: -1px -1px;
+/* --- 2. Ikonka: bitta qalam ------------------------------------ */
+svg.lucide {
+  stroke-width: 1.75px;
+  flex-shrink: 0;
 }
-.dark .paper-grid {
-  background-color: #0e1626;
-  background-image:
-    linear-gradient(rgb(169 187 246 / 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(169 187 246 / 0.06) 1px, transparent 1px);
+svg.lucide * {
+  vector-effect: non-scaling-stroke;
 }
 
-/* Daftar hoşiyasi — çap tomonda qizil vertikal çiziq */
-.paper-margin {
-  position: relative;
+/* --- 3. Qirrali tugma ------------------------------------------ */
+.btn-solid,
+a.bg-mb-brand,
+button.bg-mb-brand {
+  box-shadow: inset 0 -3px 0 rgb(3 22 80 / 0.32);
 }
-.paper-margin::before {
-  content: "";
-  position: absolute;
-  inset-block: 0;
-  left: 18px;
-  width: 1px;
-  background: rgb(215 54 42 / 0.45);
+.btn-solid:active,
+a.bg-mb-brand:active,
+button.bg-mb-brand:active {
+  box-shadow: inset 0 2px 0 rgb(3 22 80 / 0.28);
 }
-@media (min-width: 640px) {
-  .paper-margin::before {
-    left: 28px;
+button.bg-mb-brand:disabled {
+  box-shadow: none;
+}
+
+/* Oq (ikkilamçi) tugma va bosiladigan plitka */
+.edge {
+  box-shadow: 0 2px 0 0 var(--vp-line);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    border-color 0.12s ease,
+    background-color 0.12s ease;
+}
+.edge:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 0 var(--vp-line);
+}
+@media (hover: hover) {
+  a.edge:hover,
+  button.edge:hover {
+    border-color: var(--vp-line-strong);
   }
 }
 
-/* Marker bilan belgilangan söz */
-.marker {
-  background-image: linear-gradient(transparent 58%, #ffe27a 58%, #ffe27a 92%, transparent 92%);
-  padding-inline: 0.08em;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
+/* Sariq (urğu) tugma: Premium, sovğa */
+.btn-accent {
+  background-color: var(--vp-accent);
+  color: var(--vp-on-accent);
+  box-shadow: inset 0 -3px 0 rgb(var(--vp-accent-edge-rgb) / 0.85);
 }
-.dark .marker {
-  background-image: linear-gradient(transparent 62%, rgb(255 226 122 / 0.28) 62%, rgb(255 226 122 / 0.28) 92%, transparent 92%);
-}
-
-/* Çizğiç belgilari — bölim ajratgiçi (logodagi çizğiçdan) */
-.ruler {
-  height: 10px;
-  background-image:
-    linear-gradient(90deg, rgb(22 27 40 / 0.28) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(22 27 40 / 0.18) 1px, transparent 1px);
-  background-size: 40px 10px, 8px 5px;
-  background-repeat: repeat-x;
-  background-position: 0 0, 0 0;
-  border-top: 1px solid rgb(22 27 40 / 0.28);
-}
-.dark .ruler {
-  background-image:
-    linear-gradient(90deg, rgb(238 242 247 / 0.28) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(238 242 247 / 0.16) 1px, transparent 1px);
-  border-top-color: rgb(238 242 247 / 0.28);
+.btn-accent:active {
+  box-shadow: inset 0 2px 0 rgb(var(--vp-accent-edge-rgb) / 0.7);
 }
 
-/* Tugmaning pastki "qalinligi" — bosilganda tuşadi */
-.btn-solid {
-  box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.22);
+/* --- Şaxsiy holat kartasi (örin, profil, tarif) -----------------
+ * Sahifada köpi bilan bitta. Tekis brend köki ustida sirkul bilan
+ * çizilgan ikkita yoy — logodagi sirkuldan.
+ */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: #285ee7;
+  color: #ffffff;
 }
-.btn-solid:active {
-  box-shadow: inset 0 1px 0 rgb(0 0 0 / 0.18);
+.spotlight::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: -70px;
+  top: -90px;
+  width: 260px;
+  height: 260px;
+  border-radius: 9999px;
+  border: 1.5px solid rgb(255 255 255 / 0.2);
+  box-shadow:
+    0 0 0 34px rgb(255 255 255 / 0.045),
+    0 0 0 35.5px rgb(255 255 255 / 0.14);
+  pointer-events: none;
 }
-/* Saytdagi barça kök tugmalarga ham — har birini qöl bilan yozmaslik uçun */
-a.bg-mb-brand,
-button.bg-mb-brand {
-  box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.22);
+.spotlight::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: 22px;
+  top: 20px;
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px;
+  background: var(--vp-accent);
+  box-shadow: 0 0 0 4px rgb(255 255 255 / 0.16);
+  pointer-events: none;
 }
-a.bg-mb-brand:active,
-button.bg-mb-brand:active {
-  box-shadow: inset 0 1px 0 rgb(0 0 0 / 0.18);
+.dark .spotlight {
+  background-color: #172b58;
 }
 
-/* Kiçik bölim yorlig'i: "01 — Testlar" */
+/* Kiçik bölim yorliği */
 .eyebrow {
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: #525662;
+  color: var(--vp-muted);
 }
-.dark .eyebrow {
-  color: #94a3b8;
+
+/* Raqamlar — ball, foiz, soat */
+.num {
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: -0.02em;
 }
-/* Ustoz doskasi — sahifa boşidagi töq blok (avval kök "slab" edi) */
-.hero-board {
-  position: relative;
-  background-color: #161b28;
+
+/* Koordinata töri — faqat rasm zonalari va böş holatlarda */
+.grid-plane {
   background-image:
-    linear-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 0.045) 1px, transparent 1px);
-  background-size: 24px 24px;
-  background-position: -1px -1px;
-  box-shadow: inset 0 -3px 0 rgb(255 255 255 / 0.05);
+    linear-gradient(rgb(var(--vp-brand-rgb) / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--vp-brand-rgb) / 0.07) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: center;
 }
-.dark .hero-board {
-  background-color: #111a2e;
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.07);
-}
-/* KATAKLI DAFTAR END */
+/* VEPA TIZIMI END */

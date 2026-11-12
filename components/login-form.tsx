@@ -179,7 +179,7 @@ export function LoginForm({
   return (
     <div
       className={cn(
-        "rounded-3xl border border-slate-200 bg-white p-4 shadow-xl shadow-slate-200/50 sm:p-7",
+        "rounded-2xl border border-slate-200 bg-white p-4 shadow-xl shadow-slate-200/50 sm:p-7",
         className,
       )}
       {...props}
@@ -250,7 +250,7 @@ export function LoginForm({
                 setFullName(event.target.value)
               }
               placeholder="Masalan: Ali Valiyev"
-              className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
+              className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               required
             />
           </div>
@@ -275,7 +275,7 @@ export function LoginForm({
               setEmail(event.target.value)
             }
             placeholder="name@example.com"
-            className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
+            className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
             required
           />
         </div>
@@ -313,7 +313,7 @@ export function LoginForm({
                 setPassword(event.target.value)
               }
               placeholder="Kamida 6 ta belgi"
-              className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3.5 pr-20 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
+              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3.5 pr-20 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               required
               minLength={6}
             />
@@ -350,7 +350,7 @@ export function LoginForm({
                 setConfirmPassword(event.target.value)
               }
               placeholder="Parolni qayta kiriting"
-              className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
+              className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:ring-4 focus:ring-blue-100"
               required
               minLength={6}
             />
@@ -378,7 +378,7 @@ export function LoginForm({
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full rounded-2xl bg-mb-brand px-5 py-3.5 font-bold text-white shadow-sm transition hover:bg-mb-brandDark disabled:cursor-wait disabled:opacity-60"
+          className="w-full rounded-xl bg-mb-brand px-5 py-3.5 font-bold text-white shadow-sm transition hover:bg-mb-brandDark disabled:cursor-wait disabled:opacity-60"
         >
           {isLoading ? (
             <LoadingLabel>

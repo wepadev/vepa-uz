@@ -1,6 +1,6 @@
 import "katex/dist/katex.min.css";
 import type { Metadata, Viewport } from "next";
-import { Caveat, Golos_Text, Literata } from "next/font/google";
+import { Geologica } from "next/font/google";
 
 import SiteNav from "@/components/site-nav";
 import SiteJsonLd from "@/components/site-json-ld";
@@ -34,29 +34,14 @@ const defaultUrl = process.env.NEXT_PUBLIC_SITE_URL
     : "http://localhost:3000";
 
 /*
- * Şriftlar (barçasida ö, ğ, ş, ç bor — latin-ext):
- *   Golos Text — interfeys matni;
- *   Literata — sarlavhalar: kitob şrifti, KaTeX formulalari bilan
- *              bir oila bölib turadi;
- *   Caveat   — ustozning qöl yozuvi, juda kam joyda.
+ * Yagona şrift — Geologica: sarlavhada qalin (700–800), matnda 400–600.
+ * Bitta oila = bitta fayl: zaif internetda tez oçiladi va sayt bir
+ * ovozda gapiradi. ö, ğ, ş, ç harflari bor (latin-ext).
  */
-const sans = Golos_Text({
+const sans = Geologica({
   subsets: ["latin", "latin-ext"],
   display: "swap",
   variable: "--font-sans",
-});
-
-const serif = Literata({
-  subsets: ["latin", "latin-ext"],
-  display: "swap",
-  variable: "--font-serif",
-});
-
-const hand = Caveat({
-  subsets: ["latin", "latin-ext"],
-  display: "swap",
-  weight: ["600"],
-  variable: "--font-hand",
 });
 
 export const metadata: Metadata = {
@@ -136,8 +121,8 @@ export const viewport: Viewport = {
   maximumScale: 5,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f7f5f0" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b1220" },
+    { media: "(prefers-color-scheme: light)", color: "#f6f8fb" },
+    { media: "(prefers-color-scheme: dark)", color: "#080e1a" },
   ],
 };
 
@@ -152,7 +137,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body
-        className={`${sans.className} ${sans.variable} ${serif.variable} ${hand.variable} antialiased`}
+        className={`${sans.className} ${sans.variable} antialiased`}
       >
         {/* Qidiruv tizimlari uchun — ekranda ko'rinmaydi */}
         <SiteJsonLd siteUrl={defaultUrl} />

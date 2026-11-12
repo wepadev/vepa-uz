@@ -132,7 +132,7 @@ export default function ConfirmDialog({
         aria-modal="true"
         aria-labelledby="confirm-title"
         aria-describedby="confirm-description"
-        className="w-full max-w-md rounded-3xl border border-white/50 bg-white p-5 shadow-2xl shadow-slate-950/20 sm:p-7"
+        className="w-full max-w-md rounded-2xl border border-white/50 bg-white p-5 shadow-2xl shadow-slate-950/20 sm:p-7"
       >
         <div
           className={[

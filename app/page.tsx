@@ -1,28 +1,22 @@
 import Link from "next/link";
 
-import { signOutAction } from "@/app/actions/sign-out";
 import GoogleSignInButton from "@/components/google-sign-in-button";
 import {
   ArrowRight,
-  BookOpen,
-  BrainCircuit,
   CalendarClock,
-  ClipboardCheck,
-  Coins,
-  Crown,
+  ChevronRight,
   ListChecks,
-  MonitorPlay,
   Play,
   Send,
-  Trophy,
-  Users,
 } from "lucide-react";
 
+import SampleQuiz from "@/components/home/sample-quiz";
 import BrandMark from "@/components/ui/brand-mark";
-import WorkedExample from "@/components/ui/worked-example";
-import { accents } from "@/components/ui/section-visual";
+import { Glyph, GlyphTile, type GlyphName } from "@/components/ui/glyph";
+import ProgressRing from "@/components/ui/progress-ring";
 import { TELEGRAM_CHANNEL_USERNAME } from "@/lib/contacts";
 import { formatDue, remainingLabel } from "@/lib/due-label";
+import type { UserSummaryRpcRow } from "@/lib/stats-types";
 import {
   getBasicProfile,
   getCurrentUser,
@@ -30,6 +24,7 @@ import {
 } from "@/lib/supabase/current-user";
 import { getPublicCatalog } from "@/lib/public-catalog";
 import { createClient } from "@/lib/supabase/server";
+import { todayLabel } from "@/lib/uz-date";
 
 export const dynamic = "force-dynamic";
 
@@ -106,17 +101,27 @@ export default async function HomePage() {
   let nextAssignment: AssignmentRow | null = null;
   let pendingCount = 0;
 
+  /* Öquvçining umumiy körsatkiçlari: örin, işlangan testlar, örtaça */
+  let summary: UserSummaryRpcRow | null = null;
+
   if (isAuthenticated && user) {
     /*
      * Uchala so'rov bir vaqtda ketadi. `my_assignments` guruhda
      * bo'lmagan o'quvchiga bo'sh ro'yxat qaytaradi, shuning uchun
      * guruh tekshiruvini kutib turish shart emas.
      */
-    const [reviewResult, inGroup, assignmentsResult] = await Promise.all([
-      supabase.rpc("due_review_count"),
-      getIsGroupStudent(user.id),
-      supabase.rpc("my_assignments"),
-    ]);
+    const [reviewResult, inGroup, assignmentsResult, summaryResult] =
+      await Promise.all([
+        supabase.rpc("due_review_count"),
+        getIsGroupStudent(user.id),
+        supabase.rpc("my_assignments"),
+        supabase.rpc("get_user_ranking_summary", { p_user_id: null }),
+      ]);
+
+    /* Xato bölsa körsatkiçlar şunçaki çiqmaydi — sahifa buzilmaydi */
+    summary = summaryResult.error
+      ? null
+      : (((summaryResult.data ?? []) as UserSummaryRpcRow[])[0] ?? null);
 
     dueReviewCount = Number(reviewResult.data) || 0;
     isInGroup = inGroup;
@@ -134,119 +139,142 @@ export default async function HomePage() {
   /* Mehmon uchun: platformada nima borligi (xato bo'lsa — null) */
   const catalog = isAuthenticated ? null : await getPublicCatalog();
 
-  /* Tezkor havolalar — kirgan o'quvchi uchun keyingi qadamlar */
-  /* Tezkor havolalar — bitta qatorda, telefonda ham */
-  /*
-   * Tezkor havolalar. `tone` — bo'lim guruhining ohangi
-   * (components/ui/section-visual.ts): reyting va natijalar
-   * binafsha, odamlar yashil, o'quv materiallari sariq, testlar ko'k.
-   */
-  const quickLinks = [
-    {
-      href: "/leaderboard",
-      icon: Trophy,
-      label: "Reyting",
-      tone: accents.insight.tile,
-    },
-    {
-      href: "/guruhim",
-      icon: Users,
-      label: "Guruhim",
-      tone: accents.people.tile,
-    },
-    ...(isInGroup
-      ? [
-          {
-            href: "/dokon",
-            icon: Coins,
-            label: "Dökon",
-            tone: accents.content.tile,
-          },
-        ]
-      : []),
-    {
-      href: "/pricing",
-      icon: Crown,
-      label: "Premium",
-      tone: accents.tests.tile,
-    },
-  ];
+  const firstName = fullName.split(/\s+/)[0] || fullName;
+
+  /* --- Öquvçi körsatkiçlari --- */
+  const isRanked = Boolean(summary?.is_ranked);
+  const testsDone = Number(summary?.tests_completed) || 0;
+  const testsTotal = Number(summary?.ranking_tests_total) || 0;
+  const average = Math.round(Number(summary?.average_percentage) || 0);
+  const rank = Number(summary?.overall_rank) || 0;
+  const participants = Number(summary?.overall_participants) || 0;
 
   /*
-   * Asosiy bölimlar — kitobning mundarijasi kabi: raqam, nom,
-   * nuqtali çiziq va son. Mehmonga katalogdagi son körinadi.
+   * Asosiy bölimlar — 2×2 plitka. Törtinçi plitka öquvçiga qarab:
+   * guruhda bölsa uy vazifasi, bölmasa reyting.
    */
-  const sections = [
+  const tiles: {
+    href: string;
+    glyph: GlyphName;
+    title: string;
+    text: string;
+  }[] = [
     {
       href: testsHref,
-      icon: ClipboardCheck,
+      glyph: "tests",
       title: "Testlar",
-      text: "Attestatsiya, Milliy sertifikat, SAT — natija darrov çiqadi.",
-      count: catalog ? `${catalog.testCount} ta` : null,
+      text: "Natija darrov çiqadi",
     },
     {
       href: lessonsHref,
-      icon: MonitorPlay,
+      glyph: "lessons",
       title: "Videodarslar",
-      text: "Mavzular böyiça ketma-ket, ustozning özi tuşuntiradi.",
-      count: catalog ? `${catalog.lessonCount} ta` : null,
+      text: "Mavzular ketma-ket",
     },
     {
       href: textbooksHref,
-      icon: BookOpen,
-      title: "Darslik yeçimlari",
-      text: "5–11-sinf va TOP kitoblar, qadam-baqadam.",
-      count: catalog ? `${catalog.textbookCount} ta` : null,
+      glyph: "solutions",
+      title: "Yeçimlar",
+      text: "5–11-sinf darsliklari",
     },
+    isInGroup
+      ? {
+          href: "/homework",
+          glyph: "homework",
+          title: "Uy vazifasi",
+          text:
+            pendingCount > 0 ? `${pendingCount} ta kutyapti` : "Hammasi bajarilgan",
+        }
+      : {
+          href: isAuthenticated ? "/leaderboard" : "/pricing",
+          glyph: isAuthenticated ? "ranking" : "premium",
+          title: isAuthenticated ? "Reyting" : "Premium",
+          text: isAuthenticated ? "Eng faol öquvçilar" : "Tarif va narxlar",
+        },
   ];
 
-  /* Oq, ramkali ikkilamçi tugma */
-  const ghostButton =
-    "press inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 font-semibold text-mb-ink transition hover:border-slate-400 hover:bg-slate-50";
+  /* Qolgan sahifalar — ixçam röyxat */
+  const more: { href: string; glyph: GlyphName; title: string; text: string }[] =
+    [
+      ...(isInGroup
+        ? [
+            {
+              href: "/leaderboard",
+              glyph: "ranking" as const,
+              title: "Reyting",
+              text: "Eng faol öquvçilar",
+            },
+          ]
+        : []),
+      {
+        href: "/guruhim",
+        glyph: "group",
+        title: "Guruhim",
+        text: isInGroup
+          ? "Ballar, tangalar va guruh reytingi"
+          : "Ustoz bergan kod bilan qöşiliş",
+      },
+      ...(isInGroup
+        ? [
+            {
+              href: "/dokon",
+              glyph: "shop" as const,
+              title: "Dökon",
+              text: "Tangani sovğaga almaştiriş",
+            },
+          ]
+        : []),
+      {
+        href: "/results",
+        glyph: "results",
+        title: "Natijalarim",
+        text: "Işlangan testlar tahlili",
+      },
+      {
+        href: "/takrorlash",
+        glyph: "review",
+        title: "Haftalik takrorlaş",
+        text:
+          dueReviewCount > 0
+            ? `${dueReviewCount} ta savol kutyapti`
+            : "Xato qilingan savollar",
+      },
+      {
+        href: "/pricing",
+        glyph: "premium",
+        title: "Premium",
+        text: "Hamma dars va testlar",
+      },
+    ];
 
-  /* Asosiy tugma — logo köki, pastki "qalinlik" bilan */
+  /* Hero ustidagi oq va şaffof tugmalar */
+  const onBlueSolid =
+    "press inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-white px-5 font-bold text-blue-700 shadow-[inset_0_-3px_0_rgb(3_22_80/0.16)] transition hover:bg-blue-50";
+  const onBlueGhost =
+    "press inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-white/15 px-5 font-bold text-white ring-1 ring-inset ring-white/30 transition hover:bg-white/25";
+
   const solidButton =
     "press btn-solid inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-mb-brand px-6 font-bold text-white transition hover:bg-mb-brandDark";
 
   return (
-    <main className="min-h-screen text-mb-ink">
-      <header className="sticky top-0 z-30 border-b border-mb-line bg-slate-50/90 backdrop-blur md:hidden">
+    <main className="min-h-screen text-vp-ink">
+      <header className="sticky top-0 z-30 border-b border-vp-line bg-vp-surface/95 backdrop-blur md:hidden">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5">
           <Link href="/" className="flex min-w-0 items-center gap-2">
             <BrandMark size={36} className="h-9 w-9" />
-
-            <p className="truncate font-serif text-[19px] font-bold tracking-tight">
+            <p className="truncate text-lg font-extrabold tracking-tight">
               Vepa Ustoz
             </p>
           </Link>
 
           {isAuthenticated ? (
-            <div className="flex shrink-0 items-center gap-2">
-              {isAdmin && (
-                <Link
-                  href="/admin"
-                  className="hidden min-h-10 items-center rounded-xl border border-blue-200 bg-blue-50 px-3 text-sm font-semibold text-blue-700 hover:bg-blue-100 sm:inline-flex"
-                >
-                  Admin
-                </Link>
-              )}
-
-              <Link
-                href="/profile"
-                className="inline-flex min-h-10 max-w-40 items-center truncate rounded-xl border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-              >
-                {fullName}
-              </Link>
-
-              <form action={signOutAction} className="hidden sm:block">
-                <button
-                  type="submit"
-                  className="inline-flex min-h-10 items-center rounded-xl px-3 text-sm font-semibold text-slate-500 hover:text-slate-800"
-                >
-                  Çiqiş
-                </button>
-              </form>
-            </div>
+            <Link
+              href="/profile"
+              aria-label="Profilim"
+              className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-vp-tint text-base font-bold uppercase text-vp-brand-strong"
+            >
+              {firstName.slice(0, 1)}
+            </Link>
           ) : (
             <Link
               href="/auth/login"
@@ -258,329 +286,497 @@ export default async function HomePage() {
         </div>
       </header>
 
-      {/* ── Boş qism ─────────────────────────────────────────── */}
       {isAuthenticated ? (
-        <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6 sm:pt-10">
-          <p className="eyebrow">Salom, {fullName}</p>
+        /* ═════════════ ÖQUVÇI: "BUGUN" EKRANI ═════════════ */
+        <section className="mx-auto max-w-5xl px-4 pb-10 pt-5 sm:px-6 sm:pt-8">
+          <p className="text-sm font-medium text-vp-muted">{todayLabel()}</p>
 
-          {nextAssignment ? (
-            <div className="paper-grid paper-margin mt-3 overflow-hidden rounded-2xl border border-slate-300/70 shadow-md">
-              <div className="py-5 pl-10 pr-5 sm:py-7 sm:pl-14 sm:pr-8">
-                <p className="text-xs font-bold uppercase tracking-[0.08em] text-pen">
-                  Uy vazifasi
-                </p>
+          <h1 className="mt-0.5 text-[28px] font-extrabold leading-tight sm:text-4xl">
+            Salom, {firstName}
+          </h1>
 
-                <h1 className="mt-1.5 text-[26px] font-bold leading-tight sm:text-[34px]">
-                  {nextAssignment.test_title}
-                </h1>
+          <div className="mt-4 grid gap-3 lg:grid-cols-[1.65fr_1fr] lg:gap-4">
+            {/* Navbatdagi qadam — ekrandagi yagona katta kök blok */}
+            <div className="spotlight flex flex-col justify-between rounded-3xl p-5 sm:p-7">
+              {nextAssignment ? (
+                <>
+                  <div>
+                    <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.07em] text-blue-100">
+                      <span className="h-2 w-2 rounded-full bg-vp-accent" />
+                      Uy vazifasi · {remainingLabel(nextAssignment.due_at)}
+                    </p>
 
-                <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-sm font-medium text-mb-muted">
-                  <span className="inline-flex items-center gap-1.5">
-                    <CalendarClock className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-                    {remainingLabel(nextAssignment.due_at)} · {formatDue(nextAssignment.due_at)}
-                  </span>
+                    <h2 className="mt-2 max-w-[18ch] text-2xl font-extrabold leading-tight sm:text-[32px]">
+                      {nextAssignment.test_title}
+                    </h2>
 
-                  <span className="inline-flex items-center gap-1.5">
-                    <ListChecks className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-                    {nextAssignment.question_count} ta savol
-                  </span>
-                </div>
+                    <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm font-medium text-blue-100">
+                      <span className="inline-flex items-center gap-1.5">
+                        <CalendarClock className="h-4 w-4" aria-hidden="true" />
+                        {formatDue(nextAssignment.due_at)} gaça
+                      </span>
+                      <span className="inline-flex items-center gap-1.5">
+                        <ListChecks className="h-4 w-4" aria-hidden="true" />
+                        {nextAssignment.question_count} ta savol
+                      </span>
+                    </div>
+                  </div>
 
-                <div className="mt-6 flex flex-wrap items-center gap-2.5">
-                  <Link
-                    href={`/tests/take?testId=${nextAssignment.test_id}&assignmentId=${nextAssignment.assignment_id}`}
-                    className={solidButton}
-                  >
-                    <Play className="h-4 w-4" strokeWidth={2.6} aria-hidden="true" />
-                    Vazifani boşlaş
-                  </Link>
+                  <div className="mt-6 flex flex-wrap gap-2.5">
+                    <Link
+                      href={`/tests/take?testId=${nextAssignment.test_id}&assignmentId=${nextAssignment.assignment_id}`}
+                      className={onBlueSolid}
+                    >
+                      <Play className="h-4 w-4" aria-hidden="true" />
+                      Vazifani boşlaş
+                    </Link>
 
-                  <Link href="/homework" className={ghostButton}>
-                    {pendingCount > 1
-                      ? `Barça vazifalar (${pendingCount})`
-                      : "Vazifalarim"}
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="mt-2">
-              <h1 className="max-w-2xl text-[30px] font-bold leading-[1.15] sm:text-[44px]">
-                {isInGroup ? (
-                  <>
-                    Hozirça <span className="marker">uy vazifasi</span> yöq
-                  </>
-                ) : (
-                  <>
-                    Bugun nimadan <span className="marker">boşlaymiz</span>?
-                  </>
-                )}
-              </h1>
+                    <Link href="/homework" className={onBlueGhost}>
+                      {pendingCount > 1
+                        ? `Barça vazifalar (${pendingCount})`
+                        : "Vazifalarim"}
+                    </Link>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.07em] text-blue-100">
+                      <span className="h-2 w-2 rounded-full bg-vp-accent" />
+                      Navbatdagi qadam
+                    </p>
 
-              <p className="mt-3 max-w-lg text-[15px] leading-7 text-mb-muted sm:text-base">
-                {isInGroup
-                  ? "Yangi vazifa berilsa şu yerda çiqadi. Böş vaqtda test işlab, maşq qiling."
-                  : "Test işlang yoki ustozingiz bergan kod bilan guruhga qöşiling."}
-              </p>
+                    <h2 className="mt-2 max-w-[16ch] text-2xl font-extrabold leading-tight sm:text-[32px]">
+                      {isInGroup
+                        ? "Uy vazifasi yöq — maşq qilamizmi?"
+                        : testsDone > 0
+                          ? "Keyingi testni işlaymizmi?"
+                          : "Birinçi testingizni işlang"}
+                    </h2>
 
-              <div className="mt-5 flex flex-wrap gap-2.5">
-                <Link href="/tests" className={solidButton}>
-                  <Play className="h-4 w-4" strokeWidth={2.6} aria-hidden="true" />
-                  Test işlaş
-                </Link>
+                    <p className="mt-2 max-w-md text-sm leading-6 text-blue-100">
+                      {isInGroup
+                        ? "Yangi vazifa berilsa şu yerda çiqadi."
+                        : "Natija va xatolar tahlili test tugaşi bilan çiqadi."}
+                    </p>
+                  </div>
 
-                {!isInGroup && (
-                  <Link href="/guruhim" className={ghostButton}>
-                    Guruhga qöşiliş
-                  </Link>
-                )}
-              </div>
-            </div>
-          )}
-        </section>
-      ) : (
-        <section className="border-b border-mb-line">
-          <div className="mx-auto grid max-w-5xl items-center gap-8 px-4 pb-10 pt-8 sm:px-6 sm:pb-14 sm:pt-14 md:grid-cols-[1.1fr_0.9fr] md:gap-12">
-            <div>
-              <p className="eyebrow">Vepa Kurbankliçev · matematika ustozi</p>
+                  <div className="mt-6 flex flex-wrap gap-2.5">
+                    <Link href="/tests" className={onBlueSolid}>
+                      <Play className="h-4 w-4" aria-hidden="true" />
+                      Test işlaş
+                    </Link>
 
-              <h1 className="mt-3 text-[38px] font-bold leading-[1.08] sm:text-[54px]">
-                Matematikani <span className="marker">tuşunib</span> örganing
-              </h1>
-
-              <p className="mt-4 max-w-md text-base leading-7 text-mb-muted sm:text-[17px]">
-                Videodarslar, onlayn testlar va darslik masalalarining
-                batafsil yeçimlari — bitta ustozdan, bir joyda.
-              </p>
-
-              <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
-                <Link href="/auth/login" className={solidButton}>
-                  Bepul boşlaş
-                  <ArrowRight className="h-4 w-4" strokeWidth={2.4} aria-hidden="true" />
-                </Link>
-
-                <div className="sm:w-64">
-                  <GoogleSignInButton compact className="min-h-12 w-full rounded-xl" />
-                </div>
-              </div>
+                    {!isInGroup && (
+                      <Link href="/guruhim" className={onBlueGhost}>
+                        Guruhga qöşiliş
+                      </Link>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
 
-            <WorkedExample className="md:translate-y-2 md:rotate-[0.6deg]" />
+            {/* Körsatkiçlar: örtaça ball halqada, yonida örin va testlar */}
+            <Link
+              href="/results"
+              className="edge group flex items-center gap-4 rounded-3xl border border-vp-line bg-vp-surface p-5 lg:flex-col lg:items-stretch lg:justify-between lg:gap-5 lg:p-6"
+            >
+              <div className="flex items-center gap-4">
+                <ProgressRing
+                  value={average}
+                  size={76}
+                  stroke={8}
+                  tone={average >= 90 ? "success" : "brand"}
+                >
+                  <span className="num text-lg font-extrabold">{average}%</span>
+                </ProgressRing>
+
+                <div className="min-w-0 lg:flex-1">
+                  <p className="eyebrow">Örtaça natija</p>
+                  <p className="mt-0.5 text-sm leading-5 text-vp-muted">
+                    {isRanked
+                      ? "Reyting testlari böyiça"
+                      : "Birinçi testdan keyin çiqadi"}
+                  </p>
+                </div>
+              </div>
+
+              <dl className="ml-auto grid shrink-0 grid-cols-1 gap-2 text-right lg:ml-0 lg:grid-cols-2 lg:gap-3 lg:text-left">
+                <div className="lg:rounded-2xl lg:bg-vp-page lg:p-3">
+                  <dt className="text-xs font-semibold text-vp-muted">Örin</dt>
+                  <dd className="num text-xl font-extrabold">
+                    {isRanked && rank > 0 ? rank : "—"}
+                    {isRanked && participants > 0 && (
+                      <span className="text-sm font-semibold text-vp-muted">
+                        /{participants}
+                      </span>
+                    )}
+                  </dd>
+                </div>
+
+                <div className="lg:rounded-2xl lg:bg-vp-page lg:p-3">
+                  <dt className="text-xs font-semibold text-vp-muted">Testlar</dt>
+                  <dd className="num text-xl font-extrabold">
+                    {testsDone}
+                    {testsTotal > 0 && (
+                      <span className="text-sm font-semibold text-vp-muted">
+                        /{testsTotal}
+                      </span>
+                    )}
+                  </dd>
+                </div>
+              </dl>
+            </Link>
           </div>
-        </section>
-      )}
 
-      <section className="mx-auto max-w-5xl px-4 pb-10 sm:px-6">
-        {/*
-          Takrorlash eslatmasi — faqat bugun kutayotgan savol
-          bölsa çiqadi: böş karta ekranni band qilib turmasin.
-        */}
-        {dueReviewCount > 0 && (
-          <Link
-            href="/takrorlash"
-            className="press group mt-6 flex items-center gap-4 rounded-2xl border border-amber-300 bg-amber-50 p-4 transition sm:p-5 sm:hover:border-amber-400"
-          >
-            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-amber-500 text-white">
-              <BrainCircuit className="h-6 w-6" strokeWidth={1.9} aria-hidden="true" />
-            </span>
-
-            <span className="min-w-0 flex-1">
-              <span className="block text-xs font-bold uppercase tracking-[0.08em] text-amber-700">
-                Haftalik takrorlaş
+          {/* Takrorlaş — faqat bugun kutayotgan savol bölsa */}
+          {dueReviewCount > 0 && (
+            <Link
+              href="/takrorlash"
+              className="edge group mt-3 flex items-center gap-3.5 rounded-2xl border border-vp-warning-line bg-vp-accent-soft p-3.5 sm:p-4"
+            >
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-vp-surface ring-1 ring-vp-warning-line">
+                <Glyph name="review" className="h-8 w-8" />
               </span>
 
-              <span className="mt-0.5 block font-serif text-lg font-bold leading-6 text-amber-950 sm:text-xl">
-                {dueReviewCount} ta savol sizni kutyapti
-              </span>
-
-              <span className="mt-1 block text-sm text-amber-800">
-                Xato qilgan savollaringiz — 5 daqiqada ulgurasiz.
-              </span>
-            </span>
-
-            <ArrowRight
-              className="h-5 w-5 shrink-0 text-amber-700 transition-transform group-hover:translate-x-0.5"
-              strokeWidth={2.4}
-              aria-hidden="true"
-            />
-          </Link>
-        )}
-
-        {/* Tezkor havolalar */}
-        {isAuthenticated && (
-          <div
-            className={
-              quickLinks.length === 4
-                ? "mt-6 grid grid-cols-4 gap-2 sm:gap-3"
-                : "mt-6 grid grid-cols-3 gap-2 sm:gap-3"
-            }
-          >
-            {quickLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="press flex flex-col items-center gap-2 rounded-xl border border-mb-line bg-white px-2 py-3.5 text-center transition sm:flex-row sm:justify-start sm:gap-3 sm:px-4 sm:text-left sm:hover:border-slate-400"
-              >
-                <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-lg ${link.tone}`}>
-                  <link.icon className="h-5 w-5" strokeWidth={2} aria-hidden="true" />
+              <span className="min-w-0 flex-1">
+                <span className="block font-bold leading-6 text-vp-ink">
+                  {dueReviewCount} ta savol takrorlaşni kutyapti
                 </span>
+                <span className="block text-sm text-vp-muted">
+                  Xato qilgan savollaringiz — 5 daqiqada ulgurasiz.
+                </span>
+              </span>
 
-                <span className="text-xs font-semibold leading-4 text-mb-ink sm:text-sm">
-                  {link.label}
+              <ChevronRight
+                className="h-5 w-5 shrink-0 text-vp-muted transition-transform group-hover:translate-x-0.5"
+                aria-hidden="true"
+              />
+            </Link>
+          )}
+
+          {/* Bölimlar */}
+          <h2 className="mt-8 text-lg font-bold sm:text-xl">Bölimlar</h2>
+
+          <div className="mt-3 grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-4">
+            {tiles.map((tile) => (
+              <Link
+                key={tile.title}
+                href={tile.href}
+                className="edge group flex flex-col rounded-2xl border border-vp-line bg-vp-surface p-4"
+              >
+                <GlyphTile name={tile.glyph} size="md" />
+
+                <span className="mt-4 block text-[17px] font-bold leading-6">
+                  {tile.title}
+                </span>
+                <span className="mt-0.5 block text-[13px] leading-5 text-vp-muted">
+                  {tile.text}
                 </span>
               </Link>
             ))}
           </div>
-        )}
 
-        {/* ── Mundarija ───────────────────────────────────────── */}
-        <div className="mt-10 flex items-end justify-between gap-3">
-          <h2 className="text-2xl font-bold sm:text-[28px]">Mundarija</h2>
+          {/* Yana */}
+          <h2 className="mt-8 text-lg font-bold sm:text-xl">Yana</h2>
 
-          {!isAuthenticated && (
-            <Link
-              href="/katalog"
-              className="inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-            >
-              Barça mavzular
-              <ArrowRight className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
-            </Link>
-          )}
-        </div>
-
-        <div className="ruler mt-3" aria-hidden="true" />
-
-        <ol className="divide-y divide-mb-line">
-          {sections.map((item, index) => (
-            <li key={item.title}>
+          <div className="mt-3 grid overflow-hidden rounded-2xl border border-vp-line bg-vp-surface sm:grid-cols-2">
+            {more.map((item) => (
               <Link
+                key={item.href}
                 href={item.href}
-                className="press group grid grid-cols-[auto_1fr_auto] items-center gap-x-4 py-5 sm:gap-x-6 sm:py-6"
+                className="group flex items-center gap-3 border-b border-vp-line p-3.5 transition-colors last:border-b-0 hover:bg-vp-page sm:[&:nth-child(odd)]:border-r sm:[&:nth-last-child(-n+2)]:border-b-0"
               >
-                <span className="font-serif text-[28px] font-semibold tabular-nums leading-none text-slate-400 transition-colors group-hover:text-mb-brand sm:text-[36px]">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
+                <GlyphTile name={item.glyph} size="sm" />
 
-                <span className="min-w-0">
-                  <span className="flex items-baseline gap-3">
-                    <span className="font-serif text-xl font-bold leading-tight text-mb-ink transition-colors group-hover:text-mb-brand sm:text-[24px]">
-                      {item.title}
-                    </span>
-
-                    <span
-                      aria-hidden="true"
-                      className="hidden flex-1 translate-y-[-4px] border-b-2 border-dotted border-slate-300 sm:block"
-                    />
-
-                    {item.count && (
-                      <span className="hidden shrink-0 text-sm font-semibold tabular-nums text-mb-muted sm:inline">
-                        {item.count}
-                      </span>
-                    )}
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-[15px] font-semibold">
+                    {item.title}
                   </span>
-
-                  <span className="mt-1 block text-sm leading-6 text-mb-muted">
+                  <span className="block truncate text-[13px] text-vp-muted">
                     {item.text}
                   </span>
                 </span>
 
-                <span className="grid h-10 w-10 place-items-center rounded-full border border-slate-300 text-mb-ink transition group-hover:border-mb-brand group-hover:bg-mb-brand group-hover:text-white">
-                  <ArrowRight className="h-4 w-4" strokeWidth={2.4} aria-hidden="true" />
-                </span>
+                <ChevronRight
+                  className="h-5 w-5 shrink-0 text-vp-line-strong transition-transform group-hover:translate-x-0.5"
+                  aria-hidden="true"
+                />
               </Link>
-            </li>
-          ))}
-        </ol>
+            ))}
+          </div>
 
-        {/*
-          Mehmon uçun: kimning platformasi. Öquvçi ustoz uçun keladi,
-          şuning uçun avval ustoz, keyin bölim nomlari (Google uçun
-          ham foydali: sahifada haqiqiy matn bor).
-        */}
-        {!isAuthenticated && (
-          <div className="mt-10 grid gap-6 border-t border-mb-line pt-10 md:grid-cols-[1.2fr_1fr] md:gap-10">
-            <div>
-              <p className="eyebrow">Ustoz haqida</p>
+          {isAdmin && (
+            <Link
+              href="/admin"
+              className="edge mt-3 flex items-center justify-between gap-3 rounded-2xl border border-vp-line bg-vp-surface px-4 py-3.5"
+            >
+              <span>
+                <span className="block font-bold">Admin panel</span>
+                <span className="block text-sm text-vp-muted">
+                  Testlar, darslar, guruhlar va yeçimlarni boşqariş.
+                </span>
+              </span>
+              <ArrowRight className="h-5 w-5 shrink-0 text-vp-brand" aria-hidden="true" />
+            </Link>
+          )}
+        </section>
+      ) : (
+        /* ═════════════ MEHMON ═════════════ */
+        <>
+          <section className="border-b border-vp-line bg-vp-surface">
+            <div className="mx-auto grid max-w-5xl items-center gap-8 px-4 pb-10 pt-8 sm:px-6 sm:pb-16 sm:pt-14 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
+              <div>
+                <p className="inline-flex items-center gap-2 rounded-full bg-vp-surface-soft py-1 pl-1 pr-3 text-[13px] font-semibold text-vp-brand-strong ring-1 ring-inset ring-vp-tint">
+                  <BrandMark size={24} className="h-6 w-6" />
+                  Vepa Kurbankliçev · matematika ustozi
+                </p>
 
-              <blockquote className="mt-3 font-serif text-[21px] leading-[1.45] text-mb-ink sm:text-[24px]">
-                Platformadagi har bir videodars, test va yeçimni ustozning
-                özi tayyorlaydi. Guruh öquvçilari şu yerda uy vazifasini
-                bajaradi, xatolarini köradi va reytingda bellaşadi.
-              </blockquote>
+                <h1 className="mt-4 text-[38px] font-extrabold leading-[1.05] tracking-[-0.03em] sm:text-[56px]">
+                  Matematikani{" "}
+                  <span className="text-vp-brand">tuşunib</span> örganing
+                </h1>
 
-              <div className="mt-5 flex items-center gap-3">
-                <BrandMark size={44} priority={false} className="h-11 w-11" />
+                <p className="mt-4 max-w-md text-base leading-7 text-vp-muted sm:text-[17px]">
+                  Videodars köring, test işlang, xatoyingizni darrov
+                  tuşuning. Hammasi bitta ustozdan, bitta joyda.
+                </p>
 
-                <div className="min-w-0">
-                  <p className="font-hand text-[26px] leading-none text-mb-brand">
-                    Vepa Kurbankliçev
-                  </p>
-                  <p className="mt-1 text-sm text-mb-muted">Matematika ustozi</p>
+                <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
+                  <Link href="/auth/login?mode=signup" className={solidButton}>
+                    Bepul boşlaş
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </Link>
+
+                  <div className="sm:w-60">
+                    <GoogleSignInButton compact className="min-h-12 w-full rounded-xl" />
+                  </div>
                 </div>
+
+                {catalog && (
+                  <dl className="mt-8 flex max-w-md divide-x divide-vp-line border-t border-vp-line pt-5">
+                    {[
+                      [catalog.testCount, "test"],
+                      [catalog.lessonCount, "videodars"],
+                      [catalog.textbookCount, "darslik yeçimi"],
+                    ].map(([value, label]) => (
+                      <div key={label} className="flex-1 px-4 first:pl-0">
+                        <dd className="num text-[26px] font-extrabold leading-none sm:text-3xl">
+                          {value}
+                        </dd>
+                        <dt className="mt-1 text-[13px] font-medium text-vp-muted">
+                          {label}
+                        </dt>
+                      </div>
+                    ))}
+                  </dl>
+                )}
+              </div>
+
+              <SampleQuiz />
+            </div>
+          </section>
+
+          {/* Qanday işlaydi */}
+          <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
+            <p className="eyebrow">Qanday işlaydi</p>
+            <h2 className="mt-1 text-2xl font-extrabold sm:text-3xl">
+              Uç qadam — bitta mavzu
+            </h2>
+
+            <ol className="mt-6 grid gap-3 sm:grid-cols-3">
+              {(
+                [
+                  [
+                    "lessons",
+                    "Videodarsni köring",
+                    "Har mavzuni ustozning özi tuşuntiradi — qisqa va tartib bilan.",
+                  ],
+                  [
+                    "tests",
+                    "Testni işlang",
+                    "Natija va har bir savolning tahlili test tugaşi bilan çiqadi.",
+                  ],
+                  [
+                    "review",
+                    "Xatoni takrorlang",
+                    "Xato qilgan savollaringiz hafta oxirida yana oldingizga keladi.",
+                  ],
+                ] as [GlyphName, string, string][]
+              ).map(([glyph, title, text], index) => (
+                <li
+                  key={title}
+                  className="relative rounded-2xl border border-vp-line bg-vp-surface p-5"
+                >
+                  <span className="num absolute right-4 top-3 text-[44px] font-extrabold leading-none text-vp-raised">
+                    {index + 1}
+                  </span>
+
+                  <GlyphTile name={glyph} size="md" />
+
+                  <h3 className="mt-4 text-[17px] font-bold">{title}</h3>
+                  <p className="mt-1 text-sm leading-6 text-vp-muted">{text}</p>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          {/* Bölimlar: içida nima bor */}
+          <section className="border-y border-vp-line bg-vp-surface">
+            <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
+              <div className="flex items-end justify-between gap-3">
+                <div>
+                  <p className="eyebrow">Platformada nima bor</p>
+                  <h2 className="mt-1 text-2xl font-extrabold sm:text-3xl">
+                    Uçta bölim
+                  </h2>
+                </div>
+
+                <Link
+                  href="/katalog"
+                  className="inline-flex min-h-11 shrink-0 items-center gap-1 text-sm font-semibold text-vp-brand hover:text-vp-brand-strong"
+                >
+                  Barça mavzular
+                  <ChevronRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              </div>
+
+              <div className="mt-6 grid gap-3 lg:grid-cols-3">
+                {(
+                  [
+                    {
+                      href: testsHref,
+                      glyph: "tests",
+                      title: "Testlar",
+                      text: "Vaqt bilan işlanadi, javoblar saqlanib turadi. Tugatgaç — ball va har bir savol tahlili.",
+                      tags: catalog?.examTypes ?? [],
+                    },
+                    {
+                      href: lessonsHref,
+                      glyph: "lessons",
+                      title: "Videodarslar",
+                      text: "Mavzular ketma-ket. Dars testini 90% ga işlasangiz, keyingi dars oçiladi.",
+                      tags: catalog?.lessonCategories.slice(0, 4) ?? [],
+                    },
+                    {
+                      href: textbooksHref,
+                      glyph: "solutions",
+                      title: "Darslik yeçimlari",
+                      text: "Maktab darsliklari va maşhur töplamlardagi masalalarning qadam-baqadam yeçimi.",
+                      tags: ["5–11-sinf", "TOP kitoblar"],
+                    },
+                  ] as const
+                ).map((item) => (
+                  <Link
+                    key={item.title}
+                    href={item.href}
+                    className="edge group flex gap-4 rounded-2xl border border-vp-line bg-vp-surface p-4 lg:flex-col lg:p-5"
+                  >
+                    <GlyphTile name={item.glyph} size="lg" className="max-lg:h-14 max-lg:w-14 max-lg:rounded-2xl max-lg:[&>svg]:h-9 max-lg:[&>svg]:w-9" />
+
+                    <span className="min-w-0 flex-1">
+                      <span className="flex items-center justify-between gap-2">
+                        <span className="text-lg font-bold">{item.title}</span>
+                        <ArrowRight
+                          className="h-5 w-5 shrink-0 text-vp-line-strong transition group-hover:translate-x-0.5 group-hover:text-vp-brand"
+                          aria-hidden="true"
+                        />
+                      </span>
+
+                      <span className="mt-1 block text-sm leading-6 text-vp-muted">
+                        {item.text}
+                      </span>
+
+                      {item.tags.length > 0 && (
+                        <span className="mt-3 flex flex-wrap gap-1.5">
+                          {item.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="rounded-md bg-vp-page px-2 py-0.5 text-xs font-semibold text-vp-muted ring-1 ring-inset ring-vp-line"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </span>
+                      )}
+                    </span>
+                  </Link>
+                ))}
               </div>
             </div>
+          </section>
 
-            <div className="flex flex-col gap-4 rounded-2xl border border-mb-line bg-white p-5">
-              {catalog && catalog.examTypes.length > 0 && (
-                <p className="text-sm leading-6 text-slate-600">
-                  <b className="text-mb-ink">Testlar:</b>{" "}
-                  {catalog.examTypes.join(", ")}.
+          {/* Ustoz */}
+          <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
+            <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr] lg:items-center lg:gap-10">
+              <div>
+                <p className="eyebrow">Ustoz haqida</p>
+
+                <p className="mt-2 text-[22px] font-bold leading-[1.35] tracking-[-0.015em] sm:text-[28px]">
+                  Platformadagi har bir videodars, test va yeçimni ustozning
+                  özi tayyorlaydi.
                 </p>
-              )}
 
-              {catalog && catalog.lessonCategories.length > 0 && (
-                <p className="text-sm leading-6 text-slate-600">
-                  <b className="text-mb-ink">Videodarslar:</b>{" "}
-                  {catalog.lessonCategories.slice(0, 8).join(", ")}
-                  {catalog.lessonCategories.length > 8 ? " va boşqalar" : ""}.
+                <p className="mt-3 max-w-xl text-[15px] leading-7 text-vp-muted">
+                  Guruh öquvçilari şu yerda uy vazifasini bajaradi,
+                  xatolarini köradi va reytingda bellaşadi.
                 </p>
-              )}
 
-              <a
-                href={`https://t.me/${TELEGRAM_CHANNEL_USERNAME}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="press inline-flex min-h-11 items-center gap-2 self-start rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-mb-ink transition hover:border-slate-400 hover:bg-slate-50"
-              >
-                <Send className="h-4 w-4 text-mb-brand" strokeWidth={2.2} aria-hidden="true" />
-                Telegram: @{TELEGRAM_CHANNEL_USERNAME}
-              </a>
+                <div className="mt-5 flex items-center gap-3">
+                  <BrandMark size={44} priority={false} className="h-11 w-11" />
+                  <div>
+                    <p className="font-bold leading-5">Vepa Kurbankliçev</p>
+                    <p className="text-sm text-vp-muted">Matematika ustozi</p>
+                  </div>
+                </div>
+              </div>
 
-              <Link
-                href="/pricing"
-                className="inline-flex min-h-11 items-center gap-1.5 self-start text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
-              >
-                Tariflar va narxlar
-                <ArrowRight className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
-              </Link>
+              <div className="spotlight rounded-3xl p-6">
+                <h2 className="max-w-[16ch] text-2xl font-extrabold leading-tight">
+                  Bugun birinçi testni işlab köring
+                </h2>
+
+                <p className="mt-2 text-sm leading-6 text-blue-100">
+                  Bepul belgisi bor dars va testlar hammaga oçiq.
+                </p>
+
+                <div className="mt-5 flex flex-wrap gap-2.5">
+                  <Link href="/auth/login?mode=signup" className={onBlueSolid}>
+                    Bepul boşlaş
+                  </Link>
+
+                  <a
+                    href={`https://t.me/${TELEGRAM_CHANNEL_USERNAME}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={onBlueGhost}
+                  >
+                    <Send className="h-4 w-4" aria-hidden="true" />
+                    Telegram kanal
+                  </a>
+                </div>
+
+                <Link
+                  href="/pricing"
+                  className="mt-4 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-white underline decoration-white/40 underline-offset-4 hover:decoration-white"
+                >
+                  Tariflar va narxlar
+                  <ChevronRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              </div>
             </div>
-          </div>
-        )}
+          </section>
+        </>
+      )}
 
-        {isAdmin && (
-          <Link
-            href="/admin"
-            className="press mt-8 flex items-center justify-between gap-3 rounded-2xl bg-mb-ink px-5 py-4 text-white transition sm:hover:bg-slate-800"
-          >
-            <span>
-              <span className="block font-serif text-lg font-bold">Admin panel</span>
-              <span className="mt-0.5 block text-sm text-slate-300">
-                Testlar, darslar, guruhlar va yeçimlarni boşqariş.
-              </span>
-            </span>
-
-            <ArrowRight className="h-5 w-5 shrink-0" strokeWidth={2.2} aria-hidden="true" />
-          </Link>
-        )}
-      </section>
-
-      <footer className="border-t border-mb-line">
-        <div className="mx-auto flex max-w-5xl flex-col gap-1 px-4 py-6 text-sm text-mb-muted sm:flex-row sm:items-center sm:justify-between sm:px-6">
+      <footer className="border-t border-vp-line bg-vp-surface">
+        <div className="mx-auto flex max-w-5xl flex-col gap-1 px-4 py-6 text-sm text-vp-muted sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <p>
             © {new Date().getFullYear()}{" "}
-            <span className="font-serif font-semibold text-mb-ink">Vepa Ustoz</span>
+            <span className="font-bold text-vp-ink">Vepa Ustoz</span>
           </p>
-          <p>Matematika — tuşunib örganiladi.</p>
+          <p>Matematika ta’lim platformasi</p>
         </div>
       </footer>
     </main>

@@ -134,7 +134,7 @@ export default async function CrmPage({ searchParams }: PageProps) {
 
         <form
           action={createCrmGroup}
-          className="mt-6 rounded-2xl border border-mb-line bg-white p-4 shadow-sm sm:p-5"
+          className="mt-6 rounded-2xl border border-mb-line bg-white p-4 sm:p-5"
         >
           <label
             htmlFor="title"

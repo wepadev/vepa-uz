@@ -1,16 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import {
-  CalendarClock,
-  CalendarDays,
-  Coins,
-  ListChecks,
-  ShoppingBag,
-  Trophy,
-  Users,
-} from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 
 import AppAlert from "@/components/ui/app-alert";
+import EmptyState from "@/components/ui/empty-state";
+import { GlyphTile } from "@/components/ui/glyph";
+import { RowLink, RowList, Tag } from "@/components/ui/row";
+import { btnAccent } from "@/lib/ui";
 import JoinGroupButton from "@/components/join-group-button";
 import LessonHistory, {
   type LessonHistoryRow,
@@ -85,14 +81,6 @@ function formatDate(value: string) {
     month: "2-digit",
     timeZone: "Asia/Tashkent",
   }).format(new Date(value));
-}
-
-function medal(position: number) {
-  if (position === 1) return "🥇";
-  if (position === 2) return "🥈";
-  if (position === 3) return "🥉";
-
-  return String(position);
 }
 
 export default async function MyGroupPage({ searchParams }: PageProps) {
@@ -178,11 +166,13 @@ export default async function MyGroupPage({ searchParams }: PageProps) {
       <PageHeader
         backHref="/"
         backLabel="Boş sahifa"
+        glyph="group"
         title="Guruhim"
+        width="3xl"
         subtitle={active?.title ?? null}
       />
 
-      <section className="mx-auto max-w-3xl px-3 py-5 sm:px-6 sm:py-8">
+      <section className="mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-8">
 
         {migrationMissing && (
           <AppAlert
@@ -208,60 +198,39 @@ export default async function MyGroupPage({ searchParams }: PageProps) {
 
         {/* Guruhga qo'shilmagan holat */}
         {!migrationMissing && groups.length === 0 && (
-          <div className="mt-6 rounded-3xl border border-dashed border-slate-300 bg-white px-5 py-10 text-center sm:px-6">
-            <Users
-              className="mx-auto h-10 w-10 text-mb-muted"
-              strokeWidth={1.6}
-              aria-hidden="true"
-            />
-
-            <h2 className="mt-4 text-lg font-bold">
-              Hali guruhga qöşilmagansiz
-            </h2>
-
-            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-mb-muted">
-              Ustozingiz bergan 6 belgili kodni kiriting. Şundan
-              keyin uy vazifalari, ballaringiz va tangalaringiz şu
-              yerda körinadi.
-            </p>
-
-            <div className="mx-auto mt-5 max-w-md text-left">
-              <JoinGroupButton
-                action={joinGroupAction}
-                label="Kodni kiritiş"
-              />
-            </div>
-          </div>
+          <EmptyState
+            glyph="group"
+            title="Hali guruhga qöşilmagansiz"
+            action={
+              <div className="w-full max-w-md text-left">
+                <JoinGroupButton
+                  action={joinGroupAction}
+                  label="Kodni kiritiş"
+                />
+              </div>
+            }
+          >
+            Ustozingiz bergan 6 belgili kodni kiriting. Şundan keyin uy
+            vazifalari, ballaringiz va tangalaringiz şu yerda körinadi.
+          </EmptyState>
         )}
 
         {active && (
           <>
             {/* Tanga va do'kon */}
-            <div className="mt-5 flex flex-col gap-3 rounded-3xl border border-amber-200 bg-amber-50 p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-6">
-              <div>
-                <p className="text-sm font-semibold text-amber-800">
-                  Sizdagi tangalar
-                </p>
+            <div className="flex items-center gap-4 rounded-2xl border border-mb-line bg-white p-4">
+              <GlyphTile name="shop" size="md" />
 
-                <p className="mt-1 flex items-center gap-2 text-4xl font-bold text-amber-600">
-                  <Coins
-                    className="h-9 w-9"
-                    strokeWidth={2}
-                    aria-hidden="true"
-                  />
+              <div className="min-w-0 flex-1">
+                <p className="eyebrow">Sizdagi tangalar</p>
+
+                <p className="num mt-0.5 text-3xl font-extrabold leading-none text-mb-ink">
                   {availableCoins}
                 </p>
               </div>
 
-              <Link
-                href="/dokon"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-amber-600 px-6 font-bold text-white transition hover:bg-amber-700"
-              >
-                <ShoppingBag
-                  className="h-5 w-5"
-                  strokeWidth={2.2}
-                  aria-hidden="true"
-                />
+              <Link href="/dokon" className={btnAccent}>
+                <ShoppingBag className="h-4 w-4" aria-hidden="true" />
                 Dökon
               </Link>
             </div>
@@ -287,95 +256,49 @@ export default async function MyGroupPage({ searchParams }: PageProps) {
             )}
 
             {/* Mening o'rnim */}
-            <div className="mt-4 grid grid-cols-3 divide-x divide-slate-200 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
-              <div className="px-2 py-3 text-center sm:px-4 sm:py-4">
-                <p className="text-[10px] font-semibold uppercase tracking-wide text-mb-muted sm:text-xs">
-                  Örningiz
-                </p>
-                <p className="mt-1 text-lg font-bold text-mb-brand sm:text-2xl">
-                  {active.my_rank}
-                  <span className="text-sm font-semibold text-mb-muted">
-                    /{active.member_count}
-                  </span>
-                </p>
-              </div>
-
-              <div className="px-2 py-3 text-center sm:px-4 sm:py-4">
-                <p className="text-[10px] font-semibold uppercase tracking-wide text-mb-muted sm:text-xs">
-                  Ballaringiz
-                </p>
-                <p className="mt-1 text-lg font-bold text-mb-ink sm:text-2xl">
-                  {active.my_points}
-                </p>
-              </div>
-
-              <div className="px-2 py-3 text-center sm:px-4 sm:py-4">
-                <p className="text-[10px] font-semibold uppercase tracking-wide text-mb-muted sm:text-xs">
-                  Yiğgan tanga
-                </p>
-                <p className="mt-1 text-lg font-bold text-amber-600 sm:text-2xl">
-                  {active.my_coins}
-                </p>
-              </div>
-            </div>
+            <dl className="num mt-3 grid grid-cols-3 gap-2 text-center">
+              {[
+                ["Örningiz", `${active.my_rank}/${active.member_count}`],
+                ["Ballaringiz", String(active.my_points)],
+                ["Yiğgan tanga", String(active.my_coins)],
+              ].map(([label, value]) => (
+                <div
+                  key={label}
+                  className="rounded-2xl border border-mb-line bg-white px-2 py-3"
+                >
+                  <dt className="text-xs font-semibold text-mb-muted">
+                    {label}
+                  </dt>
+                  <dd className="mt-0.5 text-xl font-extrabold text-mb-ink">
+                    {value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
 
             {/* Uy vazifasi — faqat bo'lsa */}
             {assignments.length > 0 && (
               <>
-                <h2 className="mt-8 flex items-center gap-2 text-lg font-bold">
-                  <ListChecks
-                    className="h-5 w-5 text-mb-muted"
-                    strokeWidth={2}
-                    aria-hidden="true"
-                  />
-                  Bajarilmagan uy vazifalari
-                </h2>
+                <h2 className="eyebrow mt-7">Bajarilmagan uy vazifalari</h2>
 
-                <div className="mt-3 space-y-2">
+                <RowList className="mt-3">
                   {assignments.map((row) => (
-                    <Link
+                    <RowLink
                       key={row.assignment_id}
-                      href={`/homework`}
-                      className="flex items-center justify-between gap-3 rounded-2xl border border-mb-line bg-white px-4 py-3 shadow-sm transition sm:hover:bg-slate-50"
-                    >
-                      <div className="min-w-0">
-                        <p className="truncate text-[15px] font-semibold text-mb-ink">
-                          {row.test_title}
-                        </p>
-
-                        <p className="mt-0.5 inline-flex items-center gap-1.5 text-xs text-mb-muted">
-                          <CalendarClock
-                            className="h-3.5 w-3.5"
-                            strokeWidth={2}
-                            aria-hidden="true"
-                          />
-                          Muddat: {formatDate(row.due_at)}
-                        </p>
-                      </div>
-
-                      <span
-                        aria-hidden="true"
-                        className="shrink-0 text-mb-muted"
-                      >
-                        ›
-                      </span>
-                    </Link>
+                      href="/homework"
+                      lead={<GlyphTile name="homework" size="sm" />}
+                      title={row.test_title}
+                      meta={`Muddat: ${formatDate(row.due_at)}`}
+                    />
                   ))}
-                </div>
+                </RowList>
               </>
             )}
 
             {/* Guruh reytingi */}
-            <h2 className="mt-8 flex items-center gap-2 text-lg font-bold">
-              <Trophy
-                className="h-5 w-5 text-mb-muted"
-                strokeWidth={2}
-                aria-hidden="true"
-              />
-              Guruh reytingi
-            </h2>
+            <h2 className="eyebrow mt-7">Guruh reytingi</h2>
 
-            <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+            <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white">
               {leaderboard.map((row, index) => (
                 <div
                   key={row.student_id}
@@ -385,26 +308,31 @@ export default async function MyGroupPage({ searchParams }: PageProps) {
                     row.is_me && "bg-mb-tintSoft",
                   )}
                 >
-                  <span className="w-7 shrink-0 text-center text-lg font-bold">
-                    {medal(row.place)}
+                  <span
+                    className={cn(
+                      "num grid h-9 w-9 shrink-0 place-items-center rounded-xl text-sm font-bold",
+                      row.place === 1
+                        ? "bg-vp-accent text-vp-on-accent"
+                        : row.place <= 3
+                          ? "bg-mb-tint text-mb-brandDark"
+                          : "bg-slate-100 text-slate-600",
+                    )}
+                  >
+                    {row.place}
                   </span>
 
-                  <p className="min-w-0 flex-1 truncate text-[15px] font-semibold text-mb-ink">
-                    {row.full_name}
+                  <p className="flex min-w-0 flex-1 items-center gap-2 text-[15px] font-bold text-mb-ink">
+                    <span className="truncate">{row.full_name}</span>
 
-                    {row.is_me && (
-                      <span className="ml-2 rounded-full bg-mb-brand px-2 py-0.5 text-[10px] font-bold text-white">
-                        Siz
-                      </span>
-                    )}
+                    {row.is_me && <Tag tone="brand">Siz</Tag>}
                   </p>
 
                   <div className="shrink-0 text-right">
-                    <p className="whitespace-nowrap text-[15px] font-bold text-mb-brand">
+                    <p className="num whitespace-nowrap text-[15px] font-extrabold text-mb-ink">
                       {row.points} ball
                     </p>
 
-                    <p className="whitespace-nowrap text-xs font-semibold text-amber-600">
+                    <p className="num whitespace-nowrap text-[13px] text-mb-muted">
                       {row.coins} tanga
                     </p>
                   </div>
@@ -413,20 +341,13 @@ export default async function MyGroupPage({ searchParams }: PageProps) {
             </div>
 
             {/* Dars tarixim */}
-            <h2 className="mt-8 flex items-center gap-2 text-lg font-bold">
-              <CalendarDays
-                className="h-5 w-5 text-mb-muted"
-                strokeWidth={2}
-                aria-hidden="true"
-              />
-              Dars tarixim
-            </h2>
+            <h2 className="eyebrow mt-7">Dars tarixim</h2>
 
             {history.length === 0 ? (
-              <AppAlert variant="info" title="Hali dars yöq" className="mt-3">
-                Ustoz dars varaqasini töldirgaç, ballaringiz şu
-                yerda paydo böladi.
-              </AppAlert>
+              <EmptyState title="Hali dars yöq" className="mt-3">
+                Ustoz dars varaqasini töldirgaç, ballaringiz şu yerda paydo
+                böladi.
+              </EmptyState>
             ) : (
               <div className="mt-3">
                 <LessonHistory rows={history} />

@@ -52,7 +52,7 @@ export default function AdminError({
           <button
             type="button"
             onClick={reset}
-            className="min-h-12 rounded-2xl bg-mb-brand px-5 font-bold text-white transition hover:bg-mb-brandDark"
+            className="min-h-12 rounded-xl bg-mb-brand px-5 font-bold text-white transition hover:bg-mb-brandDark"
           >
             Qayta uriniş
           </button>

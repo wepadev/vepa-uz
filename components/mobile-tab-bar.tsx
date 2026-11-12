@@ -133,11 +133,11 @@ export default function MobileTabBar({
             className="absolute inset-0 h-full w-full animate-in fade-in-0 bg-slate-950/40 backdrop-blur-sm duration-200"
           />
 
-          <div className="absolute inset-x-0 bottom-0 animate-in slide-in-from-bottom-8 fade-in-0 duration-200 max-h-[80vh] overflow-y-auto rounded-t-3xl bg-slate-50 pb-[calc(env(safe-area-inset-bottom)+1rem)] shadow-2xl">
-            <div className="sticky top-0 bg-slate-50 px-5 pb-3 pt-3">
+          <div className="absolute inset-x-0 bottom-0 animate-in slide-in-from-bottom-8 fade-in-0 duration-200 max-h-[80vh] overflow-y-auto rounded-t-3xl bg-white pb-[calc(env(safe-area-inset-bottom)+1rem)] shadow-2xl">
+            <div className="sticky top-0 bg-white px-5 pb-3 pt-3">
               <div className="mx-auto h-1.5 w-10 rounded-full bg-slate-200" />
 
-              <p className="mt-4 truncate font-serif text-lg font-bold text-slate-900">
+              <p className="mt-4 truncate text-lg font-extrabold text-slate-900">
                 {isAuthenticated ? fullName : "Vepa Ustoz"}
               </p>
               <p className="text-xs text-slate-500">
@@ -218,7 +218,7 @@ export default function MobileTabBar({
 
       <nav
         aria-label="Asosiy navigatsiya"
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-mb-line bg-slate-50/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-mb-line bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
       >
         <div className="grid grid-cols-5">
           {tabs.map((tab) => {
@@ -240,9 +240,8 @@ export default function MobileTabBar({
                 <span
                   aria-hidden="true"
                   className={cn(
-                    "relative grid h-7 w-12 place-items-center transition-colors duration-200",
-                    "before:absolute before:-top-[5px] before:left-1/2 before:h-[3px] before:w-6 before:-translate-x-1/2 before:rounded-b-full before:transition-colors",
-                    active ? "before:bg-mb-brand" : "before:bg-transparent",
+                    "grid h-7 w-14 place-items-center rounded-full transition-colors duration-200",
+                    active && "bg-mb-tint text-mb-brandDark",
                   )}
                 >
                   <Icon
@@ -272,9 +271,8 @@ export default function MobileTabBar({
             <span
               aria-hidden="true"
               className={cn(
-                "relative grid h-7 w-12 place-items-center transition-colors duration-200",
-                "before:absolute before:-top-[5px] before:left-1/2 before:h-[3px] before:w-6 before:-translate-x-1/2 before:rounded-b-full before:transition-colors",
-                menuOpen ? "before:bg-mb-brand" : "before:bg-transparent",
+                "grid h-7 w-14 place-items-center rounded-full transition-colors duration-200",
+                menuOpen && "bg-mb-tint text-mb-brandDark",
               )}
             >
               <Menu

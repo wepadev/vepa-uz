@@ -50,7 +50,7 @@ export default async function AccessDeniedPage({
 
   return (
     <main className="grid min-h-screen place-items-center bg-slate-50 px-4 py-10 text-slate-900">
-      <section className="w-full max-w-xl rounded-3xl border border-amber-200 bg-white p-6 text-center shadow-xl shadow-slate-200/60 sm:p-9">
+      <section className="w-full max-w-xl rounded-2xl border border-amber-200 bg-white p-6 text-center shadow-xl shadow-slate-200/60 sm:p-9">
         <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-amber-100 text-2xl font-bold text-amber-700">
           !
         </div>
@@ -76,7 +76,7 @@ export default async function AccessDeniedPage({
         <div className="mt-7 grid gap-3 sm:grid-cols-2">
           <Link
             href="/"
-            className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-mb-brand px-5 py-3 font-bold text-white hover:bg-mb-brandDark"
+            className="inline-flex min-h-12 items-center justify-center rounded-xl bg-mb-brand px-5 py-3 font-bold text-white hover:bg-mb-brandDark"
           >
             Boş sahifaga qaytiş
           </Link>

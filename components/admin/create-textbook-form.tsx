@@ -38,7 +38,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-mb-brand px-5 py-3.5 font-bold text-white shadow-sm transition hover:bg-mb-brandDark disabled:cursor-wait disabled:opacity-70"
+      className="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-mb-brand px-5 py-3.5 font-bold text-white shadow-sm transition hover:bg-mb-brandDark disabled:cursor-wait disabled:opacity-70"
     >
       {pending ? (
         <span className="inline-flex items-center gap-2">
@@ -62,13 +62,13 @@ export default function CreateTextbookForm({
     useState<BookType>("school");
 
   const inputClass =
-    "mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:ring-4 focus:ring-blue-100";
+    "mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:ring-4 focus:ring-blue-100";
 
   const errorInputClass =
     "mt-2 w-full rounded-2xl border border-red-300 bg-red-50 px-4 py-3.5 text-slate-900 outline-none transition placeholder:text-red-300 focus:border-red-500 focus:ring-4 focus:ring-red-100";
 
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+    <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
       <p className="text-xs font-bold uppercase tracking-[0.16em] text-mb-brand">
         Yangi darslik
       </p>

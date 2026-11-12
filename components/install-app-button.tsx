@@ -98,7 +98,7 @@ export default function InstallAppButton({
       type="button"
       onClick={install}
       className={cn(
-        "flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl bg-mb-brand px-4 text-[15px] font-semibold text-white active:bg-mb-brandDark",
+        "flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-mb-brand px-4 text-[15px] font-semibold text-white active:bg-mb-brandDark",
         className,
       )}
     >

@@ -447,7 +447,7 @@ export default async function AdminAnalyticsPage({
         </p>
 
         <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <article className="rounded-2xl border border-slate-200 bg-white p-5">
             <p className="text-sm font-semibold text-slate-500">
               Tugallangan urinişlar
             </p>
@@ -462,7 +462,7 @@ export default async function AdminAnalyticsPage({
             </p>
           </article>
 
-          <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <article className="rounded-2xl border border-slate-200 bg-white p-5">
             <p className="text-sm font-semibold text-slate-500">
               Faol öquvçilar
             </p>
@@ -477,7 +477,7 @@ export default async function AdminAnalyticsPage({
             </p>
           </article>
 
-          <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <article className="rounded-2xl border border-slate-200 bg-white p-5">
             <p className="text-sm font-semibold text-slate-500">
               Örtaça natija
             </p>
@@ -499,7 +499,7 @@ export default async function AdminAnalyticsPage({
             </p>
           </article>
 
-          <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <article className="rounded-2xl border border-slate-200 bg-white p-5">
             <p className="text-sm font-semibold text-slate-500">
               90% va undan yuqori
             </p>
@@ -516,7 +516,7 @@ export default async function AdminAnalyticsPage({
         </div>
 
         <div className="mt-9 grid gap-6 xl:grid-cols-2">
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
             <div className="flex items-end justify-between gap-3">
               <div>
                 <h2 className="text-xl font-bold text-slate-950">
@@ -604,7 +604,7 @@ export default async function AdminAnalyticsPage({
             )}
           </section>
 
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
             <div>
               <h2 className="text-xl font-bold text-slate-950">
                 Öquvçilar reytingi
@@ -768,7 +768,7 @@ export default async function AdminAnalyticsPage({
               </p>
             </div>
           ) : (
-            <div className="mt-5 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+            <div className="mt-5 overflow-hidden rounded-2xl border border-mb-line bg-white">
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[1050px] text-left">
                   <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
@@ -919,7 +919,7 @@ export default async function AdminAnalyticsPage({
         </section>
 
         {topStudents.length > 0 && (
-          <section className="mt-9 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+          <section className="mt-9 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
             <h2 className="text-xl font-bold text-slate-950">
               Reyting haqida
             </h2>

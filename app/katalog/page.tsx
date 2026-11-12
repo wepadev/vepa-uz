@@ -138,7 +138,7 @@ export default async function CatalogPage() {
               {tree.exams.map((exam) => (
                 <details
                   key={exam.id}
-                  className="group rounded-2xl border border-mb-line bg-white shadow-sm"
+                  className="group rounded-2xl border border-mb-line bg-white"
                 >
                   <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3">
                     <span className="min-w-0">
@@ -193,7 +193,7 @@ export default async function CatalogPage() {
               {tree.categories.map((category) => (
                 <details
                   key={category.id}
-                  className="group rounded-2xl border border-mb-line bg-white shadow-sm"
+                  className="group rounded-2xl border border-mb-line bg-white"
                 >
                   <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3">
                     <span className="font-bold text-mb-ink">
@@ -237,7 +237,7 @@ export default async function CatalogPage() {
                   count={`${tree.textbooks.length} ta darslik`}
                 />
 
-                <ul className="rounded-2xl border border-mb-line bg-white px-2 py-2 shadow-sm sm:px-3">
+                <ul className="rounded-2xl border border-mb-line bg-white px-2 py-2 sm:px-3">
                   {tree.textbooks.map((book) => (
                     <li key={book.id}>
                       <Link href={`/textbooks/topics?textbookId=${book.id}`} className={rowClass}>

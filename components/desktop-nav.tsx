@@ -53,22 +53,21 @@ export default function DesktopNav({
 
   const linkClass = (active: boolean) =>
     cn(
-      "relative inline-flex min-h-10 items-center px-3 text-sm font-semibold transition-colors",
-      "after:absolute after:inset-x-3 after:-bottom-[9px] after:h-[2px] after:rounded-full after:transition-colors",
+      "inline-flex min-h-10 items-center rounded-lg px-3 text-sm font-semibold transition-colors",
       active
-        ? "text-mb-ink after:bg-mb-brand"
-        : "text-slate-600 after:bg-transparent hover:text-slate-900",
+        ? "bg-mb-tintSoft text-mb-brandDark"
+        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
     );
 
   return (
     <nav
       aria-label="Asosiy navigatsiya"
-      className="hidden border-b border-mb-line bg-slate-50 md:block"
+      className="hidden border-b border-mb-line bg-white md:block"
     >
       <div className="mx-auto flex max-w-5xl items-center gap-2 px-6 py-2">
         <Link href="/" className="mr-3 flex shrink-0 items-center gap-2.5">
           <BrandMark size={36} className="h-9 w-9" />
-          <span className="font-serif text-[19px] font-bold tracking-tight text-slate-900">Vepa Ustoz</span>
+          <span className="text-lg font-extrabold tracking-tight text-slate-900">Vepa Ustoz</span>
         </Link>
 
         {links.map((link) => {
@@ -121,7 +120,7 @@ export default function DesktopNav({
               {isAdmin && (
                 <Link
                   href="/admin"
-                  className="inline-flex min-h-10 items-center rounded-xl border border-blue-200 bg-blue-50 px-3 text-sm font-semibold text-blue-700 hover:bg-blue-100"
+                  className="inline-flex min-h-10 items-center rounded-lg px-3 text-sm font-semibold text-mb-brand hover:bg-mb-tintSoft"
                 >
                   Admin
                 </Link>
@@ -129,7 +128,7 @@ export default function DesktopNav({
 
               <Link
                 href="/profile"
-                className="inline-flex min-h-10 max-w-44 items-center truncate rounded-xl border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                className="edge inline-flex min-h-10 max-w-44 items-center truncate rounded-xl border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700"
               >
                 {fullName}
               </Link>

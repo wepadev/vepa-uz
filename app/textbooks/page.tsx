@@ -1,7 +1,8 @@
 import Link from "next/link";
 
-import { ArrowRight, BookMarked, School } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
+import { GlyphTile } from "@/components/ui/glyph";
 import TextbooksHeader from "@/components/textbooks-header";
 
 import { requireSectionAccess } from "@/lib/require-section-access";
@@ -82,85 +83,67 @@ export default async function TextbooksPage() {
       <TextbooksHeader
         backHref="/"
         backLabel="Boş sahifa"
+        glyph="solutions"
         title="Darslik yeçimlari"
-        subtitle="Maktab darsliklari va TOP kitoblar"
-        chips={[
-          `${textbooks.length} ta kitob`,
-          `${totalTopics} ta mavzu`,
-        ]}
+        subtitle={`${textbooks.length} kitob · ${totalTopics} mavzu`}
       />
 
-      <section className="mx-auto max-w-5xl px-3 py-5 sm:px-6 sm:py-8">
-        <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
-          {/*
-            Ikonka plitkasi "content" ohangida (sariq) — darsliklar
-            va videodarslar bitta guruhga kiradi. Havola o'qi doim
-            brend ko'kida: rang bo'limni aytadi, amalni emas.
-          */}
-          {[
-            {
-              href: "/textbooks/school",
-              icon: School,
-              title: "Maktab darsliklari",
-              text: "5–11-sinf darslik yeçimlari.",
-              meta: `${schoolCount} ta darslik`,
-              tone: "bg-amber-50 text-amber-700",
-              ghost: "text-amber-50",
-              hover: "hover:border-amber-300",
-            },
-            {
-              href: "/textbooks/popular",
-              icon: BookMarked,
-              title: "TOP kitoblar",
-              text: "Imtihonga tayyorlaniş töplamlari.",
-              meta: `${popularCount} ta kitob`,
-              tone: "bg-amber-50 text-amber-700",
-              ghost: "text-amber-50",
-              hover: "hover:border-amber-300",
-            },
-          ].map((card) => (
+      <section className="mx-auto max-w-5xl px-4 py-5 sm:px-6 sm:py-8">
+        <p className="eyebrow">Qaysi kitobdan?</p>
+
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          {(
+            [
+              {
+                href: "/textbooks/school",
+                glyph: "school",
+                title: "Maktab darsliklari",
+                text: "5–11-sinf darsliklaridagi masalalar yeçimi.",
+                meta: `${schoolCount} darslik`,
+              },
+              {
+                href: "/textbooks/popular",
+                glyph: "top",
+                title: "TOP kitoblar",
+                text: "Imtihonga tayyorlaniş töplamlari yeçimi.",
+                meta: `${popularCount} kitob`,
+              },
+            ] as const
+          ).map((card) => (
             <Link
               key={card.href}
               href={card.href}
-              className={`group relative flex flex-col overflow-hidden rounded-3xl border border-mb-line bg-white p-5 shadow-sm transition sm:p-6 sm:hover:border-slate-300 sm:hover:shadow-md ${card.hover}`}
+              className="edge group flex items-center gap-4 rounded-2xl border border-mb-line bg-white p-4 sm:flex-col sm:items-start sm:p-5"
             >
-              {/* Orqa fondagi yirik ikonka — bezak */}
-              <card.icon
-                className={`pointer-events-none absolute -right-5 -top-5 h-28 w-28 ${card.ghost}`}
-                strokeWidth={1.1}
-                aria-hidden="true"
-              />
+              <GlyphTile name={card.glyph} size="lg" />
 
-              <span
-                className={`grid h-14 w-14 place-items-center rounded-2xl ${card.tone}`}
-              >
-                <card.icon
-                  className="h-7 w-7"
-                  strokeWidth={1.9}
-                  aria-hidden="true"
-                />
-              </span>
+              <span className="min-w-0 flex-1 sm:w-full">
+                <span className="flex items-center justify-between gap-2">
+                  <span className="text-lg font-bold leading-6 text-mb-ink">
+                    {card.title}
+                  </span>
 
-              <p className="mt-4 text-xl font-bold text-mb-ink">
-                {card.title}
-              </p>
+                  <ChevronRight
+                    className="h-5 w-5 shrink-0 text-slate-400 transition-transform group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  />
+                </span>
 
-              <p className="mt-1 flex-1 text-sm leading-6 text-mb-muted">
-                {card.text}
-              </p>
+                <span className="mt-0.5 block text-sm leading-5 text-mb-muted">
+                  {card.text}
+                </span>
 
-              <span className="mt-5 flex items-center justify-between border-t border-slate-100 pt-3 text-sm font-semibold text-mb-muted">
-                {card.meta}
-
-                <ArrowRight
-                  className="h-5 w-5 text-mb-brand transition-transform group-hover:translate-x-0.5"
-                  strokeWidth={2.2}
-                  aria-hidden="true"
-                />
+                <span className="num mt-2 inline-block rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">
+                  {card.meta}
+                </span>
               </span>
             </Link>
           ))}
         </div>
+
+        <p className="mt-5 text-sm leading-6 text-mb-muted">
+          Har bir masalaning yozma yeçimi va mavzu videosi bir joyda.
+        </p>
       </section>
     </main>
   );
