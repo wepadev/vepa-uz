@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CalendarClock, Trash2 } from "lucide-react";
+import { CalendarClock, Trash2 } from "@/components/ui/icons";
 
 import {
   closeAssignment,

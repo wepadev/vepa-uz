@@ -1,6 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { Database, Sparkles } from "lucide-react";
+import { Database, Sparkles } from "@/components/ui/icons";
 
 import AppAlert from "@/components/ui/app-alert";
 import SubmitButton from "@/components/ui/submit-button";

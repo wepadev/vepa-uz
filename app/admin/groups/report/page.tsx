@@ -6,7 +6,7 @@ import {
   Printer,
   TrendingDown,
   Users,
-} from "lucide-react";
+} from "@/components/ui/icons";
 
 import AppAlert from "@/components/ui/app-alert";
 import { getCurrentUser } from "@/lib/supabase/current-user";

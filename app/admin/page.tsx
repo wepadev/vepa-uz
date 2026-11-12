@@ -11,10 +11,10 @@ import {
   MonitorPlay,
   NotebookPen,
   Timer,
+  User,
   Users,
-  UsersRound,
-  type LucideIcon,
-} from "lucide-react";
+  type IconComponent,
+} from "@/components/ui/icons";
 
 import { accents, type Accent } from "@/components/ui/section-visual";
 import { remainingLabel } from "@/lib/due-label";
@@ -41,14 +41,14 @@ type MainCard = {
   description: string;
   href: string;
   count: number | null;
-  icon: LucideIcon;
+  icon: IconComponent;
   tone: Accent;
 };
 
 type ToolLink = {
   title: string;
   href: string;
-  icon: LucideIcon;
+  icon: IconComponent;
 };
 
 type OverviewRow = {
@@ -189,7 +189,7 @@ export default async function AdminPage() {
       description: "Davomat, ball, öquvçilar va uy vazifalari.",
       href: "/admin/crm",
       count: activeGroups.length,
-      icon: UsersRound,
+      icon: Users,
       tone: "people",
     },
     {
@@ -222,7 +222,7 @@ export default async function AdminPage() {
   ];
 
   const tools: ToolLink[] = [
-    { title: "Foydalanuvçilar", href: "/admin/users", icon: Users },
+    { title: "Foydalanuvçilar", href: "/admin/users", icon: User },
     { title: "Test tekşiriş", href: "/admin/test-tekshirish", icon: ListChecks },
     { title: "Imtihon taymeri", href: "/admin/taymer", icon: Timer },
     { title: "PDF yozuv", href: "/admin/pdf-yozuv", icon: NotebookPen },

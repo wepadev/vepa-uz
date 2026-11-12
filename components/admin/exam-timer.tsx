@@ -15,7 +15,7 @@ import {
   RotateCcw,
   Volume2,
   VolumeX,
-} from "lucide-react";
+} from "@/components/ui/icons";
 
 /*
  * Imtihon taymeri — elektron doskaga chiqarish uchun.

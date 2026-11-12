@@ -74,9 +74,14 @@ Ikki qatlam, ikkalasida ham bitta qoida:
   **bitta sariq nuqta** (eng muhim joy). `<GlyphTile name="tests" />`.
   Yangi bölim qöşilsa — şu faylga yangi belgi çiziladi, tayyor ikonka
   qöyilmaydi.
-- **Mayda amal ikonkalari** — lucide, hammasi 1.75 qalinlikda
-  (`app/globals.css` da bir joyda berilgan). Qalinlikni qölda
-  özgartirmang.
+- **Mayda ikonkalar** — `components/ui/icons.tsx`, admin panel va
+  sovğa dökoni ham şu yerdan. Tör 24×24, çiziq 2; "narsa" ikonkasida
+  bitta sariq urğu, yönaliş/amal ikonkasida urğu yöq. Tayyor töplam
+  (lucide va b.) örnatilmaydi: yangi ikonka kerak bölsa — şu faylga
+  çiziladi. Bitta ma'noga bitta ikonka (masalan guruh — `Users`,
+  bitta odam — `User`).
+- **Telegram emoji** — `node scripts/export-icons.mjs <papka>` hamma
+  ikonka va belgini 100×100 PNG/WebP (şaffof) va SVG qilib çiqaradi.
 
 Emoji interfeysda işlatilmaydi (medal, tanga, olov — belgi yoki
 raqam bilan).

@@ -5,7 +5,7 @@ import {
   AlertOctagon,
   AlertTriangle,
   Info,
-  type LucideIcon,
+  type IconComponent,
 } from "@/components/ui/icons";
 
 type ConfirmVariant =
@@ -53,7 +53,7 @@ const variantStyles: Record<
 
 const VARIANT_ICONS: Record<
   ConfirmVariant,
-  LucideIcon
+  IconComponent
 > = {
   warning: AlertTriangle,
   danger: AlertOctagon,

@@ -5,8 +5,10 @@ import { useState } from "react";
 import {
   REWARD_ICON_COUNT,
   REWARD_ICON_GROUPS,
+  normalizeRewardIconKey,
   rewardIcon,
 } from "@/lib/reward-icons";
+import { ChevronDown } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
 
 /**
@@ -28,7 +30,9 @@ export default function RewardIconPicker({
   defaultValue?: string | null;
   label?: string;
 }) {
-  const [selected, setSelected] = useState(defaultValue ?? "gift");
+  const [selected, setSelected] = useState(() =>
+    normalizeRewardIconKey(defaultValue),
+  );
   const [open, setOpen] = useState(false);
 
   const SelectedIcon = rewardIcon(selected);
@@ -64,9 +68,12 @@ export default function RewardIconPicker({
 
         {selectedLabel ?? "Tanlang"}
 
-        <span className="text-xs font-normal text-mb-muted">
-          {open ? "▲" : "▼"}
-        </span>
+        <ChevronDown
+          className={cn(
+            "h-4 w-4 text-mb-muted transition-transform",
+            open && "rotate-180",
+          )}
+        />
       </button>
 
       {open && (

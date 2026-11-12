@@ -12,7 +12,7 @@ import {
   House,
   Menu,
   MonitorPlay,
-  type LucideIcon,
+  type IconComponent,
 } from "@/components/ui/icons";
 
 import InstallAppButton from "@/components/install-app-button";
@@ -32,7 +32,7 @@ type MobileTabBarProps = NavUser & {
   signOut: () => Promise<void>;
 };
 
-const ICONS: Record<string, LucideIcon> = {
+const ICONS: Record<string, IconComponent> = {
   "/homework": ClipboardList,
   "/tests": ClipboardCheck,
   "/lessons": MonitorPlay,

@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { FileUp } from "lucide-react";
+import { FileUp } from "@/components/ui/icons";
 
 import PdfImportForm, {
   type SaveDraftState,

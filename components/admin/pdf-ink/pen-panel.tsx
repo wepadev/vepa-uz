@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Brush, Pen, PenTool, RotateCcw, type LucideIcon } from "lucide-react";
+import { Brush, Pen, PenTool, RotateCcw, type IconComponent } from "@/components/ui/icons";
 
 import { simplifyStroke, type PenKind, type Stroke } from "@/lib/pdf-ink";
 import { cn } from "@/lib/utils";
 
 import { paintStroke } from "./ink-page";
 
-export const PEN_KINDS: { kind: PenKind; label: string; icon: LucideIcon }[] = [
+export const PEN_KINDS: { kind: PenKind; label: string; icon: IconComponent }[] = [
   { kind: "felt", label: "Flomaster", icon: Pen },
   { kind: "fountain", label: "Pero", icon: PenTool },
   { kind: "brush", label: "Möyqalam", icon: Brush },

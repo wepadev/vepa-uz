@@ -8,7 +8,7 @@ import {
   Pencil,
   Trash2,
   Undo2,
-} from "lucide-react";
+} from "@/components/ui/icons";
 
 import AppAlert from "@/components/ui/app-alert";
 import SubmitButton from "@/components/ui/submit-button";

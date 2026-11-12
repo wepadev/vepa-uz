@@ -1,99 +1,57 @@
 import {
   Apple,
-  Award,
   Backpack,
-  Badge,
-  BadgeCheck,
-  Banana,
-  Bike,
-  Book,
+  Ball,
   BookOpen,
-  Bookmark,
-  Brush,
   Cake,
   Calculator,
-  Camera,
   Candy,
-  Coffee,
+  ClipboardList,
   Coins,
   Compass,
-  Cookie,
-  Croissant,
-  Dices,
-  Donut,
+  Crown,
   Eraser,
-  Flag,
-  Flame,
-  Gamepad2,
-  Gem,
+  Gamepad,
   Gift,
-  Globe,
   GraduationCap,
-  Handshake,
   Headphones,
-  Heart,
-  Highlighter,
-  Hourglass,
-  IceCreamCone,
-  Key,
-  Library,
-  Lollipop,
+  IceCream,
+  KeyRound,
   Medal,
-  Mic,
-  Milk,
-  Music,
-  Newspaper,
-  Notebook,
-  NotebookPen,
-  Palette,
-  PartyPopper,
-  PenTool,
+  Pen,
   Pencil,
   Pizza,
-  Popcorn,
-  Presentation,
   Puzzle,
   Rocket,
   Ruler,
-  School,
-  Scissors,
   Shirt,
   ShoppingBag,
   Smartphone,
-  Smile,
-  Sparkles,
   Star,
-  Sticker,
-  Target,
-  ThumbsUp,
   Ticket,
-  Timer,
-  Trees,
   Trophy,
-  Video,
-  Volleyball,
   Watch,
-  Zap,
-  type LucideIcon,
-} from "lucide-react";
+  type IconComponent,
+} from "@/components/ui/icons";
 
 /**
- * Sovg'a do'koni uchun ikonkalar.
+ * Sovğa dökoni uçun ikonkalar.
  *
- * Butun sayt lucide-react ishlatadi — bu yerda ham o'sha to'plamdan
- * olinadi, shunda ikonkalar bir uslubda bo'ladi.
- *
- * Ro'yxat ataylab tanlangan: lucide'da mingdan ortiq ikonka bor,
- * lekin ularning ko'pi sovg'aga aloqasiz. Bu yerda faqat o'quv
- * qurollari, mukofot, shirinlik va ko'ngilochar narsalar.
+ * Hammasi özimiz çizgan töplamdan (components/ui/icons.tsx): bitta
+ * qalinlik, bitta sariq urğu. Röyxat ataylab qisqa — 75 ta tayyor
+ * ikonka örniga sovğaga keraklilari.
  *
  * Bazada faqat kalit saqlanadi (masalan "notebook"), komponent emas.
+ * Eski kalitlar (avvalgi katta röyxatdan) `LEGACY` orqali eng yaqin
+ * yangi ikonkaga yönaltiriladi — bazani özgartiriş şart emas.
  */
 export type RewardIconKey = string;
 
+type RewardIcon = { key: string; icon: IconComponent; label: string };
+
 export const REWARD_ICON_GROUPS: Array<{
   title: string;
-  icons: Array<{ key: string; icon: LucideIcon; label: string }>;
+  icons: RewardIcon[];
 }> = [
   {
     title: "Mukofot",
@@ -101,81 +59,43 @@ export const REWARD_ICON_GROUPS: Array<{
       { key: "gift", icon: Gift, label: "Sovğa" },
       { key: "trophy", icon: Trophy, label: "Kubok" },
       { key: "medal", icon: Medal, label: "Medal" },
-      { key: "award", icon: Award, label: "Mukofot" },
       { key: "star", icon: Star, label: "Yulduz" },
-      { key: "sparkles", icon: Sparkles, label: "Uçqun" },
-      { key: "gem", icon: Gem, label: "Qimmatbaho toş" },
-      { key: "badge", icon: Badge, label: "Nişon" },
-      { key: "badge-check", icon: BadgeCheck, label: "Tasdiq nişoni" },
-      { key: "party", icon: PartyPopper, label: "Bayram" },
-      { key: "sticker", icon: Sticker, label: "Stiker" },
-      { key: "flag", icon: Flag, label: "Bayroq" },
-      { key: "target", icon: Target, label: "Nişon" },
+      { key: "crown", icon: Crown, label: "Toj" },
       { key: "coins", icon: Coins, label: "Tanga" },
     ],
   },
   {
     title: "Öquv qurollari",
     icons: [
-      { key: "notebook", icon: Notebook, label: "Daftar" },
-      { key: "notebook-pen", icon: NotebookPen, label: "Daftar va ruçka" },
-      { key: "pen", icon: PenTool, label: "Ruçka" },
+      { key: "notebook", icon: ClipboardList, label: "Daftar" },
+      { key: "book", icon: BookOpen, label: "Kitob" },
+      { key: "pen", icon: Pen, label: "Ruçka" },
       { key: "pencil", icon: Pencil, label: "Qalam" },
-      { key: "highlighter", icon: Highlighter, label: "Marker" },
       { key: "eraser", icon: Eraser, label: "Öçirğiç" },
       { key: "ruler", icon: Ruler, label: "Çizğiç" },
       { key: "calculator", icon: Calculator, label: "Kalkulyator" },
       { key: "backpack", icon: Backpack, label: "Sumka" },
-      { key: "scissors", icon: Scissors, label: "Qayçi" },
-      { key: "brush", icon: Brush, label: "Möyqalam" },
-      { key: "palette", icon: Palette, label: "Böyoq" },
-      { key: "bookmark", icon: Bookmark, label: "Xatçöp" },
-    ],
-  },
-  {
-    title: "Kitob va bilim",
-    icons: [
-      { key: "book", icon: Book, label: "Kitob" },
-      { key: "book-open", icon: BookOpen, label: "Oçiq kitob" },
-      { key: "library", icon: Library, label: "Kutubxona" },
-      { key: "newspaper", icon: Newspaper, label: "Gazeta" },
       { key: "graduation", icon: GraduationCap, label: "Bitiruv" },
-      { key: "school", icon: School, label: "Maktab" },
-      { key: "presentation", icon: Presentation, label: "Taqdimot" },
     ],
   },
   {
     title: "Şirinlik va ovqat",
     icons: [
       { key: "candy", icon: Candy, label: "Konfet" },
-      { key: "lollipop", icon: Lollipop, label: "Karamel" },
-      { key: "cookie", icon: Cookie, label: "Peçenye" },
       { key: "cake", icon: Cake, label: "Tort" },
-      { key: "donut", icon: Donut, label: "Ponçik" },
-      { key: "ice-cream", icon: IceCreamCone, label: "Muzqaymoq" },
-      { key: "popcorn", icon: Popcorn, label: "Popkorn" },
+      { key: "ice-cream", icon: IceCream, label: "Muzqaymoq" },
       { key: "pizza", icon: Pizza, label: "Pitsa" },
-      { key: "croissant", icon: Croissant, label: "Kruassan" },
-      { key: "apple", icon: Apple, label: "Olma" },
-      { key: "banana", icon: Banana, label: "Banan" },
-      { key: "milk", icon: Milk, label: "Sut" },
-      { key: "coffee", icon: Coffee, label: "Çoy" },
+      { key: "apple", icon: Apple, label: "Meva" },
     ],
   },
   {
     title: "Köngiloçar",
     icons: [
-      { key: "music", icon: Music, label: "Musiqa" },
-      { key: "headphones", icon: Headphones, label: "Quloqçin" },
-      { key: "gamepad", icon: Gamepad2, label: "Öyin" },
-      { key: "dices", icon: Dices, label: "Zar" },
-      { key: "puzzle", icon: Puzzle, label: "Boşqotirma" },
       { key: "ticket", icon: Ticket, label: "Çipta" },
-      { key: "video", icon: Video, label: "Video" },
-      { key: "camera", icon: Camera, label: "Kamera" },
-      { key: "mic", icon: Mic, label: "Mikrofon" },
-      { key: "bike", icon: Bike, label: "Velosiped" },
-      { key: "volleyball", icon: Volleyball, label: "Töp" },
+      { key: "gamepad", icon: Gamepad, label: "Öyin" },
+      { key: "headphones", icon: Headphones, label: "Quloqçin" },
+      { key: "ball", icon: Ball, label: "Töp" },
+      { key: "puzzle", icon: Puzzle, label: "Boşqotirma" },
     ],
   },
   {
@@ -183,36 +103,82 @@ export const REWARD_ICON_GROUPS: Array<{
     icons: [
       { key: "shopping-bag", icon: ShoppingBag, label: "Xarid" },
       { key: "shirt", icon: Shirt, label: "Kiyim" },
-      { key: "watch", icon: Watch, label: "Soat" },
       { key: "smartphone", icon: Smartphone, label: "Telefon" },
-      { key: "heart", icon: Heart, label: "Yurak" },
-      { key: "smile", icon: Smile, label: "Tabassum" },
-      { key: "thumbs-up", icon: ThumbsUp, label: "Zör" },
-      { key: "handshake", icon: Handshake, label: "Qöl beriş" },
+      { key: "watch", icon: Watch, label: "Soat" },
       { key: "rocket", icon: Rocket, label: "Raketa" },
-      { key: "zap", icon: Zap, label: "Çaqmoq" },
-      { key: "flame", icon: Flame, label: "Alanga" },
-      { key: "key", icon: Key, label: "Kalit" },
-      { key: "timer", icon: Timer, label: "Sekundomer" },
-      { key: "hourglass", icon: Hourglass, label: "Qum soat" },
-      { key: "trees", icon: Trees, label: "Daraxt" },
-      { key: "globe", icon: Globe, label: "Globus" },
       { key: "compass", icon: Compass, label: "Kompas" },
+      { key: "key", icon: KeyRound, label: "Kalit" },
     ],
   },
 ];
 
-/** Kalit -> komponent jadvali. Tez qidirish uchun bir marta yasaladi. */
-const BY_KEY = new Map<string, LucideIcon>(
+/** Avvalgi röyxatdagi kalitlar -> eng yaqin yangi kalit */
+const LEGACY: Record<string, string> = {
+  award: "medal",
+  badge: "medal",
+  "badge-check": "medal",
+  sparkles: "star",
+  sticker: "star",
+  heart: "star",
+  smile: "star",
+  "thumbs-up": "star",
+  handshake: "star",
+  gem: "crown",
+  party: "gift",
+  flag: "trophy",
+  target: "trophy",
+  "notebook-pen": "notebook",
+  highlighter: "pen",
+  brush: "pencil",
+  palette: "pencil",
+  scissors: "pencil",
+  bookmark: "book",
+  "book-open": "book",
+  library: "book",
+  newspaper: "book",
+  school: "graduation",
+  presentation: "book",
+  lollipop: "candy",
+  cookie: "cake",
+  donut: "cake",
+  croissant: "cake",
+  milk: "cake",
+  coffee: "cake",
+  banana: "apple",
+  popcorn: "ticket",
+  video: "ticket",
+  camera: "smartphone",
+  music: "headphones",
+  mic: "headphones",
+  dices: "gamepad",
+  bike: "ball",
+  volleyball: "ball",
+  zap: "rocket",
+  flame: "rocket",
+  timer: "watch",
+  hourglass: "watch",
+  trees: "compass",
+  globe: "compass",
+};
+
+/** Kalit -> komponent jadvali. Tez qidiriş uçun bir marta yasaladi. */
+const BY_KEY = new Map<string, IconComponent>(
   REWARD_ICON_GROUPS.flatMap((group) =>
     group.icons.map((item) => [item.key, item.icon] as const),
   ),
 );
 
-/** Ikonka nomi bo'yicha komponent. Topilmasa — sovg'a ikonkasi. */
-export function rewardIcon(key: string | null | undefined): LucideIcon {
-  return (key && BY_KEY.get(key)) || Gift;
+/** Eski kalitni yangisiga aylantiradi (tanlov oynasida belgilaş uçun) */
+export function normalizeRewardIconKey(key: string | null | undefined) {
+  if (!key) return "gift";
+  if (BY_KEY.has(key)) return key;
+  return LEGACY[key] ?? "gift";
 }
 
-/** Ro'yxatdagi barcha ikonkalar soni — ekranda ko'rsatish uchun */
+/** Ikonka nomi böyiça komponent. Topilmasa — sovğa ikonkasi. */
+export function rewardIcon(key: string | null | undefined): IconComponent {
+  return BY_KEY.get(normalizeRewardIconKey(key)) ?? Gift;
+}
+
+/** Röyxatdagi barça ikonkalar soni — ekranda körsatiş uçun */
 export const REWARD_ICON_COUNT = BY_KEY.size;

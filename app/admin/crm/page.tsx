@@ -5,7 +5,7 @@ import {
   Clock,
   Coins,
   Users,
-} from "lucide-react";
+} from "@/components/ui/icons";
 
 import AppAlert from "@/components/ui/app-alert";
 import SubmitButton from "@/components/ui/submit-button";

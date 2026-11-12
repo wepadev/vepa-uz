@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ChevronRight, EyeOff, FileUp, Settings2 } from "lucide-react";
+import { ChevronRight, EyeOff, FileUp, Settings2 } from "@/components/ui/icons";
 
 import { examIcon } from "@/lib/exam-visuals";
 import { GROUP_EXAM_CODE } from "@/lib/group-tests";
