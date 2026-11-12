@@ -150,7 +150,7 @@ export default async function PaymentHistoryPage() {
         <div
           className={
             premium?.is_premium
-              ? "rounded-3xl border border-emerald-200 bg-emerald-50 p-6"
+              ? "rounded-2xl border border-emerald-200 bg-emerald-50 p-6"
               : "rounded-2xl border border-slate-200 bg-white p-6"
           }
         >

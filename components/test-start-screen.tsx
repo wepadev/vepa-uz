@@ -3,12 +3,17 @@ import BackLink from "@/components/ui/back-link";
 import {
   AlertTriangle,
   CheckCircle2,
+  ChevronDown,
   Clock,
   ListChecks,
+  Save,
+  Timer,
 } from "lucide-react";
 
 import StartTestButton from "@/components/start-test-button";
 import AppAlert from "@/components/ui/app-alert";
+import { GlyphTile } from "@/components/ui/glyph";
+import { btnPrimary } from "@/lib/ui";
 
 type TestStartScreenProps = {
   title: string;
@@ -53,7 +58,7 @@ export default function TestStartScreen({
 }: TestStartScreenProps) {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <section className="mx-auto max-w-2xl px-3 py-6 sm:px-6 sm:py-12">
+      <section className="mx-auto max-w-xl px-4 py-5 sm:px-6 sm:py-10">
         <BackLink href={backHref} label={backLabel} />
 
         {errorMessage && (
@@ -66,117 +71,150 @@ export default function TestStartScreen({
           </AppAlert>
         )}
 
-        <div className="mt-3 rounded-2xl border border-mb-line bg-white p-5 sm:p-7">
-          <h1 className="text-xl font-bold leading-snug text-mb-ink sm:text-2xl">
-            {title}
-          </h1>
+        <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white">
+          <div className="grid-plane flex items-center gap-4 border-b border-mb-line bg-mb-tintSoft p-5 sm:p-6">
+            <GlyphTile
+              name={isAssignment ? "homework" : "tests"}
+              size="lg"
+              className="bg-white"
+            />
 
-          {description && (
-            <p className="mt-2 text-sm leading-6 text-mb-muted sm:text-base">
-              {description}
-            </p>
-          )}
+            <div className="min-w-0">
+              <p className="eyebrow">
+                {isAssignment ? "Uy vazifasi" : "Test"}
+              </p>
 
-          <div className="mt-4 grid grid-cols-2 gap-3">
-            <div className="rounded-xl bg-mb-tintSoft p-3 text-center">
-              <p className="inline-flex items-center gap-1.5 text-xs font-semibold text-mb-muted">
-                <ListChecks className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-                Savollar
-              </p>
-              <p className="mt-1 text-2xl font-bold text-mb-ink">
-                {questionCount}
-              </p>
-            </div>
-
-            <div className="rounded-xl bg-mb-tintSoft p-3 text-center">
-              <p className="inline-flex items-center gap-1.5 text-xs font-semibold text-mb-muted">
-                <Clock className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-                Vaqt
-              </p>
-              <p className="mt-1 text-2xl font-bold text-mb-ink">
-                {timeLimitMinutes ?? "—"}
-                <span className="ml-1 text-sm font-semibold text-mb-muted">
-                  daq
-                </span>
-              </p>
+              <h1 className="mt-1 text-xl font-extrabold leading-snug text-mb-ink sm:text-2xl">
+                {title}
+              </h1>
             </div>
           </div>
 
-          {recentAttempt ? (
-            <div className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
-              <p className="inline-flex items-center gap-2 font-semibold text-emerald-800">
-                <CheckCircle2 className="h-5 w-5" strokeWidth={2.2} aria-hidden="true" />
-                Siz bu testni hozirgina topşirdingiz
+          <div className="p-5 sm:p-6">
+            {description && (
+              <p className="mb-4 text-[15px] leading-6 text-mb-muted">
+                {description}
               </p>
+            )}
 
-              <p className="mt-1 text-sm leading-6 text-emerald-700">
-                Natijangiz: {Math.round(recentAttempt.percentage)}%
-              </p>
+            <dl className="num grid grid-cols-2 gap-2">
+              <div className="rounded-xl bg-slate-50 px-4 py-3">
+                <dt className="inline-flex items-center gap-1.5 text-xs font-semibold text-mb-muted">
+                  <ListChecks className="h-3.5 w-3.5" aria-hidden="true" />
+                  Savollar
+                </dt>
+                <dd className="mt-0.5 text-2xl font-extrabold text-mb-ink">
+                  {questionCount}
+                </dd>
+              </div>
 
-              <Link
-                href={`/results/view?attemptId=${recentAttempt.attemptId}`}
-                className="mt-3 inline-flex min-h-11 items-center justify-center rounded-xl bg-emerald-600 px-5 text-sm font-bold text-white transition hover:bg-emerald-700"
-              >
-                Natijani köriş
-              </Link>
-            </div>
-          ) : (
-            <>
-              <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4">
-                <p className="inline-flex items-center gap-2 text-sm font-semibold text-amber-800">
-                  <AlertTriangle className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
-                  Boşlaşdan oldin
+              <div className="rounded-xl bg-slate-50 px-4 py-3">
+                <dt className="inline-flex items-center gap-1.5 text-xs font-semibold text-mb-muted">
+                  <Clock className="h-3.5 w-3.5" aria-hidden="true" />
+                  Vaqt
+                </dt>
+                <dd className="mt-0.5 text-2xl font-extrabold text-mb-ink">
+                  {timeLimitMinutes ?? "—"}
+                  <span className="ml-1 text-sm font-semibold text-mb-muted">
+                    daqiqa
+                  </span>
+                </dd>
+              </div>
+            </dl>
+
+            {recentAttempt ? (
+              <div className="mt-4 rounded-xl border border-vp-success-line bg-vp-success-soft p-4">
+                <p className="inline-flex items-center gap-2 font-bold text-vp-success">
+                  <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
+                  Siz bu testni hozirgina topşirdingiz
                 </p>
 
-                <ul className="mt-2 grid gap-1 text-sm leading-6 text-amber-900">
-                  <li>Tugmani bosganingizda vaqt hisobi boşlanadi.</li>
-                  <li>Javoblaringiz avtomatik saqlanib boradi.</li>
+                <p className="num mt-1 text-sm leading-6 text-vp-ink">
+                  Natijangiz: {Math.round(recentAttempt.percentage)}%
+                </p>
+
+                <Link
+                  href={`/results/view?attemptId=${recentAttempt.attemptId}`}
+                  className={`${btnPrimary} mt-3`}
+                >
+                  Natijani köriş
+                </Link>
+              </div>
+            ) : (
+              <>
+                <ul className="mt-4 grid gap-2.5 text-[15px] leading-6 text-slate-700">
+                  <li className="flex gap-2.5">
+                    <Timer
+                      className="mt-0.5 h-5 w-5 shrink-0 text-mb-brand"
+                      aria-hidden="true"
+                    />
+                    Tugmani bosganingizda vaqt hisobi boşlanadi.
+                  </li>
+
+                  <li className="flex gap-2.5">
+                    <Save
+                      className="mt-0.5 h-5 w-5 shrink-0 text-mb-brand"
+                      aria-hidden="true"
+                    />
+                    Javoblaringiz özi saqlanib boradi — aloqa uzilsa ham
+                    yöqolmaydi.
+                  </li>
+
                   {isAssignment && (
-                    <li className="font-semibold">
+                    <li className="flex gap-2.5 font-semibold text-vp-warning">
+                      <AlertTriangle
+                        className="mt-0.5 h-5 w-5 shrink-0"
+                        aria-hidden="true"
+                      />
                       Bu uy vazifasi — faqat bir marta işlanadi.
                     </li>
                   )}
                 </ul>
-              </div>
 
-              {hasWrittenQuestions && (
-                <div className="mt-3 rounded-xl border border-mb-line bg-mb-tintSoft p-4">
-                  <p className="text-sm font-semibold text-mb-ink">
-                    Yozma javoblarni qanday yoziş kerak
-                  </p>
+                {hasWrittenQuestions && (
+                  <details className="group mt-4 rounded-xl border border-mb-line">
+                    <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-4 text-sm font-bold text-mb-ink [&::-webkit-details-marker]:hidden">
+                      Yozma javoblarni qanday yoziş kerak
+                      <ChevronDown
+                        className="h-5 w-5 text-slate-400 transition-transform group-open:rotate-180"
+                        aria-hidden="true"
+                      />
+                    </summary>
 
-                  <ul className="mt-2 grid gap-1.5 text-sm leading-6 text-mb-muted">
-                    <li>
-                      Faqat javobning özini yozing — “javob”, “=” yoki
-                      ölçov birligini yozmang.
-                    </li>
-                    <li>
-                      Kasrni ikki xil yoziş mumkin:{" "}
-                      <span className="font-semibold text-mb-ink">0.5</span> yoki{" "}
-                      <span className="font-semibold text-mb-ink">0,5</span> —
-                      ikkalasi ham qabul qilinadi.
-                    </li>
-                    <li>
-                      Oddiy kasrni{" "}
-                      <span className="font-semibold text-mb-ink">1/2</span>{" "}
-                      körinişida yozing.
-                    </li>
-                    <li>
-                      Manfiy son oldiga minus qöying:{" "}
-                      <span className="font-semibold text-mb-ink">-3</span>
-                    </li>
-                    <li>Böş joy va ortiqça belgilar hisobga olinmaydi.</li>
-                  </ul>
-                </div>
-              )}
+                    <ul className="grid gap-1.5 border-t border-mb-line px-4 py-3 text-sm leading-6 text-mb-muted">
+                      <li>
+                        Faqat javobning özini yozing — “javob”, “=” yoki
+                        ölçov birligini yozmang.
+                      </li>
+                      <li>
+                        Kasrni ikki xil yoziş mumkin:{" "}
+                        <span className="font-semibold text-mb-ink">0.5</span>{" "}
+                        yoki{" "}
+                        <span className="font-semibold text-mb-ink">0,5</span> —
+                        ikkalasi ham qabul qilinadi.
+                      </li>
+                      <li>
+                        Oddiy kasrni{" "}
+                        <span className="font-semibold text-mb-ink">1/2</span>{" "}
+                        körinişida yozing.
+                      </li>
+                      <li>
+                        Manfiy son oldiga minus qöying:{" "}
+                        <span className="font-semibold text-mb-ink">-3</span>
+                      </li>
+                      <li>Böş joy va ortiqça belgilar hisobga olinmaydi.</li>
+                    </ul>
+                  </details>
+                )}
 
-              <form action={startAction}>
-                <StartTestButton
-                  label={errorMessage ? "Qayta uriniş" : "Boşlaş"}
-                />
-              </form>
-            </>
-          )}
+                <form action={startAction}>
+                  <StartTestButton
+                    label={errorMessage ? "Qayta uriniş" : "Boşlaş"}
+                  />
+                </form>
+              </>
+            )}
+          </div>
         </div>
       </section>
     </main>

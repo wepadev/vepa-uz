@@ -179,7 +179,7 @@ export function LoginForm({
   return (
     <div
       className={cn(
-        "rounded-2xl border border-slate-200 bg-white p-4 shadow-xl shadow-slate-200/50 sm:p-7",
+        "rounded-2xl border border-slate-200 bg-white p-4 sm:p-7",
         className,
       )}
       {...props}
