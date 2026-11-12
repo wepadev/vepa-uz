@@ -7,7 +7,7 @@ import EmptyState from "@/components/ui/empty-state";
 import ProgressRing from "@/components/ui/progress-ring";
 
 import {
-  buildBestScoreMap,
+  buildLastScoreMap,
   buildLessonGates,
   buildLessonTestMap,
   isLessonCompletedByTests,
@@ -45,6 +45,7 @@ type LessonRow = {
 type AttemptRow = {
   test_id: number;
   percentage: number | string;
+  completed_at: string | null;
 };
 
 type LessonTestRow = {
@@ -172,7 +173,7 @@ export default async function LessonCategoryPage({
   if (testIds.length > 0) {
     const { data, error } = await supabase
       .from("attempts")
-      .select("test_id, percentage")
+      .select("test_id, percentage, completed_at")
       .eq("user_id", user.id)
       .not("completed_at", "is", null)
       .in("test_id", testIds);
@@ -186,7 +187,7 @@ export default async function LessonCategoryPage({
     attempts = (data ?? []) as AttemptRow[];
   }
 
-  const bestScoreMap = buildBestScoreMap(attempts);
+  const lastScoreMap = buildLastScoreMap(attempts);
 
   const hasPremiumAccess =
     profile.role === "admin" ||
@@ -210,16 +211,16 @@ export default async function LessonCategoryPage({
       lessonTests,
       averageScore: lessonAverageScore(
         lessonTests,
-        bestScoreMap,
+        lastScoreMap,
       ),
       isCompleted: isLessonPassed(
         lessonTests,
-        bestScoreMap,
+        lastScoreMap,
       ),
       /* Ekrandagi "Tugallangan" — testsiz dars bunga kirmaydi */
       isDone: isLessonCompletedByTests(
         lessonTests,
-        bestScoreMap,
+        lastScoreMap,
       ),
     };
   });

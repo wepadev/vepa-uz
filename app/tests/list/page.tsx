@@ -522,7 +522,7 @@ export default async function TestListPage({ searchParams }: PageProps) {
 
                         {bestAttemptId && (
                           <p className="num mt-1.5 text-[13px] font-semibold text-slate-700">
-                            Eng yaxşi natija{" "}
+                            Oxirgi natija{" "}
                             <span
                               className={
                                 passed ? "text-vp-success" : "text-mb-brandDark"

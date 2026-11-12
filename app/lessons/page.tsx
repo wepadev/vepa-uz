@@ -6,7 +6,7 @@ import EmptyState from "@/components/ui/empty-state";
 import ProgressRing from "@/components/ui/progress-ring";
 
 import {
-  buildBestScoreMap,
+  buildLastScoreMap,
   buildLessonTestMap,
   isLessonPassed,
 } from "@/lib/lesson-progress";
@@ -41,6 +41,7 @@ type LessonTestRow = {
 type AttemptRow = {
   test_id: number;
   percentage: number | string;
+  completed_at: string | null;
 };
 
 export default async function LessonsPage() {
@@ -125,7 +126,7 @@ export default async function LessonsPage() {
   if (testIds.length > 0) {
     const { data, error } = await supabase
       .from("attempts")
-      .select("test_id, percentage")
+      .select("test_id, percentage, completed_at")
       .eq("user_id", user.id)
       .not("completed_at", "is", null)
       .in("test_id", testIds);
@@ -139,7 +140,7 @@ export default async function LessonsPage() {
     attempts = (data ?? []) as AttemptRow[];
   }
 
-  const bestScoreMap = buildBestScoreMap(attempts);
+  const lastScoreMap = buildLastScoreMap(attempts);
 
   const categoryMetrics = new Map<
     number,
@@ -160,7 +161,7 @@ export default async function LessonsPage() {
     const completed = categoryLessons.filter((lesson) =>
       isLessonPassed(
         testsByLesson.get(lesson.id) ?? [],
-        bestScoreMap,
+        lastScoreMap,
       ),
     ).length;
 

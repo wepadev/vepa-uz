@@ -294,40 +294,19 @@ function enrichAttempt(
   };
 }
 
-/*
- * Reyting tartibi:
- * 1) yuqori foiz;
- * 2) teng foizda kamroq vaqt;
- * 3) teng boʼlsa oldinroq yakunlangan urinish.
- */
-function compareBestAttempts(
+/* Eng keyin tugatilgan uriniş birinçi turadi */
+function compareLatestFirst(
   first: BestAttempt,
   second: BestAttempt,
 ) {
-  const percentageDifference =
-    second.percentageNumber -
-    first.percentageNumber;
-
-  if (percentageDifference !== 0) {
-    return percentageDifference;
-  }
-
-  const durationDifference =
-    first.durationSeconds -
-    second.durationSeconds;
-
-  if (durationDifference !== 0) {
-    return durationDifference;
-  }
-
   return (
-    new Date(
-      first.completed_at ??
-        first.started_at,
-    ).getTime() -
     new Date(
       second.completed_at ??
         second.started_at,
+    ).getTime() -
+    new Date(
+      first.completed_at ??
+        first.started_at,
     ).getTime()
   );
 }
@@ -343,18 +322,18 @@ function formatDifference(
     Math.abs(difference);
 
   if (difference > 0) {
-    return `Oldingi eng yaxşidan +${formatPercentage(
+    return `Oldingi urinişdan +${formatPercentage(
       absolute,
     )} foiz punkt`;
   }
 
   if (difference < 0) {
-    return `Oldingi eng yaxşidan ${formatPercentage(
+    return `Oldingi urinişdan ${formatPercentage(
       absolute,
     )} foiz punkt past`;
   }
 
-  return "Oldingi eng yaxşi natija bilan teng";
+  return "Oldingi uriniş bilan teng";
 }
 
 function MathValue({
@@ -1009,7 +988,7 @@ if (
     null;
 }
 
-const currentBestAttempt =
+const countedAttempt =
   rankingStatistics
     ?.best_attempt_id
     ? {
@@ -1067,25 +1046,25 @@ const previousCompletedAttempts =
       );
     })
     .map(enrichAttempt)
-    .sort(compareBestAttempts);
+    .sort(compareLatestFirst);
 
-const previousBestAttempt =
+const previousAttempt =
   previousCompletedAttempts[0] ??
   null;
 
-const differenceFromPreviousBest =
+const differenceFromPrevious =
   attempt.completed_at
-    ? previousBestAttempt
+    ? previousAttempt
       ? percentage -
-        previousBestAttempt
+        previousAttempt
           .percentageNumber
       : null
     : null;
 
-const isPersonalBest =
+const isCountedAttempt =
   Boolean(
-    currentBestAttempt &&
-      currentBestAttempt.id ===
+    countedAttempt &&
+      countedAttempt.id ===
         attempt.id,
   );
 
@@ -1123,7 +1102,7 @@ const lessonRetryLabel =
 const differenceLabel =
   attempt.completed_at
     ? formatDifference(
-        differenceFromPreviousBest,
+        differenceFromPrevious,
       )
     : "Uriniş tugallanmagan";
 
@@ -1178,8 +1157,8 @@ const differenceLabel =
                       : "Arxiv testi"}
                 </Tag>
 
-                {isRankingTest && isPersonalBest && (
-                  <Tag tone="accent">Şaxsiy rekord</Tag>
+                {isRankingTest && isCountedAttempt && (
+                  <Tag tone="accent">Hisobga olingan</Tag>
                 )}
               </div>
 
@@ -1260,23 +1239,23 @@ const differenceLabel =
               <dl className="num mt-4 grid grid-cols-3 gap-2 text-center">
                 <div className="rounded-xl bg-white/10 px-2 py-2.5">
                   <dt className="text-xs font-semibold text-white/80">
-                    Eng yaxşi
+                    Oxirgi natija
                   </dt>
                   <dd className="mt-0.5 text-lg font-extrabold">
-                    {currentBestAttempt
-                      ? `${formatPercentage(currentBestAttempt.percentage)}%`
+                    {countedAttempt
+                      ? `${formatPercentage(countedAttempt.percentage)}%`
                       : "—"}
                   </dd>
                 </div>
 
                 <div className="rounded-xl bg-white/10 px-2 py-2.5">
                   <dt className="text-xs font-semibold text-white/80">
-                    Eng yaxşi vaqt
+                    Oxirgi vaqt
                   </dt>
                   <dd className="mt-0.5 whitespace-nowrap text-lg font-extrabold">
-                    {currentBestAttempt
+                    {countedAttempt
                       ? formatDurationSeconds(
-                          currentBestAttempt.durationSeconds,
+                          countedAttempt.durationSeconds,
                         )
                       : "—"}
                   </dd>

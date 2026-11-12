@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { LogoutButton } from "@/components/logout-button";
 import ProfileForm from "@/components/profile-form";
 import {
+  buildLastScoreMap,
   buildLessonTestMap,
   isLessonPassed,
 } from "@/lib/lesson-progress";
@@ -81,6 +82,7 @@ type RecentAttemptRow = {
 type LessonAttemptRow = {
   test_id: number;
   percentage: number | string;
+  completed_at: string | null;
 };
 
 function formatPercentage(
@@ -388,7 +390,8 @@ export default async function ProfilePage() {
           .from("attempts")
           .select(`
             test_id,
-            percentage
+            percentage,
+            completed_at
           `)
           .eq("user_id", user.id)
           .not(
@@ -452,29 +455,16 @@ export default async function ProfilePage() {
           ),
       );
 
-  const lessonBestScoreMap =
-    new Map<number, number>();
-
-  for (const attempt of lessonAttempts) {
-    lessonBestScoreMap.set(
-      attempt.test_id,
-      Math.max(
-        lessonBestScoreMap.get(
-          attempt.test_id,
-        ) ?? 0,
-        toNumber(
-          attempt.percentage,
-        ),
-      ),
-    );
-  }
+  /* Har testdan oxirgi urinish — eng yaxşisi emas */
+  const lessonLastScoreMap =
+    buildLastScoreMap(lessonAttempts);
 
   const testsByLesson = buildLessonTestMap(lessonProgress);
 
   const completedLessons = lessons.filter((lesson) =>
     isLessonPassed(
       testsByLesson.get(lesson.id) ?? [],
-      lessonBestScoreMap,
+      lessonLastScoreMap,
     ),
   ).length;
 
@@ -775,7 +765,7 @@ const latestPlan =
 
                   <p className="num mt-0.5 text-[13px] text-mb-muted">
                     {formatPercentage(row.attempts_count)} uriniş ·
-                    eng yaxşi vaqt{" "}
+                    oxirgi vaqt{" "}
                     {formatDuration(row.best_duration_seconds)}
                   </p>
                 </div>
@@ -869,7 +859,7 @@ const latestPlan =
           </summary>
 
           <p className="mt-2 text-sm leading-6 text-mb-muted">
-            Har testda eng yaxşi natijangiz olinadi va ular
+            Har testda oxirgi urinişingiz natijasi olinadi va ular
             qöşiladi; işlanmagan test 0 ball. Foiz teng bölsa
             testni tezroq tugatgan yuqorida turadi. Dars testlari va
             uy vazifalari reytingga kirmaydi.

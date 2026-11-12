@@ -1037,7 +1037,7 @@ export default async function MyResultsPage({
                         {!isCompleted && <Tag tone="accent">Tugallanmagan</Tag>}
 
                         {result.isBestAttempt && (
-                          <Tag tone="free">Eng yaxşi uriniş</Tag>
+                          <Tag tone="free">Hisobga olingan</Tag>
                         )}
 
                         {result.testKind === "ranking" &&
