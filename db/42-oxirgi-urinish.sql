@@ -1,5 +1,5 @@
 -- =====================================================================
---  41-fayl: natija oxirgi urinişdan olinadi
+--  42-fayl: natija oxirgi urinişdan olinadi
 --
 --  QOIDA
 --

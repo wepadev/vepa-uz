@@ -48,7 +48,7 @@ Tartib bilan yuring — keyingi fayl oldingisiga tayanishi mumkin.
 | `37-mustaqil-ish.sql` | Ballsiz "Mustaqil ishlang" savoli (`question_blocks.block_type = self_study`) va uning videoyechimi (`question_blocks.solution_video_url`) |
 | `39-qolda-baholash-balli.sql` | Qo'lda baholaganda ball ikki baravar kam chiqardi (12 to'g'ri → 12/24 = 50%). Tuzatildi va buzilgan natijalar qayta hisoblandi |
 | `40-guruh-testi-tuzatish.sql` | 26-fayldan beri Testlar bölimidagi birorta test oçilmasdi ("faqat uy vazifasi" deb qaytarardi) va bazada hamma katalog testi bepul hisoblanardi. `is_group_only_test()` asl ma'nosiga qaytdi, `is_assignable_test()` va `is_assigned_to_me()` qöşildi |
-| `41-oxirgi-urinish.sql` | Har testning natijasi endi eng yaxşi emas, OXIRGI uriniş. Statistika, profil, natijalar va reyting şu urinişdan hisoblanadi |
+| `42-oxirgi-urinish.sql` | Har testning natijasi endi eng yaxşi emas, OXIRGI uriniş. Statistika, profil, natijalar va reyting şu urinişdan hisoblanadi |
 
 ## Alohida: tozalash
 
