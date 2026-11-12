@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 
 import {
-  buildBestScoreMap,
+  buildLastScoreMap,
   buildLessonTestMap,
   isLessonPassed,
   lessonAverageScore,
@@ -34,14 +34,31 @@ test("ishlanmagan test nolga tenglashadi", () => {
   assert.equal(isLessonPassed([1, 2, 3], best), false);
 });
 
-test("eng yaxshi urinish olinadi", () => {
-  const best = buildBestScoreMap([
-    { test_id: 1, percentage: 40 },
-    { test_id: 1, percentage: 95 },
-    { test_id: 1, percentage: "70" },
+test("eng yaxşisi emas, oxirgi uriniş olinadi", () => {
+  /* Tartib aralaş kelsa ham vaqt böyiça eng keyingisi tanlanadi */
+  const last = buildLastScoreMap([
+    { test_id: 1, percentage: 40, completed_at: "2026-11-01T10:00:00Z" },
+    { test_id: 1, percentage: "70", completed_at: "2026-11-03T10:00:00Z" },
+    { test_id: 1, percentage: 95, completed_at: "2026-11-02T10:00:00Z" },
+    { test_id: 2, percentage: 100, completed_at: null },
   ]);
 
-  assert.equal(best.get(1), 95);
+  assert.equal(last.get(1), 70);
+  /* Tugallanmagan uriniş hisobga kirmaydi */
+  assert.equal(last.has(2), false);
+});
+
+test("mavzu örtaçasi uç testning oxirgi urinişlaridan", () => {
+  const last = buildLastScoreMap([
+    { test_id: 1, percentage: 100, completed_at: "2026-11-01T10:00:00Z" },
+    { test_id: 1, percentage: 60, completed_at: "2026-11-05T10:00:00Z" },
+    { test_id: 2, percentage: 90, completed_at: "2026-11-01T10:00:00Z" },
+    { test_id: 3, percentage: 90, completed_at: "2026-11-01T10:00:00Z" },
+  ]);
+
+  /* (60 + 90 + 90) / 3 = 80 — eng yaxşisi (100) olinsa 93.3 bölardi */
+  assert.equal(lessonAverageScore([1, 2, 3], last), 80);
+  assert.equal(isLessonPassed([1, 2, 3], last), false);
 });
 
 test("testsiz dars keyingisini to'smaydi", () => {

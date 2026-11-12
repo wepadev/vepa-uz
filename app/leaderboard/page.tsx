@@ -27,7 +27,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Reyting",
   description:
-    "Eng yaxşi natijalar va umumiy reyting jadvali.",
+    "Oxirgi urinişlar natijasi va umumiy reyting jadvali.",
 };
 
 /*
@@ -567,7 +567,7 @@ export default async function LeaderboardPage({ searchParams }: PageProps) {
                 <h2 className="text-lg font-bold text-mb-ink">Umumiy reyting</h2>
 
                 <p className="mt-0.5 text-sm text-mb-muted">
-                  Hamma reyting testlaridagi foizlar yiğindisi
+                  Hamma reyting testlaridagi oxirgi uriniş foizlari yiğindisi
                 </p>
               </div>
 
@@ -803,9 +803,9 @@ export default async function LeaderboardPage({ searchParams }: PageProps) {
 
           <div className="border-t border-mb-line px-4 py-3.5 text-sm leading-6 text-slate-700 sm:px-5">
             <p>
-              Har bir testda faqat eng yaxşi uriniş olinadi. Teng foizda
+              Har bir testda faqat oxirgi uriniş olinadi. Teng foizda
               testni tezroq tugatgan öquvçi yuqorida turadi. Umumiy reytingda
-              barça reyting testlaridagi eng yaxşi foizlar qöşiladi.
+              barça reyting testlaridagi oxirgi uriniş foizlari qöşiladi.
             </p>
 
             <p className="mt-2 font-semibold text-mb-ink">

@@ -7,7 +7,7 @@ import {
 import MathText from "@/components/math-text";
 import YouTubeEmbed from "@/components/youtube-embed";
 import {
-  buildBestScoreMap,
+  buildLastScoreMap,
   buildLessonGates,
   buildLessonTestMap,
   isLessonCompletedByTests,
@@ -54,6 +54,7 @@ type LessonRow = {
 type AttemptRow = {
   test_id: number;
   percentage: number | string;
+  completed_at: string | null;
 };
 
 type LessonTestRow = {
@@ -253,7 +254,7 @@ export default async function LessonViewPage({
   if (testIds.length > 0) {
     const { data, error } = await supabase
       .from("attempts")
-      .select("test_id, percentage")
+      .select("test_id, percentage, completed_at")
       .eq("user_id", user.id)
       .not("completed_at", "is", null)
       .in("test_id", testIds);
@@ -267,12 +268,12 @@ export default async function LessonViewPage({
     attempts = (data ?? []) as AttemptRow[];
   }
 
-  const bestScoreMap = buildBestScoreMap(attempts);
+  const lastScoreMap = buildLastScoreMap(attempts);
 
   function isLessonCompleted(lesson: LessonRow) {
     return isLessonPassed(
       testsByLesson.get(lesson.id) ?? [],
-      bestScoreMap,
+      lastScoreMap,
     );
   }
 
@@ -311,7 +312,7 @@ export default async function LessonViewPage({
   const currentCompleted =
     isLessonCompletedByTests(
       testsByLesson.get(currentLesson.id) ?? [],
-      bestScoreMap,
+      lastScoreMap,
     );
 
   const nextLessonHasAccess =
@@ -332,7 +333,7 @@ export default async function LessonViewPage({
 
   const averageScore = lessonAverageScore(
     currentTestIds,
-    bestScoreMap,
+    lastScoreMap,
   );
 
   let attachedTests: Array<{
@@ -456,7 +457,7 @@ export default async function LessonViewPage({
 
             <ol className="divide-y divide-mb-line">
               {attachedTests.map((test, index) => {
-                const score = bestScoreMap.get(test.id) ?? 0;
+                const score = lastScoreMap.get(test.id) ?? 0;
                 const passed = score >= 90;
 
                 return (
@@ -476,7 +477,7 @@ export default async function LessonViewPage({
 
                       <p className="num mt-0.5 text-[13px] text-mb-muted">
                         {score > 0
-                          ? `Eng yaxşi natija ${formatPercentage(score)}%`
+                          ? `Oxirgi natija ${formatPercentage(score)}%`
                           : "Hali işlanmagan"}
                       </p>
                     </div>

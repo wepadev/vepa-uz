@@ -13,17 +13,17 @@
  */
 export const LESSON_PASS_PERCENTAGE = 90;
 
-/** Testlarning eng yaxshi natijalari o'rtachasi. Test yo'q bo'lsa null */
+/** Testlarning oxirgi urinişlari örtaçasi. Test yöq bölsa null */
 export function lessonAverageScore(
   testIds: number[],
-  bestScoreMap: Map<number, number>,
+  lastScoreMap: Map<number, number>,
 ) {
   if (testIds.length === 0) {
     return null;
   }
 
   const total = testIds.reduce(
-    (sum, testId) => sum + (bestScoreMap.get(testId) ?? 0),
+    (sum, testId) => sum + (lastScoreMap.get(testId) ?? 0),
     0,
   );
 
@@ -33,9 +33,9 @@ export function lessonAverageScore(
 /** Dars tugallanganmi — keyingisini ochish uchun shu tekshiriladi */
 export function isLessonPassed(
   testIds: number[],
-  bestScoreMap: Map<number, number>,
+  lastScoreMap: Map<number, number>,
 ) {
-  const average = lessonAverageScore(testIds, bestScoreMap);
+  const average = lessonAverageScore(testIds, lastScoreMap);
 
   return average === null || average >= LESSON_PASS_PERCENTAGE;
 }
@@ -50,34 +50,50 @@ export function isLessonPassed(
  */
 export function isLessonCompletedByTests(
   testIds: number[],
-  bestScoreMap: Map<number, number>,
+  lastScoreMap: Map<number, number>,
 ) {
   return (
     testIds.length > 0 &&
-    isLessonPassed(testIds, bestScoreMap)
+    isLessonPassed(testIds, lastScoreMap)
   );
 }
 
-/** Bir necha urinishdan eng yaxshisini oladi */
-export function buildBestScoreMap(
-  attempts: Array<{ test_id: number; percentage: number | string }>,
+/**
+ * Har testdan OXIRGI urinish natijasini oladi.
+ *
+ * Eng yaxşisi emas: öquvçi testni qayta işlab past natija olsa,
+ * hisobga aynan şu oxirgi natija kiradi. Urinişlar qaysi tartibda
+ * kelişidan qat'iy nazar `completed_at` böyiça eng keyingisi tanlanadi.
+ */
+export function buildLastScoreMap(
+  attempts: Array<{
+    test_id: number;
+    percentage: number | string;
+    completed_at: string | null;
+  }>,
 ) {
-  const result = new Map<number, number>();
+  const latest = new Map<number, { score: number; at: number }>();
 
   for (const attempt of attempts) {
     const score = Number(attempt.percentage);
+    const at = attempt.completed_at
+      ? new Date(attempt.completed_at).getTime()
+      : Number.NaN;
 
-    if (!Number.isFinite(score)) {
+    if (!Number.isFinite(score) || !Number.isFinite(at)) {
       continue;
     }
 
-    result.set(
-      attempt.test_id,
-      Math.max(result.get(attempt.test_id) ?? 0, score),
-    );
+    const current = latest.get(attempt.test_id);
+
+    if (!current || at >= current.at) {
+      latest.set(attempt.test_id, { score, at });
+    }
   }
 
-  return result;
+  return new Map(
+    [...latest].map(([testId, value]) => [testId, value.score]),
+  );
 }
 
 /** Dars -> testlar ro'yxati */
