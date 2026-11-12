@@ -28,6 +28,8 @@ const nextConfig: NextConfig = {
       "./node_modules/node-tikzjax/tex/**",
       "./node_modules/node-tikzjax/css/bakoma/ttf/**",
     ],
+    /* Yozma yeçimlar fayllari (content/yechimlar/NN.md) diskdan öqiladi */
+    "/admin/tests/yechimlar": ["./content/yechimlar/**"],
   },
 
   experimental: {
