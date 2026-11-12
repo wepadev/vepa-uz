@@ -1,11 +1,10 @@
-import Link from "next/link";
-import {
-  notFound,
-} from "next/navigation";
+import { notFound } from "next/navigation";
 
-import { BookOpen, ChevronRight, Play, Video } from "lucide-react";
+import { Play } from "lucide-react";
 
-import AppAlert from "@/components/ui/app-alert";
+import EmptyState from "@/components/ui/empty-state";
+import { Glyph } from "@/components/ui/glyph";
+import { RowIndex, RowLink, RowList } from "@/components/ui/row";
 import TextbookLockedScreen from "@/components/textbook-locked-screen";
 import TextbooksHeader from "@/components/textbooks-header";
 import { requireSectionAccess } from "@/lib/require-section-access";
@@ -200,14 +199,14 @@ export default async function TextbookTopicsPage({
             ? "Maktab darsliklari"
             : "TOP kitoblar"
         }
-        title="Mavzular"
-        subtitle={textbook.title}
+        title={textbook.title}
+        subtitle={`${bookLabel}${textbook.author_name ? ` · ${textbook.author_name}` : ""}`}
       />
 
-      <section className="mx-auto max-w-3xl px-3 py-5 sm:px-6 sm:py-8">
-        {/* Kitob kartasi — qaysi kitob ichidasiz */}
-        <div className="flex gap-4 rounded-2xl border border-mb-line bg-white p-4 shadow-sm">
-          <span className="flex h-28 w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-100 p-1">
+      <section className="mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-8">
+        {/* Kitob kartasi — qaysi kitob içidasiz va unda nima bor */}
+        <div className="flex items-center gap-4 rounded-2xl border border-mb-line bg-white p-3.5">
+          <span className="grid-plane flex h-24 w-[70px] shrink-0 items-center justify-center overflow-hidden rounded-xl border border-mb-line bg-mb-tintSoft p-0.5">
             {textbook.cover_url ? (
               <img
                 loading="lazy"
@@ -215,135 +214,100 @@ export default async function TextbookTopicsPage({
                 src={textbook.cover_url}
                 alt=""
                 aria-hidden="true"
-                className="h-full w-full object-contain drop-shadow"
+                className="h-full w-full bg-white object-contain"
               />
             ) : (
-              <BookOpen
-                className="h-8 w-8 text-blue-300"
-                strokeWidth={1.5}
-                aria-hidden="true"
-              />
+              <Glyph name={isPopular ? "top" : "school"} className="h-9 w-9" />
             )}
           </span>
 
-          <span className="flex min-w-0 flex-1 flex-col">
-            <span className="text-lg font-bold leading-6 text-mb-ink">
-              {textbook.title}
-            </span>
+          <dl className="grid flex-1 grid-cols-2 gap-2">
+            <div className="rounded-xl bg-slate-50 px-3 py-2.5">
+              <dt className="text-xs font-semibold text-mb-muted">Mavzular</dt>
+              <dd className="num mt-0.5 text-xl font-extrabold text-mb-ink">
+                {topics.length}
+              </dd>
+            </div>
 
-            <span className="mt-0.5 text-sm text-mb-muted">
-              {bookLabel}
-              {textbook.author_name ? ` · ${textbook.author_name}` : ""}
-            </span>
-
-            <span className="mt-auto flex flex-wrap gap-1.5 pt-2">
-              <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
-                {topics.length} ta mavzu
-              </span>
-
-              <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700">
-                <Video
-                  className="h-3 w-3"
-                  strokeWidth={2.4}
-                  aria-hidden="true"
-                />
-                {withVideo} ta videoyeçim
-              </span>
-            </span>
-          </span>
+            <div className="rounded-xl bg-slate-50 px-3 py-2.5">
+              <dt className="text-xs font-semibold text-mb-muted">
+                Videoyeçimlar
+              </dt>
+              <dd className="num mt-0.5 text-xl font-extrabold text-mb-brandDark">
+                {withVideo}
+              </dd>
+            </div>
+          </dl>
         </div>
 
         {topics.length === 0 ? (
-          <AppAlert
-            variant="info"
-            title="Hozirça mavzu mavjud emas"
+          <EmptyState
+            glyph="solutions"
+            title="Hozirça mavzu yöq"
             className="mt-4"
           >
-            Ustozingiz mavzu qöşgaç şu yerda körinadi.
-          </AppAlert>
+            Mavzu qöşilişi bilan şu yerda körinadi.
+          </EmptyState>
         ) : (
-          <div className="mt-4 grid gap-2.5">
-            {topics.map((topic) => {
-              const counts = exampleCounts.get(topic.id);
-              const exampleTotal = counts?.total ?? 0;
-              const exampleVideos = counts?.withVideo ?? 0;
+          <>
+            <p className="eyebrow mt-6">Mavzular</p>
 
-              /*
-               * TOP kitobda mavzu misollari bilan ochiladi — mavzu
-               * darajasidagi video u yerda ishlatilmaydi.
-               */
-              const empty = isPopular
-                ? exampleVideos === 0
-                : !topic.video_url;
+            <RowList className="mt-3">
+              {topics.map((topic) => {
+                const counts = exampleCounts.get(topic.id);
+                const exampleTotal = counts?.total ?? 0;
+                const exampleVideos = counts?.withVideo ?? 0;
 
-              const caption = isPopular
-                ? exampleTotal === 0
-                  ? "Misol qöşilmagan"
-                  : `${exampleTotal} ta misol · ${exampleVideos} ta video`
-                : empty
-                  ? "Video qöşilmagan"
-                  : `${topic.order_number}-mavzu · videoyeçim`;
+                /*
+                 * TOP kitobda mavzu misollari bilan oçiladi — mavzu
+                 * darajasidagi video u yerda işlatilmaydi.
+                 */
+                const empty = isPopular
+                  ? exampleVideos === 0
+                  : !topic.video_url;
 
-              const row = (
-                <>
-                  <span
-                    className={
+                const caption = isPopular
+                  ? exampleTotal === 0
+                    ? "Misol qöşilmagan"
+                    : `${exampleTotal} misol · ${exampleVideos} video`
+                  : empty
+                    ? "Yeçim tayyorlanmoqda"
+                    : "Videoyeçim";
+
+                return (
+                  <RowLink
+                    key={topic.id}
+                    href={
                       empty
-                        ? "grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-slate-100 text-sm font-bold text-slate-400"
-                        : "grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-mb-brand text-white shadow-sm"
+                        ? undefined
+                        : `/textbooks/solutions?textbookId=${textbookId}&topicId=${topic.id}`
                     }
-                  >
-                    {empty ? (
-                      topic.order_number
-                    ) : (
-                      <Play
-                        className="h-5 w-5"
-                        strokeWidth={2.4}
-                        aria-hidden="true"
+                    lead={
+                      <RowIndex
+                        value={topic.order_number}
+                        className={
+                          empty ? "text-slate-400" : "bg-mb-tint text-mb-brandDark"
+                        }
                       />
-                    )}
-                  </span>
-
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-[15px] font-semibold leading-6 text-mb-ink">
-                      {topic.title}
-                    </span>
-
-                    <span className="mt-0.5 block text-xs text-mb-muted">
-                      {caption}
-                    </span>
-                  </span>
-
-                  {!empty && (
-                    <ChevronRight
-                      className="h-5 w-5 shrink-0 text-mb-muted transition-transform sm:group-hover:translate-x-0.5"
-                      strokeWidth={2.2}
-                      aria-hidden="true"
-                    />
-                  )}
-                </>
-              );
-
-              return empty ? (
-                <div
-                  key={topic.id}
-                  className="flex items-center gap-3 rounded-2xl border border-mb-line bg-white px-3 py-3 opacity-60 shadow-sm"
-                >
-                  {row}
-                </div>
-              ) : (
-                <Link
-                  key={topic.id}
-                  href={`/textbooks/solutions?textbookId=${textbookId}&topicId=${topic.id}`}
-                  className="group flex items-center gap-3 rounded-2xl border border-mb-line bg-white px-3 py-3 shadow-sm transition sm:hover:-translate-y-0.5 sm:hover:border-blue-300 sm:hover:shadow-md"
-                >
-                  {row}
-                </Link>
-              );
-            })}
-          </div>
+                    }
+                    title={topic.title}
+                    meta={caption}
+                    trail={
+                      empty ? null : (
+                        <Play
+                          className="h-4 w-4 shrink-0 text-mb-brand"
+                          fill="currentColor"
+                          strokeWidth={0}
+                          aria-hidden="true"
+                        />
+                      )
+                    }
+                  />
+                );
+              })}
+            </RowList>
+          </>
         )}
-
       </section>
     </main>
   );

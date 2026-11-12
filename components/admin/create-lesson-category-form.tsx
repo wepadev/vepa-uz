@@ -36,7 +36,7 @@ export default function CreateLessonCategoryForm({
     <form
       action={formAction}
       noValidate
-      className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+      className="rounded-2xl border border-slate-200 bg-white p-6"
     >
       <h2 className="text-2xl font-bold">
         Yangi dars bölimi
@@ -108,7 +108,8 @@ export default function CreateLessonCategoryForm({
           </div>
         )}
 
-      <SubmitButton
+      <SubmitButton
+
         disabled={pending}
         className="mt-6 w-full rounded-xl bg-mb-brand px-5 py-3 font-semibold text-white transition hover:bg-mb-brandDark disabled:cursor-not-allowed disabled:opacity-60"
       >

@@ -1,15 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import {
-  CheckCircle2,
-  Clock,
-  Coins,
-  PackageOpen,
-  ShoppingBag,
-  Sparkles,
-} from "lucide-react";
+import { CheckCircle2, Clock, Coins, Sparkles } from "lucide-react";
 
 import AppAlert from "@/components/ui/app-alert";
+import EmptyState from "@/components/ui/empty-state";
+import { GlyphTile } from "@/components/ui/glyph";
+import { Tag } from "@/components/ui/row";
+import { btnAccent, btnPrimary } from "@/lib/ui";
 import SubmitButton from "@/components/ui/submit-button";
 import PageHeader from "@/components/ui/page-header";
 import { isGroupStudent } from "@/lib/group-membership";
@@ -19,7 +16,6 @@ import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 
 import { requestRewardAction } from "@/app/guruhim/actions";
-import BackLink from "@/components/ui/back-link";
 
 export const dynamic = "force-dynamic";
 
@@ -52,50 +48,6 @@ type RedemptionRow = {
   status: string;
   created_at: string;
 };
-
-/*
- * Har bir sovg'a o'z rangida turadi — ro'yxat bir xil kulrang
- * bo'lib qolmasin. Rang sovg'a raqamidan olinadi, ya'ni har safar
- * bir xil: o'quvchi "yashil daftar"ni ko'z bilan eslab qoladi.
- */
-const ACCENTS = [
-  {
-    bar: "bg-amber-400",
-    tile: "bg-amber-100 text-amber-700",
-    ring: "border-amber-200",
-    fill: "bg-amber-400",
-  },
-  {
-    bar: "bg-red-400",
-    tile: "bg-red-100 text-red-700",
-    ring: "border-red-200",
-    fill: "bg-red-400",
-  },
-  {
-    bar: "bg-blue-400",
-    tile: "bg-blue-100 text-blue-700",
-    ring: "border-blue-200",
-    fill: "bg-blue-400",
-  },
-  {
-    bar: "bg-blue-400",
-    tile: "bg-blue-100 text-blue-700",
-    ring: "border-blue-200",
-    fill: "bg-blue-400",
-  },
-  {
-    bar: "bg-emerald-400",
-    tile: "bg-emerald-100 text-emerald-700",
-    ring: "border-emerald-200",
-    fill: "bg-emerald-400",
-  },
-  {
-    bar: "bg-amber-400",
-    tile: "bg-amber-100 text-amber-700",
-    ring: "border-amber-200",
-    fill: "bg-amber-400",
-  },
-];
 
 function single(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
@@ -142,39 +94,28 @@ export default async function ShopPage({ searchParams }: PageProps) {
   if (!inGroup) {
     return (
       <main className="min-h-screen bg-slate-50 text-slate-900">
-        <section className="mx-auto max-w-md px-3 py-10 sm:px-6">
-          <BackLink
-            href="/"
-            label="Boş sahifa"
-            className="mb-2"
-          />
+        <PageHeader
+          backHref="/"
+          backLabel="Boş sahifa"
+          glyph="shop"
+          title="Dökon"
+          width="3xl"
+        />
 
-          <div className="mt-4 rounded-3xl border border-mb-line bg-white px-5 py-10 text-center shadow-sm">
-            <span className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-amber-50 text-amber-600">
-              <ShoppingBag
-                className="h-8 w-8"
-                strokeWidth={1.8}
-                aria-hidden="true"
-              />
-            </span>
-
-            <h1 className="mt-4 text-xl font-bold">
-              Dökon guruh öquvçilari uçun
-            </h1>
-
-            <p className="mx-auto mt-2 max-w-xs text-sm leading-6 text-mb-muted">
-              Tangalar darsdagi ball va guruhga berilgan uy
-              vazifalaridan yiğiladi. Ustozingiz bergan kod bilan
-              guruhga qöşilsangiz dökon oçiladi.
-            </p>
-
-            <Link
-              href="/guruhim"
-              className="mt-5 inline-flex min-h-12 items-center justify-center rounded-2xl bg-mb-brand px-6 font-bold text-white transition hover:bg-mb-brandDark"
-            >
-              Guruhga qöşiliş
-            </Link>
-          </div>
+        <section className="mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-8">
+          <EmptyState
+            glyph="group"
+            title="Dökon guruh öquvçilari uçun"
+            action={
+              <Link href="/guruhim" className={btnPrimary}>
+                Guruhga qöşiliş
+              </Link>
+            }
+          >
+            Tangalar darsdagi ball va guruhga berilgan uy vazifalaridan
+            yiğiladi. Ustozingiz bergan kod bilan guruhga qöşilsangiz dökon
+            oçiladi.
+          </EmptyState>
         </section>
       </main>
     );
@@ -216,41 +157,29 @@ export default async function ShopPage({ searchParams }: PageProps) {
       <PageHeader
         backHref="/guruhim"
         backLabel="Guruhim"
+        glyph="shop"
         title="Dökon"
         subtitle="Tangani sovğaga almaştiring"
+        width="3xl"
       />
 
-      <section className="mx-auto max-w-3xl px-3 py-5 sm:px-6 sm:py-8">
+      <section className="mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-8">
         {/* Tanga kartasi */}
-        <div className="relative overflow-hidden rounded-3xl bg-amber-500 p-5 text-white sm:p-7">
+        <div className="flex items-center gap-4 rounded-2xl border border-mb-line bg-white p-4 sm:p-5">
+          <GlyphTile name="shop" size="lg" />
 
-          <div className="relative">
-            <p className="inline-flex items-center gap-1.5 text-sm font-semibold text-white/90">
-              <Sparkles
-                className="h-4 w-4"
-                strokeWidth={2.2}
-                aria-hidden="true"
-              />
-              Dökon
+          <div className="min-w-0 flex-1">
+            <p className="eyebrow">Sizdagi tangalar</p>
+
+            <p className="num mt-0.5 text-4xl font-extrabold leading-none text-mb-ink">
+              {available}
             </p>
 
-            <p className="mt-2 flex items-baseline gap-2">
-              <Coins
-                className="h-9 w-9 shrink-0 self-center"
-                strokeWidth={2}
-                aria-hidden="true"
-              />
-              <span className="text-5xl font-bold leading-none">
-                {available}
-              </span>
-              <span className="text-lg font-bold text-white/90">tanga</span>
-            </p>
-
-            <p className="mt-3 max-w-sm text-sm leading-6 text-white/90">
+            <p className="mt-2 text-sm leading-5 text-mb-muted">
               {cheapest && available < cheapest.cost_coins
                 ? `Eng yaqin sovğa — “${cheapest.title}”. Yana ${
                     cheapest.cost_coins - available
-                  } ta tanga yiğsangiz oldingiz.`
+                  } ta tanga kerak.`
                 : cheapest
                   ? "Tanga yetarli — pastdan sovğangizni tanlang."
                   : "Darsdagi ballaringiz va uy vazifalaringiz tangaga aylanadi."}
@@ -281,25 +210,14 @@ export default async function ShopPage({ searchParams }: PageProps) {
         )}
 
         {!migrationMissing && rewards.length === 0 ? (
-          <div className="mt-5 rounded-3xl border border-dashed border-slate-300 bg-white px-5 py-10 text-center">
-            <PackageOpen
-              className="mx-auto h-10 w-10 text-mb-muted"
-              strokeWidth={1.6}
-              aria-hidden="true"
-            />
-
-            <p className="mt-3 text-lg font-bold">Dökon hali böş</p>
-
-            <p className="mx-auto mt-1 max-w-sm text-sm leading-6 text-mb-muted">
-              Ustozingiz sovğa qöşganda şu yerda paydo böladi.
-              Siz esa tanga yiğib turing.
-            </p>
-          </div>
+          <EmptyState glyph="shop" title="Dökon hali böş" className="mt-5">
+            Ustozingiz sovğa qöşganda şu yerda paydo böladi. Siz esa tanga
+            yiğib turing.
+          </EmptyState>
         ) : (
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             {rewards.map((reward) => {
               const Icon = rewardIcon(reward.icon);
-              const accent = ACCENTS[reward.id % ACCENTS.length];
 
               const affordable = available >= reward.cost_coins;
               const soldOut = reward.stock !== null && reward.stock <= 0;
@@ -315,30 +233,22 @@ export default async function ShopPage({ searchParams }: PageProps) {
                 <div
                   key={reward.id}
                   className={cn(
-                    "relative flex flex-col overflow-hidden rounded-2xl border bg-white p-4 pt-5 shadow-sm transition sm:hover:border-slate-300 sm:hover:shadow-md",
+                    "flex flex-col rounded-2xl border p-4",
                     soldOut
-                      ? "border-slate-200 bg-slate-50"
+                      ? "border-dashed border-slate-300"
                       : affordable
-                        ? accent.ring
-                        : "border-mb-line",
+                        ? "border-vp-accent bg-white shadow-[0_0_0_1px_var(--vp-accent)]"
+                        : "border-mb-line bg-white",
                   )}
                 >
-                  {/* Yuqoridagi rangli chiziq */}
-                  <div
-                    aria-hidden="true"
-                    className={cn(
-                      "absolute inset-x-0 top-0 h-1.5",
-                      soldOut ? "bg-slate-200" : accent.bar,
-                    )}
-                  />
 
                   <div className="flex items-start gap-3">
                     <div
                       className={cn(
-                        "grid h-14 w-14 shrink-0 place-items-center rounded-2xl shadow-sm",
+                        "grid h-14 w-14 shrink-0 place-items-center rounded-2xl",
                         soldOut
                           ? "bg-slate-100 text-slate-400"
-                          : accent.tile,
+                          : "bg-mb-tint text-mb-brandDark",
                       )}
                     >
                       <Icon
@@ -355,9 +265,7 @@ export default async function ShopPage({ searchParams }: PageProps) {
                         </p>
 
                         {lastFew && (
-                          <span className="shrink-0 rounded-full bg-red-50 px-2 py-0.5 text-[10px] font-bold text-red-600">
-                            oxirgi {reward.stock} ta
-                          </span>
+                          <Tag tone="danger">oxirgi {reward.stock} ta</Tag>
                         )}
                       </div>
 
@@ -367,13 +275,11 @@ export default async function ShopPage({ searchParams }: PageProps) {
                         </p>
                       )}
 
-                      <p className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-sm font-bold text-amber-700">
-                        <Coins
-                          className="h-4 w-4"
-                          strokeWidth={2.2}
-                          aria-hidden="true"
-                        />
-                        {reward.cost_coins}
+                      <p className="mt-1.5">
+                        <Tag tone="accent" className="text-sm">
+                          <Coins className="h-4 w-4" aria-hidden="true" />
+                          <span className="num">{reward.cost_coins}</span>
+                        </Tag>
                       </p>
                     </div>
                   </div>
@@ -393,7 +299,7 @@ export default async function ShopPage({ searchParams }: PageProps) {
 
                         <SubmitButton
                           pendingLabel="Yuborilmoqda..."
-                          className="inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-xl bg-amber-500 px-4 text-sm font-bold text-white shadow-sm transition hover:bg-mb-brandDark"
+                          className={`${btnAccent} w-full`}
                         >
                           <Sparkles
                             className="h-4 w-4"
@@ -415,12 +321,12 @@ export default async function ShopPage({ searchParams }: PageProps) {
                           aria-label={`${reward.title} uçun yiğilgan tanga`}
                         >
                           <div
-                            className={cn("h-full rounded-full", accent.fill)}
+                            className="h-full rounded-full bg-vp-accent"
                             style={{ width: `${percent}%` }}
                           />
                         </div>
 
-                        <p className="mt-1.5 text-xs font-semibold text-mb-muted">
+                        <p className="num mt-1.5 text-[13px] text-mb-muted">
                           {available} / {reward.cost_coins} ·{" "}
                           <span className="text-mb-ink">
                             yana {reward.cost_coins - available} ta tanga
@@ -437,16 +343,9 @@ export default async function ShopPage({ searchParams }: PageProps) {
 
         {history.length > 0 && (
           <>
-            <h2 className="mt-8 flex items-center gap-2 text-lg font-bold">
-              <CheckCircle2
-                className="h-5 w-5 text-mb-muted"
-                strokeWidth={2}
-                aria-hidden="true"
-              />
-              Olgan sovğalarim
-            </h2>
+            <h2 className="eyebrow mt-7">Olgan sovğalarim</h2>
 
-            <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+            <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white">
               {history.map((row, index) => {
                 const pending = row.status === "kutilmoqda";
 
@@ -459,7 +358,7 @@ export default async function ShopPage({ searchParams }: PageProps) {
                     )}
                   >
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold text-mb-ink">
+                      <p className="truncate text-[15px] font-bold text-mb-ink">
                         {row.reward_title}
                       </p>
 
@@ -469,29 +368,14 @@ export default async function ShopPage({ searchParams }: PageProps) {
                       </p>
                     </div>
 
-                    <span
-                      className={cn(
-                        "inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold",
-                        pending
-                          ? "bg-amber-50 text-amber-700"
-                          : "bg-emerald-50 text-emerald-700",
-                      )}
-                    >
+                    <Tag tone={pending ? "accent" : "free"}>
                       {pending ? (
-                        <Clock
-                          className="h-3.5 w-3.5"
-                          strokeWidth={2.2}
-                          aria-hidden="true"
-                        />
+                        <Clock className="h-3.5 w-3.5" aria-hidden="true" />
                       ) : (
-                        <CheckCircle2
-                          className="h-3.5 w-3.5"
-                          strokeWidth={2.2}
-                          aria-hidden="true"
-                        />
+                        <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
                       )}
                       {pending ? "Kutilmoqda" : "Olindi"}
-                    </span>
+                    </Tag>
                   </div>
                 );
               })}

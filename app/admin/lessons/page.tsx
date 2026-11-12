@@ -332,7 +332,7 @@ export default async function AdminLessonsPage() {
         </CreatePanel>
 
         {categories.length > 0 && (
-          <div className="mt-5 rounded-2xl border border-mb-line bg-white shadow-sm">
+          <div className="mt-5 rounded-2xl border border-mb-line bg-white">
             {categories.map((category, index) => {
               const lessonCount = lessonCountMap.get(category.id) ?? 0;
               const freeCount = freeCountMap.get(category.id) ?? 0;

@@ -63,7 +63,7 @@ export default function CreateLessonForm({
     <form
       action={formAction}
       noValidate
-      className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+      className="rounded-2xl border border-slate-200 bg-white p-6"
     >
       <input
         type="hidden"

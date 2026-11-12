@@ -215,8 +215,8 @@ export default async function PaymentPendingPage({
           <span
             className={
               isPaid
-                ? "rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-700"
-                : "rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-700"
+                ? "rounded-md bg-vp-success-soft px-2.5 py-1 text-xs font-semibold text-vp-success"
+                : "rounded-md bg-vp-accent-soft px-2.5 py-1 text-xs font-semibold text-vp-accent-strong"
             }
           >
             {isPaid ? "Tölangan" : "Kutilmoqda"}
@@ -233,8 +233,8 @@ export default async function PaymentPendingPage({
         <div
           className={
             isPaid
-              ? "relative overflow-hidden rounded-3xl bg-emerald-600 p-5 text-white shadow-lg sm:p-6"
-              : "relative overflow-hidden hero-board rounded-3xl p-5 text-white sm:p-6"
+              ? "relative overflow-hidden rounded-2xl bg-emerald-600 p-5 text-white sm:p-6"
+              : "spotlight rounded-2xl p-5 sm:p-6"
           }
         >
 
@@ -274,7 +274,7 @@ export default async function PaymentPendingPage({
             ) : (
               <a
                 href={telegramHref ?? "#"}
-                className="mt-4 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-white px-5 text-base font-bold text-blue-700 shadow-sm transition hover:bg-blue-50"
+                className="press mt-4 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl bg-white px-5 text-base font-bold text-blue-700 shadow-[inset_0_-3px_0_rgb(3_22_80/0.14)]"
               >
                 <Send
                   className="h-5 w-5"
@@ -295,7 +295,7 @@ export default async function PaymentPendingPage({
         </div>
 
         {!isPaid && (
-          <div className="mt-3 rounded-2xl border border-mb-line bg-white p-4 shadow-sm">
+          <div className="mt-3 rounded-2xl border border-mb-line bg-white p-4">
             <p className="text-sm font-bold text-mb-ink">
               Keyingi qadamlar
             </p>
@@ -322,7 +322,7 @@ export default async function PaymentPendingPage({
         )}
 
         {/* Tafsilotlar */}
-        <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+        <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white">
           {[
             {
               label: "Tarif",

@@ -820,7 +820,7 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
         <CreatePanel label="Yangi test" defaultOpen={tests.length === 0}>
           <form
             action={createTest}
-            className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+            className="rounded-2xl border border-slate-200 bg-white p-6"
           >
             <input type="hidden" name="sectionId" value={section.id} />
             <input type="hidden" name="topicId" value={topic.id} />
@@ -922,7 +922,7 @@ export default async function AdminTopicTestsPage({ searchParams }: PageProps) {
                 return (
                   <article
                     key={test.id}
-                    className="rounded-2xl border border-mb-line bg-white px-3 py-3 shadow-sm sm:px-4"
+                    className="rounded-2xl border border-mb-line bg-white px-3 py-3 sm:px-4"
                   >
                     <div className="flex items-center gap-3">
                       <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-blue-50 text-sm font-bold text-blue-700">

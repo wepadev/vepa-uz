@@ -2,14 +2,18 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
   CalendarClock,
-  CheckCircle2,
-  Coins,
+  ChevronRight,
   ListChecks,
   Lock,
+  Play,
   Users,
 } from "lucide-react";
 
 import AppAlert from "@/components/ui/app-alert";
+import EmptyState from "@/components/ui/empty-state";
+import { GlyphTile } from "@/components/ui/glyph";
+import { RowIndex, RowLink, RowList, Tag } from "@/components/ui/row";
+import { btnPrimary } from "@/lib/ui";
 import { formatDue, remainingLabel } from "@/lib/due-label";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
@@ -128,9 +132,20 @@ export default async function HomeworkPage({
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <PageHeader backHref="/" backLabel="Boş sahifa" title="Uy vazifalarim" width="3xl" />
+      <PageHeader
+        backHref="/"
+        backLabel="Boş sahifa"
+        glyph="homework"
+        title="Uy vazifalarim"
+        subtitle={
+          assignments.length > 0
+            ? `${pending.length} ta kutmoqda · ${done.length} ta bajarilgan`
+            : undefined
+        }
+        width="3xl"
+      />
 
-      <section className="mx-auto max-w-3xl px-3 py-5 sm:px-6 sm:py-10">
+      <section className="mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-8">
         {errorMessage && (
           <AppAlert variant="error" title="Xatolik" className="mb-5">
             {errorMessage}
@@ -146,28 +161,24 @@ export default async function HomeworkPage({
         */}
         <Link
           href="/guruhim"
-          className="mb-5 flex items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3.5 transition sm:hover:bg-amber-100"
+          className="edge group mb-5 flex items-center gap-3 rounded-2xl border border-mb-line bg-white p-3"
         >
-          <Coins
-            className="h-8 w-8 shrink-0 text-amber-600"
-            strokeWidth={1.9}
-            aria-hidden="true"
-          />
+          <GlyphTile name="shop" size="sm" />
 
           <span className="min-w-0 flex-1">
-            <span className="block font-bold text-amber-900">
+            <span className="num block font-bold leading-5 text-mb-ink">
               {availableCoins} tanga
             </span>
 
-            <span className="mt-0.5 block text-sm leading-5 text-amber-700">
-              Vazifani bajarsangiz tanga yiğasiz — sovğaga
-              almaştiring
+            <span className="block text-sm leading-5 text-mb-muted">
+              Vazifa bajarsangiz tanga yiğasiz va sovğaga almaştirasiz
             </span>
           </span>
 
-          <span aria-hidden="true" className="shrink-0 text-amber-600">
-            ›
-          </span>
+          <ChevronRight
+            className="h-5 w-5 shrink-0 text-slate-400 transition-transform group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
         </Link>
 
         {/* Bajarilmagan vazifalar */}
@@ -180,38 +191,29 @@ export default async function HomeworkPage({
                 <article
                   key={item.assignment_id}
                   className={cn(
-                    "rounded-2xl border bg-white p-4 shadow-sm",
+                    "rounded-2xl border p-4",
                     locked
-                      ? "border-slate-200 opacity-80"
-                      : "border-mb-line",
+                      ? "border-dashed border-slate-300"
+                      : "border-mb-line bg-white",
                   )}
                 >
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="rounded-full bg-mb-tintSoft px-2.5 py-1 text-xs font-semibold text-mb-brand">
-                      {item.group_title}
-                    </span>
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <Tag tone="brand">{item.group_title}</Tag>
 
-                    <span
-                      className={cn(
-                        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold",
-                        locked
-                          ? "bg-red-50 text-red-700"
-                          : "bg-amber-50 text-amber-700",
-                      )}
-                    >
-                      <CalendarClock className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
+                    <Tag tone={locked ? "danger" : "accent"}>
+                      <CalendarClock className="h-3.5 w-3.5" aria-hidden="true" />
                       {remainingLabel(item.due_at)}
-                    </span>
+                    </Tag>
                   </div>
 
                   <h2 className="mt-2.5 text-[17px] font-bold leading-snug text-mb-ink">
                     {item.test_title}
                   </h2>
 
-                  <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] font-medium text-mb-muted">
+                  <div className="num mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-mb-muted">
                     <span className="inline-flex items-center gap-1.5">
                       <ListChecks className="h-[15px] w-[15px]" strokeWidth={2} aria-hidden="true" />
-                      {item.question_count} ta savol
+                      {item.question_count} savol
                     </span>
 
                     {item.time_limit_minutes ? (
@@ -230,8 +232,9 @@ export default async function HomeworkPage({
                     ) : (
                       <Link
                         href={`/tests/take?testId=${item.test_id}&assignmentId=${item.assignment_id}`}
-                        className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-mb-brand px-5 text-sm font-bold text-white transition hover:bg-mb-brandDark"
+                        className={`${btnPrimary} w-full sm:w-auto sm:px-8`}
                       >
+                        <Play className="h-4 w-4" aria-hidden="true" />
                         Boşlaş
                       </Link>
                     )}
@@ -239,7 +242,7 @@ export default async function HomeworkPage({
 
                   {!locked && (
                     <p className="mt-2 text-xs text-mb-muted">
-                      Diqqat: vazifa faqat bir marta işlanadi.
+                      Vazifa faqat bir marta işlanadi.
                     </p>
                   )}
                 </article>
@@ -251,44 +254,35 @@ export default async function HomeworkPage({
         {/* Bajarilganlar */}
         {done.length > 0 && (
           <div className="mb-6">
-            <h2 className="text-sm font-bold uppercase tracking-wide text-mb-muted">
-              Bajarilgan
-            </h2>
+            <h2 className="eyebrow">Bajarilgan</h2>
 
-            <div className="mt-2 grid gap-2">
+            <RowList className="mt-3">
               {done.map((item) => (
-                <Link
+                <RowLink
                   key={item.assignment_id}
                   href={`/results/view?attemptId=${item.attempt_id}`}
-                  className="flex items-center justify-between gap-3 rounded-2xl border border-mb-line bg-white px-4 py-3 shadow-sm transition sm:hover:shadow-[0_6px_20px_rgba(16,24,40,0.08)]"
-                >
-                  <div className="min-w-0">
-                    <p className="truncate text-[15px] font-semibold text-mb-ink">
-                      {item.test_title}
-                    </p>
-                    <p className="text-xs text-mb-muted">
-                      {item.group_title}
-                    </p>
-                  </div>
-
-                  <span className="inline-flex shrink-0 items-center gap-1.5 text-sm font-bold text-emerald-700">
-                    <CheckCircle2 className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
-                    {Math.round(Number(item.percentage ?? 0))}%
-                  </span>
-                </Link>
+                  lead={<RowIndex value="" tone="done" />}
+                  title={item.test_title}
+                  meta={item.group_title}
+                  trail={
+                    <span className="num shrink-0 text-base font-extrabold text-vp-success">
+                      {Math.round(Number(item.percentage ?? 0))}%
+                    </span>
+                  }
+                />
               ))}
-            </div>
+            </RowList>
           </div>
         )}
 
         {memberships.length > 0 && assignments.length === 0 && (
-          <AppAlert
-            variant="info"
+          <EmptyState
+            glyph="homework"
             title="Hozirça vazifa yöq"
             className="mb-6"
           >
             Ustozingiz vazifa berganda şu yerda körinadi.
-          </AppAlert>
+          </EmptyState>
         )}
 
         {/*
@@ -299,29 +293,18 @@ export default async function HomeworkPage({
           uchun kod maydoni bitta joyda qoldi.
         */}
         {memberships.length === 0 && (
-          <div className="rounded-3xl border border-dashed border-slate-300 bg-white px-5 py-10 text-center sm:px-6">
-            <Users
-              className="mx-auto h-10 w-10 text-mb-muted"
-              strokeWidth={1.6}
-              aria-hidden="true"
-            />
-
-            <h2 className="mt-4 text-lg font-bold">
-              Hali guruhga qöşilmagansiz
-            </h2>
-
-            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-mb-muted">
-              Ustozingiz bergan kodni bir marta kiritsangiz yetarli —
-              uy vazifalari ham, ballaringiz ham oçiladi.
-            </p>
-
-            <Link
-              href="/guruhim"
-              className="mt-6 inline-flex min-h-12 items-center justify-center rounded-2xl bg-mb-brand px-6 font-bold text-white transition hover:bg-mb-brandDark"
-            >
-              Guruhga qöşiliş
-            </Link>
-          </div>
+          <EmptyState
+            glyph="group"
+            title="Hali guruhga qöşilmagansiz"
+            action={
+              <Link href="/guruhim" className={btnPrimary}>
+                Guruhga qöşiliş
+              </Link>
+            }
+          >
+            Ustozingiz bergan kodni bir marta kiritsangiz yetarli — uy
+            vazifalari ham, ballaringiz ham oçiladi.
+          </EmptyState>
         )}
 
         {memberships.length > 0 && (
@@ -339,7 +322,7 @@ export default async function HomeworkPage({
               return (
                 <span
                   key={membership.group_id}
-                  className="rounded-full border border-mb-line bg-white px-3 py-1.5 text-sm font-semibold text-mb-ink"
+                  className="rounded-lg border border-mb-line bg-white px-2.5 py-1 text-sm font-semibold text-mb-ink"
                 >
                   {group.title}
                 </span>

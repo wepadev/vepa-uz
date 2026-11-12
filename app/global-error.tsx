@@ -57,7 +57,7 @@ export default function GlobalError({
               fontWeight: 700,
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: "#1d47c9",
+              color: "#285ee7",
             }}
           >
             Vepa Ustoz
@@ -91,7 +91,7 @@ export default function GlobalError({
               fontSize: 15,
               fontWeight: 700,
               color: "#fff",
-              background: "#1d47c9",
+              background: "#285ee7",
               border: 0,
               borderRadius: 14,
               cursor: "pointer",

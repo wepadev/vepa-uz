@@ -15,10 +15,27 @@
  *
  * Ishga tushirish:  node scripts/build-dark-theme.mjs
  */
-import { readFileSync, writeFileSync, readdirSync, statSync } from "node:fs";
+import {
+  existsSync,
+  readFileSync,
+  writeFileSync,
+  readdirSync,
+  statSync,
+} from "node:fs";
 import { join } from "node:path";
 
-import colors from "tailwindcss/colors.js";
+import tailwindColors from "tailwindcss/colors.js";
+
+/*
+ * Ranglar Tailwind'ning standart palitrasidan emas, loyihaning öz
+ * palitrasidan olinadi (design-system/palette.json — uni
+ * scripts/build-palette.mjs yasaydi). Şunda tun rejimi ham yoruğ
+ * rejim bilan bitta rang oilasida qoladi.
+ */
+const palette = JSON.parse(
+  readFileSync(join(process.cwd(), "design-system", "palette.json"), "utf8"),
+);
+const night = palette.night;
 
 const ROOT = process.cwd();
 const OUT = join(ROOT, "app", "dark-theme.css");
@@ -30,13 +47,13 @@ const SCAN = ["app", "components"];
 
 /** Neytral sirtlar — kulrangning oddiy teskarisi emas, ko'zga yumshoq */
 const SURFACE = {
-  page: "#0b1220", // sahifa foni
-  card: "#141d2e", // karta foni (sahifadan bir oz ochiqroq)
-  raised: "#1b2436", // ichki qutilar
-  sunken: "#24304a", // ajratuvchi bloklar
-  line: "#253247", // chegara
-  lineSoft: "#1e2a3d", // yumshoq chegara
-  lineStrong: "#2f3d55", // quyuqroq chegara
+  page: night.page, // sahifa foni
+  card: night.card, // karta foni (sahifadan bir oz oçiqroq)
+  raised: night.raised, // içki qutilar
+  sunken: night.sunken, // ajratuvçi bloklar
+  line: night.line, // çegara
+  lineSoft: night.lineSoft, // yumşoq çegara
+  lineStrong: night.lineStrong, // quyuqroq çegara
 };
 
 /** Fon uchun: ochiq ton → quyuq ton */
@@ -69,6 +86,7 @@ const NEUTRAL_LINE = {
   100: SURFACE.lineSoft,
   200: SURFACE.line,
   300: SURFACE.lineStrong,
+  400: SURFACE.lineStrong,
 };
 
 const NEUTRALS = new Set(["slate", "gray", "zinc", "neutral", "stone"]);
@@ -76,13 +94,13 @@ const NEUTRALS = new Set(["slate", "gray", "zinc", "neutral", "stone"]);
 /** Loyihaning o'z tokenlari */
 const MB_DARK = {
   page: SURFACE.page,
-  tint: "#16294a",
-  tintSoft: "#111f38",
+  tint: night.tint,
+  tintSoft: night.tintSoft,
   line: SURFACE.line,
-  ink: "#eef2f7",
-  muted: "#94a3b8",
-  brand: "#4d93f7", // faqat matn/chegara uchun, fon quyida alohida
-  brandDark: "#7fb0fa",
+  ink: night.ink,
+  muted: night.muted,
+  brand: night.brand, // faqat matn/çegara uçun, fon quyida alohida
+  brandDark: night.brandStrong,
 };
 
 /* ------------------------------------------------------------------ */
@@ -152,7 +170,7 @@ function css(hex, alpha) {
 }
 
 function paletteHex(color, step) {
-  const scale = colors[color];
+  const scale = palette[color] ?? tailwindColors[color];
   if (!scale || typeof scale !== "object") return null;
   return scale[step] ?? null;
 }
@@ -308,7 +326,7 @@ const mbRules = [];
 const usedMb = new Set();
 
 for (const m of source.matchAll(
-  /\b(bg|text|border|ring)-mb-([A-Za-z]+)\b/g,
+  /\b(bg|text|border|ring|divide)-mb-([A-Za-z]+)\b/g,
 )) {
   usedMb.add(`${m[1]}-mb-${m[2]}`);
 }
@@ -326,6 +344,16 @@ for (const [name, hex] of Object.entries(MB_DARK)) {
       `.dark .border-mb-${name} { border-color: ${css(hex, null)}; }`,
     );
   }
+  if (hasMb(`ring-mb-${name}`)) {
+    mbRules.push(
+      `.dark .ring-mb-${name} { --tw-ring-color: ${css(hex, null)}; }`,
+    );
+  }
+  if (hasMb(`divide-mb-${name}`)) {
+    mbRules.push(
+      `.dark .divide-mb-${name} > :not([hidden]) ~ :not([hidden]) { border-color: ${css(hex, null)}; }`,
+    );
+  }
 }
 
 // mb fonlari: brand tugma foni bo'lgani uchun ataylab tegilmaydi
@@ -340,6 +368,7 @@ for (const name of ["page", "tint", "tintSoft", "line"]) {
 const header = `/*
  * AVTOMATIK YARATILGAN — qo'lda tahrirlamang.
  * Yangilash uchun:  node scripts/build-dark-theme.mjs
+ * Qo'lda yoziladigan qoidalar: scripts/dark-theme-extras.css
  *
  * Bu fayl faqat .dark selektori ichida ishlaydi, shuning uchun
  * yorug' rejimga umuman ta'sir qilmaydi.
@@ -378,6 +407,17 @@ for (const [bp, rules] of byMedia) {
     .map((r) => "  " + r)
     .join("\n");
   out += "\n}\n";
+}
+
+/*
+ * Qöl bilan yozilgan qöşimça qoidalar. Generator har safar faylni
+ * boşidan yozadi, şuning uçun qölda yozilgan narsa şu alohida faylda
+ * turadi va oxiriga ulanadi — qayta işga tuşirsangiz yöqolmaydi.
+ */
+const EXTRAS = join(ROOT, "scripts", "dark-theme-extras.css");
+
+if (existsSync(EXTRAS)) {
+  out += "\n" + readFileSync(EXTRAS, "utf8");
 }
 
 writeFileSync(OUT, out);

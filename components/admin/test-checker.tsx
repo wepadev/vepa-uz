@@ -80,7 +80,7 @@ export default function TestChecker({
       {/* ---------------- Chap ustun: kiritish ---------------- */}
       <form
         action={formAction}
-        className="rounded-2xl border border-mb-line bg-white p-5 shadow-sm"
+        className="rounded-2xl border border-mb-line bg-white p-5"
       >
         <h2 className="text-lg font-bold text-mb-ink">Tekşiriş</h2>
 
@@ -285,7 +285,7 @@ function CheckReport({
   } as const;
 
   return (
-    <div className="rounded-2xl border border-mb-line bg-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-mb-line bg-white p-5">
       {/* Sarlavha va foiz */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">

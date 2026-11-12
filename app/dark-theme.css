@@ -1,198 +1,175 @@
 /*
  * AVTOMATIK YARATILGAN — qo'lda tahrirlamang.
  * Yangilash uchun:  node scripts/build-dark-theme.mjs
+ * Qo'lda yoziladigan qoidalar: scripts/dark-theme-extras.css
  *
  * Bu fayl faqat .dark selektori ichida ishlaydi, shuning uchun
  * yorug' rejimga umuman ta'sir qilmaydi.
  *
- * Qamrov: 279 ta rang klassi topildi,
- *         137 tasiga tun qiymati berildi,
- *         138 tasi ataylab o'zgarishsiz qoldirildi
+ * Qamrov: 242 ta rang klassi topildi,
+ *         120 tasiga tun qiymati berildi,
+ *         118 tasi ataylab o'zgarishsiz qoldirildi
  *         (to'q tugma fonlari, oq matn, gradient heroylar).
  */
 
 @media screen {
 
 /* --- Loyiha tokenlari --- */
-.dark .border-mb-line { border-color: rgb(37 50 71); }
-.dark .text-mb-ink { color: rgb(238 242 247); }
-.dark .text-mb-muted { color: rgb(148 163 184); }
-.dark .text-mb-brand { color: rgb(125 152 240); }
-.dark .border-mb-brand { border-color: rgb(125 152 240); }
-.dark .text-mb-brandDark { color: rgb(169 187 246); }
-/* blue-600 → mb-brand almashtirilgandan keyin (yagona rang) */
-.dark .hover\:text-mb-brandDark:hover { color: rgb(190 204 248); }
-.dark .focus\:border-mb-brand:focus { border-color: rgb(125 152 240); }
-.dark .bg-mb-page { background-color: rgb(11 18 32); }
-.dark .bg-mb-tint { background-color: rgb(22 41 74); }
-.dark .bg-mb-tintSoft { background-color: rgb(17 31 56); }
-
-/* --- Orqaga tugmasi (components/ui/back-link.tsx) --- */
-.dark .hover\:bg-mb-tintSoft:hover { background-color: rgb(22 41 74); }
-.dark .hover\:text-mb-brand:hover { color: rgb(169 187 246); }
-.dark .hover\:border-mb-brand\/40:hover { border-color: rgb(125 152 240 / 0.5); }
-.dark .group:hover .group-hover\:bg-mb-tint { background-color: rgb(30 58 108); }
+.dark .ring-mb-tint { --tw-ring-color: rgb(23 43 88); }
+.dark .border-mb-line { border-color: rgb(40 48 66); }
+.dark .ring-mb-line { --tw-ring-color: rgb(40 48 66); }
+.dark .divide-mb-line > :not([hidden]) ~ :not([hidden]) { border-color: rgb(40 48 66); }
+.dark .text-mb-ink { color: rgb(236 238 244); }
+.dark .text-mb-muted { color: rgb(163 171 187); }
+.dark .text-mb-brand { color: rgb(118 162 254); }
+.dark .border-mb-brand { border-color: rgb(118 162 254); }
+.dark .ring-mb-brand { --tw-ring-color: rgb(118 162 254); }
+.dark .text-mb-brandDark { color: rgb(167 196 254); }
+.dark .bg-mb-page { background-color: rgb(8 14 26); }
+.dark .bg-mb-tint { background-color: rgb(23 43 88); }
+.dark .bg-mb-tintSoft { background-color: rgb(17 31 61); }
+.dark .bg-mb-line { background-color: rgb(40 48 66); }
 
 /* --- Umumiy --- */
-.dark .active\:bg-blue-200:active { background-color: rgb(30 64 175); }
-.dark .active\:bg-slate-100:active { background-color: rgb(27 36 54); }
-.dark .active\:bg-slate-50:active { background-color: rgb(11 18 32); }
-.dark .active\:text-slate-900:active { color: rgb(248 250 252); }
-.dark .bg-amber-100 { background-color: rgb(120 53 15); }
-.dark .bg-amber-50 { background-color: rgb(69 26 3); }
-.dark .bg-amber-50\/60 { background-color: rgb(69 26 3 / 0.6); }
-.dark .bg-amber-50\/90 { background-color: rgb(69 26 3 / 0.9); }
-.dark .bg-blue-100 { background-color: rgb(30 58 138); }
-.dark .bg-blue-200\/40 { background-color: rgb(30 64 175 / 0.4); }
-.dark .bg-blue-200\/50 { background-color: rgb(30 64 175 / 0.5); }
-.dark .bg-blue-50 { background-color: rgb(23 37 84); }
-.dark .bg-blue-50\/40 { background-color: rgb(23 37 84 / 0.4); }
-.dark .bg-blue-50\/60 { background-color: rgb(23 37 84 / 0.6); }
-.dark .bg-blue-50\/90 { background-color: rgb(23 37 84 / 0.9); }
-.dark .bg-emerald-100 { background-color: rgb(6 78 59); }
-.dark .bg-emerald-50 { background-color: rgb(2 44 34); }
-.dark .bg-emerald-50\/40 { background-color: rgb(2 44 34 / 0.4); }
-.dark .bg-emerald-50\/60 { background-color: rgb(2 44 34 / 0.6); }
-.dark .bg-emerald-50\/90 { background-color: rgb(2 44 34 / 0.9); }
-.dark .bg-red-100 { background-color: rgb(127 29 29); }
-.dark .bg-red-50 { background-color: rgb(69 10 10); }
-.dark .bg-red-50\/30 { background-color: rgb(69 10 10 / 0.3); }
-.dark .bg-red-50\/40 { background-color: rgb(69 10 10 / 0.4); }
-.dark .bg-red-50\/50 { background-color: rgb(69 10 10 / 0.5); }
-.dark .bg-red-50\/60 { background-color: rgb(69 10 10 / 0.6); }
-.dark .bg-red-50\/90 { background-color: rgb(69 10 10 / 0.9); }
-.dark .bg-slate-100 { background-color: rgb(27 36 54); }
-.dark .bg-slate-200 { background-color: rgb(36 48 74); }
-.dark .bg-slate-200\/80 { background-color: rgb(36 48 74 / 0.8); }
-.dark .bg-slate-50 { background-color: rgb(11 18 32); }
-.dark .bg-slate-50\/60 { background-color: rgb(11 18 32 / 0.6); }
-.dark .bg-slate-50\/70 { background-color: rgb(11 18 32 / 0.7); }
-.dark .bg-teal-100 { background-color: rgb(19 78 74); }
-.dark .bg-teal-50 { background-color: rgb(4 47 46); }
-.dark .bg-violet-50 { background-color: rgb(46 16 101); }
-.dark .bg-white { background-color: rgb(20 29 46); }
-.dark .bg-white\/70 { background-color: rgb(20 29 46 / 0.7); }
-.dark .bg-white\/90 { background-color: rgb(20 29 46 / 0.9); }
-.dark .bg-white\/95 { background-color: rgb(20 29 46 / 0.95); }
-.dark .border-amber-100 { border-color: rgb(120 53 15); }
-.dark .border-amber-200 { border-color: rgb(146 64 14); }
-.dark .border-amber-300 { border-color: rgb(180 83 9); }
-.dark .border-blue-100 { border-color: rgb(30 58 138); }
-.dark .border-blue-200 { border-color: rgb(30 64 175); }
-.dark .border-blue-300 { border-color: rgb(29 78 216); }
-.dark .border-emerald-200 { border-color: rgb(6 95 70); }
-.dark .border-emerald-300 { border-color: rgb(4 120 87); }
-.dark .border-red-200 { border-color: rgb(153 27 27); }
-.dark .border-red-300 { border-color: rgb(185 28 28); }
-.dark .border-slate-100 { border-color: rgb(30 42 61); }
-.dark .border-slate-200 { border-color: rgb(37 50 71); }
-.dark .border-slate-300 { border-color: rgb(47 61 85); }
-.dark .disabled\:bg-slate-50:disabled { background-color: rgb(11 18 32); }
-.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: rgb(30 42 61); }
-.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) { border-color: rgb(37 50 71); }
-.dark .focus\:bg-blue-50\/40:focus { background-color: rgb(23 37 84 / 0.4); }
-.dark .focus\:ring-amber-100:focus { --tw-ring-color: rgb(120 53 15); }
-.dark .focus\:ring-amber-200:focus { --tw-ring-color: rgb(146 64 14); }
-.dark .focus\:ring-blue-100:focus { --tw-ring-color: rgb(30 58 138); }
-.dark .focus\:ring-blue-200:focus { --tw-ring-color: rgb(30 64 175); }
-.dark .focus\:ring-red-100:focus { --tw-ring-color: rgb(127 29 29); }
-.dark .focus\:ring-red-200:focus { --tw-ring-color: rgb(153 27 27); }
-.dark .hover\:bg-amber-100:hover { background-color: rgb(120 53 15); }
-.dark .hover\:bg-amber-200:hover { background-color: rgb(146 64 14); }
-.dark .hover\:bg-blue-100:hover { background-color: rgb(30 58 138); }
-.dark .hover\:bg-blue-200:hover { background-color: rgb(30 64 175); }
-.dark .hover\:bg-blue-50:hover { background-color: rgb(23 37 84); }
-.dark .hover\:bg-blue-50\/40:hover { background-color: rgb(23 37 84 / 0.4); }
-.dark .hover\:bg-blue-50\/50:hover { background-color: rgb(23 37 84 / 0.5); }
-.dark .hover\:bg-emerald-200:hover { background-color: rgb(6 95 70); }
-.dark .hover\:bg-emerald-50:hover { background-color: rgb(2 44 34); }
-.dark .hover\:bg-red-100:hover { background-color: rgb(127 29 29); }
-.dark .hover\:bg-red-50:hover { background-color: rgb(69 10 10); }
-.dark .hover\:bg-slate-100:hover { background-color: rgb(27 36 54); }
-.dark .hover\:bg-slate-200:hover { background-color: rgb(36 48 74); }
-.dark .hover\:bg-slate-50:hover { background-color: rgb(11 18 32); }
-.dark .hover\:bg-teal-200:hover { background-color: rgb(17 94 89); }
-.dark .hover\:border-amber-300:hover { border-color: rgb(180 83 9); }
-.dark .hover\:border-blue-300:hover { border-color: rgb(29 78 216); }
-.dark .hover\:border-emerald-200:hover { border-color: rgb(6 95 70); }
-.dark .hover\:border-red-200:hover { border-color: rgb(153 27 27); }
-.dark .hover\:text-blue-600:hover { color: rgb(96 165 250); }
-.dark .hover\:text-blue-700:hover { color: rgb(190 204 248); }
-.dark .hover\:text-emerald-700:hover { color: rgb(110 231 183); }
-.dark .hover\:text-red-600:hover { color: rgb(248 113 113); }
-.dark .hover\:text-red-700:hover { color: rgb(252 165 165); }
-.dark .hover\:text-slate-800:hover { color: rgb(241 245 249); }
-.dark .hover\:text-slate-900:hover { color: rgb(248 250 252); }
-.dark .ring-amber-100 { --tw-ring-color: rgb(120 53 15); }
-.dark .ring-amber-300 { --tw-ring-color: rgb(180 83 9); }
-.dark .ring-amber-50 { --tw-ring-color: rgb(69 26 3); }
-.dark .ring-blue-100 { --tw-ring-color: rgb(30 58 138); }
-.dark .ring-blue-200 { --tw-ring-color: rgb(30 64 175); }
-.dark .ring-blue-50 { --tw-ring-color: rgb(23 37 84); }
-.dark .ring-emerald-100 { --tw-ring-color: rgb(6 78 59); }
-.dark .ring-red-100 { --tw-ring-color: rgb(127 29 29); }
-.dark .ring-red-200 { --tw-ring-color: rgb(153 27 27); }
-.dark .ring-red-50 { --tw-ring-color: rgb(69 10 10); }
-.dark .ring-slate-200 { --tw-ring-color: rgb(37 50 71); }
-.dark .text-amber-600 { color: rgb(251 191 36); }
-.dark .text-amber-700 { color: rgb(252 211 77); }
-.dark .text-amber-800 { color: rgb(253 230 138); }
-.dark .text-amber-900 { color: rgb(254 243 199); }
-.dark .text-amber-950 { color: rgb(255 251 235); }
-.dark .text-blue-600 { color: rgb(96 165 250); }
-.dark .text-blue-700 { color: rgb(190 204 248); }
-.dark .text-blue-800 { color: rgb(191 219 254); }
-.dark .text-blue-900 { color: rgb(219 234 254); }
-.dark .text-blue-950 { color: rgb(239 246 255); }
-.dark .text-emerald-600 { color: rgb(52 211 153); }
-.dark .text-emerald-700 { color: rgb(110 231 183); }
-.dark .text-emerald-800 { color: rgb(167 243 208); }
-.dark .text-emerald-900 { color: rgb(209 250 229); }
-.dark .text-emerald-950 { color: rgb(236 253 245); }
-.dark .text-red-600 { color: rgb(248 113 113); }
-.dark .text-red-700 { color: rgb(252 165 165); }
-.dark .text-red-800 { color: rgb(254 202 202); }
-.dark .text-red-900 { color: rgb(254 226 226); }
-.dark .text-red-950 { color: rgb(254 242 242); }
-.dark .text-slate-400 { color: rgb(100 116 139); }
-.dark .text-slate-500 { color: rgb(148 163 184); }
-.dark .text-slate-600 { color: rgb(203 213 225); }
-.dark .text-slate-700 { color: rgb(226 232 240); }
-.dark .text-slate-800 { color: rgb(241 245 249); }
-.dark .text-slate-900 { color: rgb(248 250 252); }
-.dark .text-slate-950 { color: rgb(248 250 252); }
-.dark .text-teal-700 { color: rgb(94 234 212); }
-.dark .text-teal-800 { color: rgb(153 246 228); }
-.dark .text-violet-700 { color: rgb(196 181 253); }
+.dark .active\:bg-blue-200:active { background-color: rgb(16 54 157); }
+.dark .active\:bg-slate-100:active { background-color: rgb(26 35 51); }
+.dark .active\:bg-slate-200:active { background-color: rgb(37 46 64); }
+.dark .active\:bg-slate-50:active { background-color: rgb(8 14 26); }
+.dark .active\:text-slate-900:active { color: rgb(246 248 251); }
+.dark .bg-amber-100 { background-color: rgb(96 65 1); }
+.dark .bg-amber-50 { background-color: rgb(56 37 0); }
+.dark .bg-amber-50\/60 { background-color: rgb(56 37 0 / 0.6); }
+.dark .bg-amber-50\/90 { background-color: rgb(56 37 0 / 0.9); }
+.dark .bg-blue-100 { background-color: rgb(9 39 120); }
+.dark .bg-blue-50 { background-color: rgb(3 22 80); }
+.dark .bg-blue-50\/60 { background-color: rgb(3 22 80 / 0.6); }
+.dark .bg-blue-50\/90 { background-color: rgb(3 22 80 / 0.9); }
+.dark .bg-emerald-100 { background-color: rgb(1 60 35); }
+.dark .bg-emerald-50 { background-color: rgb(0 38 20); }
+.dark .bg-emerald-50\/40 { background-color: rgb(0 38 20 / 0.4); }
+.dark .bg-emerald-50\/60 { background-color: rgb(0 38 20 / 0.6); }
+.dark .bg-emerald-50\/90 { background-color: rgb(0 38 20 / 0.9); }
+.dark .bg-red-100 { background-color: rgb(99 0 12); }
+.dark .bg-red-50 { background-color: rgb(65 0 4); }
+.dark .bg-red-50\/30 { background-color: rgb(65 0 4 / 0.3); }
+.dark .bg-red-50\/40 { background-color: rgb(65 0 4 / 0.4); }
+.dark .bg-red-50\/50 { background-color: rgb(65 0 4 / 0.5); }
+.dark .bg-red-50\/60 { background-color: rgb(65 0 4 / 0.6); }
+.dark .bg-red-50\/90 { background-color: rgb(65 0 4 / 0.9); }
+.dark .bg-slate-100 { background-color: rgb(26 35 51); }
+.dark .bg-slate-200 { background-color: rgb(37 46 64); }
+.dark .bg-slate-200\/70 { background-color: rgb(37 46 64 / 0.7); }
+.dark .bg-slate-200\/80 { background-color: rgb(37 46 64 / 0.8); }
+.dark .bg-slate-50 { background-color: rgb(8 14 26); }
+.dark .bg-slate-50\/60 { background-color: rgb(8 14 26 / 0.6); }
+.dark .bg-slate-50\/70 { background-color: rgb(8 14 26 / 0.7); }
+.dark .bg-teal-50 { background-color: rgb(0 36 38); }
+.dark .bg-white { background-color: rgb(18 25 40); }
+.dark .bg-white\/60 { background-color: rgb(18 25 40 / 0.6); }
+.dark .bg-white\/70 { background-color: rgb(18 25 40 / 0.7); }
+.dark .bg-white\/80 { background-color: rgb(18 25 40 / 0.8); }
+.dark .bg-white\/95 { background-color: rgb(18 25 40 / 0.95); }
+.dark .border-amber-200 { border-color: rgb(121 83 0); }
+.dark .border-amber-300 { border-color: rgb(152 105 0); }
+.dark .border-blue-200 { border-color: rgb(16 54 157); }
+.dark .border-emerald-200 { border-color: rgb(0 82 48); }
+.dark .border-emerald-300 { border-color: rgb(1 104 63); }
+.dark .border-red-200 { border-color: rgb(131 0 20); }
+.dark .border-red-300 { border-color: rgb(165 0 28); }
+.dark .border-slate-100 { border-color: rgb(29 37 53); }
+.dark .border-slate-200 { border-color: rgb(40 48 66); }
+.dark .border-slate-300 { border-color: rgb(60 69 88); }
+.dark .border-slate-400 { border-color: rgb(60 69 88); }
+.dark .disabled\:bg-slate-50:disabled { background-color: rgb(8 14 26); }
+.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: rgb(29 37 53); }
+.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) { border-color: rgb(40 48 66); }
+.dark .focus\:bg-blue-50\/40:focus { background-color: rgb(3 22 80 / 0.4); }
+.dark .focus\:ring-amber-100:focus { --tw-ring-color: rgb(96 65 1); }
+.dark .focus\:ring-amber-200:focus { --tw-ring-color: rgb(121 83 0); }
+.dark .focus\:ring-blue-100:focus { --tw-ring-color: rgb(9 39 120); }
+.dark .focus\:ring-blue-200:focus { --tw-ring-color: rgb(16 54 157); }
+.dark .focus\:ring-red-100:focus { --tw-ring-color: rgb(99 0 12); }
+.dark .focus\:ring-red-200:focus { --tw-ring-color: rgb(131 0 20); }
+.dark .hover\:bg-amber-100:hover { background-color: rgb(96 65 1); }
+.dark .hover\:bg-blue-100:hover { background-color: rgb(9 39 120); }
+.dark .hover\:bg-blue-50:hover { background-color: rgb(3 22 80); }
+.dark .hover\:bg-blue-50\/40:hover { background-color: rgb(3 22 80 / 0.4); }
+.dark .hover\:bg-emerald-50:hover { background-color: rgb(0 38 20); }
+.dark .hover\:bg-red-100:hover { background-color: rgb(99 0 12); }
+.dark .hover\:bg-red-50:hover { background-color: rgb(65 0 4); }
+.dark .hover\:bg-slate-100:hover { background-color: rgb(26 35 51); }
+.dark .hover\:bg-slate-200:hover { background-color: rgb(37 46 64); }
+.dark .hover\:bg-slate-50:hover { background-color: rgb(8 14 26); }
+.dark .hover\:bg-white:hover { background-color: rgb(18 25 40); }
+.dark .hover\:bg-white\/60:hover { background-color: rgb(18 25 40 / 0.6); }
+.dark .hover\:border-blue-300:hover { border-color: rgb(25 72 194); }
+.dark .hover\:border-emerald-200:hover { border-color: rgb(0 82 48); }
+.dark .hover\:border-red-200:hover { border-color: rgb(131 0 20); }
+.dark .hover\:text-emerald-700:hover { color: rgb(163 222 186); }
+.dark .hover\:text-red-600:hover { color: rgb(255 126 121); }
+.dark .hover\:text-slate-800:hover { color: rgb(237 240 246); }
+.dark .hover\:text-slate-900:hover { color: rgb(246 248 251); }
+.dark .ring-amber-100 { --tw-ring-color: rgb(96 65 1); }
+.dark .ring-amber-300 { --tw-ring-color: rgb(152 105 0); }
+.dark .ring-amber-50 { --tw-ring-color: rgb(56 37 0); }
+.dark .ring-blue-100 { --tw-ring-color: rgb(9 39 120); }
+.dark .ring-blue-200 { --tw-ring-color: rgb(16 54 157); }
+.dark .ring-blue-50 { --tw-ring-color: rgb(3 22 80); }
+.dark .ring-emerald-100 { --tw-ring-color: rgb(1 60 35); }
+.dark .ring-emerald-300 { --tw-ring-color: rgb(1 104 63); }
+.dark .ring-red-100 { --tw-ring-color: rgb(99 0 12); }
+.dark .ring-red-200 { --tw-ring-color: rgb(131 0 20); }
+.dark .ring-red-50 { --tw-ring-color: rgb(65 0 4); }
+.dark .ring-slate-200 { --tw-ring-color: rgb(40 48 66); }
+.dark .ring-slate-300 { --tw-ring-color: rgb(60 69 88); }
+.dark .text-amber-600 { color: rgb(250 189 84); }
+.dark .text-amber-700 { color: rgb(251 208 142); }
+.dark .text-amber-800 { color: rgb(253 226 186); }
+.dark .text-amber-900 { color: rgb(254 240 220); }
+.dark .text-amber-950 { color: rgb(255 248 239); }
+.dark .text-blue-700 { color: rgb(182 206 254); }
+.dark .text-blue-800 { color: rgb(214 227 254); }
+.dark .text-blue-900 { color: rgb(233 240 255); }
+.dark .text-blue-950 { color: rgb(244 248 254); }
+.dark .text-emerald-600 { color: rgb(103 193 143); }
+.dark .text-emerald-700 { color: rgb(163 222 186); }
+.dark .text-emerald-800 { color: rgb(201 237 215); }
+.dark .text-emerald-900 { color: rgb(226 246 233); }
+.dark .text-emerald-950 { color: rgb(241 251 244); }
+.dark .text-red-600 { color: rgb(255 126 121); }
+.dark .text-red-700 { color: rgb(254 186 180); }
+.dark .text-red-800 { color: rgb(254 217 213); }
+.dark .text-red-900 { color: rgb(255 235 233); }
+.dark .text-red-950 { color: rgb(255 245 244); }
+.dark .text-slate-400 { color: rgb(129 137 153); }
+.dark .text-slate-500 { color: rgb(164 171 185); }
+.dark .text-slate-600 { color: rgb(201 206 216); }
+.dark .text-slate-700 { color: rgb(223 227 234); }
+.dark .text-slate-800 { color: rgb(237 240 246); }
+.dark .text-slate-900 { color: rgb(246 248 251); }
+.dark .text-slate-950 { color: rgb(246 248 251); }
+.dark .text-teal-700 { color: rgb(159 218 221); }
 
 }
 
 @media screen and (min-width: 640px) {
-  .dark .sm\:hover\:bg-amber-100:hover { background-color: rgb(120 53 15); }
-  .dark .sm\:hover\:bg-blue-100:hover { background-color: rgb(30 58 138); }
-  .dark .sm\:hover\:bg-emerald-100:hover { background-color: rgb(6 78 59); }
-  .dark .sm\:hover\:bg-slate-50:hover { background-color: rgb(11 18 32); }
-  .dark .sm\:hover\:bg-white:hover { background-color: rgb(20 29 46); }
-  .dark .sm\:hover\:border-amber-300:hover { border-color: rgb(180 83 9); }
-  .dark .sm\:hover\:border-blue-300:hover { border-color: rgb(29 78 216); }
+  .dark .sm\:hover\:bg-slate-50:hover { background-color: rgb(8 14 26); }
+  .dark .sm\:hover\:bg-white:hover { background-color: rgb(18 25 40); }
 }
 
-/* --- Katakli daftar dizayni (2026-11, qöl bilan yozilgan) --- */
+/* --- Qöl bilan yozilgan qoidalar (scripts/dark-theme-extras.css) ---
+ * Generator tuşunmaydigan klasslar: şaffoflik bilan berilgan loyiha
+ * tokenlari va group-hover. Yangi kodda iloji boriça vp-* klasslarini
+ * işlating — ular tun rejimida özi almaşadi va bu yerga yoziş şart emas.
+ */
 @media screen {
-.dark .bg-slate-50\/90 { background-color: rgb(11 18 32 / 0.9); }
-.dark .bg-slate-50\/95 { background-color: rgb(11 18 32 / 0.95); }
-.dark .border-slate-300\/70 { border-color: rgb(47 61 85 / 0.7); }
-.dark .divide-mb-line > :not([hidden]) ~ :not([hidden]) { border-color: rgb(37 50 71); }
-.dark .hover\:border-slate-400:hover,
-.dark .sm\:hover\:border-slate-300:hover,
-.dark .sm\:hover\:border-slate-400:hover { border-color: rgb(71 85 105); }
-.dark .border-slate-400 { border-color: rgb(71 85 105); }
-.dark .group:hover .group-hover\:text-mb-brand { color: rgb(169 187 246); }
-.dark .group:hover .group-hover\:border-mb-brand { border-color: rgb(125 152 240); }
-.dark .bg-mb-ink { background-color: rgb(20 29 46); }
-.dark .text-pen { color: rgb(248 113 113); }
-.dark .after\:bg-mb-brand::after,
-.dark .before\:bg-mb-brand::before { background-color: rgb(125 152 240); }
-.dark .border-mb-brand\/70 { border-color: rgb(125 152 240 / 0.7); }
-.dark .text-amber-950 { color: rgb(254 243 199); }
+.dark .border-mb-brand\/40 { border-color: rgb(118 162 254 / 0.4); }
+.dark .bg-mb-ink { background-color: rgb(18 25 40); }
+.dark .bg-white\/60 { background-color: rgb(18 25 40 / 0.6); }
+.dark .hover\:bg-white:hover { background-color: rgb(26 35 51); }
+.dark .group:hover .group-hover\:text-mb-brand { color: rgb(167 196 254); }
+.dark .text-amber-950 { color: rgb(255 248 239); }
+/* Kök karta ustidagi oq tugma tun rejimida ham oq qoladi */
+.dark .spotlight .bg-white { background-color: rgb(255 255 255); }
+.dark .spotlight .text-blue-700 { color: rgb(25 72 194); }
 }

@@ -1,8 +1,10 @@
 
+import { Lock } from "lucide-react";
+import { notFound } from "next/navigation";
+
 import LessonCard from "@/components/lesson-card";
-import {
-  notFound,
-} from "next/navigation";
+import EmptyState from "@/components/ui/empty-state";
+import ProgressRing from "@/components/ui/progress-ring";
 
 import {
   buildBestScoreMap,
@@ -263,73 +265,65 @@ export default async function LessonCategoryPage({
         )
       : 0;
 
+  /* Navbatdagi dars: oçiq, lekin hali tugallanmagan birinçi dars */
+  const currentIndex = lessonStates.findIndex(
+    (state) =>
+      state.hasContentAccess &&
+      state.isSequenceUnlocked &&
+      !state.isCompleted &&
+      state.testCount > 0,
+  );
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <PageHeader
         backHref="/lessons"
-        backLabel="Dars bölimlari"
+        backLabel="Videodarslar"
         title={category.title}
-        width="6xl"
+        subtitle={category.description || undefined}
+        width="3xl"
+        action={
+          countableLessons > 0 ? (
+            <ProgressRing
+              value={categoryPercentage}
+              size={48}
+              stroke={5}
+              tone={categoryPercentage === 100 ? "success" : "brand"}
+            >
+              <span className="num text-[11px] font-bold text-mb-ink">
+                {completedCount}/{countableLessons}
+              </span>
+            </ProgressRing>
+          ) : null
+        }
       />
 
-      <section className="mx-auto max-w-6xl px-3 py-5 sm:px-6 sm:py-12">
-        <div className="overflow-hidden hero-board rounded-2xl p-4 text-white sm:p-6">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="min-w-0">
-              <h2 className="text-xl font-bold sm:text-2xl">
-                {category.title}
-              </h2>
-
-              {category.description && (
-                <p className="mt-1 max-w-xl text-sm leading-6 text-blue-100">
-                  {category.description}
-                </p>
-              )}
-            </div>
-
-            {countableLessons > 0 && (
-              <div className="w-full sm:w-44">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-blue-100">Tugallangan</span>
-                  <strong>
-                    {completedCount}/{countableLessons}
-                  </strong>
-                </div>
-
-                <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/20">
-                  <div
-                    className="h-full rounded-full bg-white"
-                    style={{
-                      width: `${categoryPercentage}%`,
-                    }}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
+      <section className="mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-8">
         {showLockedMessage && (
-          <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
-            Avval oldingi darsni yakunlang.
+          <div className="mb-4 flex items-center gap-2.5 rounded-2xl border border-vp-warning-line bg-vp-warning-soft px-4 py-3 text-sm font-semibold text-vp-warning">
+            <Lock className="h-4 w-4 shrink-0" aria-hidden="true" />
+            Bu dars hali yopiq. Avval oldingi dars testini 90% ga işlang.
           </div>
         )}
 
         {lessons.length === 0 ? (
-          <div className="mt-6 rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-12 text-center">
-            <p className="text-lg font-bold">Hozirça dars yöq</p>
-          </div>
+          <EmptyState glyph="lessons" title="Hozirça dars yöq">
+            Darslar qöşilişi bilan şu yerda çiqadi.
+          </EmptyState>
         ) : (
-          <div className="mt-5 grid gap-3 sm:mt-7 sm:grid-cols-2 sm:gap-4 xl:grid-cols-3">
+          <ol>
             {lessonStates.map(
-              ({
-                lesson,
-                isSequenceUnlocked,
-                hasContentAccess,
-                isCompleted,
-                averageScore,
-                testCount,
-              }) => (
+              (
+                {
+                  lesson,
+                  isSequenceUnlocked,
+                  hasContentAccess,
+                  isCompleted,
+                  averageScore,
+                  testCount,
+                },
+                index,
+              ) => (
                 <LessonCard
                   key={lesson.id}
                   lessonId={lesson.id}
@@ -337,17 +331,18 @@ export default async function LessonCategoryPage({
                   title={lesson.title}
                   description={lesson.description}
                   videoUrl={lesson.video_url}
-                  categoryTitle={category.title}
                   isFree={lesson.is_free}
                   isCompleted={isCompleted}
                   hasContentAccess={hasContentAccess}
                   isSequenceUnlocked={isSequenceUnlocked}
                   testCount={testCount}
                   averageScore={averageScore}
+                  isCurrent={index === currentIndex}
+                  isLast={index === lessonStates.length - 1}
                 />
               ),
             )}
-          </div>
+          </ol>
         )}
       </section>
     </main>

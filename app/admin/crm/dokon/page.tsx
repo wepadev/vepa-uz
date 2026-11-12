@@ -334,7 +334,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
             Bu guruhda faol öquvçi yöq.
           </AppAlert>
         ) : (
-          <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+          <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white">
             {balances.map((row, index) => (
               <div
                 key={row.student_id}
@@ -598,7 +598,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
 
         <form
           action={createCrmReward}
-          className="mt-3 rounded-2xl border border-mb-line bg-white p-4 shadow-sm"
+          className="mt-3 rounded-2xl border border-mb-line bg-white p-4"
         >
           <input type="hidden" name="groupId" value={groupId} />
 
@@ -710,7 +710,7 @@ export default async function CrmShopPage({ searchParams }: PageProps) {
               Oxirgi almaştirişlar
             </h2>
 
-            <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+            <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white">
               {history.map((row, index) => (
                 <div
                   key={row.id}

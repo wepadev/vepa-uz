@@ -53,7 +53,7 @@ function SaveButton() {
     <button
       type="submit"
       disabled={pending}
-      className="inline-flex min-h-11 w-full items-center justify-center rounded-2xl bg-mb-brand px-5 py-3 text-sm font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-wait disabled:opacity-70"
+      className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-mb-brand px-5 py-3 text-sm font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-wait disabled:opacity-70"
     >
       {pending ? (
         <span className="inline-flex items-center gap-2">
@@ -246,7 +246,7 @@ export default function UserAccessCard({
     .join("");
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
       <div className="border-b border-slate-100 p-5 sm:p-6">
         <div className="flex items-start gap-4">
           <div

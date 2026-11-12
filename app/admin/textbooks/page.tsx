@@ -632,7 +632,7 @@ function TextbookCard({
     textbook.book_type === "school";
 
   return (
-    <article className="rounded-2xl border border-mb-line bg-white px-3 py-3 shadow-sm sm:px-4">
+    <article className="rounded-2xl border border-mb-line bg-white px-3 py-3 sm:px-4">
       <div className="flex items-center gap-3">
         {textbook.cover_url ? (
           <img

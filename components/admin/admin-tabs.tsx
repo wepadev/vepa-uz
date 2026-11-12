@@ -39,7 +39,7 @@ export default function AdminTabs({
         className,
       )}
     >
-      <div className="inline-flex min-w-full gap-1 rounded-2xl border border-mb-line bg-white p-1 shadow-sm sm:min-w-0">
+      <div className="inline-flex min-w-full gap-1 rounded-2xl border border-mb-line bg-white p-1 sm:min-w-0">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = tab.href === active;

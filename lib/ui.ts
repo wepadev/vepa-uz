@@ -9,19 +9,18 @@
  *   <button className={btnPrimary}>Saqlash</button>
  *
  * Qoidalar qisqa: kartalar `rounded-2xl`, tugmalar `rounded-xl`,
- * sarlavhalar `font-bold` (qora emas), chegara doim `mb-line`.
+ * chegara doim `mb-line`, soya yo'q. Bosiladigan narsaning pastki
+ * qirrasi bor (`btn-solid`, `edge`, `btn-accent` — app/globals.css).
  */
 
-/** Oq karta — ro'yxat, forma va blok uchun asos */
-export const card =
-  "rounded-2xl border border-mb-line bg-white";
+/** Oq karta — ro'yxat, forma va blok uchun asos (soyasiz, ingichka chegara) */
+export const card = "rounded-2xl border border-mb-line bg-white";
 
 /** Karta ichidagi odatiy bo'shliq */
 export const cardPad = "p-4 sm:p-5";
 
-/** Bosiladigan karta — ustiga kelganda ko'tariladi */
-export const cardHover =
-  "press transition sm:hover:border-slate-300 sm:hover:shadow-md";
+/** Bosiladigan karta — pastki qirrasi bor, bosganda tushadi */
+export const cardHover = "edge";
 
 /** Asosiy amal tugmasi */
 export const btnPrimary =
@@ -29,7 +28,11 @@ export const btnPrimary =
 
 /** Ikkinchi darajali tugma */
 export const btnGhost =
-  "press inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50";
+  "edge inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700";
+
+/** Sariq urg'u tugmasi — Premium va sovg'a */
+export const btnAccent =
+  "press btn-accent inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-4 text-sm font-bold transition";
 
 /** Xavfli amal (o'chirish) */
 export const btnDanger =
@@ -37,14 +40,14 @@ export const btnDanger =
 
 /** Kulrang raqamli belgi */
 export const chip =
-  "rounded-md border border-mb-line bg-white px-2 py-0.5 text-xs font-semibold tabular-nums text-slate-600";
+  "rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold tabular-nums text-slate-600";
 
 /** Sahifaning asosiy qismi */
 export const pageSection =
-  "mx-auto max-w-5xl px-3 py-5 sm:px-6 sm:py-8";
+  "mx-auto max-w-5xl px-4 py-5 sm:px-6 sm:py-8";
 
 /** Bo'lim sarlavhasi (h2) */
-export const sectionTitle = "font-serif text-xl font-bold sm:text-2xl";
+export const sectionTitle = "text-lg font-bold sm:text-xl";
 
 /** Kiritish maydoni */
 export const field =

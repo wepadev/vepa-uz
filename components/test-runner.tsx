@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   useEffect,
   useMemo,
@@ -121,8 +122,8 @@ function SubmitButton({
       disabled={pending}
       className={
         mobile
-          ? "hidden shrink-0 rounded-xl bg-emerald-600 px-3 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-wait disabled:opacity-60 md:inline-flex sm:px-4 sm:text-sm lg:hidden"
-          : "w-full rounded-2xl bg-emerald-600 px-5 py-3.5 font-bold text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-wait disabled:opacity-60"
+          ? "btn-solid hidden min-h-10 shrink-0 items-center rounded-xl bg-mb-brand px-3 text-xs font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-wait disabled:opacity-60 md:inline-flex sm:px-4 sm:text-sm lg:hidden"
+          : "btn-solid min-h-12 w-full rounded-xl bg-mb-brand px-5 font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-wait disabled:opacity-60"
       }
     >
       {pending ? (
@@ -146,7 +147,7 @@ function FormPendingOverlay() {
 
   return (
     <div className="fixed inset-0 z-[110] grid place-items-center bg-slate-950/45 px-4 backdrop-blur-sm">
-      <div className="w-full max-w-sm rounded-3xl border border-white/50 bg-white p-6 text-center shadow-2xl">
+      <div className="w-full max-w-sm rounded-2xl border border-white/50 bg-white p-6 text-center shadow-2xl">
         <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100">
           <Spinner
             size="lg"
@@ -662,7 +663,7 @@ export default function TestRunner({
         )}
       />
 
-      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center gap-3 px-3 py-2 sm:px-6 sm:py-3 lg:py-4">
           <div className="min-w-0 flex-1">
             <h1 className="truncate text-sm font-bold sm:text-lg lg:text-xl">
@@ -755,7 +756,7 @@ export default function TestRunner({
 
       <div className="mx-auto grid max-w-7xl gap-6 px-3 py-4 sm:px-6 sm:py-8 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-8">
         <aside className="hidden lg:block">
-          <div className="sticky top-28 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="sticky top-28 rounded-2xl border border-slate-200 bg-white p-5">
             <div className="flex items-center justify-between">
               <h2 className="font-bold">
                 Savollar
@@ -832,7 +833,7 @@ export default function TestRunner({
           onTouchEnd={handleTouchEnd}
           className="min-w-0 scroll-mt-20 lg:scroll-mt-36"
         >
-          <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sm:rounded-3xl">
+          <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white sm:rounded-2xl">
             <div className="border-b border-slate-100 px-4 py-3 sm:px-7 sm:py-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 {currentItem.kind === "self_study" ? (
@@ -904,10 +905,10 @@ export default function TestRunner({
                           <label
                             key={option.letter}
                             className={[
-                              "flex min-h-[60px] cursor-pointer select-none items-start gap-3 rounded-2xl border px-3 py-3.5 transition active:scale-[0.99] sm:px-5 sm:py-4",
+                              "flex min-h-[60px] cursor-pointer select-none items-center gap-3 rounded-2xl border px-3 py-3 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-mb-brand sm:px-4",
                               selected
-                                ? "border-mb-brand bg-blue-50 shadow-sm ring-2 ring-blue-100"
-                                : "border-slate-200 bg-white hover:border-blue-300 hover:bg-blue-50/50",
+                                ? "border-mb-brand bg-mb-tintSoft shadow-[0_0_0_1px_var(--vp-brand)]"
+                                : "edge border-slate-200 bg-white",
                             ].join(" ")}
                           >
                             <input
@@ -925,14 +926,14 @@ export default function TestRunner({
                                   option.letter,
                                 )
                               }
-                              className="sr-only sm:not-sr-only sm:mt-1 sm:h-5 sm:w-5 sm:shrink-0 sm:accent-mb-brand"
+                              className="sr-only"
                             />
 
                             <span
                               className={[
-                                "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-sm font-bold transition sm:h-8 sm:w-8",
+                                "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-sm font-bold transition",
                                 selected
-                                  ? "bg-mb-brand text-white ring-2 ring-blue-200"
+                                  ? "bg-mb-brand text-white"
                                   : "bg-slate-100 text-slate-700",
                               ].join(" ")}
                             >
@@ -1017,7 +1018,7 @@ export default function TestRunner({
                             setInputFocused(false)
                           }
                           placeholder={`${part.label}) javobni kiriting`}
-                          className="mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-4 text-base outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:bg-blue-50/40 focus:ring-2 focus:ring-blue-100 sm:text-lg"
+                          className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text-base outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:bg-blue-50/40 focus:ring-2 focus:ring-blue-100 sm:text-lg"
                         />
                       </section>
                     ),
@@ -1037,9 +1038,10 @@ export default function TestRunner({
                     currentIndex - 1,
                   )
                 }
-                className="rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-bold text-slate-700 transition hover:border-blue-300 hover:text-mb-brandDark disabled:cursor-not-allowed disabled:opacity-40 sm:px-6"
+                className="edge inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
               >
-                ← Oldingi
+                <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+                Oldingi
               </button>
 
               <button
@@ -1053,9 +1055,10 @@ export default function TestRunner({
                     currentIndex + 1,
                   )
                 }
-                className="rounded-xl bg-mb-brand px-4 py-3 text-sm font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-not-allowed disabled:bg-slate-300 sm:px-6"
+                className="btn-solid inline-flex min-h-11 items-center gap-1.5 rounded-xl bg-mb-brand px-5 text-sm font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-not-allowed disabled:bg-slate-300"
               >
-                Keyingi →
+                Keyingi
+                <ChevronRight className="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
           </article>
@@ -1187,15 +1190,15 @@ export default function TestRunner({
               goToItem(currentIndex - 1)
             }
             aria-label="Oldingi savol"
-            className="flex h-12 w-14 shrink-0 items-center justify-center rounded-2xl border border-slate-300 bg-white text-lg font-bold text-slate-700 transition active:bg-slate-100 disabled:opacity-35"
+            className="edge flex h-12 w-14 shrink-0 items-center justify-center rounded-xl border border-slate-300 bg-white text-slate-700 disabled:opacity-35"
           >
-            ←
+            <ChevronLeft className="h-5 w-5" aria-hidden="true" />
           </button>
 
           <button
             type="button"
             onClick={() => setSheetOpen(true)}
-            className="flex h-12 min-w-0 flex-1 flex-col items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-2 leading-tight transition active:bg-slate-100"
+            className="num flex h-12 min-w-0 flex-1 flex-col items-center justify-center rounded-xl bg-slate-100 px-2 leading-tight transition active:bg-slate-200"
           >
             <span className="text-sm font-bold text-slate-900">
               {currentIndex + 1} /{" "}
@@ -1213,7 +1216,7 @@ export default function TestRunner({
               onClick={() =>
                 setConfirmOpen(true)
               }
-              className="h-12 shrink-0 rounded-2xl bg-emerald-600 px-4 text-sm font-bold text-white transition active:bg-emerald-700"
+              className="btn-solid h-12 shrink-0 rounded-xl bg-mb-brand px-4 text-sm font-bold text-white"
             >
               Yakunlaş
             </button>
@@ -1224,9 +1227,9 @@ export default function TestRunner({
                 goToItem(currentIndex + 1)
               }
               aria-label="Keyingi savol"
-              className="flex h-12 w-14 shrink-0 items-center justify-center rounded-2xl bg-mb-brand text-lg font-bold text-white transition active:bg-mb-brandDark"
+              className="btn-solid flex h-12 w-14 shrink-0 items-center justify-center rounded-xl bg-mb-brand text-white"
             >
-              →
+              <ChevronRight className="h-5 w-5" aria-hidden="true" />
             </button>
           )}
         </div>

@@ -46,6 +46,12 @@ const vp = {
   "medal-silver-ink": "rgb(var(--vp-medal-silver-ink-rgb) / <alpha-value>)",
   "medal-bronze": "rgb(var(--vp-medal-bronze-rgb) / <alpha-value>)",
   "medal-bronze-ink": "rgb(var(--vp-medal-bronze-ink-rgb) / <alpha-value>)",
+  "on-accent": "rgb(var(--vp-on-accent-rgb) / <alpha-value>)",
+  "accent-edge": "rgb(var(--vp-accent-edge-rgb) / <alpha-value>)",
+  "accent-soft": "rgb(var(--vp-accent-soft-rgb) / <alpha-value>)",
+  "accent-strong": "rgb(var(--vp-accent-strong-rgb) / <alpha-value>)",
+  "accent": "rgb(var(--vp-accent-rgb) / <alpha-value>)",
+  "brand-edge": "rgb(var(--vp-brand-edge-rgb) / <alpha-value>)",
 };
 
 /**
@@ -56,14 +62,14 @@ const vp = {
  * Temaga qarab özgaradigan yangi klasslar uçun vp-* işlating.
  */
 const mb = {
-  page: "rgb(247 245 240 / <alpha-value>)", // #f7f5f0 — qoğoz
-  tint: "rgb(222 229 249 / <alpha-value>)", // #dee5f9
-  tintSoft: "rgb(239 242 252 / <alpha-value>)", // #eff2fc
-  line: "rgb(227 223 214 / <alpha-value>)", // #e3dfd6
-  ink: "rgb(22 27 40 / <alpha-value>)", // #161b28 — siyoh
-  muted: "rgb(82 86 98 / <alpha-value>)", // #525662
-  brand: "rgb(29 71 201 / <alpha-value>)", // #1d47c9 — logo köki
-  brandDark: "rgb(22 56 166 / <alpha-value>)", // #1638a6
+  page: "rgb(246 248 251 / <alpha-value>)", // #f6f8fb
+  tint: "rgb(233 240 255 / <alpha-value>)", // #e9f0ff
+  tintSoft: "rgb(244 248 254 / <alpha-value>)", // #f4f8fe
+  line: "rgb(223 227 234 / <alpha-value>)", // #dfe3ea
+  ink: "rgb(26 36 56 / <alpha-value>)", // #1a2438
+  muted: "rgb(91 99 116 / <alpha-value>)", // #5b6374
+  brand: "rgb(40 94 231 / <alpha-value>)", // #285ee7
+  brandDark: "rgb(25 72 194 / <alpha-value>)", // #1948c2
 };
 
 const preset = {

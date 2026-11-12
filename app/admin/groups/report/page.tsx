@@ -176,7 +176,7 @@ export default async function GroupReportPage({ searchParams }: PageProps) {
         )}
 
         {/* Umumiy ko'rsatkichlar */}
-        <div className="mt-5 grid grid-cols-3 divide-x divide-slate-200 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+        <div className="mt-5 grid grid-cols-3 divide-x divide-slate-200 overflow-hidden rounded-2xl border border-mb-line bg-white">
           <div className="px-2 py-3 text-center sm:px-4 sm:py-4">
             <p className="text-[10px] font-semibold uppercase tracking-wide text-mb-muted sm:text-xs">
               Öquvçi
@@ -216,7 +216,7 @@ export default async function GroupReportPage({ searchParams }: PageProps) {
             Guruhda öquvçi yöq yoki hali vazifa berilmagan.
           </AppAlert>
         ) : (
-          <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+          <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white">
             {students.map((student, index) => {
               const percent = Math.round(Number(student.average_percent));
               const tone = toneFor(percent);
@@ -291,7 +291,7 @@ export default async function GroupReportPage({ searchParams }: PageProps) {
               darsda şu mavzularni takrorlang.
             </p>
 
-            <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+            <div className="mt-3 overflow-hidden rounded-2xl border border-mb-line bg-white">
               {weakTests.map((item, index) => {
                 const percent = Math.round(Number(item.average_percent));
                 const tone = toneFor(percent);

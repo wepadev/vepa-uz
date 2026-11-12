@@ -263,7 +263,7 @@ export default async function CrmLessonPage({ searchParams }: PageProps) {
               value={rows.map((row) => row.student_id).join(",")}
             />
 
-            <div className="rounded-2xl border border-mb-line bg-white p-4 shadow-sm">
+            <div className="rounded-2xl border border-mb-line bg-white p-4">
               <label
                 htmlFor="topic"
                 className="block text-xs font-semibold text-slate-600"
@@ -285,7 +285,7 @@ export default async function CrmLessonPage({ searchParams }: PageProps) {
               {rows.map((row) => (
                 <div
                   key={row.student_id}
-                  className="rounded-2xl border border-mb-line bg-white p-4 shadow-sm"
+                  className="rounded-2xl border border-mb-line bg-white p-4"
                 >
                   <div className="flex items-center justify-between gap-3">
                     <p className="min-w-0 truncate text-[15px] font-bold text-mb-ink">

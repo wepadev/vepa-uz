@@ -211,7 +211,7 @@ export default async function ParentReportPage({ params }: PageProps) {
           {stats.map((item) => (
             <div
               key={item.label}
-              className="rounded-2xl border border-mb-line bg-white p-3 text-center shadow-sm"
+              className="rounded-2xl border border-mb-line bg-white p-3 text-center"
             >
               <item.icon
                 className="mx-auto h-5 w-5 text-mb-muted"
@@ -229,7 +229,7 @@ export default async function ParentReportPage({ params }: PageProps) {
           <>
             <h2 className="mt-7 text-base font-bold">Saytdagi uy vazifalari</h2>
 
-            <div className="mt-2 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+            <div className="mt-2 overflow-hidden rounded-2xl border border-mb-line bg-white">
               {online.map((item, index) => (
                 <div
                   key={item.id}
@@ -276,7 +276,7 @@ export default async function ParentReportPage({ params }: PageProps) {
             Hali dars yozuvlari yöq.
           </p>
         ) : (
-          <div className="mt-2 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+          <div className="mt-2 overflow-hidden rounded-2xl border border-mb-line bg-white">
             {days.slice(0, 12).map((row, index) => {
               const attendance = ATTENDANCE[row.attendance] ?? ATTENDANCE.kelmadi;
 

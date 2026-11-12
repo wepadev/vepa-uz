@@ -42,7 +42,7 @@ export function LogoutButton({
       onClick={logout}
       disabled={isLoading}
       className={cn(
-        "inline-flex min-h-11 items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-wait disabled:opacity-60",
+        "edge inline-flex min-h-10 items-center justify-center rounded-xl border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 disabled:cursor-wait disabled:opacity-60",
         className,
       )}
     >

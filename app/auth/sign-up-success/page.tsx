@@ -4,7 +4,7 @@ import { CheckCircle2 } from "lucide-react";
 export default function Page() {
   return (
     <main className="flex min-h-svh w-full items-center justify-center bg-slate-50 px-3 py-8 text-slate-900 sm:px-6 sm:py-10">
-      <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-5 shadow-xl shadow-slate-200/50 sm:p-7">
+      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 sm:p-7">
         <div className="grid h-14 w-14 place-items-center rounded-2xl bg-emerald-50 text-2xl text-emerald-600 ring-1 ring-emerald-100">
           <CheckCircle2 className="h-7 w-7" strokeWidth={2} aria-hidden="true" />
         </div>
@@ -28,14 +28,14 @@ export default function Page() {
 
         <Link
           href="/auth/login"
-          className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-mb-brand px-5 py-3 font-bold text-white transition hover:bg-mb-brandDark"
+          className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-mb-brand px-5 py-3 font-bold text-white transition hover:bg-mb-brandDark"
         >
           Kiriş sahifasiga ötiş
         </Link>
 
         <Link
           href="/"
-          className="mt-3 inline-flex min-h-12 w-full items-center justify-center rounded-2xl border border-slate-300 bg-white px-5 py-3 font-semibold text-slate-700 transition hover:bg-slate-50"
+          className="mt-3 inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 font-semibold text-slate-700 transition hover:bg-slate-50"
         >
           Boş sahifa
         </Link>

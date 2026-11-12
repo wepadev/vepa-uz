@@ -10,8 +10,11 @@ import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import type { RankingTestRpcRow } from "@/lib/stats-types";
 import { TEST_TOPIC_SELECT, testLabel } from "@/lib/test-label";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
 import PageHeader from "@/components/ui/page-header";
+import ProgressRing from "@/components/ui/progress-ring";
+import { Tag } from "@/components/ui/row";
+import { btnGhost, btnPrimary } from "@/lib/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -867,6 +870,41 @@ export default async function ResultViewPage({
     })),
   ].sort((a, b) => a.order - b.order);
 
+  // Savollar xaritasi: har bir savol bitta katak — bosilsa öşa savolga ötadi.
+  const questionMap = displayItems.flatMap((item) => {
+    const stateOf = (questionId: number) => {
+      const answer = userAnswerMap.get(questionId);
+
+      if (answer?.is_correct) return "ok" as const;
+
+      return answer?.selected_answer ? ("bad" as const) : ("skip" as const);
+    };
+
+    if (item.kind === "question") {
+      return [
+        {
+          anchor: `q-${item.question.id}`,
+          label: String(item.question.order_number),
+          state: stateOf(item.question.id),
+        },
+      ];
+    }
+
+    if (item.block.block_type === "self_study") return [];
+
+    const isWrittenBlock = item.block.block_type === "written_parts";
+
+    return (questionsByBlock.get(item.block.id) ?? []).map(
+      (question, index) => ({
+        anchor: `q-${question.id}`,
+        label: isWrittenBlock
+          ? `${item.block.order_number}${question.part_label ?? ""}`
+          : String(item.block.order_number + index),
+        state: stateOf(question.id),
+      }),
+    );
+  });
+
   const fullName =
     profileResult.data?.full_name ||
     "Ism kiritilmagan";
@@ -1101,402 +1139,299 @@ const differenceLabel =
         }
         backLabel={lessonNavigation ? "Darsga qaytiş" : "Natijalarim"}
         backNative={Boolean(lessonNavigation)}
-        title="Test natijasi"
-        subtitle={`${fullName} — ${testTitle}`}
-        width="7xl"
+        glyph="results"
+        title={testTitle}
+        subtitle={`Test natijasi · ${fullName}`}
+        width="4xl"
       />
 
-      <section className="mx-auto max-w-7xl px-3 py-5 sm:px-6 sm:py-10">
+      <section className="mx-auto max-w-4xl px-4 py-5 sm:px-6 sm:py-8">
         {/*
-          To'rt ko'rsatkich bitta qatorda.
-          Ilgari 2×2 katta kartalar edi va telefonda vaqt qiymati
-          ikki qatorga bo'linib ketardi ("00:01:3" / "0").
+          Natija kartasi: halqa — foiz, yonida bitta xulosa gapi va
+          uçta son. Ilgari tört katak, kök taxta va yana tört katak
+          ketma-ket kelardi — asosiy raqam ular orasida yöqolardi.
         */}
-        <div className="grid grid-cols-4 divide-x divide-slate-200 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <div className="px-1.5 py-3 text-center sm:px-4 sm:py-4">
-            <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 sm:text-xs sm:normal-case sm:tracking-normal">
-              Foiz
-            </p>
-
-            <p
-              className={
-                percentage >= 80
-                  ? "mt-1 whitespace-nowrap text-lg font-bold text-emerald-600 sm:text-2xl"
+        <div className="rounded-2xl border border-mb-line bg-white p-4 sm:p-6">
+          <div className="flex items-center gap-4 sm:gap-6">
+            <ProgressRing
+              value={percentage}
+              size={104}
+              stroke={10}
+              tone={
+                percentage >= 90
+                  ? "success"
                   : percentage >= 60
-                    ? "mt-1 whitespace-nowrap text-lg font-bold text-mb-brand sm:text-2xl"
-                    : "mt-1 whitespace-nowrap text-lg font-bold text-red-600 sm:text-2xl"
+                    ? "brand"
+                    : "danger"
               }
             >
-              {formatPercentage(attempt.percentage)}%
-            </p>
-          </div>
-
-          <div className="px-1.5 py-3 text-center sm:px-4 sm:py-4">
-            <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 sm:text-xs sm:normal-case sm:tracking-normal">
-              <span className="sm:hidden">Töğri</span>
-              <span className="hidden sm:inline">Töğri javoblar</span>
-            </p>
-
-            <p className="mt-1 whitespace-nowrap text-lg font-bold text-emerald-600 sm:text-2xl">
-              {correctCount}/{totalAnswerCount}
-            </p>
-          </div>
-
-          <div className="px-1.5 py-3 text-center sm:px-4 sm:py-4">
-            <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 sm:text-xs sm:normal-case sm:tracking-normal">
-              Ball
-            </p>
-
-            <p className="mt-1 whitespace-nowrap text-lg font-bold text-mb-brand sm:text-2xl">
-              {attempt.score}
-              <span className="text-slate-400">
-                /{attempt.total_questions}
+              <span className="num text-2xl font-extrabold text-mb-ink">
+                {formatPercentage(attempt.percentage)}%
               </span>
-            </p>
+            </ProgressRing>
+
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap gap-1.5">
+                <Tag tone="neutral">
+                  {isRankingTest
+                    ? "Reyting testi"
+                    : isLessonTest
+                      ? "Dars testi"
+                      : "Arxiv testi"}
+                </Tag>
+
+                {isRankingTest && isPersonalBest && (
+                  <Tag tone="accent">Şaxsiy rekord</Tag>
+                )}
+              </div>
+
+              <h2 className="mt-2 text-xl font-extrabold leading-snug text-mb-ink sm:text-2xl">
+                {percentage >= 90
+                  ? "Zör natija!"
+                  : percentage >= 60
+                    ? "Yaxşi, yana ozgina qoldi"
+                    : "Xatolarni körib, qayta uriniş kerak"}
+              </h2>
+
+              <p className="num mt-1 text-sm leading-5 text-mb-muted">
+                {totalAnswerCount} tadan {correctCount} tasi töğri
+                {unansweredCount > 0
+                  ? ` · ${unansweredCount} ta javobsiz`
+                  : ""}
+              </p>
+            </div>
           </div>
 
-          <div className="px-1.5 py-3 text-center sm:px-4 sm:py-4">
-            <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 sm:text-xs sm:normal-case sm:tracking-normal">
-              <span className="sm:hidden">Vaqt</span>
-              <span className="hidden sm:inline">Sarflangan vaqt</span>
-            </p>
+          <dl className="num mt-4 grid grid-cols-3 gap-2 text-center">
+            <div className="rounded-xl bg-slate-50 px-2 py-2.5">
+              <dt className="text-xs font-semibold text-mb-muted">Töğri</dt>
+              <dd className="mt-0.5 text-xl font-extrabold text-vp-success">
+                {correctCount}
+                <span className="text-sm font-semibold text-mb-muted">
+                  /{totalAnswerCount}
+                </span>
+              </dd>
+            </div>
 
-            <p className="mt-1 whitespace-nowrap font-mono text-[13px] font-bold tabular-nums text-mb-brand sm:text-xl">
-              {elapsedTime}
-            </p>
-          </div>
-        </div>
+            <div className="rounded-xl bg-slate-50 px-2 py-2.5">
+              <dt className="text-xs font-semibold text-mb-muted">Ball</dt>
+              <dd className="mt-0.5 text-xl font-extrabold text-mb-ink">
+                {attempt.score}
+                <span className="text-sm font-semibold text-mb-muted">
+                  /{attempt.total_questions}
+                </span>
+              </dd>
+            </div>
 
+            <div className="rounded-xl bg-slate-50 px-2 py-2.5">
+              <dt className="text-xs font-semibold text-mb-muted">Vaqt</dt>
+              <dd className="mt-0.5 whitespace-nowrap text-xl font-extrabold text-mb-ink">
+                {elapsedTime}
+              </dd>
+            </div>
+          </dl>
 
-{isRankingTest ? (
-  <section className="mt-6 overflow-hidden rounded-3xl border border-blue-200 bg-white shadow-sm">
-    <div className="bg-mb-brand p-5 text-white sm:p-6">
-      <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
-        <div>
-          <div className="flex flex-wrap gap-2">
-            <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-bold text-white">
-              Reyting testi
-            </span>
-
-            {isPersonalBest && (
-              <span className="rounded-full bg-emerald-300 px-3 py-1 text-xs font-bold text-emerald-950">
-                Şaxsiy rekord
-              </span>
-            )}
-          </div>
-
-          <h2 className="mt-3 text-2xl font-bold">
-            Reyting va şaxsiy natija
-          </h2>
-
-          <p className="mt-2 text-sm leading-6 text-blue-100">
-            Har bir öquvçining eng yaxşi tugallangan
-            urinişi hisoblanadi. Teng foizda tezroq
-            tugatgan öquvçi yuqorida turadi.
+          <p className="num mt-3 text-[13px] text-mb-muted">
+            {formatDate(attempt.completed_at ?? attempt.started_at)}
           </p>
         </div>
 
-        {profileRole === "admin" ? (
-          <div className="rounded-2xl border border-white/20 bg-white/10 px-5 py-4 text-sm font-bold backdrop-blur">
-            Admin hisobiga reyting berilmaydi
-          </div>
-        ) : testRank > 0 ? (
-          <div className="rounded-2xl border border-white/20 bg-white/10 px-6 py-4 text-center backdrop-blur">
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-blue-100">
-              Test reytingi
+        {isRankingTest ? (
+          <section className="spotlight mt-3 rounded-2xl p-4 sm:p-6">
+            <div className="relative">
+              <p className="eyebrow !text-white/80">Bu testdagi örningiz</p>
+
+              {profileRole === "admin" ? (
+                <p className="mt-1 text-lg font-bold">
+                  Admin hisobiga reyting berilmaydi
+                </p>
+              ) : testRank > 0 ? (
+                <p className="num mt-1 text-4xl font-extrabold leading-none">
+                  {testRank}
+                  <span className="text-xl font-bold">-örin</span>
+                  <span className="ml-2 text-sm font-semibold text-white/80">
+                    {testParticipants} kişidan
+                  </span>
+                </p>
+              ) : (
+                <p className="mt-1 text-lg font-bold">
+                  Reyting uçun testni tugating
+                </p>
+              )}
+
+              <dl className="num mt-4 grid grid-cols-3 gap-2 text-center">
+                <div className="rounded-xl bg-white/10 px-2 py-2.5">
+                  <dt className="text-xs font-semibold text-white/80">
+                    Eng yaxşi
+                  </dt>
+                  <dd className="mt-0.5 text-lg font-extrabold">
+                    {currentBestAttempt
+                      ? `${formatPercentage(currentBestAttempt.percentage)}%`
+                      : "—"}
+                  </dd>
+                </div>
+
+                <div className="rounded-xl bg-white/10 px-2 py-2.5">
+                  <dt className="text-xs font-semibold text-white/80">
+                    Eng yaxşi vaqt
+                  </dt>
+                  <dd className="mt-0.5 whitespace-nowrap text-lg font-extrabold">
+                    {currentBestAttempt
+                      ? formatDurationSeconds(
+                          currentBestAttempt.durationSeconds,
+                        )
+                      : "—"}
+                  </dd>
+                </div>
+
+                <div className="rounded-xl bg-white/10 px-2 py-2.5">
+                  <dt className="text-xs font-semibold text-white/80">
+                    Uriniş
+                  </dt>
+                  <dd className="mt-0.5 text-lg font-extrabold">
+                    {rankingStatistics
+                      ? Number(rankingStatistics.attempts_count) || 0
+                      : currentUserAttempts.length}
+                  </dd>
+                </div>
+              </dl>
+
+              <p className="mt-3 text-sm font-semibold text-white/90">
+                {differenceLabel}
+              </p>
+
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <Link
+                  href={retryHref}
+                  className="press inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-white px-4 text-center text-sm font-bold text-blue-700 shadow-[inset_0_-3px_0_rgb(3_22_80/0.14)]"
+                >
+                  <RotateCcw className="h-4 w-4" aria-hidden="true" />
+                  {retryLabel}
+                </Link>
+
+                <Link
+                  href={`/leaderboard?testId=${attempt.test_id}`}
+                  className="inline-flex min-h-11 items-center justify-center rounded-xl bg-white/10 px-4 text-center text-sm font-bold text-white ring-1 ring-inset ring-white/25 transition hover:bg-white/20"
+                >
+                  Test reytingi
+                </Link>
+              </div>
+            </div>
+          </section>
+        ) : isLessonTest && !lessonNavigation ? (
+          <section className="mt-3 flex flex-wrap items-center gap-3 rounded-2xl border border-mb-line bg-white p-4">
+            <p className="min-w-0 flex-1 text-sm leading-5 text-mb-muted">
+              Dars testlari faqat dars progressingiz uçun — reytingga
+              qöşilmaydi.
             </p>
 
-            <p className="mt-1 text-4xl font-bold">
-              {testRank}/{testParticipants}
-            </p>
-          </div>
-        ) : (
-          <div className="rounded-2xl border border-white/20 bg-white/10 px-5 py-4 text-sm font-bold backdrop-blur">
-            Reyting uçun testni tugating
-          </div>
-        )}
-      </div>
-    </div>
+            <Link href={retryHref} className={btnGhost}>
+              <RotateCcw className="h-4 w-4" aria-hidden="true" />
+              {lessonRetryLabel}
+            </Link>
+          </section>
+        ) : !isLessonTest ? (
+          <p className="mt-3 rounded-2xl border border-mb-line bg-white px-4 py-3 text-sm leading-5 text-mb-muted">
+            Bu test hozir Testlar bölimida faol emas, şuning uçun reytingga
+            kirmaydi.
+          </p>
+        ) : null}
 
-    <div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-2 lg:grid-cols-4 sm:p-6">
-      <div className="rounded-2xl bg-blue-50 p-4">
-        <p className="text-xs font-bold uppercase tracking-wide text-mb-brand">
-          Eng yaxşi foiz
-        </p>
-
-        <p className="mt-2 text-2xl font-bold text-blue-950">
-          {currentBestAttempt
-            ? `${formatPercentage(
-                currentBestAttempt.percentage,
-              )}%`
-            : "—"}
-        </p>
-      </div>
-
-      <div className="rounded-2xl bg-blue-50 p-4">
-        <p className="text-xs font-bold uppercase tracking-wide text-mb-brand">
-          Eng yaxşi vaqt
-        </p>
-
-        <p className="mt-2 font-mono text-2xl font-bold tabular-nums text-blue-950">
-          {currentBestAttempt
-            ? formatDurationSeconds(
-                currentBestAttempt.durationSeconds,
-              )
-            : "—"}
-        </p>
-      </div>
-
-      <div className="rounded-2xl bg-emerald-50 p-4">
-        <p className="text-xs font-bold uppercase tracking-wide text-emerald-600">
-          Jami uriniş
-        </p>
-
-        <p className="mt-2 text-2xl font-bold text-emerald-950">
-          {rankingStatistics
-            ? Number(
-                rankingStatistics
-                  .attempts_count,
-              ) || 0
-            : currentUserAttempts.length}
-        </p>
-      </div>
-
-      <div className="rounded-2xl bg-amber-50 p-4">
-        <p className="text-xs font-bold uppercase tracking-wide text-amber-700">
-          Oldingi natijaga farq
-        </p>
-
-        <p
-          className={
-            differenceFromPreviousBest === null
-              ? "mt-2 text-sm font-bold leading-6 text-amber-950"
-              : differenceFromPreviousBest > 0
-                ? "mt-2 text-sm font-bold leading-6 text-emerald-700"
-                : differenceFromPreviousBest < 0
-                  ? "mt-2 text-sm font-bold leading-6 text-red-700"
-                  : "mt-2 text-sm font-bold leading-6 text-amber-950"
-          }
-        >
-          {differenceLabel}
-        </p>
-      </div>
-    </div>
-
-    <div className="flex flex-col gap-3 border-t border-slate-100 p-5 sm:flex-row sm:p-6">
-      <Link
-        href={retryHref}
-        className="inline-flex min-h-12 flex-1 items-center justify-center rounded-2xl bg-mb-brand px-5 py-3 text-center font-bold text-white transition hover:bg-mb-brandDark"
-      >
-        {retryLabel}
-      </Link>
-
-      <Link
-        href={`/leaderboard?testId=${attempt.test_id}`}
-        className="inline-flex min-h-12 flex-1 items-center justify-center rounded-2xl border border-blue-200 bg-blue-50 px-5 py-3 text-center font-bold text-blue-700 transition hover:bg-blue-100"
-      >
-        Test reytingini köriş
-      </Link>
-    </div>
-  </section>
-) : isLessonTest ? (
-  <section className="mt-6 rounded-3xl border border-blue-200 bg-blue-50 p-5 shadow-sm sm:p-6">
-    <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
-      <div>
-        <div className="flex flex-wrap gap-2">
-          <span className="rounded-full bg-mb-brand px-3 py-1 text-xs font-bold text-white">
-            Dars testi
-          </span>
-
-          <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-700">
-            Reytingga kirmaydi
-          </span>
-        </div>
-
-        <h2 className="mt-3 text-xl font-bold text-blue-950 sm:text-2xl">
-          Bu natija faqat dars progressingiz uçun
-        </h2>
-
-        <p className="mt-2 max-w-3xl text-sm leading-6 text-blue-800">
-          Darsga biriktirilgan testlar umumiy reytingga
-          va testlar reytingiga qöşilmaydi.
-        </p>
-      </div>
-
-      <Link
-        href={retryHref}
-        className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-2xl bg-mb-brand px-6 py-3 text-center font-bold text-white transition hover:bg-mb-brandDark"
-      >
-        {lessonRetryLabel}
-      </Link>
-    </div>
-  </section>
-) : (
-  <section className="mt-6 rounded-3xl border border-slate-200 bg-slate-100 p-5 shadow-sm sm:p-6">
-    <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
-      <div>
-        <span className="rounded-full bg-slate-700 px-3 py-1 text-xs font-bold text-white">
-          Arxiv testi
-        </span>
-
-        <h2 className="mt-3 text-xl font-bold text-slate-950">
-          Bu test reytingga kirmaydi
-        </h2>
-
-        <p className="mt-2 text-sm leading-6 text-slate-600">
-          Test hozir Testlar bölimida faol emas yoki
-          darsga biriktirilgan.
-        </p>
-      </div>
-    </div>
-  </section>
-)}
-
+        {/* Dars testi: keyingi dars oçildimi */}
         {lessonNavigation && (
           <section
             className={
               passedLessonTest
-                ? "mt-6 rounded-3xl border border-emerald-200 bg-emerald-50 p-5 shadow-sm sm:p-6"
-                : "mt-6 rounded-3xl border border-amber-200 bg-amber-50 p-5 shadow-sm sm:p-6"
+                ? "mt-3 rounded-2xl border border-vp-success-line bg-vp-success-soft p-4 sm:p-5"
+                : "mt-3 rounded-2xl border border-vp-warning-line bg-vp-warning-soft p-4 sm:p-5"
             }
           >
-            <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
-              <div>
-                <p
-                  className={
-                    passedLessonTest
-                      ? "text-xs font-bold uppercase tracking-[0.16em] text-emerald-700"
-                      : "text-xs font-bold uppercase tracking-[0.16em] text-amber-700"
-                  }
-                >
-                  Dars testi
-                </p>
+            <h2 className="text-lg font-extrabold text-vp-ink">
+              {passedLessonTest
+                ? "Keyingi dars oçildi"
+                : "Keyingi dars hali oçilmadi"}
+            </h2>
 
-                <h2
-                  className={
-                    passedLessonTest
-                      ? "mt-2 text-xl font-bold text-emerald-950 sm:text-2xl"
-                      : "mt-2 text-xl font-bold text-amber-950 sm:text-2xl"
-                  }
-                >
-                  {passedLessonTest
-                    ? "Tabriklaymiz, testdan ötdingiz!"
-                    : "Keyingi dars hali oçilmadi"}
-                </h2>
+            <p className="num mt-1 text-sm leading-5 text-vp-ink/80">
+              {passedLessonTest
+                ? `Natijangiz ${formatPercentage(percentage)}% — darsni muvaffaqiyatli ötdingiz.`
+                : `Natijangiz ${formatPercentage(percentage)}%. Keyingi dars uçun kamida 90% kerak.`}
+            </p>
 
-                <p
-                  className={
-                    passedLessonTest
-                      ? "mt-2 text-sm leading-6 text-emerald-800"
-                      : "mt-2 text-sm leading-6 text-amber-800"
-                  }
-                >
-                  {passedLessonTest
-                    ? `Natijangiz ${formatPercentage(
-                        percentage,
-                      )}%. Keyingi darsga ötişingiz mumkin.`
-                    : `Natijangiz ${formatPercentage(
-                        percentage,
-                      )}%. Keyingi dars uçun kamida 90% kerak.`}
-                </p>
-              </div>
-
+            <div className="mt-3 flex flex-wrap gap-2">
               {passedLessonTest ? (
                 lessonNavigation.nextLessonId ? (
                   <a
                     href={`/lessons/view?lessonId=${lessonNavigation.nextLessonId}`}
-                    className="gap-1.5 inline-flex min-h-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-600 px-6 py-3 text-center font-bold text-white transition hover:bg-emerald-700"
+                    className={btnPrimary}
                   >
                     Keyingi dars
-                    <ChevronRight className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
+                    <ChevronRight className="h-4 w-4 shrink-0" aria-hidden="true" />
                   </a>
                 ) : (
                   <a
                     href={`/lessons/category?categoryId=${lessonNavigation.categoryId}`}
-                    className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-600 px-6 py-3 text-center font-bold text-white transition hover:bg-emerald-700"
+                    className={btnPrimary}
                   >
                     Darslar röyxatiga qaytiş
                   </a>
                 )
               ) : (
-                <a
-                  href={`/lessons/view?lessonId=${lessonNavigation.currentLessonId}`}
-                  className="gap-1.5 inline-flex min-h-12 shrink-0 items-center justify-center rounded-2xl bg-amber-600 px-6 py-3 text-center font-bold text-white transition hover:bg-amber-700"
-                >
-                  <ChevronLeft className="h-4 w-4 shrink-0" strokeWidth={2.4} aria-hidden="true" />
-                  Darsga qaytiş
-                </a>
+                <>
+                  <Link href={retryHref} className={btnPrimary}>
+                    <RotateCcw className="h-4 w-4" aria-hidden="true" />
+                    {lessonRetryLabel}
+                  </Link>
+
+                  <a
+                    href={`/lessons/view?lessonId=${lessonNavigation.currentLessonId}`}
+                    className={btnGhost}
+                  >
+                    <ChevronLeft className="h-4 w-4 shrink-0" aria-hidden="true" />
+                    Darsga qaytiş
+                  </a>
+                </>
               )}
             </div>
           </section>
         )}
 
-        <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="grid grid-cols-2 gap-4 text-sm sm:gap-5 lg:grid-cols-5">
-            <div>
-              <p className="text-slate-500">
-                Öquvçi
-              </p>
+        <div className="mt-8">
+          <h2 className="eyebrow">Savollar tahlili</h2>
 
-              <p className="mt-1 font-semibold">
-                {fullName}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-slate-500">
-                Test
-              </p>
-
-              <p className="mt-1 font-semibold">
-                {testTitle}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-slate-500">
-                Boşlangan
-              </p>
-
-              <p className="mt-1 font-semibold">
-                {formatDate(
-                  attempt.started_at,
-                )}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-slate-500">
-                Tugallangan
-              </p>
-
-              <p className="mt-1 font-semibold">
-                {formatDate(
-                  attempt.completed_at,
-                )}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-slate-500">
-                Javobsiz
-              </p>
-
-              <p className="mt-1 font-semibold">
-                {unansweredCount} ta
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-10">
-          <h2 className="text-2xl font-bold">
-            Savollar tahlili
-          </h2>
-
-          <p className="mt-1 text-sm text-slate-500">
-            Öquvçi javobi, töğri javob va yeçimlar
+          <p className="mt-1 text-sm text-mb-muted">
+            Sizning javobingiz, töğri javob va yeçim
           </p>
+
+          {questionMap.length > 1 && (
+            <nav
+              aria-label="Savollar xaritasi"
+              className="num mt-4 flex flex-wrap gap-1.5"
+            >
+              {questionMap.map((entry) => (
+                <a
+                  key={entry.anchor}
+                  href={`#${entry.anchor}`}
+                  aria-label={`${entry.label}-savol: ${
+                    entry.state === "ok"
+                      ? "töğri"
+                      : entry.state === "bad"
+                        ? "notöğri"
+                        : "javob berilmagan"
+                  }`}
+                  className={
+                    entry.state === "ok"
+                      ? "inline-flex h-9 min-w-9 items-center justify-center rounded-lg border border-vp-success-line bg-vp-success-soft px-1.5 text-sm font-bold text-vp-success"
+                      : entry.state === "bad"
+                        ? "inline-flex h-9 min-w-9 items-center justify-center rounded-lg border border-vp-danger-line bg-vp-danger-soft px-1.5 text-sm font-bold text-vp-danger"
+                        : "inline-flex h-9 min-w-9 items-center justify-center rounded-lg border border-dashed border-vp-line bg-vp-surface px-1.5 text-sm font-bold text-vp-muted"
+                  }
+                >
+                  {entry.label}
+                </a>
+              ))}
+            </nav>
+          )}
         </div>
 
         <div className="mt-5 space-y-6">
@@ -1530,15 +1465,16 @@ const differenceLabel =
               return (
                 <article
                   key={`question-${question.id}`}
+                  id={`q-${question.id}`}
                   className={
                     isCorrect
-                      ? "rounded-3xl border border-emerald-200 bg-white p-5 shadow-sm sm:p-6"
-                      : "rounded-3xl border border-red-200 bg-white p-5 shadow-sm sm:p-6"
+                      ? "scroll-mt-20 rounded-2xl border border-emerald-200 bg-white p-5 sm:p-6"
+                      : "scroll-mt-20 rounded-2xl border border-red-200 bg-white p-5 sm:p-6"
                   }
                 >
                   <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
                     <div className="flex min-w-0 items-start gap-3">
-                      <span className="shrink-0 text-lg font-bold">
+                      <span className="num shrink-0 text-lg font-extrabold text-mb-muted">
                         {question.order_number}.
                       </span>
 
@@ -1694,7 +1630,7 @@ const differenceLabel =
               return (
                 <article
                   key={`block-${block.id}`}
-                  className="rounded-3xl border border-dashed border-slate-300 bg-white p-5 shadow-sm sm:p-6"
+                  className="rounded-2xl border border-dashed border-slate-300 bg-white p-5 sm:p-6"
                 >
                   <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
                     Mustaqil iş · ball berilmaydi
@@ -1754,7 +1690,7 @@ const differenceLabel =
             return (
               <article
                 key={`block-${block.id}`}
-                className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
+                className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
@@ -1762,7 +1698,7 @@ const differenceLabel =
                       className={
                         isWritten
                           ? "rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700"
-                          : "rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700"
+                          : "rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600"
                       }
                     >
                       {isWritten
@@ -1862,10 +1798,11 @@ const differenceLabel =
                       return (
                         <section
                           key={question.id}
+                          id={`q-${question.id}`}
                           className={
                             isCorrect
-                              ? "rounded-2xl border border-emerald-200 bg-emerald-50/40 p-5"
-                              : "rounded-2xl border border-red-200 bg-red-50/30 p-5"
+                              ? "scroll-mt-20 rounded-xl border border-emerald-200 bg-emerald-50/40 p-4 sm:p-5"
+                              : "scroll-mt-20 rounded-xl border border-red-200 bg-red-50/30 p-4 sm:p-5"
                           }
                         >
                           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-start">

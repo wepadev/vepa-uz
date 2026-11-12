@@ -1,12 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import {
-  CalendarClock,
-  CheckCircle2,
-  Sparkles,
-} from "lucide-react";
-
 import AppAlert from "@/components/ui/app-alert";
+import EmptyState from "@/components/ui/empty-state";
+import { btnPrimary } from "@/lib/ui";
 import ReviewSession, {
   type ReviewQuestion,
 } from "@/components/review-session";
@@ -168,11 +164,13 @@ export default async function ReviewPage() {
       <PageHeader
         backHref="/"
         backLabel="Boş sahifa"
+        glyph="review"
         title="Haftalik takrorlaş"
+        width="3xl"
         subtitle="Hafta davomidagi xatolaringiz"
       />
 
-      <section className="mx-auto max-w-3xl px-3 py-5 sm:px-6 sm:py-8">
+      <section className="mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-8">
 
         {migrationMissing && (
           <AppAlert
@@ -186,91 +184,53 @@ export default async function ReviewPage() {
         )}
 
         {!migrationMissing && (
-          <div className="mt-5 grid grid-cols-3 divide-x divide-slate-200 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
-            <div className="px-2 py-3 text-center sm:px-4 sm:py-4">
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-mb-muted sm:text-xs">
-                Bu hafta
-              </p>
-              <p className="mt-1 text-lg font-bold text-mb-brand sm:text-2xl">
-                {dueCount}
-              </p>
-            </div>
-
-            <div className="px-2 py-3 text-center sm:px-4 sm:py-4">
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-mb-muted sm:text-xs">
-                Navbatda
-              </p>
-              <p className="mt-1 text-lg font-bold text-amber-600 sm:text-2xl">
-                {learningCount}
-              </p>
-            </div>
-
-            <div className="px-2 py-3 text-center sm:px-4 sm:py-4">
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-mb-muted sm:text-xs">
-                Yopildi
-              </p>
-              <p className="mt-1 text-lg font-bold text-emerald-600 sm:text-2xl">
-                {masteredCount}
-              </p>
-            </div>
-          </div>
+          <dl className="num grid grid-cols-3 gap-2 text-center">
+            {(
+              [
+                ["Bu hafta", dueCount, "text-mb-brandDark"],
+                ["Navbatda", learningCount, "text-mb-ink"],
+                ["Yopildi", masteredCount, "text-vp-success"],
+              ] as const
+            ).map(([label, value, tone]) => (
+              <div
+                key={label}
+                className="rounded-2xl border border-mb-line bg-white px-2 py-3"
+              >
+                <dt className="text-xs font-semibold text-mb-muted">{label}</dt>
+                <dd className={`mt-0.5 text-2xl font-extrabold ${tone}`}>
+                  {value}
+                </dd>
+              </div>
+            ))}
+          </dl>
         )}
 
-        {!migrationMissing && questions.length === 0 && (
-          <div className="mt-6 rounded-3xl border border-dashed border-slate-300 bg-white px-5 py-12 text-center sm:px-6">
-            {masteredCount + learningCount === 0 ? (
-              <>
-                <Sparkles
-                  className="mx-auto h-10 w-10 text-mb-muted"
-                  strokeWidth={1.6}
-                  aria-hidden="true"
-                />
-
-                <h2 className="mt-4 text-lg font-bold">
-                  Takrorlaş uçun savol yöq
-                </h2>
-
-                <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-mb-muted">
-                  Test işlaganingizdan keyin xato qilgan savollaringiz
-                  şu yerga tuşadi va keyingi duşanbadan takrorlaşga
-                  çiqadi.
-                </p>
-
-                <Link
-                  href="/tests"
-                  className="mt-6 inline-flex min-h-12 items-center justify-center rounded-2xl bg-mb-brand px-6 font-bold text-white transition hover:bg-mb-brandDark"
-                >
+        {!migrationMissing &&
+          questions.length === 0 &&
+          (masteredCount + learningCount === 0 ? (
+            <EmptyState
+              glyph="review"
+              title="Takrorlaş uçun savol yöq"
+              className="mt-4"
+              action={
+                <Link href="/tests" className={btnPrimary}>
                   Testlarni köriş
                 </Link>
-              </>
-            ) : (
-              <>
-                <CheckCircle2
-                  className="mx-auto h-10 w-10 text-emerald-500"
-                  strokeWidth={1.6}
-                  aria-hidden="true"
-                />
-
-                <h2 className="mt-4 text-lg font-bold">
-                  Bugungi takrorlaş tugadi
-                </h2>
-
-                <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-mb-muted">
-                  Barakalla! Bu haftaning xatolarini yopdingiz.
-                </p>
-
-                <p className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-mb-muted">
-                  <CalendarClock
-                    className="h-4 w-4"
-                    strokeWidth={2}
-                    aria-hidden="true"
-                  />
-                  Keyingi takrorlaş — duşanba
-                </p>
-              </>
-            )}
-          </div>
-        )}
+              }
+            >
+              Test işlaganingizdan keyin xato qilgan savollaringiz şu yerga
+              tuşadi va keyingi duşanbadan takrorlaşga çiqadi.
+            </EmptyState>
+          ) : (
+            <EmptyState
+              glyph="review"
+              title="Bu haftaning takrori tugadi"
+              className="mt-4"
+            >
+              Barakalla! Bu haftaning xatolarini yopdingiz. Keyingi
+              takrorlaş — duşanba kuni.
+            </EmptyState>
+          ))}
 
         {questions.length > 0 && (
           <div className="mt-6">

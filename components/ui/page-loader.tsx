@@ -17,7 +17,7 @@ export default function PageLoader({
           : "grid min-h-64 place-items-center px-4"
       }
     >
-      <div className="rounded-3xl border border-slate-200 bg-white px-8 py-7 text-center shadow-xl shadow-slate-200/60">
+      <div className="rounded-2xl border border-slate-200 bg-white px-8 py-7 text-center shadow-xl shadow-slate-200/60">
         <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-blue-50 text-mb-brand ring-1 ring-blue-100">
           <Spinner
             size="lg"

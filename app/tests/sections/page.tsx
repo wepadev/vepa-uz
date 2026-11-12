@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { ChevronRight, Layers } from "lucide-react";
 import { notFound } from "next/navigation";
 
-import PageHeader from "@/components/ui/page-header";
+import EmptyState from "@/components/ui/empty-state";
+import PageHeader, { headerButton } from "@/components/ui/page-header";
+import PremiumNote from "@/components/ui/premium-note";
+import { RowIndex, RowLink, RowList, RowLock, Tag } from "@/components/ui/row";
+import { examGlyph } from "@/lib/exam-visuals";
 import { requireSectionAccess } from "@/lib/require-section-access";
-import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -177,61 +179,53 @@ export default async function TestSectionsPage({ searchParams }: PageProps) {
    */
   const firstSectionId = sections[0]?.id ?? null;
 
+  const totalTests = sections.reduce(
+    (sum, section) => sum + (testCountBySection.get(section.id) ?? 0),
+    0,
+  );
+  const hasLockedSection = sections.some(
+    (section) =>
+      section.id !== firstSectionId && !sectionsWithFreeTopic.has(section.id),
+  );
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <PageHeader
         backHref="/tests"
         backLabel="Testlar"
+        glyph={examGlyph(examType.code)}
         title={examType.title}
-        subtitle={examType.description || "Bölimni tanlang"}
+        subtitle={
+          sections.length
+            ? `${sections.length} bölim · ${totalTests} test`
+            : examType.description || "Bölimni tanlang"
+        }
         action={
           profile.role === "admin" ? (
             <Link
               href={`/admin/tests/sections?exam=${encodeURIComponent(examType.code)}`}
-              className="inline-flex min-h-10 items-center rounded-xl border border-blue-200 bg-blue-50 px-3 text-sm font-semibold text-blue-700 hover:bg-blue-100"
+              className={headerButton}
             >
               Boşqariş
             </Link>
           ) : (
-            <Link
-              href="/results"
-              className="inline-flex min-h-10 items-center rounded-xl border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-            >
+            <Link href="/results" className={headerButton}>
               Natijalarim
             </Link>
           )
         }
       />
 
-      <section className="mx-auto max-w-7xl px-3 py-5 sm:px-6 sm:py-12">
-        {/* Telefonda bu blok ekranning yarmini egallamasligi uchun ixchamroq */}
-        <div className="hero-board rounded-2xl p-4 text-white sm:rounded-3xl sm:p-8">
-          <p className="text-[12px] font-bold text-blue-100 sm:text-sm">
-            Mavzular va bölimlar
-          </p>
-          <h2 className="mt-1 text-xl font-bold sm:mt-2 sm:text-3xl">
-            Kerakli bölimni tanlang
-          </h2>
-        </div>
-
+      <section className="mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-8">
         {!sections.length ? (
-          <div className="mt-7 rounded-3xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
-            <p className="text-lg font-bold text-slate-700">
-              Hozirça bölim qöşilmagan
-            </p>
-            <p className="mt-2 text-sm text-slate-500">
-              Administrator bölim yaratib, naşr qilganda şu yerda körinadi.
-            </p>
-          </div>
+          <EmptyState glyph="tests" title="Hozirça bölim qöşilmagan">
+            Bölimlar naşr qilinganda şu yerda körinadi.
+          </EmptyState>
         ) : (
           <>
-            {/*
-              Mobil: ro'yxat ko'rinishi.
-              Kartalar telefon ekranida juda ko'p joy egallardi — bitta
-              bo'lim uchun deyarli butun ekran ketardi. Endi har bir
-              bo'lim bitta qator: ikonka, nom, qisqa ma'lumot.
-            */}
-            <div className="mt-5 overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm sm:hidden">
+            <p className="eyebrow">Bölimni tanlang</p>
+
+            <RowList className="mt-3">
               {sections.map((section, index) => {
                 const isFirstSection = section.id === firstSectionId;
                 const testCount = testCountBySection.get(section.id) ?? 0;
@@ -239,127 +233,27 @@ export default async function TestSectionsPage({ searchParams }: PageProps) {
                 const hasFreeTopic = sectionsWithFreeTopic.has(section.id);
 
                 return (
-                  <Link
+                  <RowLink
                     key={section.id}
                     href={`/tests/topics?sectionId=${section.id}`}
-                    className={cn(
-                      "flex items-center gap-3 px-3.5 py-3 active:bg-slate-50",
-                      index > 0 && "border-t border-mb-line",
-                    )}
-                  >
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-mb-tint text-mb-brand">
-                      <Layers
-                        className="h-5 w-5"
-                        strokeWidth={1.9}
-                        aria-hidden="true"
-                      />
-                    </span>
-
-                    <span className="min-w-0 flex-1">
-                      <span className="flex items-center gap-2">
-                        <span className="min-w-0 flex-1 truncate text-[15px] font-bold leading-snug text-mb-ink">
-                          {section.title}
-                        </span>
-
-                        <span
-                          className={
-                            isFirstSection || hasFreeTopic
-                              ? "shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700"
-                              : "shrink-0 rounded-full bg-blue-50 px-2 py-0.5 text-[11px] font-semibold text-blue-700"
-                          }
-                        >
-                          {isFirstSection
-                            ? "1-mavzu bepul"
-                            : hasFreeTopic
-                              ? "Bepul mavzu bor"
-                              : "Premium"}
-                        </span>
-                      </span>
-
-                      <span className="mt-0.5 block truncate text-[12px] font-medium text-mb-muted">
-                        {topicCount} ta mavzu · {testCount} ta test
-                        {section.description ? ` · ${section.description}` : ""}
-                      </span>
-                    </span>
-
-                    <ChevronRight
-                      className="h-[18px] w-[18px] shrink-0 text-mb-muted"
-                      strokeWidth={2}
-                      aria-hidden="true"
-                    />
-                  </Link>
+                    lead={<RowIndex value={index + 1} />}
+                    title={section.title}
+                    meta={`${topicCount} mavzu · ${testCount} test`}
+                    trail={
+                      isFirstSection ? (
+                        <Tag tone="free">1-mavzu bepul</Tag>
+                      ) : hasFreeTopic ? (
+                        <Tag tone="free">Bepul mavzu bor</Tag>
+                      ) : (
+                        <RowLock />
+                      )
+                    }
+                  />
                 );
               })}
-            </div>
+            </RowList>
 
-            {/* Katta ekran: avvalgi kartalar */}
-            <div className="mt-7 hidden gap-5 sm:grid md:grid-cols-2 xl:grid-cols-3">
-            {sections.map((section) => {
-              const isFirstSection = section.id === firstSectionId;
-              const testCount = testCountBySection.get(section.id) ?? 0;
-              const topicCount = topicCountBySection.get(section.id) ?? 0;
-              const hasFreeTopic = sectionsWithFreeTopic.has(section.id);
-
-              return (
-                <article
-                  key={section.id}
-                  className="flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-mb-tint text-mb-brand sm:h-12 sm:w-12 sm:rounded-2xl">
-                      <Layers className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={1.9} aria-hidden="true" />
-                    </span>
-                    <span
-                      className={
-                        isFirstSection || hasFreeTopic
-                          ? "rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700"
-                          : "rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700"
-                      }
-                    >
-                      {isFirstSection
-                        ? "1-mavzu bepul"
-                        : hasFreeTopic
-                          ? "Bepul mavzu bor"
-                          : "Premium"}
-                    </span>
-                  </div>
-
-                  <h3 className="mt-5 text-xl font-bold text-slate-950">
-                    {section.title}
-                  </h3>
-                  <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">
-                    {section.description || "Uşbu bölimdagi testlar."}
-                  </p>
-
-                  <div className="mt-5 grid grid-cols-2 gap-3">
-                    <div className="rounded-2xl bg-slate-50 p-4">
-                      <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
-                        Mavzular
-                      </p>
-                      <p className="mt-1 text-2xl font-bold text-slate-900">
-                        {topicCount}
-                      </p>
-                    </div>
-                    <div className="rounded-2xl bg-slate-50 p-4">
-                      <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
-                        Testlar
-                      </p>
-                      <p className="mt-1 text-2xl font-bold text-slate-900">
-                        {testCount}
-                      </p>
-                    </div>
-                  </div>
-
-                  <Link
-                    href={`/tests/topics?sectionId=${section.id}`}
-                    className="mt-5 inline-flex min-h-12 items-center justify-center rounded-2xl bg-mb-brand px-5 py-3 text-center font-bold text-white hover:bg-mb-brandDark"
-                  >
-                    Mavzularni köriş
-                  </Link>
-                </article>
-              );
-            })}
-            </div>
+            {hasLockedSection && <PremiumNote className="mt-4" />}
           </>
         )}
       </section>

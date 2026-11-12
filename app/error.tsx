@@ -35,7 +35,7 @@ export default function ErrorPage({
 
   return (
     <main className="grid min-h-screen place-items-center bg-slate-50 px-4 py-10">
-      <div className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-5 shadow-xl shadow-slate-200/60 sm:p-8">
+      <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-5 sm:p-8">
         <p className="text-sm font-bold uppercase tracking-[0.18em] text-mb-brand">
           Vepa Ustoz
         </p>
@@ -85,7 +85,7 @@ export default function ErrorPage({
             type="button"
             onClick={retry}
             disabled={isRetrying}
-            className="min-h-12 rounded-2xl bg-mb-brand px-5 py-3 font-bold text-white hover:bg-mb-brandDark disabled:cursor-wait disabled:opacity-70"
+            className="min-h-12 rounded-xl bg-mb-brand px-5 py-3 font-bold text-white hover:bg-mb-brandDark disabled:cursor-wait disabled:opacity-70"
           >
             {isRetrying ? (
               <LoadingLabel>

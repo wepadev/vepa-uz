@@ -1,7 +1,9 @@
 
-import { MonitorPlay } from "lucide-react";
+import Link from "next/link";
+import { ChevronRight, Info } from "lucide-react";
 
-import ContentCard from "@/components/ui/content-card";
+import EmptyState from "@/components/ui/empty-state";
+import ProgressRing from "@/components/ui/progress-ring";
 
 import {
   buildBestScoreMap,
@@ -168,82 +170,115 @@ export default async function LessonsPage() {
     });
   }
 
+  const totalLessons = lessons.length;
+  const totalCompleted = [...categoryMetrics.values()].reduce(
+    (sum, metrics) => sum + metrics.completed,
+    0,
+  );
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-      <PageHeader backHref="/" backLabel="Boş sahifa" title="Videodarslar" width="6xl" />
+      <PageHeader
+        backHref="/"
+        backLabel="Boş sahifa"
+        glyph="lessons"
+        title="Videodarslar"
+        subtitle={
+          totalLessons > 0
+            ? `${totalCompleted} / ${totalLessons} dars ötilgan`
+            : undefined
+        }
+      />
 
-      <section className="mx-auto max-w-6xl px-3 py-5 sm:px-6 sm:py-12">
-        <div className="hero-board rounded-2xl p-4 text-white sm:rounded-3xl sm:p-6">
-          <h2 className="text-xl font-bold sm:text-3xl">
-            Dars bölimlari
-          </h2>
-
-          <p className="mt-2 text-sm leading-6 text-blue-100">
-            Keyingi dars test natijasi 90% ga yetganda oçiladi.
-          </p>
-        </div>
-
+      <section className="mx-auto max-w-5xl px-4 py-5 sm:px-6 sm:py-8">
         {categories.length === 0 ? (
-          <div className="mt-6 rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-12 text-center">
-            <p className="text-lg font-bold">Hozirça dars yöq</p>
-          </div>
+          <EmptyState glyph="lessons" title="Hozirça dars yöq">
+            Darslar qöşilişi bilan şu yerda çiqadi.
+          </EmptyState>
         ) : (
-          <div className="mt-5 grid grid-cols-2 gap-3 sm:mt-7 sm:gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {categories.map((category) => {
-              const metrics =
-                categoryMetrics.get(
-                  category.id,
-                ) ?? {
+          <>
+            <p className="eyebrow">Kurslar</p>
+
+            <div className="mt-3 grid gap-3 md:grid-cols-2">
+              {categories.map((category) => {
+                const metrics = categoryMetrics.get(category.id) ?? {
                   total: 0,
                   completed: 0,
                 };
 
-              const percentage =
-                metrics.total > 0
-                  ? Math.round(
-                      (metrics.completed /
-                        metrics.total) *
-                        100,
-                    )
-                  : 0;
+                const percentage =
+                  metrics.total > 0
+                    ? Math.round((metrics.completed / metrics.total) * 100)
+                    : 0;
 
-              return (
-                <ContentCard
-                  key={category.id}
-                  href={`/lessons/category?categoryId=${category.id}`}
-                  title={category.title}
-                  description={category.description ?? ""}
-                  actionLabel={
-                    metrics.total > 0
-                      ? "Oçiş"
-                      : "Dars yöq"
-                  }
-                  icon={MonitorPlay}
-                  accent="content"
-                  disabled={metrics.total === 0}
-                  meta={`${metrics.completed} / ${metrics.total} dars`}
-                  badge={
-                    <span className="rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-bold text-mb-muted shadow-sm">
-                      {category.order_number}-bölim
+                const empty = metrics.total === 0;
+                const done = !empty && metrics.completed === metrics.total;
+
+                const body = (
+                  <>
+                    <ProgressRing
+                      value={percentage}
+                      size={60}
+                      stroke={6}
+                      tone={done ? "success" : "brand"}
+                    >
+                      <span className="num text-[13px] font-bold text-mb-ink">
+                        {empty ? "—" : `${percentage}%`}
+                      </span>
+                    </ProgressRing>
+
+                    <span className="min-w-0 flex-1">
+                      <span className="eyebrow block text-[11px]">
+                        {category.order_number}-kurs
+                      </span>
+                      <span className="mt-0.5 block text-[17px] font-bold leading-snug text-mb-ink">
+                        {category.title}
+                      </span>
+                      <span className="num mt-1 block text-[13px] text-mb-muted">
+                        {empty
+                          ? "Darslar tez orada qöşiladi"
+                          : done
+                            ? `${metrics.total} darsning hammasi ötilgan`
+                            : metrics.completed === 0
+                              ? `${metrics.total} dars`
+                              : `${metrics.completed} / ${metrics.total} dars ötilgan`}
+                      </span>
                     </span>
-                  }
-                >
-                  <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/70">
-                    <div
-                      className={
-                        percentage === 100
-                          ? "h-full rounded-full bg-emerald-500"
-                          : "h-full rounded-full bg-emerald-600/70"
-                      }
-                      style={{
-                        width: `${percentage}%`,
-                      }}
-                    />
+
+                    {!empty && (
+                      <ChevronRight
+                        className="h-5 w-5 shrink-0 text-slate-400 transition-transform group-hover:translate-x-0.5"
+                        aria-hidden="true"
+                      />
+                    )}
+                  </>
+                );
+
+                return empty ? (
+                  <div
+                    key={category.id}
+                    className="flex items-center gap-4 rounded-2xl border border-dashed border-slate-300 p-4 opacity-80"
+                  >
+                    {body}
                   </div>
-                </ContentCard>
-              );
-            })}
-          </div>
+                ) : (
+                  <Link
+                    key={category.id}
+                    href={`/lessons/category?categoryId=${category.id}`}
+                    className="edge group flex items-center gap-4 rounded-2xl border border-mb-line bg-white p-4"
+                  >
+                    {body}
+                  </Link>
+                );
+              })}
+            </div>
+
+            <p className="mt-4 flex items-start gap-2 text-sm leading-5 text-mb-muted">
+              <Info className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+              Darslar ketma-ket oçiladi: dars testini 90% ga işlasangiz,
+              keyingi dars oçiladi.
+            </p>
+          </>
         )}
       </section>
     </main>

@@ -684,7 +684,7 @@ export default async function AdminResultViewPage({
 
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10 print:max-w-none print:px-0 print:py-4">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-          <article className="print-card rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <article className="print-card rounded-2xl border border-slate-200 bg-white p-5">
             <p className="text-sm font-bold text-slate-500">
               Foiz
             </p>
@@ -760,7 +760,7 @@ export default async function AdminResultViewPage({
           </article>
         </div>
 
-        <div className="print-card mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+        <div className="print-card mt-6 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
           <div className="grid gap-5 text-sm sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             <div>
               <p className="font-semibold text-slate-500">
@@ -1095,7 +1095,7 @@ export default async function AdminResultViewPage({
               return (
                 <article
                   key={`block-${block.id}`}
-                  className="rounded-3xl border border-dashed border-slate-300 bg-white p-5 shadow-sm sm:p-6"
+                  className="rounded-2xl border border-dashed border-slate-300 bg-white p-5 shadow-sm sm:p-6"
                 >
                   <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
                     Mustaqil iş · ball berilmaydi
@@ -1128,7 +1128,7 @@ export default async function AdminResultViewPage({
             return (
               <article
                 key={`block-${block.id}`}
-                className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
+                className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>

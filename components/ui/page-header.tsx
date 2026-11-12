@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import BackLink from "@/components/ui/back-link";
+import { GlyphTile, type GlyphName } from "@/components/ui/glyph";
 import { cn } from "@/lib/utils";
 
 /**
@@ -31,7 +32,7 @@ const WIDTHS = {
 
 /** Sarlavhadagi ikkinchi darajali tugma (oq, ramkali) */
 export const headerButton =
-  "press inline-flex min-h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50";
+  "edge inline-flex min-h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700";
 
 /** Sarlavhadagi asosiy tugma (brend ko'k) */
 export const headerPrimaryButton =
@@ -43,6 +44,7 @@ export default function PageHeader({
   backNative = false,
   title,
   subtitle,
+  glyph,
   chips = [],
   action,
   children,
@@ -55,6 +57,8 @@ export default function PageHeader({
   backNative?: boolean;
   title: ReactNode;
   subtitle?: ReactNode;
+  /** Bo'lim belgisi — sarlavha chapida (components/ui/glyph.tsx) */
+  glyph?: GlyphName;
   /** Raqamli belgilar: "12 ta test", "84 ta mavzu" */
   chips?: ReactNode[];
   /** O'ngdagi tugma yoki belgi */
@@ -71,7 +75,7 @@ export default function PageHeader({
   return (
     <header
       className={cn(
-        "border-b border-mb-line bg-slate-50/90 backdrop-blur",
+        "border-b border-mb-line bg-white/95 backdrop-blur",
         sticky && "sticky top-0 z-30",
       )}
     >
@@ -81,19 +85,23 @@ export default function PageHeader({
             href={backHref}
             label={backLabel ?? "Orqaga"}
             native={backNative}
-            className="mb-2"
+            className="mb-1.5"
           />
         )}
 
         <div className="flex items-center justify-between gap-3">
-          <div className="min-w-0">
-            <h1 className="line-clamp-2 text-[21px] font-bold leading-tight text-mb-ink sm:text-[26px]">
-              {title}
-            </h1>
+          <div className="flex min-w-0 items-center gap-3">
+            {glyph && <GlyphTile name={glyph} size="sm" />}
 
-            {subtitle && (
-              <div className="mt-0.5 line-clamp-2 text-sm text-mb-muted">{subtitle}</div>
-            )}
+            <div className="min-w-0">
+              <h1 className="line-clamp-2 text-xl font-extrabold leading-tight text-mb-ink sm:text-2xl">
+                {title}
+              </h1>
+
+              {subtitle && (
+                <div className="mt-0.5 line-clamp-2 text-sm text-mb-muted">{subtitle}</div>
+              )}
+            </div>
           </div>
 
           {action && (
@@ -108,7 +116,7 @@ export default function PageHeader({
             {visibleChips.map((chip, index) => (
               <span
                 key={index}
-                className="rounded-md border border-mb-line bg-white px-2 py-0.5 text-xs font-semibold tabular-nums text-slate-600"
+                className="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold tabular-nums text-slate-600"
               >
                 {chip}
               </span>

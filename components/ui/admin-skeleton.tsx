@@ -25,7 +25,7 @@ function Bar({ className = "" }: { className?: string }) {
 
 function CardBlock() {
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-slate-200 bg-white p-5">
       <div className="flex items-start justify-between gap-4">
         <Bar className="h-12 w-12 rounded-2xl" />
         <Bar className="h-6 w-14 rounded-full" />
@@ -78,7 +78,7 @@ export default function AdminSkeleton({
             {[0, 1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"
+                className="rounded-2xl border border-slate-200 bg-white p-5"
               >
                 <Bar className="h-4 w-2/3" />
                 <Bar className="mt-3 h-8 w-1/3" />
@@ -96,7 +96,7 @@ export default function AdminSkeleton({
         )}
 
         {variant === "table" && (
-          <div className="mt-7 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+          <div className="mt-7 overflow-hidden rounded-2xl border border-slate-200 bg-white">
             {[0, 1, 2, 3, 4].map((i) => (
               <RowBlock key={i} last={i === 4} />
             ))}
@@ -104,7 +104,7 @@ export default function AdminSkeleton({
         )}
 
         {variant === "form" && (
-          <div className="mt-7 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+          <div className="mt-7 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
             <Bar className="h-4 w-32" />
             <Bar className="mt-3 h-12 w-full rounded-xl" />
 

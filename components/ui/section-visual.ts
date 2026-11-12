@@ -37,6 +37,21 @@ export type Accent =
   /** Texnik xizmat va boshqa xizmat bo'limlari */
   | "system";
 
+/*
+ * 2026-11: to'rtta pastel ohang (ko'k, yashil, sariq, binafsha)
+ * yonma-yon turganda sahifa ola-chipor ko'rinardi. Endi hamma
+ * guruh bitta plitkada — brend ko'kining och toni. Bo'limlar rang
+ * bilan emas, BELGI bilan farqlanadi (components/ui/glyph.tsx).
+ * Guruh nomlari (tests, people, ...) eski kod uchun saqlangan.
+ */
+const TONE = {
+  tint: "bg-blue-50",
+  icon: "text-blue-700",
+  tile: "bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-100",
+  button: "bg-mb-brand hover:bg-mb-brandDark",
+  softBox: "bg-blue-50 text-blue-700",
+};
+
 export const accents: Record<
   Accent,
   {
@@ -52,34 +67,10 @@ export const accents: Record<
     softBox: string;
   }
 > = {
-  tests: {
-    tint: "bg-blue-50",
-    icon: "text-blue-700",
-    tile: "bg-blue-50 text-blue-700",
-    button: "bg-mb-brand hover:bg-mb-brandDark",
-    softBox: "bg-blue-50 text-blue-700",
-  },
-  people: {
-    tint: "bg-emerald-50",
-    icon: "text-emerald-700",
-    tile: "bg-emerald-50 text-emerald-700",
-    button: "bg-mb-brand hover:bg-mb-brandDark",
-    softBox: "bg-emerald-50 text-emerald-700",
-  },
-  content: {
-    tint: "bg-amber-50",
-    icon: "text-amber-700",
-    tile: "bg-amber-50 text-amber-700",
-    button: "bg-mb-brand hover:bg-mb-brandDark",
-    softBox: "bg-amber-50 text-amber-700",
-  },
-  insight: {
-    tint: "bg-violet-50",
-    icon: "text-violet-700",
-    tile: "bg-violet-50 text-violet-700",
-    button: "bg-mb-brand hover:bg-mb-brandDark",
-    softBox: "bg-violet-50 text-violet-700",
-  },
+  tests: TONE,
+  people: TONE,
+  content: TONE,
+  insight: TONE,
   system: {
     tint: "bg-slate-100",
     icon: "text-slate-600",

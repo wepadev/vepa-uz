@@ -142,7 +142,7 @@ export default function ReviewSession({
 
   if (isFinished) {
     return (
-      <div className="rounded-3xl border border-mb-line bg-white px-5 py-10 text-center shadow-sm sm:px-6">
+      <div className="rounded-2xl border border-mb-line bg-white px-5 py-10 text-center sm:px-6">
         <CheckCircle2
           className="mx-auto h-12 w-12 text-emerald-500"
           strokeWidth={1.6}
@@ -158,7 +158,7 @@ export default function ReviewSession({
 
         <a
           href="/takrorlash"
-          className="mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-mb-brand px-6 font-bold text-white transition hover:bg-mb-brandDark"
+          className="mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-mb-brand px-6 font-bold text-white transition hover:bg-mb-brandDark"
         >
           <RotateCcw className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
           Davom etiş
@@ -195,7 +195,7 @@ export default function ReviewSession({
         />
       </div>
 
-      <article className="mt-4 rounded-3xl border border-mb-line bg-white p-4 shadow-sm sm:p-6">
+      <article className="mt-4 rounded-2xl border border-mb-line bg-white p-4 sm:p-6">
         {question.wrongCount > 1 && (
           <p className="mb-3 inline-flex rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
             {question.wrongCount} marta xato qilgansiz
@@ -371,7 +371,7 @@ export default function ReviewSession({
             <button
               type="button"
               onClick={next}
-              className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-mb-brand px-6 font-bold text-white transition hover:bg-mb-brandDark sm:w-auto"
+              className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-mb-brand px-6 font-bold text-white transition hover:bg-mb-brandDark sm:w-auto"
             >
               {index + 1 >= questions.length
                 ? "Yakunlaş"
@@ -387,7 +387,7 @@ export default function ReviewSession({
               type="button"
               onClick={check}
               disabled={isChecking || !answer.trim()}
-              className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-mb-brand px-6 font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+              className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-mb-brand px-6 font-bold text-white transition hover:bg-mb-brandDark disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
             >
               {isChecking ? (
                 <>

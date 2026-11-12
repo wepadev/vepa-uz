@@ -1,3 +1,4 @@
+import type { GlyphName } from "@/components/ui/glyph";
 import PageHeader from "@/components/ui/page-header";
 
 /**
@@ -13,6 +14,7 @@ export default function TextbooksHeader(props: {
   title: string;
   subtitle?: string | null;
   chips?: string[];
+  glyph?: GlyphName;
 }) {
   return <PageHeader {...props} />;
 }

@@ -108,7 +108,7 @@ function MainCardView({ card }: { card: MainCard }) {
   return (
     <Link
       href={card.href}
-      className="group flex h-full items-start gap-4 rounded-2xl border border-mb-line bg-white p-5 shadow-sm transition hover:border-mb-brand hover:shadow-md"
+      className="group flex h-full items-start gap-4 rounded-2xl border border-mb-line bg-white p-5 transition hover:border-mb-brand hover:shadow-md"
     >
       <span
         className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl ${accents[card.tone].tile}`}
@@ -263,7 +263,7 @@ export default async function AdminPage() {
           )}
 
           {activeGroups.length > 0 && (
-            <div className="overflow-hidden rounded-2xl border border-mb-line bg-white shadow-sm">
+            <div className="overflow-hidden rounded-2xl border border-mb-line bg-white">
               {activeGroups.map((group, index) => (
                 <div
                   key={group.crm_group_id}
@@ -294,7 +294,7 @@ export default async function AdminPage() {
           )}
 
           {dueSoon.length > 0 && (
-            <div className="rounded-2xl border border-mb-line bg-white px-4 py-3 shadow-sm">
+            <div className="rounded-2xl border border-mb-line bg-white px-4 py-3">
               <p className="inline-flex items-center gap-2 text-sm font-semibold">
                 <Clock className="h-4 w-4 text-amber-600" strokeWidth={2} aria-hidden="true" />
                 Muddati yaqin vazifalar
