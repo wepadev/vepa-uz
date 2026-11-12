@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { publishTestParents } from "@/lib/publish-test-parents";
 
 import ConfirmSubmitButton from "@/components/admin/confirm-submit-button";
 import CreatePanel from "@/components/admin/create-panel";
@@ -168,6 +169,20 @@ async function changeSectionState(formData: FormData) {
 
   if (error) {
     throw new Error(`Bölim holati özgarmadi: ${error.message}`);
+  }
+
+  /*
+   * Bölim oçilganda içidagi naşr qilingan testlarning qoralama
+   * mavzulari ham oçiladi — aks holda testlar körinmay qolardi.
+   */
+  if (nextState) {
+    const parentError = await publishTestParents(supabase, { sectionId });
+
+    if (parentError) {
+      throw new Error(
+        `Bölim naşr qilindi, lekin mavzulari oçilmadi: ${parentError}`,
+      );
+    }
   }
 
   revalidatePath("/admin/tests");

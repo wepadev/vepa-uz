@@ -48,6 +48,7 @@ Tartib bilan yuring — keyingi fayl oldingisiga tayanishi mumkin.
 | `37-mustaqil-ish.sql` | Ballsiz "Mustaqil ishlang" savoli (`question_blocks.block_type = self_study`) va uning videoyechimi (`question_blocks.solution_video_url`) |
 | `39-qolda-baholash-balli.sql` | Qo'lda baholaganda ball ikki baravar kam chiqardi (12 to'g'ri → 12/24 = 50%). Tuzatildi va buzilgan natijalar qayta hisoblandi |
 | `40-guruh-testi-tuzatish.sql` | 26-fayldan beri Testlar bölimidagi birorta test oçilmasdi ("faqat uy vazifasi" deb qaytarardi) va bazada hamma katalog testi bepul hisoblanardi. `is_group_only_test()` asl ma'nosiga qaytdi, `is_assignable_test()` va `is_assigned_to_me()` qöşildi |
+| `41-nashr-testlar-korinsin.sql` | Naşr qilingan test mavzusi, bölimi yoki yönalişi qoralama bölgani uçun Testlar bölimida körinmasdi. Mavzusiz testlar "Umumiy" mavzuga solinadi, naşr qilingan testi bor mavzu/bölim/yönaliş oçiladi (guruh-testlari bundan mustasno). Bundan keyin admin panel buni özi qiladi |
 
 ## Alohida: tozalash
 

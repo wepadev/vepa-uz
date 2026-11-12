@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { publishTestParents } from "@/lib/publish-test-parents";
 
 import ConfirmSubmitButton from "@/components/admin/confirm-submit-button";
 import CreatePanel from "@/components/admin/create-panel";
@@ -363,6 +364,16 @@ async function changeTestState(formData: FormData) {
 
   if (error) {
     throw new Error(`Test holati özgarmadi: ${error.message}`);
+  }
+
+  if (nextState) {
+    const parentError = await publishTestParents(supabase, { testIds: [testId] });
+
+    if (parentError) {
+      throw new Error(
+        `Test naşr qilindi, lekin mavzusi oçilmadi: ${parentError}`,
+      );
+    }
   }
 
   revalidateCatalog();

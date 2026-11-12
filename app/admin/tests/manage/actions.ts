@@ -11,6 +11,7 @@
  * ko'radigan sahifalar keshda eskirib qolmasin.
  */
 import { revalidatePath } from "next/cache";
+import { publishTestParents } from "@/lib/publish-test-parents";
 import { redirect } from "next/navigation";
 
 import { normalizeVideoUrl } from "@/lib/video-url";
@@ -874,8 +875,20 @@ export async function changePublishedState(formData: FormData) {
     throw new Error(`Test holati özgarmadi: ${error.message}`);
   }
 
+  if (nextState) {
+    const parentError = await publishTestParents(supabase, { testIds: [testId] });
+
+    if (parentError) {
+      throw new Error(
+        `Test naşr qilindi, lekin mavzusi oçilmadi: ${parentError}`,
+      );
+    }
+  }
+
   revalidatePath("/admin/tests");
   revalidatePath("/admin/tests/manage");
+  revalidatePath("/tests", "layout");
+  revalidatePath("/leaderboard");
   redirect(`/admin/tests/manage?testId=${testId}`);
 }
 
