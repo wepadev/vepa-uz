@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight } from "@/components/ui/icons";
 
 import EmptyState from "@/components/ui/empty-state";
 import { Glyph } from "@/components/ui/glyph";

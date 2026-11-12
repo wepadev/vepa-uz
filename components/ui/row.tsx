@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Check, ChevronRight, Lock } from "lucide-react";
+import { Check, ChevronRight, Lock } from "@/components/ui/icons";
 
 import { cn } from "@/lib/utils";
 

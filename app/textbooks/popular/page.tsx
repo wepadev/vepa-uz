@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Lock } from "lucide-react";
+import { Lock } from "@/components/ui/icons";
 
 import EmptyState from "@/components/ui/empty-state";
 import { Glyph } from "@/components/ui/glyph";

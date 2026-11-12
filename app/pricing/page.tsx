@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Check, Lock } from "lucide-react";
+import { Check, Lock } from "@/components/ui/icons";
 
 import { createPaymentOrderAction } from "@/app/pricing/actions";
 import PaymentSubmitButton from "@/components/payment-submit-button";

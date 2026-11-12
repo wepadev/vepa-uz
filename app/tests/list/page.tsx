@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Lock, Play, RotateCcw } from "lucide-react";
+import { Lock, Play, RotateCcw } from "@/components/ui/icons";
 import { notFound, redirect } from "next/navigation";
 
 import EmptyState from "@/components/ui/empty-state";
@@ -303,9 +303,11 @@ export default async function TestListPage({ searchParams }: PageProps) {
       .filter((id): id is number => typeof id === "number"),
   );
 
-  const tests = ((testsResult.data ?? []) as TestRow[]).filter(
-    (test) => !lessonTestIds.has(test.id),
-  );
+  /*
+   * Darsga biriktirilgan testlar ham şu yerda körinadi — ilgari ular
+   * Testlardan yaşirilardi va mavzu "test qöşilmagan" bölib qolardi.
+   */
+  const tests = (testsResult.data ?? []) as TestRow[];
 
   const testIds = tests.map((test) => test.id);
   let questions: QuestionRow[] = [];
@@ -502,9 +504,14 @@ export default async function TestListPage({ searchParams }: PageProps) {
                             {test.title}
                           </h2>
 
-                          {isFree && !isPremium && !isAdmin && (
-                            <Tag tone="free">Bepul</Tag>
-                          )}
+                          <span className="flex shrink-0 gap-1">
+                            {lessonTestIds.has(test.id) && (
+                              <Tag tone="neutral">Dars testi</Tag>
+                            )}
+                            {isFree && !isPremium && !isAdmin && (
+                              <Tag tone="free">Bepul</Tag>
+                            )}
+                          </span>
                         </div>
 
                         <p className="num mt-0.5 text-[13px] text-mb-muted">

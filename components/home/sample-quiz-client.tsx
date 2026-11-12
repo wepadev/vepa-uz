@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Check, RotateCcw, X } from "lucide-react";
+import { ArrowRight, Check, RotateCcw, X } from "@/components/ui/icons";
 
 import { cn } from "@/lib/utils";
 

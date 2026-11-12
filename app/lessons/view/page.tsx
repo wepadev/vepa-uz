@@ -20,7 +20,7 @@ import {
   testLabel,
   type TestWithTopic,
 } from "@/lib/test-label";
-import { Check, ChevronLeft, ChevronRight, Lock } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Lock } from "@/components/ui/icons";
 import PageHeader from "@/components/ui/page-header";
 import ProgressRing from "@/components/ui/progress-ring";
 import { RowIndex } from "@/components/ui/row";

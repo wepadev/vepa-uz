@@ -61,9 +61,9 @@ export async function createAssignment(formData: FormData) {
   /*
    * Himoya: forma o'zgartirilib boshqa test yuborilmasin. Tekshiruv
    * testning nashr qilinganini va videodars testi emasligini ko'radi
-   * (db/26).
+   * (db/40: is_assignable_test).
    */
-  const allowedResult = await supabase.rpc("is_group_only_test", {
+  const allowedResult = await supabase.rpc("is_assignable_test", {
     p_test_id: testId,
   });
 

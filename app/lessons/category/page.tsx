@@ -1,5 +1,5 @@
 
-import { Lock } from "lucide-react";
+import { Lock } from "@/components/ui/icons";
 import { notFound } from "next/navigation";
 
 import LessonCard from "@/components/lesson-card";

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight } from "@/components/ui/icons";
 
 import EmptyState from "@/components/ui/empty-state";
 import { GlyphTile } from "@/components/ui/glyph";
@@ -31,18 +31,19 @@ type SectionRow = {
 
 type TestRow = {
   id: number;
-  section_id: number | null;
+  topic_id: number | null;
 };
 
-type LessonTestRow = {
-  test_id: number;
+type TopicRow = {
+  id: number;
+  section_id: number;
 };
 
 export default async function TestsPage() {
   const { supabase, profile } =
     await requireSectionAccess("tests");
 
-  const [examTypesResult, sectionsResult, testsResult, lessonTestsResult] =
+  const [examTypesResult, sectionsResult, testsResult, topicsResult] =
     await Promise.all([
       supabase
         .from("test_exam_types")
@@ -56,12 +57,13 @@ export default async function TestsPage() {
         .eq("is_published", true),
       supabase
         .from("tests")
-        .select("id, section_id")
+        .select("id, topic_id")
         .eq("is_published", true)
-        .not("section_id", "is", null),
+        .not("topic_id", "is", null),
       supabase
-        .from("lesson_tests")
-        .select("test_id"),
+        .from("test_topics")
+        .select("id, section_id")
+        .eq("is_published", true),
     ]);
 
   if (examTypesResult.error) {
@@ -82,19 +84,19 @@ export default async function TestsPage() {
     );
   }
 
-  if (lessonTestsResult.error) {
-    throw new Error(
-      `Dars testlari tekşirilmadi: ${lessonTestsResult.error.message}`,
-    );
+  if (topicsResult.error) {
+    throw new Error(`Mavzular yuklanmadi: ${topicsResult.error.message}`);
   }
 
   const examTypes = (examTypesResult.data ?? []) as ExamTypeRow[];
   const sections = (sectionsResult.data ?? []) as SectionRow[];
   const tests = (testsResult.data ?? []) as TestRow[];
-  const lessonTestIds = new Set(
-    ((lessonTestsResult.data ?? []) as LessonTestRow[]).map(
-      (row) => row.test_id,
-    ),
+  // Test öquvçiga faqat naşr qilingan mavzu orqali körinadi
+  const sectionOfTopic = new Map(
+    ((topicsResult.data ?? []) as TopicRow[]).map((topic) => [
+      topic.id,
+      topic.section_id,
+    ]),
   );
 
   const sectionCountByExam = new Map<number, number>();
@@ -108,13 +110,14 @@ export default async function TestsPage() {
   }
 
   for (const test of tests) {
-    if (test.section_id === null || lessonTestIds.has(test.id)) {
-      continue;
-    }
+    const sectionId =
+      test.topic_id === null ? undefined : sectionOfTopic.get(test.topic_id);
+
+    if (sectionId === undefined) continue;
 
     testCountBySection.set(
-      test.section_id,
-      (testCountBySection.get(test.section_id) ?? 0) + 1,
+      sectionId,
+      (testCountBySection.get(sectionId) ?? 0) + 1,
     );
   }
 

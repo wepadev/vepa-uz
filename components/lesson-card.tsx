@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Check, ChevronRight, Lock, Play } from "lucide-react";
+import { Check, ChevronRight, Lock, Play } from "@/components/ui/icons";
 
 import { getYouTubeThumbnail } from "@/lib/youtube";
 import { cn } from "@/lib/utils";

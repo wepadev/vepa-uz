@@ -6,7 +6,7 @@ import {
   AlertTriangle,
   Info,
   type LucideIcon,
-} from "lucide-react";
+} from "@/components/ui/icons";
 
 type ConfirmVariant =
   | "warning"

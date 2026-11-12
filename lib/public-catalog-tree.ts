@@ -73,7 +73,7 @@ export const getCatalogTree = unstable_cache(
     try {
       const admin = createAdminClient();
 
-      const [exams, sections, topics, tests, lessonTests, categories, lessons, textbooks] =
+      const [exams, sections, topics, tests, categories, lessons, textbooks] =
         await Promise.all([
           admin
             .from("test_exam_types")
@@ -98,7 +98,6 @@ export const getCatalogTree = unstable_cache(
             .select("id, topic_id")
             .eq("is_published", true)
             .not("topic_id", "is", null),
-          admin.from("lesson_tests").select("test_id"),
           admin
             .from("lesson_categories")
             .select("id, title, order_number")
@@ -123,16 +122,11 @@ export const getCatalogTree = unstable_cache(
         return null;
       }
 
-      // Dars ichidagi testlar katalogda hisoblanmaydi (sayt ham shunday qiladi)
-      const lessonTestIds = new Set(
-        ((lessonTests.data ?? []) as Row[]).map((row) => num(row.test_id)),
-      );
+      // Dars testlari ham katalogda sanaladi (sayt ham şunday qiladi)
       const testCount = new Map<number, number>();
 
       for (const row of (tests.data ?? []) as Row[]) {
-        const id = num(row.id);
         const topicId = num(row.topic_id);
-        if (lessonTestIds.has(id)) continue;
         testCount.set(topicId, (testCount.get(topicId) ?? 0) + 1);
       }
 

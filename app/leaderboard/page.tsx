@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
-import { ChevronDown, Play } from "lucide-react";
+import { ChevronDown, Play } from "@/components/ui/icons";
 import { Tag } from "@/components/ui/row";
 import { btnGhost } from "@/lib/ui";
 import { cn } from "@/lib/utils";

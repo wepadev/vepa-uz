@@ -8,7 +8,7 @@ import {
   ListChecks,
   Save,
   Timer,
-} from "lucide-react";
+} from "@/components/ui/icons";
 
 import StartTestButton from "@/components/start-test-button";
 import AppAlert from "@/components/ui/app-alert";

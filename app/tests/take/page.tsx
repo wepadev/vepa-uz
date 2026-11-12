@@ -7,6 +7,7 @@ import TestRunner, {
   type RunnerItem,
 } from "@/components/test-runner";
 import { requireSectionAccess } from "@/lib/require-section-access";
+import { isCatalogTestFree, isGroupOnlyTest } from "@/lib/group-tests";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import { TEST_TOPIC_SELECT, testLabel } from "@/lib/test-label";
@@ -168,16 +169,25 @@ async function beginTest(
     }
   } else {
     // Guruh testini faqat vazifa havolasi bilan boshlash mumkin
-    const { data: groupOnly } = await supabase.rpc("is_group_only_test", {
-      p_test_id: testId,
-    });
-
-    if (groupOnly === true) {
+    if (await isGroupOnlyTest(supabase, testId)) {
       redirect(
         `/homework?xato=${encodeURIComponent(
           "Bu test faqat uy vazifasi sifatida oçiladi.",
         )}`,
       );
+    }
+  }
+
+  // Premium qoidasi (sahifadagi bilan bir xil) — db/40 dan oldin ham
+  if (assignmentId === null && lessonId === null) {
+    const { profile, isPremium } = await requireSectionAccess("tests");
+
+    if (
+      profile.role !== "admin" &&
+      !isPremium &&
+      !(await isCatalogTestFree(supabase, testId))
+    ) {
+      redirect(`/tests/take?${query.toString()}`);
     }
   }
 
@@ -428,12 +438,7 @@ export default async function TakeTestPage({
    * tekshiruvni o'tkazib yuboramiz, sayt ishlashda davom etadi.
    */
   if (assignmentId === null) {
-    const groupOnlyResult = await supabase.rpc(
-      "is_group_only_test",
-      { p_test_id: testId },
-    );
-
-    if (groupOnlyResult.data === true) {
+    if (await isGroupOnlyTest(supabase, testId)) {
       redirect(
         `/homework?xato=${encodeURIComponent(
           "Bu test faqat uy vazifasi sifatida oçiladi.",
@@ -527,7 +532,25 @@ export default async function TakeTestPage({
     { p_test_id: testId },
   );
 
-  if (!accessCheckError && canAccess === false) {
+  /*
+   * Testlar bölimidan oçilgan katalog testi uçun Premium qoidasini
+   * şu yerda ham tekşiramiz (ro'yxatdagi qulf bilan bir xil). Bazadagi
+   * can_access_test() db/40 işga tuşirilguniça har bir katalog
+   * testiga true qaytaradi.
+   */
+  const { profile: viewer, isPremium: viewerIsPremium } =
+    await requireSectionAccess(
+      validatedLessonId !== null ? "lessons" : "tests",
+    );
+
+  const lockedByCatalogRule =
+    assignmentId === null &&
+    validatedLessonId === null &&
+    viewer.role !== "admin" &&
+    !viewerIsPremium &&
+    !(await isCatalogTestFree(supabase, testId));
+
+  if (lockedByCatalogRule || (!accessCheckError && canAccess === false)) {
     return (
       <TestLockedScreen
         title={testLabel(test)}

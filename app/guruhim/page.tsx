@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag } from "@/components/ui/icons";
 
 import AppAlert from "@/components/ui/app-alert";
 import EmptyState from "@/components/ui/empty-state";

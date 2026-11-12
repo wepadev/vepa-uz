@@ -8,7 +8,7 @@ import {
   ListChecks,
   Play,
   Send,
-} from "lucide-react";
+} from "@/components/ui/icons";
 
 import SampleQuiz from "@/components/home/sample-quiz";
 import BrandMark from "@/components/ui/brand-mark";
