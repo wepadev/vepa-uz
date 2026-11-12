@@ -109,6 +109,13 @@ const DROP = [
   /\\[,;!]|\\ /g,
 ];
 
+/** Formula muhiti: içidagi `\\` saqlanadi */
+const MATH_ENV =
+  /\\begin\{(cases|aligned|gathered|array|matrix|pmatrix|bmatrix|vmatrix|split|align\*?|gather\*?|alignedat|rcases|dcases)\}[\s\S]*?\\end\{\1\}/g;
+
+const ROW_BREAK = "\u0000QATOR\u0000";
+const TEXT_MARK = "\u0000MATN\u0000{";
+
 /** `\textbf{x}` -> `x`: faqat matn qoladi */
 function unwrap(text: string, name: string): string {
   const mark = `\\${name}{`;
@@ -141,16 +148,41 @@ function unwrap(text: string, name: string): string {
  * bezaklari olib tashlanadi.
  */
 export function cleanTex(text: string): string {
-  let out = text;
+  /*
+   * Formula muhiti içida `\text{...}` qoladi (aks holda so'zlar
+   * kursiv harflarga aylanadi), `\begin{array}[t]{@{}r@{ }l@{}}`
+   * kabi KaTeX tuşunmaydigan ustun sozlamasi soddalaştiriladi.
+   */
+  let out = text.replace(MATH_ENV, (block) =>
+    block
+      .replace(/\\text\{/g, TEXT_MARK)
+      .replace(
+        /^\\begin\{array\}\s*(?:\[[a-z]\])?\s*\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}/,
+        (_match, spec: string) =>
+          `\\begin{array}{${spec.replace(/@\{[^{}]*\}/g, "").replace(/\s+/g, "")}}`,
+      ),
+  );
 
   for (const name of ["textbf", "textit", "emph", "text", "mbox", "textrm"]) {
     out = unwrap(out, name);
   }
 
+  out = out.split(TEXT_MARK).join("\\text{");
+
   /* `peri\-met\-rini` — bo'g'in ko'chirish ishorasi, so'z bo'linmaydi */
   out = out.replace(/(?<!\\)\\-/g, "");
 
+  /*
+   * Formula muhitlari (`cases`, `aligned`, `gathered`, ...) içidagi
+   * `\\` — qator bölinişi, u matematikaning bir qismi. Uni öçirsak,
+   * sistema yoki ikki tarmoqli funksiya bitta qatorga yopişib qoladi.
+   * Şuning uçun muhit içidagi `\\` vaqtinça yaşiriladi.
+   */
+  out = out.replace(MATH_ENV, (block) => block.replace(/\\\\/g, ROW_BREAK));
+
   for (const pattern of DROP) out = out.replace(pattern, " ");
+
+  out = out.split(ROW_BREAK).join("\\\\ ");
 
   return out
     /*
