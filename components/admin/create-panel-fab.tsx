@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus } from "@/components/ui/icons";
 
 /**
  * Telefonda pastda turadigan "+ Yangi ..." tugmasi.

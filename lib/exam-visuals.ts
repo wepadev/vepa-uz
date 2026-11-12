@@ -3,8 +3,8 @@ import {
   GraduationCap,
   NotebookPen,
   ScrollText,
-  type LucideIcon,
-} from "lucide-react";
+  type IconComponent,
+} from "@/components/ui/icons";
 
 import type { Accent } from "@/components/ui/section-visual";
 
@@ -21,7 +21,7 @@ export type ExamCode =
   | "sat"
   | "guruh-testlari";
 
-export const EXAM_ICONS: Record<ExamCode, LucideIcon> = {
+export const EXAM_ICONS: Record<ExamCode, IconComponent> = {
   attestatsiya: Award,           // medal — pedagog attestatsiyasi
   "milliy-sertifikat": ScrollText, // sertifikat varaqasi
   sat: GraduationCap,            // akademik qalpoq
@@ -43,7 +43,7 @@ export const EXAM_ACCENTS: Record<ExamCode, Accent> = {
 };
 
 /** Noma'lum kod kelsa ham sahifa buzilmasin */
-export function examIcon(code: string): LucideIcon {
+export function examIcon(code: string): IconComponent {
   return EXAM_ICONS[code as ExamCode] ?? Award;
 }
 
@@ -53,7 +53,7 @@ export function examAccent(code: string): Accent {
 
 /**
  * Öquvçi sahifalari uçun yönaliş belgisi (components/ui/glyph.tsx).
- * Admin panel lucide ikonkasida qoladi, öquvçi tomoni öz belgisida.
+ * Admin panel kiçik ikonkada (examIcon), öquvçi tomoni katta belgida.
  */
 export function examGlyph(
   code: string,

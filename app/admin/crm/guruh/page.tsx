@@ -14,7 +14,7 @@ import {
   Trophy,
   UserPlus,
   Users,
-} from "lucide-react";
+} from "@/components/ui/icons";
 
 import AdminTabs from "@/components/admin/admin-tabs";
 import GroupAssignments from "@/components/admin/group-assignments";
@@ -132,12 +132,23 @@ function todayInTashkent() {
   }).format(new Date());
 }
 
-function medal(index: number) {
-  if (index === 0) return "🥇";
-  if (index === 1) return "🥈";
-  if (index === 2) return "🥉";
-
-  return String(index + 1);
+/** Örin belgisi: 1-örin — sariq urğu, 2–3 — oçiq kök, qolgani kulrang */
+function Rank({ index }: { index: number }) {
+  return (
+    <span
+      className={cn(
+        "num grid h-8 w-8 shrink-0 place-items-center rounded-xl text-sm font-bold",
+        index === 0
+          ? "bg-vp-accent text-vp-on-accent"
+          : index <= 2
+            ? "bg-mb-tint text-mb-brandDark"
+            : "bg-slate-100 text-slate-600",
+      )}
+      aria-label={`${index + 1}-örin`}
+    >
+      {index + 1}
+    </span>
+  );
 }
 
 /** Bitta qoida maydoni */
@@ -435,9 +446,7 @@ export default async function CrmGroupPage({ searchParams }: PageProps) {
                       )}
                     >
                       <div className="flex items-center gap-3">
-                        <span className="w-7 shrink-0 text-center text-lg font-bold">
-                          {medal(index)}
-                        </span>
+                        <Rank index={index} />
 
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-[15px] font-semibold text-mb-ink">

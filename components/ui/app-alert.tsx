@@ -6,7 +6,7 @@ import {
   CheckCircle2,
   Info,
   XCircle,
-  type LucideIcon,
+  type IconComponent,
 } from "@/components/ui/icons";
 
 type AlertVariant =
@@ -68,7 +68,7 @@ const styles: Record<
 
 const ALERT_ICONS: Record<
   AlertVariant,
-  LucideIcon
+  IconComponent
 > = {
   success: CheckCircle2,
   error: XCircle,

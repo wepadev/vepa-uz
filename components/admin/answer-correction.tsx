@@ -1,4 +1,4 @@
-import { CheckCircle2, KeyRound, XCircle } from "lucide-react";
+import { CheckCircle2, KeyRound, XCircle } from "@/components/ui/icons";
 import SubmitButton from "@/components/ui/submit-button";
 
 type AnswerCorrectionProps = {

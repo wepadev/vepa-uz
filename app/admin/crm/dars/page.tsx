@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { CalendarDays, CheckCircle2, ChevronLeft, ChevronRight } from "lucide-react";
+import { CalendarDays, CheckCircle2, ChevronLeft, ChevronRight } from "@/components/ui/icons";
 
 import AppAlert from "@/components/ui/app-alert";
 import SubmitButton from "@/components/ui/submit-button";

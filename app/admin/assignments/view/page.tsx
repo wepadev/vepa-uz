@@ -7,7 +7,7 @@ import {
   RotateCcw,
   TrendingDown,
   XCircle,
-} from "lucide-react";
+} from "@/components/ui/icons";
 
 import MathText from "@/components/math-text";
 

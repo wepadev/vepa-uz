@@ -7,7 +7,7 @@ import {
   CircleSlash,
   MinusCircle,
   XCircle,
-} from "lucide-react";
+} from "@/components/ui/icons";
 
 import SubmitButton from "@/components/ui/submit-button";
 import type { CheckResult } from "@/lib/answer-check";

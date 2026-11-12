@@ -1,5 +1,5 @@
 import { useId, type ReactNode } from "react";
-import { Plus } from "lucide-react";
+import { Plus } from "@/components/ui/icons";
 
 import CreatePanelFab from "@/components/admin/create-panel-fab";
 

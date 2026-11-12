@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { LucideIcon } from "lucide-react";
+import type { IconComponent } from "@/components/ui/icons";
 
 import { cn } from "@/lib/utils";
 
@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 export type AdminTab = {
   href: string;
   label: string;
-  icon?: LucideIcon;
+  icon?: IconComponent;
   /* Yorliq yonidagi son, masalan faol vazifalar */
   count?: number;
 };

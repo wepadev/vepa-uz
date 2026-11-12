@@ -35,6 +35,7 @@ import {
   type QuestionRow,
 } from "./shared";
 import PageHeader from "@/components/ui/page-header";
+import { ArrowRight } from "@/components/ui/icons";
 
 const inputClass =
   "mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 outline-none focus:border-mb-brand focus:ring-2 focus:ring-blue-100";
@@ -869,9 +870,10 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                           href={answer.solution_video_url}
                           target="_blank"
                           rel="noreferrer"
-                          className="mt-4 inline-block text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
+                          className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
                         >
-                          Videoyeçimni oçiş →
+                          Videoyeçimni oçiş
+                          <ArrowRight className="h-4 w-4" />
                         </a>
                       )}
 
@@ -1211,9 +1213,10 @@ export default async function ManageTestPage({ searchParams }: PageProps) {
                                 href={answer.solution_video_url}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="mt-4 inline-block text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
+                                className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
                               >
-                                Videoyeçimni oçiş →
+                                Videoyeçimni oçiş
+                                <ArrowRight className="h-4 w-4" />
                               </a>
                             )}
                           </div>

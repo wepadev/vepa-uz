@@ -10,6 +10,7 @@ import { createClient } from "@/lib/supabase/client";
 import AppAlert from "@/components/ui/app-alert";
 import { LoadingLabel } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
+import { ChevronLeft } from "@/components/ui/icons";
 
 function translateResetError(message: string) {
   const normalized = message.toLowerCase();
@@ -183,9 +184,10 @@ export function ForgotPasswordForm({
 
       <a
         href="/auth/login"
-        className="mt-5 inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+        className="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-xl border border-slate-300 bg-white px-5 py-3 text-center text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
       >
-        ← Kiriş sahifasiga qaytiş
+        <ChevronLeft className="h-4 w-4" />
+        Kiriş sahifasiga qaytiş
       </a>
     </div>
   );

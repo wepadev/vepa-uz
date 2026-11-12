@@ -6,7 +6,7 @@ import {
   Info,
   TrendingUp,
   Users,
-} from "lucide-react";
+} from "@/components/ui/icons";
 
 import PageHeader from "@/components/ui/page-header";
 import { getCurrentUser } from "@/lib/supabase/current-user";

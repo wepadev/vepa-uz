@@ -5,12 +5,13 @@ import { useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
 import {
   AlertTriangle,
+  ArrowRight,
   CheckCircle2,
   FileUp,
   Loader2,
   Trash2,
   Youtube,
-} from "lucide-react";
+} from "@/components/ui/icons";
 
 import MathText from "@/components/math-text";
 import AppAlert from "@/components/ui/app-alert";
@@ -554,9 +555,10 @@ function describeNonJsonResponse(status: number, body: string) {
                   <a
                     key={index}
                     href={`/admin/tests/manage?testId=${item.savedTestId}`}
-                    className="text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-mb-brand hover:text-mb-brandDark"
                   >
-                    {index + 1}-variant: {item.title} →
+                    {index + 1}-variant: {item.title}
+                    <ArrowRight className="h-4 w-4 shrink-0" />
                   </a>
                 ))}
               </div>

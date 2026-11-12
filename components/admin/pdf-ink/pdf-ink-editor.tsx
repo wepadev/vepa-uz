@@ -19,8 +19,8 @@ import {
   Type,
   Undo2,
   X,
-  type LucideIcon,
-} from "lucide-react";
+  type IconComponent,
+} from "@/components/ui/icons";
 
 import AppAlert from "@/components/ui/app-alert";
 import {
@@ -253,7 +253,7 @@ function ToolButton({
   disabled = false,
   onClick,
 }: {
-  icon: LucideIcon;
+  icon: IconComponent;
   label: string;
   active?: boolean;
   disabled?: boolean;

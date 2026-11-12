@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Download, Loader2 } from "lucide-react";
+import { Download, Loader2 } from "@/components/ui/icons";
 
 import { formatPageRange, parsePageRange } from "@/lib/pdf-ink";
 import { cn } from "@/lib/utils";

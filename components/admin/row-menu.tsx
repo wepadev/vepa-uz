@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "@/components/ui/icons";
 
 /**
  * Qatordagi kamdan kam kerak bo'ladigan amallar uchun "⋯" menyu.
