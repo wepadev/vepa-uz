@@ -6,6 +6,7 @@
  * faqat mavzular: yaratish, tartiblash, nashr qilish, o'chirish.
  */
 import Link from "next/link";
+import { publishTestParents } from "@/lib/publish-test-parents";
 
 import ConfirmSubmitButton from "@/components/admin/confirm-submit-button";
 import CreatePanel from "@/components/admin/create-panel";
@@ -204,6 +205,15 @@ async function changeTopicState(formData: FormData) {
     if (testsError) {
       throw new Error(
         `Mavzu naşr qilindi, lekin testlar naşr qilinmadi: ${testsError.message}`,
+      );
+    }
+
+    /* Bölimi yoki yönalişi qoralama bölsa, testlar baribir körinmasdi */
+    const parentError = await publishTestParents(supabase, { topicId });
+
+    if (parentError) {
+      throw new Error(
+        `Mavzu naşr qilindi, lekin bölimi oçilmadi: ${parentError}`,
       );
     }
 
