@@ -17,7 +17,7 @@ import {
 
 /**
  * Yozma yeçimlar repodagi `content/yechimlar/NN.md` fayllarida
- * turadi. Admin ularni körib çiqib, mavzu bö'yiça bazaga yozadi
+ * turadi. Admin ularni körib çiqib, mavzu böyiça bazaga yozadi
  * (`answer_keys.solution_text`). Öquvçi yeçimni test natijasi
  * sahifasida köradi.
  */
@@ -61,16 +61,16 @@ export type TopicMatch = {
   id: number;
   title: string;
   sectionTitle: string;
-  /** Sarlavha bö'yiça topildimi yoki tartib raqami bö'yiça */
+  /** Sarlavha böyiça topildimi yoki tartib raqami böyiça */
   by: "title" | "order";
 };
 
 /**
  * Fayldagi mavzu raqamini bazadagi mavzuga bog'laydi.
  *
- * Avval sarlavha bö'yiça (alifbo va tinish belgilari farq qilmaydi).
+ * Avval sarlavha böyiça (alifbo va tinish belgilari farq qilmaydi).
  * Topilmasa — "Algebra" bölimlaridagi mavzular ketma-ketligidagi
- * örni bö'yiça (1-qism = 1-37, 2-qism = 38-65, 3-qism = 66-89).
+ * örni böyiça (1-qism = 1-37, 2-qism = 38-65, 3-qism = 66-89).
  */
 export async function matchTopics(
   supabase: SupabaseClient,

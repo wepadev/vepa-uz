@@ -36,7 +36,7 @@ export type SolutionFile = {
   /** Mavzu raqami (1-89) */
   topic: number;
   title: string;
-  /** test raqami -> savollar (raqam bö'yiça tartiblangan) */
+  /** test raqami -> savollar (raqam böyiça tartiblangan) */
   tests: Map<number, SolutionItem[]>;
   errors: string[];
 };
@@ -185,8 +185,8 @@ export type MatchedQuestion = {
 /**
  * Bitta testning savollarini yeçimlar bilan juftlaydi.
  *
- * Juftlaş tartib bö'yiça: bazadagi variantli savollar `order_number`
- * bö'yiça tartiblanadi, k-savolga fayldagi k-yeçim tuşadi. Kalit
+ * Juftlaş tartib böyiça: bazadagi variantli savollar `order_number`
+ * böyiça tartiblanadi, k-savolga fayldagi k-yeçim tuşadi. Kalit
  * harfi bazadagi töğri javobga mos kelmasa — "wrong-answer", bunday
  * savolga yeçim yozilmaydi.
  */

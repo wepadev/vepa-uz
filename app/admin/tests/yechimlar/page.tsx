@@ -25,7 +25,7 @@ export const dynamic = "force-dynamic";
  *
  * Yeçimlar repodagi `content/yechimlar/NN.md` fayllarida. Bu sahifa
  * har bir faylni bazadagi mavzuga bog'laydi, savollarni tartib
- * bö'yiça juftlaydi va kalit harfini tekşiradi. "Nashr qiliş"
+ * böyiça juftlaydi va kalit harfini tekşiradi. "Nashr qiliş"
  * bosilgandagina yeçim bazaga yoziladi — öquvçi uni test natijasi
  * sahifasida köradi.
  */
@@ -82,7 +82,7 @@ async function unpublishAction(formData: FormData) {
   redirect(`/admin/tests/yechimlar?mavzu=${topic}&natija=ocirildi`);
 }
 
-/** Bölim (masalan 1-37) bö'yiça hammasini birdan nashr qiliş */
+/** Bölim (masalan 1-37) böyiça hammasini birdan nashr qiliş */
 async function publishRangeAction(formData: FormData) {
   "use server";
 
@@ -192,7 +192,7 @@ async function TopicDetail({ topic, notice }: { topic: number; notice?: string }
           Bazada: {match.sectionTitle} → {match.title}
           {match.by === "order" && (
             <span className="ml-2 rounded-full bg-amber-50 px-2 py-0.5 align-middle text-xs font-semibold text-amber-700">
-              tartib raqami bö&apos;yiça topildi — tekşiring
+              tartib raqami böyiça topildi — tekşiring
             </span>
           )}
         </p>

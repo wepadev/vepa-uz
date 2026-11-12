@@ -53,7 +53,7 @@ test("sarlavha alifbo va qavsdan qat'i nazar solişiriladi", () => {
   assert.equal(testNumberFromTitle("Umumiy"), null);
 });
 
-test("savollar tartib bö'yiça juftlanadi, kalit mos kelmasa yozilmaydi", () => {
+test("savollar tartib böyiça juftlanadi, kalit mos kelmasa yozilmaydi", () => {
   const file = parseSolutionFile(sample);
   const matched = matchQuestions(
     [
