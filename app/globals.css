@@ -208,11 +208,14 @@ iframe {
     sans-serif;
 
   /*
-   * KaTeX formulas use the KaTeX_Main face.
-   * The same face is used for question, option,
-   * problem and solution text.
+   * Savol, variant, masala va yeçim matni — CMU Serif
+   * (app/layout.tsx, --font-cmu). KaTeX formulalari ham
+   * Computer Modern, şuning uçun matn va formula bir xil.
+   * KaTeX_Main'da ş, ğ yöq — u faqat zaxira.
    */
   --font-latex-text:
+    var(--font-cmu),
+    "CMU Serif",
     "KaTeX_Main",
     "Latin Modern Roman",
     "Times New Roman",
@@ -252,9 +255,18 @@ select {
 }
 
 /*
- * Do not override KaTeX formula internals.
- * Their original math fonts stay unchanged.
+ * KaTeX'ning öz matematik şriftlari özgarmaydi. Faqat ö, ğ, ş, ç:
+ * lib/katex-harflar.ts ularni bitta harfga qaytaradi va bu yerda
+ * CMU Serif bilan çiziladi (formula içida, \text{} da ham).
  */
+.katex .vp-harf {
+  font-family: var(--font-cmu), "CMU Serif", "KaTeX_Main", serif;
+  font-style: normal;
+}
+
+.katex .vp-harf.mathnormal {
+  font-style: italic;
+}
 
 code,
 pre,
