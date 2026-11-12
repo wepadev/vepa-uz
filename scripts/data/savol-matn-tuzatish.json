@@ -1,287 +1,12 @@
 [
  {
-  "topic": 6,
-  "test": 1,
-  "number": 4,
-  "fields": {
-   "question_text": [
-    "Quyidagi tengliklardan neçtasi qoldiqli bölişni ifodalaydi: $$ \\begin{aligned} 95&=13\\cdot7+4, 72&=8\\cdot8+8, 107&=15\\cdot7+2, 66&=9\\cdot7+3. \\end{aligned} $$",
-    "Quyidagi tengliklardan neçtasi qoldiqli bölişni ifodalaydi: $$ \\begin{aligned} 95&=13\\cdot7+4, 72&=8\\cdot8+8,\\\\ 107&=15\\cdot7+2, 66&=9\\cdot7+3. \\end{aligned} $$"
-   ]
-  }
- },
- {
-  "topic": 6,
-  "test": 2,
-  "number": 4,
-  "fields": {
-   "question_text": [
-    "Quyidagi tengliklardan neçtasi qoldiqli bölişni ifodalaydi: $$ \\begin{aligned} 83&=12\\cdot6+11, 96&=14\\cdot7-2, 121&=16\\cdot7+9, 70&=7\\cdot9+7. \\end{aligned} $$",
-    "Quyidagi tengliklardan neçtasi qoldiqli bölişni ifodalaydi: $$ \\begin{aligned} 83&=9\\cdot8+11, 96&=14\\cdot7-2,\\\\ 121&=12\\cdot10+1, 70&=8\\cdot8+6. \\end{aligned} $$"
-   ]
-  }
- },
- {
-  "topic": 6,
-  "test": 3,
-  "number": 4,
-  "fields": {
-   "question_text": [
-    "Quyidagi tengliklardan neçtasi qoldiqli bölişni ifodalaydi: $$ \\begin{aligned} 58&=9\\cdot6+4, 84&=13\\cdot6+6, 100&=11\\cdot9+2, 72&=8\\cdot9+0. \\end{aligned} $$",
-    "Quyidagi tengliklardan neçtasi qoldiqli bölişni ifodalaydi: $$ \\begin{aligned} 58&=9\\cdot6+4, 84&=9\\cdot9+3,\\\\ 100&=11\\cdot9+2, 72&=8\\cdot9+0. \\end{aligned} $$"
-   ]
-  }
- },
- {
-  "topic": 9,
-  "test": 1,
-  "number": 6,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{gathered} \\left(1+\\dfrac{1}{6}\\right)\\left(1+\\dfrac{1}{7}\\right) \\left(1+\\dfrac{1}{8}\\right)\\cdots\\left(1+\\dfrac{1}{71}\\right) \\end{gathered} $",
-    "Hisoblang: $ \\begin{gathered} \\left(1+\\dfrac{1}{6}\\right)\\left(1+\\dfrac{1}{7}\\right)\\\\ \\left(1+\\dfrac{1}{8}\\right)\\cdots\\left(1+\\dfrac{1}{71}\\right) \\end{gathered} $"
-   ]
-  }
- },
- {
-  "topic": 9,
-  "test": 1,
-  "number": 7,
-  "fields": {
-   "question_text": [
-    "$ \\begin{gathered} \\left(1-\\dfrac{2}{7}\\right)\\left(1-\\dfrac{2}{8}\\right) \\left(1-\\dfrac{2}{9}\\right)\\cdots\\left(1-\\dfrac{2}{60}\\right) \\end{gathered} $ ni hisoblang.",
-    "$ \\begin{gathered} \\left(1-\\dfrac{2}{7}\\right)\\left(1-\\dfrac{2}{8}\\right)\\\\ \\left(1-\\dfrac{2}{9}\\right)\\cdots\\left(1-\\dfrac{2}{60}\\right) \\end{gathered} $ ni hisoblang."
-   ]
-  }
- },
- {
-  "topic": 9,
-  "test": 1,
-  "number": 14,
-  "fields": {
-   "question_text": [
-    "$ \\begin{gathered} \\dfrac{3\\cdot6+2}{4\\cdot7+2}\\cdot\\dfrac{5\\cdot8+2}{6\\cdot9+2}\\cdot{} \\dfrac{7\\cdot10+2}{8\\cdot11+2}\\cdot...\\cdot\\dfrac{43\\cdot46+2}{44\\cdot47+2} \\end{gathered} $ ni hisoblang.",
-    "$ \\begin{gathered} \\dfrac{3\\cdot6+2}{4\\cdot7+2}\\cdot\\dfrac{5\\cdot8+2}{6\\cdot9+2}\\cdot{}\\\\ \\dfrac{7\\cdot10+2}{8\\cdot11+2}\\cdot...\\cdot\\dfrac{43\\cdot46+2}{44\\cdot47+2} \\end{gathered} $ ni hisoblang."
-   ]
-  }
- },
- {
-  "topic": 9,
-  "test": 2,
-  "number": 6,
-  "fields": {
-   "question_text": [
-    "$ \\begin{gathered} \\left(1+\\dfrac{1}{7}\\right)\\left(1+\\dfrac{1}{8}\\right) \\left(1+\\dfrac{1}{9}\\right)\\cdots\\left(1+\\dfrac{1}{90}\\right) \\end{gathered} $ ni hisoblang.",
-    "$ \\begin{gathered} \\left(1+\\dfrac{1}{7}\\right)\\left(1+\\dfrac{1}{8}\\right)\\\\ \\left(1+\\dfrac{1}{9}\\right)\\cdots\\left(1+\\dfrac{1}{90}\\right) \\end{gathered} $ ni hisoblang."
-   ]
-  }
- },
- {
-  "topic": 9,
-  "test": 2,
-  "number": 7,
-  "fields": {
-   "question_text": [
-    "$ \\begin{gathered} \\left(1-\\dfrac{2}{8}\\right)\\left(1-\\dfrac{2}{9}\\right) \\left(1-\\dfrac{2}{10}\\right)\\cdots\\left(1-\\dfrac{2}{72}\\right) \\end{gathered} $",
-    "$ \\begin{gathered} \\left(1-\\dfrac{2}{8}\\right)\\left(1-\\dfrac{2}{9}\\right)\\\\ \\left(1-\\dfrac{2}{10}\\right)\\cdots\\left(1-\\dfrac{2}{72}\\right) \\end{gathered} $"
-   ]
-  }
- },
- {
-  "topic": 9,
-  "test": 2,
-  "number": 14,
-  "fields": {
-   "question_text": [
-    "$ \\begin{gathered} \\dfrac{5\\cdot8+2}{6\\cdot9+2}\\cdot\\dfrac{7\\cdot10+2}{8\\cdot11+2}\\cdot{} \\cdot\\dfrac{9\\cdot12+2}{10\\cdot13+2}\\cdot...\\cdot\\dfrac{45\\cdot48+2}{46\\cdot49+2} \\end{gathered} $ ni hisoblang.",
-    "$ \\begin{gathered} \\dfrac{5\\cdot8+2}{6\\cdot9+2}\\cdot\\dfrac{7\\cdot10+2}{8\\cdot11+2}\\cdot{}\\\\ \\cdot\\dfrac{9\\cdot12+2}{10\\cdot13+2}\\cdot...\\cdot\\dfrac{45\\cdot48+2}{46\\cdot49+2} \\end{gathered} $ ni hisoblang."
-   ]
-  }
- },
- {
-  "topic": 9,
-  "test": 3,
-  "number": 6,
-  "fields": {
-   "question_text": [
-    "$ \\begin{gathered} \\left(1+\\dfrac{1}{9}\\right)\\left(1+\\dfrac{1}{10}\\right) \\left(1+\\dfrac{1}{11}\\right)\\cdots\\left(1+\\dfrac{1}{98}\\right) \\end{gathered} $ ni hisoblang.",
-    "$ \\begin{gathered} \\left(1+\\dfrac{1}{9}\\right)\\left(1+\\dfrac{1}{10}\\right)\\\\ \\left(1+\\dfrac{1}{11}\\right)\\cdots\\left(1+\\dfrac{1}{98}\\right) \\end{gathered} $ ni hisoblang."
-   ]
-  }
- },
- {
-  "topic": 9,
-  "test": 3,
-  "number": 7,
-  "fields": {
-   "question_text": [
-    "$ \\begin{gathered} \\left(1-\\dfrac{2}{10}\\right)\\left(1-\\dfrac{2}{11}\\right) \\left(1-\\dfrac{2}{12}\\right)\\cdots\\left(1-\\dfrac{2}{90}\\right) \\end{gathered} $ ni hisoblang.",
-    "$ \\begin{gathered} \\left(1-\\dfrac{2}{10}\\right)\\left(1-\\dfrac{2}{11}\\right)\\\\ \\left(1-\\dfrac{2}{12}\\right)\\cdots\\left(1-\\dfrac{2}{90}\\right) \\end{gathered} $ ni hisoblang."
-   ]
-  }
- },
- {
-  "topic": 9,
-  "test": 3,
-  "number": 14,
-  "fields": {
-   "question_text": [
-    "$ \\begin{gathered} \\dfrac{7\\cdot10+2}{8\\cdot11+2}\\cdot\\dfrac{9\\cdot12+2}{10\\cdot13+2}\\cdot{} \\cdot\\dfrac{11\\cdot14+2}{12\\cdot15+2}\\cdot...\\cdot\\dfrac{47\\cdot50+2}{48\\cdot51+2} \\end{gathered} $ ni hisoblang.",
-    "$ \\begin{gathered} \\dfrac{7\\cdot10+2}{8\\cdot11+2}\\cdot\\dfrac{9\\cdot12+2}{10\\cdot13+2}\\cdot{}\\\\ \\cdot\\dfrac{11\\cdot14+2}{12\\cdot15+2}\\cdot...\\cdot\\dfrac{47\\cdot50+2}{48\\cdot51+2} \\end{gathered} $ ni hisoblang."
-   ]
-  }
- },
- {
-  "topic": 15,
-  "test": 1,
-  "number": 12,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 10^{x+y}=\\dfrac{125}{4}, 10^{2x-y}=32 000 \\end{cases} $ bölsa, $ x $ ning qiymatini toping.",
-    "$ \\begin{cases} 10^{x+y}=\\dfrac{125}{4},\\\\ 10^{2x-y}=32 000 \\end{cases} $ bölsa, $ x $ ning qiymatini toping."
-   ]
-  }
- },
- {
-  "topic": 15,
-  "test": 1,
-  "number": 14,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 2^x\\cdot5^y=80, 2^y\\cdot5^x=1 250 \\end{cases} $ bölsa, $ x+y $ ning qiymatini toping.",
-    "$ \\begin{cases} 2^x\\cdot5^y=80,\\\\ 2^y\\cdot5^x=1 250 \\end{cases} $ bölsa, $ x+y $ ning qiymatini toping."
-   ]
-  }
- },
- {
-  "topic": 15,
-  "test": 2,
-  "number": 12,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 12^{x+y}=\\dfrac{32}{3}, 12^{2x-y}=162 \\end{cases} $ bölsa, $ x $ ning qiymatini toping.",
-    "$ \\begin{cases} 12^{x+y}=\\dfrac{32}{3},\\\\ 12^{2x-y}=162 \\end{cases} $ bölsa, $ x $ ning qiymatini toping."
-   ]
-  }
- },
- {
-  "topic": 15,
-  "test": 2,
-  "number": 14,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 3^x\\cdot2^y=324, 3^y\\cdot2^x=144 \\end{cases} $ bölsa, $ x+y $ ning qiymatini toping.",
-    "$ \\begin{cases} 3^x\\cdot2^y=324,\\\\ 3^y\\cdot2^x=144 \\end{cases} $ bölsa, $ x+y $ ning qiymatini toping."
-   ]
-  }
- },
- {
-  "topic": 15,
-  "test": 3,
-  "number": 12,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 8^{x+y}=32, 8^{2x-y}=8 192 \\end{cases} $ bölsa, $ x $ ning qiymatini toping.",
-    "$ \\begin{cases} 8^{x+y}=32,\\\\ 8^{2x-y}=8 192 \\end{cases} $ bölsa, $ x $ ning qiymatini toping."
-   ]
-  }
- },
- {
-  "topic": 15,
-  "test": 3,
-  "number": 14,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 2^x\\cdot3^y=288, 2^y\\cdot3^x=972 \\end{cases} $ bölsa, $ x+y $ ning qiymatini toping.",
-    "$ \\begin{cases} 2^x\\cdot3^y=288,\\\\ 2^y\\cdot3^x=972 \\end{cases} $ bölsa, $ x+y $ ning qiymatini toping."
-   ]
-  }
- },
- {
-  "topic": 24,
-  "test": 1,
-  "number": 12,
-  "fields": {
-   "question_text": [
-    "$ \\begin{gathered} \\biggl( \\dfrac{1}{4 - x} - \\dfrac{1}{x + 4} - \\dfrac{2x}{16 + x^2} - - \\dfrac{4x^3}{256 + x^4} \\biggr) \\cdot \\left( 1 - \\dfrac{65536}{x^8} \\right) \\end{gathered} $ ning qiymatini $ x = 40 $ bölganda hisoblang.",
-    "$ \\begin{gathered} \\biggl( \\dfrac{1}{4 - x} - \\dfrac{1}{x + 4} - \\dfrac{2x}{16 + x^2} - \\\\ - \\dfrac{4x^3}{256 + x^4} \\biggr) \\cdot \\left( 1 - \\dfrac{65536}{x^8} \\right) \\end{gathered} $ ning qiymatini $ x = 40 $ bölganda hisoblang."
-   ]
-  }
- },
- {
-  "topic": 24,
-  "test": 2,
-  "number": 12,
-  "fields": {
-   "question_text": [
-    "$ \\begin{gathered} \\biggl( \\dfrac{1}{5 - x} - \\dfrac{1}{x + 5} - \\dfrac{2x}{25 + x^2} - - \\dfrac{4x^3}{625 + x^4} \\biggr) \\cdot \\left( 1 - \\dfrac{390625}{x^8} \\right) \\end{gathered} $ ning qiymatini $ x = 32 $ bölganda hisoblang.",
-    "$ \\begin{gathered} \\biggl( \\dfrac{1}{5 - x} - \\dfrac{1}{x + 5} - \\dfrac{2x}{25 + x^2} - \\\\ - \\dfrac{4x^3}{625 + x^4} \\biggr) \\cdot \\left( 1 - \\dfrac{390625}{x^8} \\right) \\end{gathered} $ ning qiymatini $ x = 32 $ bölganda hisoblang."
-   ]
-  }
- },
- {
-  "topic": 24,
-  "test": 3,
-  "number": 12,
-  "fields": {
-   "question_text": [
-    "$ \\begin{gathered} \\biggl( \\dfrac{1}{6 - x} - \\dfrac{1}{x + 6} - \\dfrac{2x}{36 + x^2} - - \\dfrac{4x^3}{1296 + x^4} \\biggr) \\cdot \\left( 1 - \\dfrac{1679616}{x^8} \\right) \\end{gathered} $ ning qiymatini $ x = 64 $ bölganda hisoblang.",
-    "$ \\begin{gathered} \\biggl( \\dfrac{1}{6 - x} - \\dfrac{1}{x + 6} - \\dfrac{2x}{36 + x^2} - \\\\ - \\dfrac{4x^3}{1296 + x^4} \\biggr) \\cdot \\left( 1 - \\dfrac{1679616}{x^8} \\right) \\end{gathered} $ ning qiymatini $ x = 64 $ bölganda hisoblang."
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 1,
-  "number": 1,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} y = -2x + 7 3x + 2y = 13 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} y = -2x + 7 \\\\ 3x + 2y = 13 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 1,
-  "number": 2,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} x + y = 3 y - x = 7 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} x + y = 3 \\\\ y - x = 7 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 1,
-  "number": 3,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} 4x - y = -8 3x + 2y = 5 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} 4x - y = -8 \\\\ 3x + 2y = 5 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 1,
-  "number": 4,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} x + 10 = 3(x + y) y - 7 = -1(x + y) \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} x + 10 = 3(x + y) \\\\ y - 7 = -1(x + y) \\end{cases} $"
-   ]
-  }
- },
- {
   "topic": 26,
   "test": 1,
   "number": 5,
   "fields": {
    "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{2x - y}{3} + \\dfrac{x + 4y}{5} = -\\dfrac{1}{3} x - 2y = -8 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{2x - y}{3} + \\dfrac{x + 4y}{5} = -\\dfrac{1}{3} \\\\ [2ex] x - 2y = -8 \\end{cases} $"
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{2x - y}{3} + \\dfrac{x + 4y}{5} = -\\dfrac{1}{3} \\\\ [2ex] x - 2y = -8 \\end{cases} $",
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{2x - y}{3} + \\dfrac{x + 4y}{5} = -\\dfrac{1}{3} \\\\[2ex] x - 2y = -8 \\end{cases} $"
    ]
   }
  },
@@ -291,63 +16,8 @@
   "number": 6,
   "fields": {
    "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{x + 2}{4} + \\dfrac{3y - 1}{5} = \\dfrac{9}{20} \\dfrac{x + y}{x + 2y} = 2 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{x + 2}{4} + \\dfrac{3y - 1}{5} = \\dfrac{9}{20} \\\\ [2ex] \\dfrac{x + y}{x + 2y} = 2 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 1,
-  "number": 7,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} 16x^2 - y^2 = -20 4x + y = 2 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} 16x^2 - y^2 = -20 \\\\ 4x + y = 2 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 1,
-  "number": 8,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} 3x + y - 2z = -11 x - 3y + z = -2 2x + 2y + 3z = 7 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} 3x + y - 2z = -11 \\\\ x - 3y + z = -2 \\\\ 2x + 2y + 3z = 7 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 1,
-  "number": 9,
-  "fields": {
-   "question_text": [
-    "Qaysi $ (a; b) $ qiymatlarda $ (-2; 5) $ juftlik sistemaning yeçimi böladi: $ \\begin{cases} 1ax - 2by = -26 4ax - 1by = -34 \\end{cases} $?",
-    "Qaysi $ (a; b) $ qiymatlarda $ (-2; 5) $ juftlik sistemaning yeçimi böladi: $ \\begin{cases} 1ax - 2by = -26 \\\\ 4ax - 1by = -34 \\end{cases} $?"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 1,
-  "number": 12,
-  "fields": {
-   "question_text": [
-    "$ a $ ning qanday qiymatida sistema yeçimga ega bölmaydi: $ \\begin{cases} (a - 1)x + 2y = 3 (2a + 4)x - y = -1 \\end{cases} $?",
-    "$ a $ ning qanday qiymatida sistema yeçimga ega bölmaydi: $ \\begin{cases} (a - 1)x + 2y = 3 \\\\ (2a + 4)x - y = -1 \\end{cases} $?"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 1,
-  "number": 13,
-  "fields": {
-   "question_text": [
-    "Qaysi $ (a; b) $ qiymatlarda sistema çeksiz köp yeçimga ega: $ \\begin{cases} (a - 3)x + (b + 2)y - 8 = 0 (3a - 14)x + (b)y - 4 = 0 \\end{cases} $?",
-    "Qaysi $ (a; b) $ qiymatlarda sistema çeksiz köp yeçimga ega: $ \\begin{cases} (a - 3)x + (b + 2)y - 8 = 0 \\\\ (3a - 14)x + (b)y - 4 = 0 \\end{cases} $?"
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{x + 2}{4} + \\dfrac{3y - 1}{5} = \\dfrac{9}{20} \\\\ [2ex] \\dfrac{x + y}{x + 2y} = 2 \\end{cases} $",
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{x + 2}{4} + \\dfrac{3y - 1}{5} = \\dfrac{9}{20} \\\\[2ex] \\dfrac{x + y}{x + 2y} = 2 \\end{cases} $"
    ]
   }
  },
@@ -357,8 +27,8 @@
   "number": 14,
   "fields": {
    "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{3}{x} + \\dfrac{8}{y} = \\dfrac{1}{2} \\dfrac{7}{x} + \\dfrac{-4}{y} = -\\dfrac{9}{2} \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{3}{x} + \\dfrac{8}{y} = \\dfrac{1}{2} \\\\ [2ex] \\dfrac{7}{x} + \\dfrac{-4}{y} = -\\dfrac{9}{2} \\end{cases} $"
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{3}{x} + \\dfrac{8}{y} = \\dfrac{1}{2} \\\\ [2ex] \\dfrac{7}{x} + \\dfrac{-4}{y} = -\\dfrac{9}{2} \\end{cases} $",
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{3}{x} + \\dfrac{8}{y} = \\dfrac{1}{2} \\\\[2ex] \\dfrac{7}{x} + \\dfrac{-4}{y} = -\\dfrac{9}{2} \\end{cases} $"
    ]
   }
  },
@@ -368,52 +38,8 @@
   "number": 15,
   "fields": {
    "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{3}{2x + y} + \\dfrac{5}{x - 3y} = 2 \\dfrac{6}{2x + y} + \\dfrac{-2}{x - 3y} = \\dfrac{8}{5} \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{3}{2x + y} + \\dfrac{5}{x - 3y} = 2 \\\\ [2ex] \\dfrac{6}{2x + y} + \\dfrac{-2}{x - 3y} = \\dfrac{8}{5} \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 2,
-  "number": 1,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} y = 4x + 1 5x - 2y = 1 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} y = 4x + 1 \\\\ 5x - 2y = 1 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 2,
-  "number": 2,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} x + y = 5 y - x = -7 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} x + y = 5 \\\\ y - x = -7 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 2,
-  "number": 3,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} -3x + 5y = -4 2x + 7y = 13 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} -3x + 5y = -4 \\\\ 2x + 7y = 13 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 2,
-  "number": 4,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} x + 7 = 4(x + y) y + 8 = 2(x + y) \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} x + 7 = 4(x + y) \\\\ y + 8 = 2(x + y) \\end{cases} $"
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{3}{2x + y} + \\dfrac{5}{x - 3y} = 2 \\\\ [2ex] \\dfrac{6}{2x + y} + \\dfrac{-2}{x - 3y} = \\dfrac{8}{5} \\end{cases} $",
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{3}{2x + y} + \\dfrac{5}{x - 3y} = 2 \\\\[2ex] \\dfrac{6}{2x + y} + \\dfrac{-2}{x - 3y} = \\dfrac{8}{5} \\end{cases} $"
    ]
   }
  },
@@ -423,8 +49,8 @@
   "number": 5,
   "fields": {
    "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{3x + 2y}{4} + \\dfrac{x - 3y}{6} = \\dfrac{11}{3} 2x + y = 10 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{3x + 2y}{4} + \\dfrac{x - 3y}{6} = \\dfrac{11}{3} \\\\ [2ex] 2x + y = 10 \\end{cases} $"
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{3x + 2y}{4} + \\dfrac{x - 3y}{6} = \\dfrac{11}{3} \\\\ [2ex] 2x + y = 10 \\end{cases} $",
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{3x + 2y}{4} + \\dfrac{x - 3y}{6} = \\dfrac{11}{3} \\\\[2ex] 2x + y = 10 \\end{cases} $"
    ]
   }
  },
@@ -434,63 +60,8 @@
   "number": 6,
   "fields": {
    "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{3x + 2}{7} + \\dfrac{2y + 5}{3} = \\dfrac{11}{7} \\dfrac{x + y}{x + 3y} = -1 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{3x + 2}{7} + \\dfrac{2y + 5}{3} = \\dfrac{11}{7} \\\\ [2ex] \\dfrac{x + y}{x + 3y} = -1 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 2,
-  "number": 7,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} 25x^2 - y^2 = 91 5x + y = 7 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} 25x^2 - y^2 = 91 \\\\ 5x + y = 7 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 2,
-  "number": 8,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} 2x - y + z = 11 -x + 3y + 2z = -3 3x + 2y - 2z = 6 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} 2x - y + z = 11 \\\\ -x + 3y + 2z = -3 \\\\ 3x + 2y - 2z = 6 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 2,
-  "number": 9,
-  "fields": {
-   "question_text": [
-    "Qaysi $ (a; b) $ qiymatlarda $ (4; -1) $ juftlik sistemaning yeçimi böladi: $ \\begin{cases} 3ax - 2by = -18 1ax - 5by = 7 \\end{cases} $?",
-    "Qaysi $ (a; b) $ qiymatlarda $ (4; -1) $ juftlik sistemaning yeçimi böladi: $ \\begin{cases} 3ax - 2by = -18 \\\\ 1ax - 5by = 7 \\end{cases} $?"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 2,
-  "number": 12,
-  "fields": {
-   "question_text": [
-    "$ a $ ning qanday qiymatida sistema yeçimga ega bölmaydi: $ \\begin{cases} (2a + 3)x - y = 2 (a - 5)x - y = 7 \\end{cases} $?",
-    "$ a $ ning qanday qiymatida sistema yeçimga ega bölmaydi: $ \\begin{cases} (2a + 3)x - y = 2 \\\\ (a - 5)x - y = 7 \\end{cases} $?"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 2,
-  "number": 13,
-  "fields": {
-   "question_text": [
-    "Qaysi $ (a; b) $ qiymatlarda sistema çeksiz köp yeçimga ega: $ \\begin{cases} (a + 1)x + (b - 2)y + 5 = 0 (a + 4)x + (3b - 7)y + 10 = 0 \\end{cases} $?",
-    "Qaysi $ (a; b) $ qiymatlarda sistema çeksiz köp yeçimga ega: $ \\begin{cases} (a + 1)x + (b - 2)y + 5 = 0 \\\\ (a + 4)x + (3b - 7)y + 10 = 0 \\end{cases} $?"
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{3x + 2}{7} + \\dfrac{2y + 5}{3} = \\dfrac{11}{7} \\\\ [2ex] \\dfrac{x + y}{x + 3y} = -1 \\end{cases} $",
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{3x + 2}{7} + \\dfrac{2y + 5}{3} = \\dfrac{11}{7} \\\\[2ex] \\dfrac{x + y}{x + 3y} = -1 \\end{cases} $"
    ]
   }
  },
@@ -500,8 +71,8 @@
   "number": 14,
   "fields": {
    "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{10}{x} + \\dfrac{3}{y} = -1 \\dfrac{4}{x} + \\dfrac{6}{y} = -\\dfrac{26}{5} \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{10}{x} + \\dfrac{3}{y} = -1 \\\\ [2ex] \\dfrac{4}{x} + \\dfrac{6}{y} = -\\dfrac{26}{5} \\end{cases} $"
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{10}{x} + \\dfrac{3}{y} = -1 \\\\ [2ex] \\dfrac{4}{x} + \\dfrac{6}{y} = -\\dfrac{26}{5} \\end{cases} $",
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{10}{x} + \\dfrac{3}{y} = -1 \\\\[2ex] \\dfrac{4}{x} + \\dfrac{6}{y} = -\\dfrac{26}{5} \\end{cases} $"
    ]
   }
  },
@@ -511,52 +82,8 @@
   "number": 15,
   "fields": {
    "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{2}{2x + y} + \\dfrac{7}{x - 2y} = 1 \\dfrac{5}{2x + y} + \\dfrac{-3}{x - 2y} = \\dfrac{38}{7} \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{2}{2x + y} + \\dfrac{7}{x - 2y} = 1 \\\\ [2ex] \\dfrac{5}{2x + y} + \\dfrac{-3}{x - 2y} = \\dfrac{38}{7} \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 3,
-  "number": 1,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} y = -3x - 2 4x + y = 0 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} y = -3x - 2 \\\\ 4x + y = 0 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 3,
-  "number": 2,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} x + y = 13 y - x = 5 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} x + y = 13 \\\\ y - x = 5 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 3,
-  "number": 3,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} 6x + 2y = -22 -x + 4y = -18 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} 6x + 2y = -22 \\\\ -x + 4y = -18 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 3,
-  "number": 4,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} x + 15 = 2(x + y) y + 3 = 1(x + y) \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} x + 15 = 2(x + y) \\\\ y + 3 = 1(x + y) \\end{cases} $"
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{2}{2x + y} + \\dfrac{7}{x - 2y} = 1 \\\\ [2ex] \\dfrac{5}{2x + y} + \\dfrac{-3}{x - 2y} = \\dfrac{38}{7} \\end{cases} $",
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{2}{2x + y} + \\dfrac{7}{x - 2y} = 1 \\\\[2ex] \\dfrac{5}{2x + y} + \\dfrac{-3}{x - 2y} = \\dfrac{38}{7} \\end{cases} $"
    ]
   }
  },
@@ -566,8 +93,8 @@
   "number": 5,
   "fields": {
    "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{x - 2y}{5} + \\dfrac{3x + y}{2} = -\\dfrac{21}{10} 4x - y = 0 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{x - 2y}{5} + \\dfrac{3x + y}{2} = -\\dfrac{21}{10} \\\\ [2ex] 4x - y = 0 \\end{cases} $"
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{x - 2y}{5} + \\dfrac{3x + y}{2} = -\\dfrac{21}{10} \\\\ [2ex] 4x - y = 0 \\end{cases} $",
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{x - 2y}{5} + \\dfrac{3x + y}{2} = -\\dfrac{21}{10} \\\\[2ex] 4x - y = 0 \\end{cases} $"
    ]
   }
  },
@@ -577,63 +104,8 @@
   "number": 6,
   "fields": {
    "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{2x + 3}{6} + \\dfrac{y - 2}{4} = \\dfrac{29}{12} \\dfrac{x + y}{x - y} = 4 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{2x + 3}{6} + \\dfrac{y - 2}{4} = \\dfrac{29}{12} \\\\ [2ex] \\dfrac{x + y}{x - y} = 4 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 3,
-  "number": 7,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} 9x^2 - y^2 = 11 3x + y = -11 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} 9x^2 - y^2 = 11 \\\\ 3x + y = -11 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 3,
-  "number": 8,
-  "fields": {
-   "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} x - 2y + 3z = -16 4x + y - z = 15 -2x + 3y + 2z = -3 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} x - 2y + 3z = -16 \\\\ 4x + y - z = 15 \\\\ -2x + 3y + 2z = -3 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 3,
-  "number": 9,
-  "fields": {
-   "question_text": [
-    "Qaysi $ (a; b) $ qiymatlarda $ (2; 3) $ juftlik sistemaning yeçimi böladi: $ \\begin{cases} 5ax - 1by = -2 2ax - 3by = -32 \\end{cases} $?",
-    "Qaysi $ (a; b) $ qiymatlarda $ (2; 3) $ juftlik sistemaning yeçimi böladi: $ \\begin{cases} 5ax - 1by = -2 \\\\ 2ax - 3by = -32 \\end{cases} $?"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 3,
-  "number": 12,
-  "fields": {
-   "question_text": [
-    "$ a $ ning qanday qiymatida sistema yeçimga ega bölmaydi: $ \\begin{cases} (3a - 2)x + 5y = -2 (a + 1)x - y = 6 \\end{cases} $?",
-    "$ a $ ning qanday qiymatida sistema yeçimga ega bölmaydi: $ \\begin{cases} (3a - 2)x + 5y = -2 \\\\ (a + 1)x - y = 6 \\end{cases} $?"
-   ]
-  }
- },
- {
-  "topic": 26,
-  "test": 3,
-  "number": 13,
-  "fields": {
-   "question_text": [
-    "Qaysi $ (a; b) $ qiymatlarda sistema çeksiz köp yeçimga ega: $ \\begin{cases} (a - 4)x + (b + 1)y - 3 = 0 (2a - 4)x + (b + 4)y + 6 = 0 \\end{cases} $?",
-    "Qaysi $ (a; b) $ qiymatlarda sistema çeksiz köp yeçimga ega: $ \\begin{cases} (a - 4)x + (b + 1)y - 3 = 0 \\\\ (2a - 4)x + (b + 4)y + 6 = 0 \\end{cases} $?"
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{2x + 3}{6} + \\dfrac{y - 2}{4} = \\dfrac{29}{12} \\\\ [2ex] \\dfrac{x + y}{x - y} = 4 \\end{cases} $",
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{2x + 3}{6} + \\dfrac{y - 2}{4} = \\dfrac{29}{12} \\\\[2ex] \\dfrac{x + y}{x - y} = 4 \\end{cases} $"
    ]
   }
  },
@@ -643,8 +115,8 @@
   "number": 14,
   "fields": {
    "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{6}{x} + \\dfrac{-4}{y} = 0 \\dfrac{9}{x} + \\dfrac{2}{y} = -4 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{6}{x} + \\dfrac{-4}{y} = 0 \\\\ [2ex] \\dfrac{9}{x} + \\dfrac{2}{y} = -4 \\end{cases} $"
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{6}{x} + \\dfrac{-4}{y} = 0 \\\\ [2ex] \\dfrac{9}{x} + \\dfrac{2}{y} = -4 \\end{cases} $",
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{6}{x} + \\dfrac{-4}{y} = 0 \\\\[2ex] \\dfrac{9}{x} + \\dfrac{2}{y} = -4 \\end{cases} $"
    ]
   }
  },
@@ -654,30 +126,8 @@
   "number": 15,
   "fields": {
    "question_text": [
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{6}{x - y} + \\dfrac{11}{2x + 3y} = 3 \\dfrac{3}{x - y} + \\dfrac{-22}{2x + 3y} = -1 \\end{cases} $",
-    "Sistemani yeçing: $ \\begin{cases} \\dfrac{6}{x - y} + \\dfrac{11}{2x + 3y} = 3 \\\\ [2ex] \\dfrac{3}{x - y} + \\dfrac{-22}{2x + 3y} = -1 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 28,
-  "test": 1,
-  "number": 9,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} x - 2 \\leq 6, 3x + 1 > 10 \\end{cases} $ sistemani yeçing.",
-    "$ \\begin{cases} x - 2 \\leq 6, \\\\ 3x + 1 > 10 \\end{cases} $ sistemani yeçing."
-   ]
-  }
- },
- {
-  "topic": 28,
-  "test": 1,
-  "number": 10,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 3x - 4 < -x + 8, 2x + 5 \\leq 5x + 2 \\end{cases} $ sistemani yeçing.",
-    "$ \\begin{cases} 3x - 4 < -x + 8, \\\\ 2x + 5 \\leq 5x + 2 \\end{cases} $ sistemani yeçing."
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{6}{x - y} + \\dfrac{11}{2x + 3y} = 3 \\\\ [2ex] \\dfrac{3}{x - y} + \\dfrac{-22}{2x + 3y} = -1 \\end{cases} $",
+    "Sistemani yeçing: $ \\begin{cases} \\dfrac{6}{x - y} + \\dfrac{11}{2x + 3y} = 3 \\\\[2ex] \\dfrac{3}{x - y} + \\dfrac{-22}{2x + 3y} = -1 \\end{cases} $"
    ]
   }
  },
@@ -687,8 +137,8 @@
   "number": 11,
   "fields": {
    "question_text": [
-    "$ \\begin{cases} \\dfrac{x}{3} < \\dfrac{x + 5}{5}, \\dfrac{x}{2} \\geq \\dfrac{x + 2}{3} \\end{cases} $ sistemani yeçing.",
-    "$ \\begin{cases} \\dfrac{x}{3} < \\dfrac{x + 5}{5}, \\\\ [2mm] \\dfrac{x}{2} \\geq \\dfrac{x + 2}{3} \\end{cases} $ sistemani yeçing."
+    "$ \\begin{cases} \\dfrac{x}{3} < \\dfrac{x + 5}{5}, \\\\ [2mm] \\dfrac{x}{2} \\geq \\dfrac{x + 2}{3} \\end{cases} $ sistemani yeçing.",
+    "$ \\begin{cases} \\dfrac{x}{3} < \\dfrac{x + 5}{5}, \\\\[2mm] \\dfrac{x}{2} \\geq \\dfrac{x + 2}{3} \\end{cases} $ sistemani yeçing."
    ]
   }
  },
@@ -698,52 +148,8 @@
   "number": 12,
   "fields": {
    "question_text": [
-    "$ \\begin{cases} 2(x + 4) - \\dfrac{3x + 2}{4} > \\dfrac{5x + 1}{2}, 2(-x + 3) \\leq \\dfrac{4x + 2}{3} \\end{cases} $ sistemani yeçing.",
-    "$ \\begin{cases} 2(x + 4) - \\dfrac{3x + 2}{4} > \\dfrac{5x + 1}{2}, \\\\ [2mm] 2(-x + 3) \\leq \\dfrac{4x + 2}{3} \\end{cases} $ sistemani yeçing."
-   ]
-  }
- },
- {
-  "topic": 28,
-  "test": 1,
-  "number": 13,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} \\begin{gathered}[t] 5(x + 1) - 8(x + 2) - 1 < < 6 - 4(x + 3), \\end{gathered} 2(5x + 3) < 13x - 2(x - 1) \\end{cases} $ sistemani yeçing.",
-    "$ \\begin{cases} \\begin{gathered}[t] 5(x + 1) - 8(x + 2) - 1 < \\\\ < 6 - 4(x + 3), \\end{gathered} \\\\ 2(5x + 3) < 13x - 2(x - 1) \\end{cases} $ sistemani yeçing."
-   ]
-  }
- },
- {
-  "topic": 28,
-  "test": 1,
-  "number": 19,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 4(x + 1) \\leq 16, 3(x - 1) \\geq 3 \\end{cases} $ sistema butun yeçimlarining yiğindisini toping.",
-    "$ \\begin{cases} 4(x + 1) \\leq 16, \\\\ 3(x - 1) \\geq 3 \\end{cases} $ sistema butun yeçimlarining yiğindisini toping."
-   ]
-  }
- },
- {
-  "topic": 28,
-  "test": 2,
-  "number": 9,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} x + 7 \\geq 2, -2x + 4 < -6 \\end{cases} $ sistemani yeçing.",
-    "$ \\begin{cases} x + 7 \\geq 2, \\\\ -2x + 4 < -6 \\end{cases} $ sistemani yeçing."
-   ]
-  }
- },
- {
-  "topic": 28,
-  "test": 2,
-  "number": 10,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 7x + 2 \\leq 3x + 14, -x + 4 < 2x + 1 \\end{cases} $ sistemani yeçing.",
-    "$ \\begin{cases} 7x + 2 \\leq 3x + 14, \\\\ -x + 4 < 2x + 1 \\end{cases} $ sistemani yeçing."
+    "$ \\begin{cases} 2(x + 4) - \\dfrac{3x + 2}{4} > \\dfrac{5x + 1}{2}, \\\\ [2mm] 2(-x + 3) \\leq \\dfrac{4x + 2}{3} \\end{cases} $ sistemani yeçing.",
+    "$ \\begin{cases} 2(x + 4) - \\dfrac{3x + 2}{4} > \\dfrac{5x + 1}{2}, \\\\[2mm] 2(-x + 3) \\leq \\dfrac{4x + 2}{3} \\end{cases} $ sistemani yeçing."
    ]
   }
  },
@@ -753,8 +159,8 @@
   "number": 11,
   "fields": {
    "question_text": [
-    "$ \\begin{cases} \\dfrac{x}{4} < \\dfrac{x + 2}{6}, \\dfrac{x}{5} \\geq \\dfrac{x - 3}{6} \\end{cases} $ sistemani yeçing.",
-    "$ \\begin{cases} \\dfrac{x}{4} < \\dfrac{x + 2}{6}, \\\\ [2mm] \\dfrac{x}{5} \\geq \\dfrac{x - 3}{6} \\end{cases} $ sistemani yeçing."
+    "$ \\begin{cases} \\dfrac{x}{4} < \\dfrac{x + 2}{6}, \\\\ [2mm] \\dfrac{x}{5} \\geq \\dfrac{x - 3}{6} \\end{cases} $ sistemani yeçing.",
+    "$ \\begin{cases} \\dfrac{x}{4} < \\dfrac{x + 2}{6}, \\\\[2mm] \\dfrac{x}{5} \\geq \\dfrac{x - 3}{6} \\end{cases} $ sistemani yeçing."
    ]
   }
  },
@@ -764,52 +170,8 @@
   "number": 12,
   "fields": {
    "question_text": [
-    "$ \\begin{cases} 4(x + 1) - \\dfrac{5x - 1}{3} > \\dfrac{7x + 2}{2}, 5(-x + 1) \\leq \\dfrac{3x + 1}{2} \\end{cases} $ sistemani yeçing.",
-    "$ \\begin{cases} 4(x + 1) - \\dfrac{5x - 1}{3} > \\dfrac{7x + 2}{2}, \\\\ [2mm] 5(-x + 1) \\leq \\dfrac{3x + 1}{2} \\end{cases} $ sistemani yeçing."
-   ]
-  }
- },
- {
-  "topic": 28,
-  "test": 2,
-  "number": 13,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} \\begin{gathered}[t] 6(x - 1) - 9(x + 1) - 4 < < 1 - 5(x + 2), \\end{gathered} 4(3x + 1) < 15x - (x - 2) \\end{cases} $ sistemani yeçing.",
-    "$ \\begin{cases} \\begin{gathered}[t] 6(x - 1) - 9(x + 1) - 4 < \\\\ < 1 - 5(x + 2), \\end{gathered} \\\\ 4(3x + 1) < 15x - (x - 2) \\end{cases} $ sistemani yeçing."
-   ]
-  }
- },
- {
-  "topic": 28,
-  "test": 2,
-  "number": 19,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 5(x - 2) \\leq 20, 2(x + 1) \\geq 4 \\end{cases} $ sistema butun yeçimlarining yiğindisini toping.",
-    "$ \\begin{cases} 5(x - 2) \\leq 20, \\\\ 2(x + 1) \\geq 4 \\end{cases} $ sistema butun yeçimlarining yiğindisini toping."
-   ]
-  }
- },
- {
-  "topic": 28,
-  "test": 3,
-  "number": 9,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} x + 1 < -4, 4x - 5 \\leq 7 \\end{cases} $ sistemani yeçing.",
-    "$ \\begin{cases} x + 1 < -4, \\\\ 4x - 5 \\leq 7 \\end{cases} $ sistemani yeçing."
-   ]
-  }
- },
- {
-  "topic": 28,
-  "test": 3,
-  "number": 10,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 4x + 9 \\leq x + 15, 3x - 2 < 6x - 5 \\end{cases} $ sistemani yeçing.",
-    "$ \\begin{cases} 4x + 9 \\leq x + 15, \\\\ 3x - 2 < 6x - 5 \\end{cases} $ sistemani yeçing."
+    "$ \\begin{cases} 4(x + 1) - \\dfrac{5x - 1}{3} > \\dfrac{7x + 2}{2}, \\\\ [2mm] 5(-x + 1) \\leq \\dfrac{3x + 1}{2} \\end{cases} $ sistemani yeçing.",
+    "$ \\begin{cases} 4(x + 1) - \\dfrac{5x - 1}{3} > \\dfrac{7x + 2}{2}, \\\\[2mm] 5(-x + 1) \\leq \\dfrac{3x + 1}{2} \\end{cases} $ sistemani yeçing."
    ]
   }
  },
@@ -819,8 +181,8 @@
   "number": 11,
   "fields": {
    "question_text": [
-    "$ \\begin{cases} \\dfrac{x}{5} < \\dfrac{x + 7}{7}, \\dfrac{x}{3} \\geq \\dfrac{x + 4}{5} \\end{cases} $ sistemani yeçing.",
-    "$ \\begin{cases} \\dfrac{x}{5} < \\dfrac{x + 7}{7}, \\\\ [2mm] \\dfrac{x}{3} \\geq \\dfrac{x + 4}{5} \\end{cases} $ sistemani yeçing."
+    "$ \\begin{cases} \\dfrac{x}{5} < \\dfrac{x + 7}{7}, \\\\ [2mm] \\dfrac{x}{3} \\geq \\dfrac{x + 4}{5} \\end{cases} $ sistemani yeçing.",
+    "$ \\begin{cases} \\dfrac{x}{5} < \\dfrac{x + 7}{7}, \\\\[2mm] \\dfrac{x}{3} \\geq \\dfrac{x + 4}{5} \\end{cases} $ sistemani yeçing."
    ]
   }
  },
@@ -830,240 +192,8 @@
   "number": 12,
   "fields": {
    "question_text": [
-    "$ \\begin{cases} 3(x + 3) - \\dfrac{2x + 5}{4} > \\dfrac{9x - 2}{3}, 4(-x + 2) \\leq \\dfrac{5x + 3}{3} \\end{cases} $ sistemani yeçing.",
-    "$ \\begin{cases} 3(x + 3) - \\dfrac{2x + 5}{4} > \\dfrac{9x - 2}{3}, \\\\ [2mm] 4(-x + 2) \\leq \\dfrac{5x + 3}{3} \\end{cases} $ sistemani yeçing."
-   ]
-  }
- },
- {
-  "topic": 28,
-  "test": 3,
-  "number": 13,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} \\begin{gathered}[t] 3(x + 4) - 6(x + 1) - 2 < < 17 - 4(x + 2), \\end{gathered} 5(2x + 1) < 13x - (x - 4) \\end{cases} $ sistemani yeçing.",
-    "$ \\begin{cases} \\begin{gathered}[t] 3(x + 4) - 6(x + 1) - 2 < \\\\ < 17 - 4(x + 2), \\end{gathered} \\\\ 5(2x + 1) < 13x - (x - 4) \\end{cases} $ sistemani yeçing."
-   ]
-  }
- },
- {
-  "topic": 28,
-  "test": 3,
-  "number": 19,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 2(x + 3) \\leq 10, 4(x - 2) \\geq -8 \\end{cases} $ sistema butun yeçimlarining yiğindisini toping.",
-    "$ \\begin{cases} 2(x + 3) \\leq 10, \\\\ 4(x - 2) \\geq -8 \\end{cases} $ sistema butun yeçimlarining yiğindisini toping."
-   ]
-  }
- },
- {
-  "topic": 32,
-  "test": 1,
-  "number": 4,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{gathered}[t] \\biggl( \\dfrac{4}{\\sqrt{5} + 1} + \\dfrac{1}{\\sqrt{5} + 2} - - \\dfrac{4}{\\sqrt{5} - 1} \\biggr) (\\sqrt{5} + 4). \\end{gathered} $",
-    "Hisoblang: $ \\begin{gathered}[t] \\biggl( \\dfrac{4}{\\sqrt{5} + 1} + \\dfrac{1}{\\sqrt{5} + 2} - \\\\ - \\dfrac{4}{\\sqrt{5} - 1} \\biggr) (\\sqrt{5} + 4). \\end{gathered} $"
-   ]
-  }
- },
- {
-  "topic": 32,
-  "test": 1,
-  "number": 5,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{gathered}[t] \\dfrac{1}{3 + \\sqrt{10}} + \\dfrac{1}{\\sqrt{10} + \\sqrt{11}} + + \\cdots + \\dfrac{1}{\\sqrt{120} + 11}. \\end{gathered} $",
-    "Hisoblang: $ \\begin{gathered}[t] \\dfrac{1}{3 + \\sqrt{10}} + \\dfrac{1}{\\sqrt{10} + \\sqrt{11}} + \\\\ + \\cdots + \\dfrac{1}{\\sqrt{120} + 11}. \\end{gathered} $"
-   ]
-  }
- },
- {
-  "topic": 32,
-  "test": 1,
-  "number": 6,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{gathered}[t] \\dfrac{1}{2 + \\sqrt{8}} + \\dfrac{1}{\\sqrt{8} + \\sqrt{12}} + + \\cdots + \\dfrac{1}{\\sqrt{480} + 22}. \\end{gathered} $",
-    "Hisoblang: $ \\begin{gathered}[t] \\dfrac{1}{2 + \\sqrt{8}} + \\dfrac{1}{\\sqrt{8} + \\sqrt{12}} + \\\\ + \\cdots + \\dfrac{1}{\\sqrt{480} + 22}. \\end{gathered} $"
-   ]
-  }
- },
- {
-  "topic": 32,
-  "test": 1,
-  "number": 12,
-  "fields": {
-   "option_a": [
-    "$ \\begin{aligned}[t] &\\{4; 5; 6; 7; 8; 9; 10; &11; 12; 13; 14\\} \\end{aligned} $",
-    "$ \\begin{aligned}[t] &\\{4; 5; 6; 7; 8; 9; 10; \\\\ &11; 12; 13; 14\\} \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 32,
-  "test": 2,
-  "number": 4,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{gathered}[t] \\biggl( \\dfrac{6}{\\sqrt{7} + 1} + \\dfrac{3}{\\sqrt{7} + 2} - - \\dfrac{6}{\\sqrt{7} - 1} \\biggr) (\\sqrt{7} + 4). \\end{gathered} $",
-    "Hisoblang: $ \\begin{gathered}[t] \\biggl( \\dfrac{6}{\\sqrt{7} + 1} + \\dfrac{3}{\\sqrt{7} + 2} - \\\\ - \\dfrac{6}{\\sqrt{7} - 1} \\biggr) (\\sqrt{7} + 4). \\end{gathered} $"
-   ]
-  }
- },
- {
-  "topic": 32,
-  "test": 2,
-  "number": 5,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{gathered}[t] \\dfrac{1}{4 + \\sqrt{17}} + \\dfrac{1}{\\sqrt{17} + \\sqrt{18}} + + \\cdots + \\dfrac{1}{\\sqrt{168} + 13}. \\end{gathered} $",
-    "Hisoblang: $ \\begin{gathered}[t] \\dfrac{1}{4 + \\sqrt{17}} + \\dfrac{1}{\\sqrt{17} + \\sqrt{18}} + \\\\ + \\cdots + \\dfrac{1}{\\sqrt{168} + 13}. \\end{gathered} $"
-   ]
-  }
- },
- {
-  "topic": 32,
-  "test": 2,
-  "number": 6,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{gathered}[t] \\dfrac{1}{3 + \\sqrt{16}} + \\dfrac{1}{\\sqrt{16} + \\sqrt{23}} + + \\cdots + \\dfrac{1}{\\sqrt{569} + 24}. \\end{gathered} $",
-    "Hisoblang: $ \\begin{gathered}[t] \\dfrac{1}{3 + \\sqrt{16}} + \\dfrac{1}{\\sqrt{16} + \\sqrt{23}} + \\\\ + \\cdots + \\dfrac{1}{\\sqrt{569} + 24}. \\end{gathered} $"
-   ]
-  }
- },
- {
-  "topic": 32,
-  "test": 3,
-  "number": 4,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{gathered}[t] \\biggl( \\dfrac{9}{\\sqrt{10} + 1} + \\dfrac{6}{\\sqrt{10} + 2} - - \\dfrac{9}{\\sqrt{10} - 1} \\biggr) (\\sqrt{10} + 4). \\end{gathered} $",
-    "Hisoblang: $ \\begin{gathered}[t] \\biggl( \\dfrac{9}{\\sqrt{10} + 1} + \\dfrac{6}{\\sqrt{10} + 2} - \\\\ - \\dfrac{9}{\\sqrt{10} - 1} \\biggr) (\\sqrt{10} + 4). \\end{gathered} $"
-   ]
-  }
- },
- {
-  "topic": 32,
-  "test": 3,
-  "number": 5,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{gathered}[t] \\dfrac{1}{5 + \\sqrt{26}} + \\dfrac{1}{\\sqrt{26} + \\sqrt{27}} + + \\cdots + \\dfrac{1}{\\sqrt{224} + 15}. \\end{gathered} $",
-    "Hisoblang: $ \\begin{gathered}[t] \\dfrac{1}{5 + \\sqrt{26}} + \\dfrac{1}{\\sqrt{26} + \\sqrt{27}} + \\\\ + \\cdots + \\dfrac{1}{\\sqrt{224} + 15}. \\end{gathered} $"
-   ]
-  }
- },
- {
-  "topic": 32,
-  "test": 3,
-  "number": 6,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{gathered}[t] \\dfrac{1}{4 + \\sqrt{22}} + \\dfrac{1}{\\sqrt{22} + \\sqrt{28}} + + \\cdots + \\dfrac{1}{\\sqrt{778} + 28}. \\end{gathered} $",
-    "Hisoblang: $ \\begin{gathered}[t] \\dfrac{1}{4 + \\sqrt{22}} + \\dfrac{1}{\\sqrt{22} + \\sqrt{28}} + \\\\ + \\cdots + \\dfrac{1}{\\sqrt{778} + 28}. \\end{gathered} $"
-   ]
-  }
- },
- {
-  "topic": 32,
-  "test": 3,
-  "number": 12,
-  "fields": {
-   "option_a": [
-    "$ \\begin{aligned}[t] &\\{5; 6; 7; 8; 9; 10; 11; 12; &13; 14; 15; 16; 17; 18; 19; 20\\} \\end{aligned} $",
-    "$ \\begin{aligned}[t] &\\{5; 6; 7; 8; 9; 10; 11; 12; \\\\ &13; 14; 15; 16; 17; 18; 19; 20\\} \\end{aligned} $"
-   ],
-   "option_b": [
-    "$ \\begin{aligned}[t] &\\{4; 5; 6; 7; 8; 9; 10; 11; &12; 13; 14; 15; 16; 17; 18; 19\\} \\end{aligned} $",
-    "$ \\begin{aligned}[t] &\\{4; 5; 6; 7; 8; 9; 10; 11; \\\\ &12; 13; 14; 15; 16; 17; 18; 19\\} \\end{aligned} $"
-   ],
-   "option_c": [
-    "$ \\begin{aligned}[t] &\\{4; 5; 6; 7; 8; 9; 10; 11; 12; &13; 14; 15; 16; 17; 18; 19; 20\\} \\end{aligned} $",
-    "$ \\begin{aligned}[t] &\\{4; 5; 6; 7; 8; 9; 10; 11; 12; \\\\ &13; 14; 15; 16; 17; 18; 19; 20\\} \\end{aligned} $"
-   ],
-   "option_d": [
-    "$ \\begin{aligned}[t] &\\{3; 4; 5; 6; 7; 8; 9; 10; 11; 12; &13; 14; 15; 16; 17; 18; 19; 20\\} \\end{aligned} $",
-    "$ \\begin{aligned}[t] &\\{3; 4; 5; 6; 7; 8; 9; 10; 11; 12; \\\\ &13; 14; 15; 16; 17; 18; 19; 20\\} \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 35,
-  "test": 1,
-  "number": 2,
-  "fields": {
-   "question_text": [
-    "Tenglamani yeçing: $ \\begin{gathered}[t] \\dfrac{3x - 5}{x^2 - 19x + 90} + \\dfrac{x - 5}{x^2 - 22x + 117} = \\dfrac{x - 7}{x^2 - 23x + 130}. \\end{gathered} $",
-    "Tenglamani yeçing: $ \\begin{gathered}[t] \\dfrac{3x - 5}{x^2 - 19x + 90} + \\dfrac{x - 5}{x^2 - 22x + 117} \\\\ = \\dfrac{x - 7}{x^2 - 23x + 130}. \\end{gathered} $"
-   ]
-  }
- },
- {
-  "topic": 35,
-  "test": 2,
-  "number": 2,
-  "fields": {
-   "question_text": [
-    "Tenglamani yeçing: $ \\begin{gathered}[t] \\dfrac{3x - 11}{x^2 - 23x + 132} + \\dfrac{x - 7}{x^2 - 26x + 165} = \\dfrac{x - 9}{x^2 - 27x + 180}. \\end{gathered} $",
-    "Tenglamani yeçing: $ \\begin{gathered}[t] \\dfrac{3x - 11}{x^2 - 23x + 132} + \\dfrac{x - 7}{x^2 - 26x + 165} \\\\ = \\dfrac{x - 9}{x^2 - 27x + 180}. \\end{gathered} $"
-   ]
-  }
- },
- {
-  "topic": 35,
-  "test": 3,
-  "number": 2,
-  "fields": {
-   "question_text": [
-    "Tenglamani yeçing: $ \\begin{gathered}[t] \\dfrac{3x + 10}{x^2 - 9x + 20} + \\dfrac{x}{x^2 - 12x + 32} = \\dfrac{x - 2}{x^2 - 13x + 40}. \\end{gathered} $",
-    "Tenglamani yeçing: $ \\begin{gathered}[t] \\dfrac{3x + 10}{x^2 - 9x + 20} + \\dfrac{x}{x^2 - 12x + 32} \\\\ = \\dfrac{x - 2}{x^2 - 13x + 40}. \\end{gathered} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 1,
-  "number": 1,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y = 9, xy = 20. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y = 9, \\\\ xy = 20. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 1,
-  "number": 2,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y = 9, x^2 - y^2 = 45. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y = 9, \\\\ x^2 - y^2 = 45. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 1,
-  "number": 3,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x - y = 4, x^2 + y^2 = 40. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x - y = 4, \\\\ x^2 + y^2 = 40. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 1,
-  "number": 4,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x - y = 4, x^2 - xy - y^2 = 19. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x - y = 4, \\\\ x^2 - xy - y^2 = 19. \\end{cases} $"
+    "$ \\begin{cases} 3(x + 3) - \\dfrac{2x + 5}{4} > \\dfrac{9x - 2}{3}, \\\\ [2mm] 4(-x + 2) \\leq \\dfrac{5x + 3}{3} \\end{cases} $ sistemani yeçing.",
+    "$ \\begin{cases} 3(x + 3) - \\dfrac{2x + 5}{4} > \\dfrac{9x - 2}{3}, \\\\[2mm] 4(-x + 2) \\leq \\dfrac{5x + 3}{3} \\end{cases} $ sistemani yeçing."
    ]
   }
  },
@@ -1073,30 +203,8 @@
   "number": 5,
   "fields": {
    "question_text": [
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} \\dfrac{x+2y}{y+2} - \\dfrac{y-x}{x} = 1, y - x = 4. \\end{cases} $",
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} \\dfrac{x+2y}{y+2} - \\dfrac{y-x}{x} = 1, \\\\ [6pt] y - x = 4. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 1,
-  "number": 6,
-  "fields": {
-   "question_text": [
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} y^2 - 3x^2 = -23, x + y = 1. \\end{cases} $",
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} y^2 - 3x^2 = -23, \\\\ x + y = 1. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 1,
-  "number": 7,
-  "fields": {
-   "question_text": [
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} (x-1)(x+4)(y-6) = 0, (y-8)(y+2)(x-4) = 0. \\end{cases} $",
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} (x-1)(x+4)(y-6) = 0, \\\\ (y-8)(y+2)(x-4) = 0. \\end{cases} $"
+    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} \\dfrac{x+2y}{y+2} - \\dfrac{y-x}{x} = 1, \\\\ [6pt] y - x = 4. \\end{cases} $",
+    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} \\dfrac{x+2y}{y+2} - \\dfrac{y-x}{x} = 1, \\\\[6pt] y - x = 4. \\end{cases} $"
    ]
   }
  },
@@ -1106,8 +214,8 @@
   "number": 8,
   "fields": {
    "question_text": [
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} \\dfrac{(x-3)(y+1)}{x-5} = 0, \\dfrac{(x-5)(y-6)}{x+4} = 0. \\end{cases} $",
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} \\dfrac{(x-3)(y+1)}{x-5} = 0, \\\\ [6pt] \\dfrac{(x-5)(y-6)}{x+4} = 0. \\end{cases} $"
+    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} \\dfrac{(x-3)(y+1)}{x-5} = 0, \\\\ [6pt] \\dfrac{(x-5)(y-6)}{x+4} = 0. \\end{cases} $",
+    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} \\dfrac{(x-3)(y+1)}{x-5} = 0, \\\\[6pt] \\dfrac{(x-5)(y-6)}{x+4} = 0. \\end{cases} $"
    ]
   }
  },
@@ -1117,30 +225,8 @@
   "number": 10,
   "fields": {
    "question_text": [
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x - y = 3, \\dfrac{1}{x} - \\dfrac{1}{y} = -\\dfrac{3}{10}. \\end{cases} $",
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x - y = 3, \\\\ [6pt] \\dfrac{1}{x} - \\dfrac{1}{y} = -\\dfrac{3}{10}. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 1,
-  "number": 11,
-  "fields": {
-   "question_text": [
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x^2 + y = 12, y^2 + x = 12. \\end{cases} $",
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x^2 + y = 12, \\\\ y^2 + x = 12. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 1,
-  "number": 12,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y + xy = 7, x^2 + y^2 + xy = 13. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y + xy = 7, \\\\ x^2 + y^2 + xy = 13. \\end{cases} $"
+    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x - y = 3, \\\\ [6pt] \\dfrac{1}{x} - \\dfrac{1}{y} = -\\dfrac{3}{10}. \\end{cases} $",
+    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x - y = 3, \\\\[6pt] \\dfrac{1}{x} - \\dfrac{1}{y} = -\\dfrac{3}{10}. \\end{cases} $"
    ]
   }
  },
@@ -1150,19 +236,8 @@
   "number": 13,
   "fields": {
    "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x}{y} + x + y = 11, \\dfrac{x}{y}(x+y) = 24. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x}{y} + x + y = 11, \\\\ [6pt] \\dfrac{x}{y}(x+y) = 24. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 1,
-  "number": 14,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x^3 + y^3 = 65, x^2 - xy + y^2 = 13. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x^3 + y^3 = 65, \\\\ x^2 - xy + y^2 = 13. \\end{cases} $"
+    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x}{y} + x + y = 11, \\\\ [6pt] \\dfrac{x}{y}(x+y) = 24. \\end{cases} $",
+    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x}{y} + x + y = 11, \\\\[6pt] \\dfrac{x}{y}(x+y) = 24. \\end{cases} $"
    ]
   }
  },
@@ -1172,52 +247,8 @@
   "number": 15,
   "fields": {
    "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x+y}{x-y} + \\dfrac{x-y}{x+y} = \\dfrac{58}{21}, x^2 - y^2 = 21. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x+y}{x-y} + \\dfrac{x-y}{x+y} = \\dfrac{58}{21}, \\\\ [6pt] x^2 - y^2 = 21. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 2,
-  "number": 1,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y = 10, xy = 21. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y = 10, \\\\ xy = 21. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 2,
-  "number": 2,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y = 8, x^2 - y^2 = 16. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y = 8, \\\\ x^2 - y^2 = 16. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 2,
-  "number": 3,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x - y = 3, x^2 + y^2 = 29. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x - y = 3, \\\\ x^2 + y^2 = 29. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 2,
-  "number": 4,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x - y = 5, x^2 - xy - y^2 = 29. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x - y = 5, \\\\ x^2 - xy - y^2 = 29. \\end{cases} $"
+    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x+y}{x-y} + \\dfrac{x-y}{x+y} = \\dfrac{58}{21}, \\\\ [6pt] x^2 - y^2 = 21. \\end{cases} $",
+    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x+y}{x-y} + \\dfrac{x-y}{x+y} = \\dfrac{58}{21}, \\\\[6pt] x^2 - y^2 = 21. \\end{cases} $"
    ]
   }
  },
@@ -1227,30 +258,8 @@
   "number": 5,
   "fields": {
    "question_text": [
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} \\dfrac{x+3y}{y+3} - \\dfrac{y-x}{3x} = 2, y - x = 3. \\end{cases} $",
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} \\dfrac{x+3y}{y+3} - \\dfrac{y-x}{3x} = 2, \\\\ [6pt] y - x = 3. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 2,
-  "number": 6,
-  "fields": {
-   "question_text": [
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} y^2 - 3x^2 = -26, x + y = 2. \\end{cases} $",
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} y^2 - 3x^2 = -26, \\\\ x + y = 2. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 2,
-  "number": 7,
-  "fields": {
-   "question_text": [
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} (x-3)(x+2)(y-4) = 0, (y-6)(y+1)(x-7) = 0. \\end{cases} $",
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} (x-3)(x+2)(y-4) = 0, \\\\ (y-6)(y+1)(x-7) = 0. \\end{cases} $"
+    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} \\dfrac{x+3y}{y+3} - \\dfrac{y-x}{3x} = 2, \\\\ [6pt] y - x = 3. \\end{cases} $",
+    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} \\dfrac{x+3y}{y+3} - \\dfrac{y-x}{3x} = 2, \\\\[6pt] y - x = 3. \\end{cases} $"
    ]
   }
  },
@@ -1260,8 +269,8 @@
   "number": 8,
   "fields": {
    "question_text": [
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} \\dfrac{(x+2)(y-3)}{x-7} = 0, \\dfrac{(x-7)(y-5)}{x+1} = 0. \\end{cases} $",
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} \\dfrac{(x+2)(y-3)}{x-7} = 0, \\\\ [6pt] \\dfrac{(x-7)(y-5)}{x+1} = 0. \\end{cases} $"
+    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} \\dfrac{(x+2)(y-3)}{x-7} = 0, \\\\ [6pt] \\dfrac{(x-7)(y-5)}{x+1} = 0. \\end{cases} $",
+    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} \\dfrac{(x+2)(y-3)}{x-7} = 0, \\\\[6pt] \\dfrac{(x-7)(y-5)}{x+1} = 0. \\end{cases} $"
    ]
   }
  },
@@ -1271,30 +280,8 @@
   "number": 10,
   "fields": {
    "question_text": [
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x - y = 4, \\dfrac{1}{x} - \\dfrac{1}{y} = -\\dfrac{1}{3}. \\end{cases} $",
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x - y = 4, \\\\ [6pt] \\dfrac{1}{x} - \\dfrac{1}{y} = -\\dfrac{1}{3}. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 2,
-  "number": 11,
-  "fields": {
-   "question_text": [
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x^2 + y = 30, y^2 + x = 30. \\end{cases} $",
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x^2 + y = 30, \\\\ y^2 + x = 30. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 2,
-  "number": 12,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y + xy = 11, x^2 + y^2 + xy = 19. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y + xy = 11, \\\\ x^2 + y^2 + xy = 19. \\end{cases} $"
+    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x - y = 4, \\\\ [6pt] \\dfrac{1}{x} - \\dfrac{1}{y} = -\\dfrac{1}{3}. \\end{cases} $",
+    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x - y = 4, \\\\[6pt] \\dfrac{1}{x} - \\dfrac{1}{y} = -\\dfrac{1}{3}. \\end{cases} $"
    ]
   }
  },
@@ -1304,19 +291,8 @@
   "number": 13,
   "fields": {
    "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x}{y} + x + y = 5, \\dfrac{x}{y}(x+y) = 4. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x}{y} + x + y = 5, \\\\ [6pt] \\dfrac{x}{y}(x+y) = 4. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 2,
-  "number": 14,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x^3 + y^3 = 35, x^2 - xy + y^2 = 7. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x^3 + y^3 = 35, \\\\ x^2 - xy + y^2 = 7. \\end{cases} $"
+    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x}{y} + x + y = 5, \\\\ [6pt] \\dfrac{x}{y}(x+y) = 4. \\end{cases} $",
+    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x}{y} + x + y = 5, \\\\[6pt] \\dfrac{x}{y}(x+y) = 4. \\end{cases} $"
    ]
   }
  },
@@ -1326,52 +302,8 @@
   "number": 15,
   "fields": {
    "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x+y}{x-y} + \\dfrac{x-y}{x+y} = \\dfrac{74}{35}, x^2 - y^2 = 35. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x+y}{x-y} + \\dfrac{x-y}{x+y} = \\dfrac{74}{35}, \\\\ [6pt] x^2 - y^2 = 35. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 3,
-  "number": 1,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y = 11, xy = 24. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y = 11, \\\\ xy = 24. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 3,
-  "number": 2,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y = 11, x^2 - y^2 = 33. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y = 11, \\\\ x^2 - y^2 = 33. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 3,
-  "number": 3,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x - y = 6, x^2 + y^2 = 68. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x - y = 6, \\\\ x^2 + y^2 = 68. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 3,
-  "number": 4,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x - y = 2, x^2 - xy - y^2 = 4. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x - y = 2, \\\\ x^2 - xy - y^2 = 4. \\end{cases} $"
+    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x+y}{x-y} + \\dfrac{x-y}{x+y} = \\dfrac{74}{35}, \\\\ [6pt] x^2 - y^2 = 35. \\end{cases} $",
+    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x+y}{x-y} + \\dfrac{x-y}{x+y} = \\dfrac{74}{35}, \\\\[6pt] x^2 - y^2 = 35. \\end{cases} $"
    ]
   }
  },
@@ -1381,30 +313,8 @@
   "number": 5,
   "fields": {
    "question_text": [
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} \\dfrac{x+4y}{y+4} - \\dfrac{y-x}{x} = 1, y - x = 6. \\end{cases} $",
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} \\dfrac{x+4y}{y+4} - \\dfrac{y-x}{x} = 1, \\\\ [6pt] y - x = 6. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 3,
-  "number": 6,
-  "fields": {
-   "question_text": [
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} y^2 - 3x^2 = -11, x + y = 3. \\end{cases} $",
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} y^2 - 3x^2 = -11, \\\\ x + y = 3. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 3,
-  "number": 7,
-  "fields": {
-   "question_text": [
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} (x-4)(x+1)(y-7) = 0, (y-5)(y+3)(x-2) = 0. \\end{cases} $",
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} (x-4)(x+1)(y-7) = 0, \\\\ (y-5)(y+3)(x-2) = 0. \\end{cases} $"
+    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} \\dfrac{x+4y}{y+4} - \\dfrac{y-x}{x} = 1, \\\\ [6pt] y - x = 6. \\end{cases} $",
+    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} \\dfrac{x+4y}{y+4} - \\dfrac{y-x}{x} = 1, \\\\[6pt] y - x = 6. \\end{cases} $"
    ]
   }
  },
@@ -1414,8 +324,8 @@
   "number": 8,
   "fields": {
    "question_text": [
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} \\dfrac{(x-4)(y-2)}{x-8} = 0, \\dfrac{(x-8)(y+3)}{x+5} = 0. \\end{cases} $",
-    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} \\dfrac{(x-4)(y-2)}{x-8} = 0, \\\\ [6pt] \\dfrac{(x-8)(y+3)}{x+5} = 0. \\end{cases} $"
+    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} \\dfrac{(x-4)(y-2)}{x-8} = 0, \\\\ [6pt] \\dfrac{(x-8)(y+3)}{x+5} = 0. \\end{cases} $",
+    "Sistemaning barça yeçimlaridagi $ x $ va $ y $ qiymatlarining umumiy yiğindisini toping: $ \\begin{cases} \\dfrac{(x-4)(y-2)}{x-8} = 0, \\\\[6pt] \\dfrac{(x-8)(y+3)}{x+5} = 0. \\end{cases} $"
    ]
   }
  },
@@ -1425,30 +335,8 @@
   "number": 10,
   "fields": {
    "question_text": [
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x - y = 4, \\dfrac{1}{x} - \\dfrac{1}{y} = -\\dfrac{4}{21}. \\end{cases} $",
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x - y = 4, \\\\ [6pt] \\dfrac{1}{x} - \\dfrac{1}{y} = -\\dfrac{4}{21}. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 3,
-  "number": 11,
-  "fields": {
-   "question_text": [
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x^2 + y = 42, y^2 + x = 42. \\end{cases} $",
-    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x^2 + y = 42, \\\\ y^2 + x = 42. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 3,
-  "number": 12,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y + xy = 9, x^2 + y^2 + xy = 21. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + y + xy = 9, \\\\ x^2 + y^2 + xy = 21. \\end{cases} $"
+    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x - y = 4, \\\\ [6pt] \\dfrac{1}{x} - \\dfrac{1}{y} = -\\dfrac{4}{21}. \\end{cases} $",
+    "Sistemaning butun yeçimlarini toping: $ \\begin{cases} x - y = 4, \\\\[6pt] \\dfrac{1}{x} - \\dfrac{1}{y} = -\\dfrac{4}{21}. \\end{cases} $"
    ]
   }
  },
@@ -1458,19 +346,8 @@
   "number": 13,
   "fields": {
    "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x}{y} + x + y = 11, \\dfrac{x}{y}(x+y) = 18. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x}{y} + x + y = 11, \\\\ [6pt] \\dfrac{x}{y}(x+y) = 18. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 39,
-  "test": 3,
-  "number": 14,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x^3 + y^3 = 133, x^2 - xy + y^2 = 19. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x^3 + y^3 = 133, \\\\ x^2 - xy + y^2 = 19. \\end{cases} $"
+    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x}{y} + x + y = 11, \\\\ [6pt] \\dfrac{x}{y}(x+y) = 18. \\end{cases} $",
+    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x}{y} + x + y = 11, \\\\[6pt] \\dfrac{x}{y}(x+y) = 18. \\end{cases} $"
    ]
   }
  },
@@ -1480,52 +357,8 @@
   "number": 15,
   "fields": {
    "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x+y}{x-y} + \\dfrac{x-y}{x+y} = \\dfrac{106}{45}, x^2 - y^2 = 45. \\end{cases} $",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x+y}{x-y} + \\dfrac{x-y}{x+y} = \\dfrac{106}{45}, \\\\ [6pt] x^2 - y^2 = 45. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 41,
-  "test": 1,
-  "number": 10,
-  "fields": {
-   "option_d": [
-    "$ \\begin{aligned}[t] &(-\\infty; -4) \\cup (-4; 2) \\cup{} &(2; 6) \\cup (6; +\\infty) \\end{aligned} $",
-    "$ \\begin{aligned}[t] &(-\\infty; -4) \\cup (-4; 2) \\cup{} \\\\ &(2; 6) \\cup (6; +\\infty) \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 41,
-  "test": 2,
-  "number": 10,
-  "fields": {
-   "option_a": [
-    "$ \\begin{aligned}[t] &(-\\infty; -2) \\cup (-2; 3) \\cup{} &(3; 8) \\cup (8; +\\infty) \\end{aligned} $",
-    "$ \\begin{aligned}[t] &(-\\infty; -2) \\cup (-2; 3) \\cup{} \\\\ &(3; 8) \\cup (8; +\\infty) \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 41,
-  "test": 3,
-  "number": 10,
-  "fields": {
-   "option_d": [
-    "$ \\begin{aligned}[t] &(-\\infty; -5) \\cup (-5; -1) \\cup{} &(-1; 4) \\cup (4; +\\infty) \\end{aligned} $",
-    "$ \\begin{aligned}[t] &(-\\infty; -5) \\cup (-5; -1) \\cup{} \\\\ &(-1; 4) \\cup (4; +\\infty) \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 42,
-  "test": 1,
-  "number": 1,
-  "fields": {
-   "question_text": [
-    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} (x + 3)^2 + (x - 1)^2 \\leq 26, x^2 + x - 2 \\geq 0. \\end{cases} $",
-    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} (x + 3)^2 + (x - 1)^2 \\leq 26, \\\\ x^2 + x - 2 \\geq 0. \\end{cases} $"
+    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x+y}{x-y} + \\dfrac{x-y}{x+y} = \\dfrac{106}{45}, \\\\ [6pt] x^2 - y^2 = 45. \\end{cases} $",
+    "Tenglamalar sistemasini yeçing: $ \\begin{cases} \\dfrac{x+y}{x-y} + \\dfrac{x-y}{x+y} = \\dfrac{106}{45}, \\\\[6pt] x^2 - y^2 = 45. \\end{cases} $"
    ]
   }
  },
@@ -1535,8 +368,8 @@
   "number": 3,
   "fields": {
    "question_text": [
-    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} \\dfrac{1}{x^2 + 4x + 4} > \\dfrac{1}{25}, \\dfrac{1}{x^2 + 4x + 4} < \\dfrac{1}{4}. \\end{cases} $",
-    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} \\dfrac{1}{x^2 + 4x + 4} > \\dfrac{1}{25}, \\\\ [6pt] \\dfrac{1}{x^2 + 4x + 4} < \\dfrac{1}{4}. \\end{cases} $"
+    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} \\dfrac{1}{x^2 + 4x + 4} > \\dfrac{1}{25}, \\\\ [6pt] \\dfrac{1}{x^2 + 4x + 4} < \\dfrac{1}{4}. \\end{cases} $",
+    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} \\dfrac{1}{x^2 + 4x + 4} > \\dfrac{1}{25}, \\\\[6pt] \\dfrac{1}{x^2 + 4x + 4} < \\dfrac{1}{4}. \\end{cases} $"
    ]
   }
  },
@@ -1546,19 +379,8 @@
   "number": 12,
   "fields": {
    "question_text": [
-    "Sistemaning eng katta va eng kiçik butun yeçimlari ayirmasini toping: $ \\begin{cases} \\dfrac{x - 2}{x^2 - 9x + 14} < 0, \\dfrac{1}{x^2 - 9x - 10} \\leq 0 \\end{cases} $",
-    "Sistemaning eng katta va eng kiçik butun yeçimlari ayirmasini toping: $ \\begin{cases} \\dfrac{x - 2}{x^2 - 9x + 14} < 0, \\\\ [6pt] \\dfrac{1}{x^2 - 9x - 10} \\leq 0 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 42,
-  "test": 2,
-  "number": 1,
-  "fields": {
-   "question_text": [
-    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} (x - 3)^2 + (x - 5)^2 \\leq 20, x^2 - 8x + 12 \\geq 0. \\end{cases} $",
-    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} (x - 3)^2 + (x - 5)^2 \\leq 20, \\\\ x^2 - 8x + 12 \\geq 0. \\end{cases} $"
+    "Sistemaning eng katta va eng kiçik butun yeçimlari ayirmasini toping: $ \\begin{cases} \\dfrac{x - 2}{x^2 - 9x + 14} < 0, \\\\ [6pt] \\dfrac{1}{x^2 - 9x - 10} \\leq 0 \\end{cases} $",
+    "Sistemaning eng katta va eng kiçik butun yeçimlari ayirmasini toping: $ \\begin{cases} \\dfrac{x - 2}{x^2 - 9x + 14} < 0, \\\\[6pt] \\dfrac{1}{x^2 - 9x - 10} \\leq 0 \\end{cases} $"
    ]
   }
  },
@@ -1568,8 +390,8 @@
   "number": 3,
   "fields": {
    "question_text": [
-    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} \\dfrac{1}{x^2 - 6x + 9} > \\dfrac{1}{9}, \\dfrac{1}{x^2 - 6x + 9} < \\dfrac{1}{1}. \\end{cases} $",
-    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} \\dfrac{1}{x^2 - 6x + 9} > \\dfrac{1}{9}, \\\\ [6pt] \\dfrac{1}{x^2 - 6x + 9} < \\dfrac{1}{1}. \\end{cases} $"
+    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} \\dfrac{1}{x^2 - 6x + 9} > \\dfrac{1}{9}, \\\\ [6pt] \\dfrac{1}{x^2 - 6x + 9} < \\dfrac{1}{1}. \\end{cases} $",
+    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} \\dfrac{1}{x^2 - 6x + 9} > \\dfrac{1}{9}, \\\\[6pt] \\dfrac{1}{x^2 - 6x + 9} < \\dfrac{1}{1}. \\end{cases} $"
    ]
   }
  },
@@ -1579,19 +401,8 @@
   "number": 12,
   "fields": {
    "question_text": [
-    "Sistemaning eng katta va eng kiçik butun yeçimlari ayirmasini toping: $ \\begin{cases} \\dfrac{x + 4}{x^2 - x - 20} < 0, \\dfrac{1}{x^2 - 6x - 16} \\leq 0 \\end{cases} $",
-    "Sistemaning eng katta va eng kiçik butun yeçimlari ayirmasini toping: $ \\begin{cases} \\dfrac{x + 4}{x^2 - x - 20} < 0, \\\\ [6pt] \\dfrac{1}{x^2 - 6x - 16} \\leq 0 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 42,
-  "test": 3,
-  "number": 1,
-  "fields": {
-   "question_text": [
-    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} (x + 1)^2 + (x - 3)^2 \\leq 40, x^2 - 4x \\geq 0. \\end{cases} $",
-    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} (x + 1)^2 + (x - 3)^2 \\leq 40, \\\\ x^2 - 4x \\geq 0. \\end{cases} $"
+    "Sistemaning eng katta va eng kiçik butun yeçimlari ayirmasini toping: $ \\begin{cases} \\dfrac{x + 4}{x^2 - x - 20} < 0, \\\\ [6pt] \\dfrac{1}{x^2 - 6x - 16} \\leq 0 \\end{cases} $",
+    "Sistemaning eng katta va eng kiçik butun yeçimlari ayirmasini toping: $ \\begin{cases} \\dfrac{x + 4}{x^2 - x - 20} < 0, \\\\[6pt] \\dfrac{1}{x^2 - 6x - 16} \\leq 0 \\end{cases} $"
    ]
   }
  },
@@ -1601,8 +412,8 @@
   "number": 3,
   "fields": {
    "question_text": [
-    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} \\dfrac{1}{x^2} > \\dfrac{1}{36}, \\dfrac{1}{x^2} < \\dfrac{1}{4}. \\end{cases} $",
-    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} \\dfrac{1}{x^2} > \\dfrac{1}{36}, \\\\ [6pt] \\dfrac{1}{x^2} < \\dfrac{1}{4}. \\end{cases} $"
+    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} \\dfrac{1}{x^2} > \\dfrac{1}{36}, \\\\ [6pt] \\dfrac{1}{x^2} < \\dfrac{1}{4}. \\end{cases} $",
+    "Tengsizliklar sistemasini yeçing: $ \\begin{cases} \\dfrac{1}{x^2} > \\dfrac{1}{36}, \\\\[6pt] \\dfrac{1}{x^2} < \\dfrac{1}{4}. \\end{cases} $"
    ]
   }
  },
@@ -1612,576 +423,8 @@
   "number": 12,
   "fields": {
    "question_text": [
-    "Sistemaning eng katta va eng kiçik butun yeçimlari ayirmasini toping: $ \\begin{cases} \\dfrac{x - 1}{x^2 - 9x + 8} < 0, \\dfrac{1}{x^2 - 13x + 22} \\leq 0 \\end{cases} $",
-    "Sistemaning eng katta va eng kiçik butun yeçimlari ayirmasini toping: $ \\begin{cases} \\dfrac{x - 1}{x^2 - 9x + 8} < 0, \\\\ [6pt] \\dfrac{1}{x^2 - 13x + 22} \\leq 0 \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 43,
-  "test": 1,
-  "number": 10,
-  "fields": {
-   "option_a": [
-    "$ \\begin{array}[t]{@{}r@{ }l@{}} ösadi: & (-\\infty; 1) kamayadi: & (1; +\\infty) \\end{array} $",
-    "$ \\begin{array}{rl} \\text{ösadi:} & (-\\infty; 1) \\\\ \\text{kamayadi:} & (1; +\\infty) \\end{array} $"
-   ],
-   "option_b": [
-    "$ \\begin{array}[t]{@{}r@{ }l@{}} ösadi: & (-\\infty; 0) kamayadi: & (0; +\\infty) \\end{array} $",
-    "$ \\begin{array}{rl} \\text{ösadi:} & (-\\infty; 0) \\\\ \\text{kamayadi:} & (0; +\\infty) \\end{array} $"
-   ],
-   "option_c": [
-    "$ \\begin{array}[t]{@{}r@{ }l@{}} kamayadi: & (-\\infty; -1) ösadi: & (-1; +\\infty) \\end{array} $",
-    "$ \\begin{array}{rl} \\text{kamayadi:} & (-\\infty; -1) \\\\ \\text{ösadi:} & (-1; +\\infty) \\end{array} $"
-   ],
-   "option_d": [
-    "$ \\begin{array}[t]{@{}r@{ }l@{}} ösadi: & (-\\infty; -1) kamayadi: & (-1; +\\infty) \\end{array} $",
-    "$ \\begin{array}{rl} \\text{ösadi:} & (-\\infty; -1) \\\\ \\text{kamayadi:} & (-1; +\\infty) \\end{array} $"
-   ]
-  }
- },
- {
-  "topic": 43,
-  "test": 2,
-  "number": 10,
-  "fields": {
-   "option_a": [
-    "$ \\begin{array}[t]{@{}r@{ }l@{}} kamayadi: & (-\\infty; -4) ösadi: & (-4; +\\infty) \\end{array} $",
-    "$ \\begin{array}{rl} \\text{kamayadi:} & (-\\infty; -4) \\\\ \\text{ösadi:} & (-4; +\\infty) \\end{array} $"
-   ],
-   "option_b": [
-    "$ \\begin{array}[t]{@{}r@{ }l@{}} kamayadi: & (-\\infty; 5) ösadi: & (5; +\\infty) \\end{array} $",
-    "$ \\begin{array}{rl} \\text{kamayadi:} & (-\\infty; 5) \\\\ \\text{ösadi:} & (5; +\\infty) \\end{array} $"
-   ],
-   "option_c": [
-    "$ \\begin{array}[t]{@{}r@{ }l@{}} kamayadi: & (-\\infty; -5) ösadi: & (-5; +\\infty) \\end{array} $",
-    "$ \\begin{array}{rl} \\text{kamayadi:} & (-\\infty; -5) \\\\ \\text{ösadi:} & (-5; +\\infty) \\end{array} $"
-   ],
-   "option_d": [
-    "$ \\begin{array}[t]{@{}r@{ }l@{}} ösadi: & (-\\infty; -5) kamayadi: & (-5; +\\infty) \\end{array} $",
-    "$ \\begin{array}{rl} \\text{ösadi:} & (-\\infty; -5) \\\\ \\text{kamayadi:} & (-5; +\\infty) \\end{array} $"
-   ]
-  }
- },
- {
-  "topic": 43,
-  "test": 3,
-  "number": 10,
-  "fields": {
-   "option_a": [
-    "$ \\begin{array}[t]{@{}r@{ }l@{}} kamayadi: & (-\\infty; 3) ösadi: & (3; +\\infty) \\end{array} $",
-    "$ \\begin{array}{rl} \\text{kamayadi:} & (-\\infty; 3) \\\\ \\text{ösadi:} & (3; +\\infty) \\end{array} $"
-   ],
-   "option_b": [
-    "$ \\begin{array}[t]{@{}r@{ }l@{}} ösadi: & (-\\infty; -3) kamayadi: & (-3; +\\infty) \\end{array} $",
-    "$ \\begin{array}{rl} \\text{ösadi:} & (-\\infty; -3) \\\\ \\text{kamayadi:} & (-3; +\\infty) \\end{array} $"
-   ],
-   "option_c": [
-    "$ \\begin{array}[t]{@{}r@{ }l@{}} ösadi: & (-\\infty; 3) kamayadi: & (3; +\\infty) \\end{array} $",
-    "$ \\begin{array}{rl} \\text{ösadi:} & (-\\infty; 3) \\\\ \\text{kamayadi:} & (3; +\\infty) \\end{array} $"
-   ],
-   "option_d": [
-    "$ \\begin{array}[t]{@{}r@{ }l@{}} ösadi: & (-\\infty; 4) kamayadi: & (4; +\\infty) \\end{array} $",
-    "$ \\begin{array}{rl} \\text{ösadi:} & (-\\infty; 4) \\\\ \\text{kamayadi:} & (4; +\\infty) \\end{array} $"
-   ]
-  }
- },
- {
-  "topic": 44,
-  "test": 1,
-  "number": 3,
-  "fields": {
-   "question_text": [
-    "$ x^2 - ax + b = 0 $ tenglamaning $ x_1 $, $ x_2 $ ildizlari uçun $ \\begin{cases} 3x_1 + 2x_2 = 2 x_1 - 3x_2 = -14 \\end{cases} $ bölsa, $ 3a - b $ ning qiymatini toping.",
-    "$ x^2 - ax + b = 0 $ tenglamaning $ x_1 $, $ x_2 $ ildizlari uçun $ \\begin{cases} 3x_1 + 2x_2 = 2 \\\\ x_1 - 3x_2 = -14 \\end{cases} $ bölsa, $ 3a - b $ ning qiymatini toping."
-   ]
-  }
- },
- {
-  "topic": 44,
-  "test": 2,
-  "number": 3,
-  "fields": {
-   "question_text": [
-    "$ x^2 - ax + b = 0 $ tenglamaning $ x_1 $, $ x_2 $ ildizlari uçun $ \\begin{cases} x_1 - 2x_2 = 8 4x_1 + x_2 = 5 \\end{cases} $ bölsa, $ 2a + 3b $ ning qiymatini toping.",
-    "$ x^2 - ax + b = 0 $ tenglamaning $ x_1 $, $ x_2 $ ildizlari uçun $ \\begin{cases} x_1 - 2x_2 = 8 \\\\ 4x_1 + x_2 = 5 \\end{cases} $ bölsa, $ 2a + 3b $ ning qiymatini toping."
-   ]
-  }
- },
- {
-  "topic": 44,
-  "test": 3,
-  "number": 3,
-  "fields": {
-   "question_text": [
-    "$ x^2 - ax + b = 0 $ tenglamaning $ x_1 $, $ x_2 $ ildizlari uçun $ \\begin{cases} 2x_1 - 3x_2 = 10 5x_1 + x_2 = -9 \\end{cases} $ bölsa, $ a - 2b $ ning qiymatini toping.",
-    "$ x^2 - ax + b = 0 $ tenglamaning $ x_1 $, $ x_2 $ ildizlari uçun $ \\begin{cases} 2x_1 - 3x_2 = 10 \\\\ 5x_1 + x_2 = -9 \\end{cases} $ bölsa, $ a - 2b $ ning qiymatini toping."
-   ]
-  }
- },
- {
-  "topic": 45,
-  "test": 1,
-  "number": 17,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + 2y = 6 |x - 2y| = 2 \\end{cases} $.",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x + 2y = 6 \\\\ |x - 2y| = 2 \\end{cases} $."
-   ]
-  }
- },
- {
-  "topic": 45,
-  "test": 1,
-  "number": 18,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} |x + y| = 5 |x - y| = 1 \\end{cases} $.",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} |x + y| = 5 \\\\ |x - y| = 1 \\end{cases} $."
-   ],
-   "option_a": [
-    "$ \\begin{aligned}[t] &\\{(-3; -1), (-2; -2), &(2; 4), (3; 3)\\} \\end{aligned} $",
-    "$ \\begin{aligned}[t] &\\{(-3; -1), (-2; -2), \\\\ &(2; 4), (3; 3)\\} \\end{aligned} $"
-   ],
-   "option_b": [
-    "$ \\begin{aligned}[t] &\\{(-3; -2), (-2; -3), &(2; 3), (3; 2)\\} \\end{aligned} $",
-    "$ \\begin{aligned}[t] &\\{(-3; -2), (-2; -3), \\\\ &(2; 3), (3; 2)\\} \\end{aligned} $"
-   ],
-   "option_c": [
-    "$ \\begin{aligned}[t] &\\{(-3; 2), (-2; 3), &(2; -3), (3; -2)\\} \\end{aligned} $",
-    "$ \\begin{aligned}[t] &\\{(-3; 2), (-2; 3), \\\\ &(2; -3), (3; -2)\\} \\end{aligned} $"
-   ],
-   "option_d": [
-    "$ \\begin{aligned}[t] &\\{(-2; -2), (-1; -3), &(3; 3), (4; 2)\\} \\end{aligned} $",
-    "$ \\begin{aligned}[t] &\\{(-2; -2), (-1; -3), \\\\ &(3; 3), (4; 2)\\} \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 45,
-  "test": 1,
-  "number": 19,
-  "fields": {
-   "option_a": [
-    "$ \\begin{aligned}[t] &x \\in (-\\infty; -4) \\cup (-4; -1) \\cup (-1; 2) &\\cup (2; 4) \\cup (4; +\\infty) \\end{aligned} $",
-    "$ \\begin{aligned}[t] &x \\in (-\\infty; -4) \\cup (-4; -1) \\cup (-1; 2) \\\\ &\\cup (2; 4) \\cup (4; +\\infty) \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 45,
-  "test": 2,
-  "number": 17,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} 2x + y = 6 |2x - y| = 2 \\end{cases} $.",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} 2x + y = 6 \\\\ |2x - y| = 2 \\end{cases} $."
-   ]
-  }
- },
- {
-  "topic": 45,
-  "test": 2,
-  "number": 18,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} |2x + y| = 6 |2x - y| = 2 \\end{cases} $.",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} |2x + y| = 6 \\\\ |2x - y| = 2 \\end{cases} $."
-   ],
-   "option_a": [
-    "$ \\begin{aligned}[t] &\\{(-2; 2), (-1; 4), &(1; -4), (2; -2)\\} \\end{aligned} $",
-    "$ \\begin{aligned}[t] &\\{(-2; 2), (-1; 4), \\\\ &(1; -4), (2; -2)\\} \\end{aligned} $"
-   ],
-   "option_b": [
-    "$ \\begin{aligned}[t] &\\{(-2; -2), (-1; -4), &(1; 4), (2; 2)\\} \\end{aligned} $",
-    "$ \\begin{aligned}[t] &\\{(-2; -2), (-1; -4), \\\\ &(1; 4), (2; 2)\\} \\end{aligned} $"
-   ],
-   "option_c": [
-    "$ \\begin{aligned}[t] &\\{(-1; -2), (0; -4), &(2; 4), (3; 2)\\} \\end{aligned} $",
-    "$ \\begin{aligned}[t] &\\{(-1; -2), (0; -4), \\\\ &(2; 4), (3; 2)\\} \\end{aligned} $"
-   ],
-   "option_d": [
-    "$ \\begin{aligned}[t] &\\{(-2; -1), (-1; -3), &(1; 5), (2; 3)\\} \\end{aligned} $",
-    "$ \\begin{aligned}[t] &\\{(-2; -1), (-1; -3), \\\\ &(1; 5), (2; 3)\\} \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 45,
-  "test": 2,
-  "number": 19,
-  "fields": {
-   "option_b": [
-    "$ \\begin{aligned}[t] &x \\in (-\\infty; -2) \\cup (-2; 0) \\cup (0; 3) &\\cup (3; 5) \\cup (5; +\\infty) \\end{aligned} $",
-    "$ \\begin{aligned}[t] &x \\in (-\\infty; -2) \\cup (-2; 0) \\cup (0; 3) \\\\ &\\cup (3; 5) \\cup (5; +\\infty) \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 45,
-  "test": 3,
-  "number": 17,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x - y = 3 |2x + y| = 3 \\end{cases} $.",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} x - y = 3 \\\\ |2x + y| = 3 \\end{cases} $."
-   ]
-  }
- },
- {
-  "topic": 45,
-  "test": 3,
-  "number": 18,
-  "fields": {
-   "question_text": [
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} |x + 2y| = 6 |x - 2y| = 2 \\end{cases} $.",
-    "Tenglamalar sistemasini yeçing: $ \\begin{cases} |x + 2y| = 6 \\\\ |x - 2y| = 2 \\end{cases} $."
-   ],
-   "option_a": [
-    "$ \\begin{aligned}[t] &\\{(-4; 1), (-2; 2), &(2; -2), (4; -1)\\} \\end{aligned} $",
-    "$ \\begin{aligned}[t] &\\{(-4; 1), (-2; 2), \\\\ &(2; -2), (4; -1)\\} \\end{aligned} $"
-   ],
-   "option_b": [
-    "$ \\begin{aligned}[t] &\\{(-3; -1), (-1; -2), &(3; 2), (5; 1)\\} \\end{aligned} $",
-    "$ \\begin{aligned}[t] &\\{(-3; -1), (-1; -2), \\\\ &(3; 2), (5; 1)\\} \\end{aligned} $"
-   ],
-   "option_c": [
-    "$ \\begin{aligned}[t] &\\{(-4; -1), (-2; -2), &(2; 2), (4; 1)\\} \\end{aligned} $",
-    "$ \\begin{aligned}[t] &\\{(-4; -1), (-2; -2), \\\\ &(2; 2), (4; 1)\\} \\end{aligned} $"
-   ],
-   "option_d": [
-    "$ \\begin{aligned}[t] &\\{(-4; 0), (-2; -1), &(2; 3), (4; 2)\\} \\end{aligned} $",
-    "$ \\begin{aligned}[t] &\\{(-4; 0), (-2; -1), \\\\ &(2; 3), (4; 2)\\} \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 45,
-  "test": 3,
-  "number": 19,
-  "fields": {
-   "option_a": [
-    "$ \\begin{aligned}[t] &x \\in (-\\infty; -5) \\cup (-5; -1) \\cup (-1; 2) &\\cup (2; 4) \\cup (4; +\\infty) \\end{aligned} $",
-    "$ \\begin{aligned}[t] &x \\in (-\\infty; -5) \\cup (-5; -1) \\cup (-1; 2) \\\\ &\\cup (2; 4) \\cup (4; +\\infty) \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 47,
-  "test": 1,
-  "number": 7,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{aligned}[t] &\\sqrt[3]{(\\sqrt{19} - 5)^3} + \\sqrt[4]{(4 - \\sqrt{19})^4} +{} &+ \\sqrt[6]{(\\sqrt{19} - 1)^6}. \\end{aligned} $",
-    "Hisoblang: $ \\begin{aligned}[t] &\\sqrt[3]{(\\sqrt{19} - 5)^3} + \\sqrt[4]{(4 - \\sqrt{19})^4} +{} \\\\ &+ \\sqrt[6]{(\\sqrt{19} - 1)^6}. \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 47,
-  "test": 2,
-  "number": 7,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{aligned}[t] &\\sqrt[7]{(\\sqrt{13} - 5)^7} + \\sqrt{(3 - \\sqrt{13})^2} +{} &+ \\sqrt[8]{(\\sqrt{13} - 2)^8}. \\end{aligned} $",
-    "Hisoblang: $ \\begin{aligned}[t] &\\sqrt[7]{(\\sqrt{13} - 5)^7} + \\sqrt{(3 - \\sqrt{13})^2} +{} \\\\ &+ \\sqrt[8]{(\\sqrt{13} - 2)^8}. \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 47,
-  "test": 3,
-  "number": 7,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{aligned}[t] &\\sqrt[5]{(\\sqrt{29} - 6)^5} + \\sqrt[6]{(5 - \\sqrt{29})^6} +{} &+ \\sqrt[4]{(\\sqrt{29} - 2)^4}. \\end{aligned} $",
-    "Hisoblang: $ \\begin{aligned}[t] &\\sqrt[5]{(\\sqrt{29} - 6)^5} + \\sqrt[6]{(5 - \\sqrt{29})^6} +{} \\\\ &+ \\sqrt[4]{(\\sqrt{29} - 2)^4}. \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 48,
-  "test": 1,
-  "number": 9,
-  "fields": {
-   "question_text": [
-    "Tenglamaning haqiqiy ildizlari sonini toping: $ \\begin{aligned}[t] &\\sqrt{x^2 - 5x}(x^2 - 9x + 15) = &= \\sqrt{x^2 - 5x}. \\end{aligned} $",
-    "Tenglamaning haqiqiy ildizlari sonini toping: $ \\begin{aligned}[t] &\\sqrt{x^2 - 5x}(x^2 - 9x + 15) = \\\\ &= \\sqrt{x^2 - 5x}. \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 48,
-  "test": 2,
-  "number": 9,
-  "fields": {
-   "question_text": [
-    "Tenglamaning haqiqiy ildizlari sonini toping: $ \\begin{aligned}[t] &\\sqrt{x^2 + 7x + 6}(x^2 + x - 5) = &= \\sqrt{x^2 + 7x + 6}. \\end{aligned} $",
-    "Tenglamaning haqiqiy ildizlari sonini toping: $ \\begin{aligned}[t] &\\sqrt{x^2 + 7x + 6}(x^2 + x - 5) = \\\\ &= \\sqrt{x^2 + 7x + 6}. \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 48,
-  "test": 3,
-  "number": 9,
-  "fields": {
-   "question_text": [
-    "Tenglamaning haqiqiy ildizlari sonini toping: $ \\begin{aligned}[t] &\\sqrt{x^2 - 10x + 16}(x^2 - 15x + 51) = &= \\sqrt{x^2 - 10x + 16}. \\end{aligned} $",
-    "Tenglamaning haqiqiy ildizlari sonini toping: $ \\begin{aligned}[t] &\\sqrt{x^2 - 10x + 16}(x^2 - 15x + 51) = \\\\ &= \\sqrt{x^2 - 10x + 16}. \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 49,
-  "test": 1,
-  "number": 24,
-  "fields": {
-   "question_text": [
-    "Tengsizlikni yeçing: $ \\begin{aligned}[t] &\\sqrt{x^2 - 2x - 15} + \\sqrt{3x^2 - 15x} \\leq{} &\\leq \\sqrt{4x^2 - 17x - 15}. \\end{aligned} $",
-    "Tengsizlikni yeçing: $ \\begin{aligned}[t] &\\sqrt{x^2 - 2x - 15} + \\sqrt{3x^2 - 15x} \\leq{} \\\\ &\\leq \\sqrt{4x^2 - 17x - 15}. \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 49,
-  "test": 2,
-  "number": 24,
-  "fields": {
-   "question_text": [
-    "Tengsizlikni yeçing: $ \\begin{aligned}[t] &\\sqrt{3x^2 - 15x - 18} +{} &+ \\sqrt{2x^2 - 16x + 24} \\leq{} &\\leq \\sqrt{5x^2 - 31x + 6}. \\end{aligned} $",
-    "Tengsizlikni yeçing: $ \\begin{aligned}[t] &\\sqrt{3x^2 - 15x - 18} +{} \\\\ &+ \\sqrt{2x^2 - 16x + 24} \\leq{} \\\\ &\\leq \\sqrt{5x^2 - 31x + 6}. \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 49,
-  "test": 3,
-  "number": 24,
-  "fields": {
-   "question_text": [
-    "Tengsizlikni yeçing: $ \\begin{aligned}[t] &\\sqrt{2x^2 - 16x + 14} +{} &+ \\sqrt{4x^2 - 40x + 84} \\leq{} &\\leq \\sqrt{6x^2 - 56x + 98}. \\end{aligned} $",
-    "Tengsizlikni yeçing: $ \\begin{aligned}[t] &\\sqrt{2x^2 - 16x + 14} +{} \\\\ &+ \\sqrt{4x^2 - 40x + 84} \\leq{} \\\\ &\\leq \\sqrt{6x^2 - 56x + 98}. \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 55,
-  "test": 1,
-  "number": 3,
-  "fields": {
-   "question_text": [
-    "$ f(x) = \\begin{cases} 4x, & x \\geq 0, x^2 - 1, & x < 0 \\end{cases} $ bölsa, $ f(3) + f(-2) $ ni toping.",
-    "$ f(x) = \\begin{cases} 4x, & x \\geq 0, \\\\ x^2 - 1, & x < 0 \\end{cases} $ bölsa, $ f(3) + f(-2) $ ni toping."
-   ]
-  }
- },
- {
-  "topic": 55,
-  "test": 1,
-  "number": 4,
-  "fields": {
-   "question_text": [
-    "$ f(x) = \\begin{cases} x^2, & x \\geq 2, |x - 1|, & -1 < x < 2, -x + 2, & x \\leq -1 \\end{cases} $ bölsa, $ f(-2) + f(0) + f(3) $ ni toping.",
-    "$ f(x) = \\begin{cases} x^2, & x \\geq 2, \\\\ |x - 1|, & -1 < x < 2, \\\\ -x + 2, & x \\leq -1 \\end{cases} $ bölsa, $ f(-2) + f(0) + f(3) $ ni toping."
-   ]
-  }
- },
- {
-  "topic": 55,
-  "test": 2,
-  "number": 3,
-  "fields": {
-   "question_text": [
-    "$ f(x) = \\begin{cases} -2x, & x \\geq 0, x^2 + 5, & x < 0 \\end{cases} $ bölsa, $ f(4) + f(-1) $ ni toping.",
-    "$ f(x) = \\begin{cases} -2x, & x \\geq 0, \\\\ x^2 + 5, & x < 0 \\end{cases} $ bölsa, $ f(4) + f(-1) $ ni toping."
-   ]
-  }
- },
- {
-  "topic": 55,
-  "test": 2,
-  "number": 4,
-  "fields": {
-   "question_text": [
-    "$ f(x) = \\begin{cases} x^2, & x \\geq 5, |x + 3|, & 1 < x < 5, 3x + 1, & x \\leq 1 \\end{cases} $ bölsa, $ f(0) + f(2) + f(6) $ ni toping.",
-    "$ f(x) = \\begin{cases} x^2, & x \\geq 5, \\\\ |x + 3|, & 1 < x < 5, \\\\ 3x + 1, & x \\leq 1 \\end{cases} $ bölsa, $ f(0) + f(2) + f(6) $ ni toping."
-   ]
-  }
- },
- {
-  "topic": 55,
-  "test": 3,
-  "number": 3,
-  "fields": {
-   "question_text": [
-    "$ f(x) = \\begin{cases} 6x, & x \\geq 0, x^2 - 3, & x < 0 \\end{cases} $ bölsa, $ f(1) + f(-4) $ ni toping.",
-    "$ f(x) = \\begin{cases} 6x, & x \\geq 0, \\\\ x^2 - 3, & x < 0 \\end{cases} $ bölsa, $ f(1) + f(-4) $ ni toping."
-   ]
-  }
- },
- {
-  "topic": 55,
-  "test": 3,
-  "number": 4,
-  "fields": {
-   "question_text": [
-    "$ f(x) = \\begin{cases} x^2, & x \\geq 1, |x + 4|, & -2 < x < 1, 2x + 3, & x \\leq -2 \\end{cases} $ bölsa, $ f(-3) + f(0) + f(2) $ ni toping.",
-    "$ f(x) = \\begin{cases} x^2, & x \\geq 1, \\\\ |x + 4|, & -2 < x < 1, \\\\ 2x + 3, & x \\leq -2 \\end{cases} $ bölsa, $ f(-3) + f(0) + f(2) $ ni toping."
-   ]
-  }
- },
- {
-  "topic": 59,
-  "test": 1,
-  "number": 29,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 3^x = 9^y, 3x - y = 5. \\end{cases} $ sistemada $ x + y $ ni toping.",
-    "$ \\begin{cases} 3^x = 9^y, \\\\ 3x - y = 5. \\end{cases} $ sistemada $ x + y $ ni toping."
-   ]
-  }
- },
- {
-  "topic": 59,
-  "test": 1,
-  "number": 30,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 2^x \\cdot 5^y = 40, 2^y \\cdot 5^x = 250. \\end{cases} $ sistemada $ x + y $ ni toping.",
-    "$ \\begin{cases} 2^x \\cdot 5^y = 40, \\\\ 2^y \\cdot 5^x = 250. \\end{cases} $ sistemada $ x + y $ ni toping."
-   ]
-  }
- },
- {
-  "topic": 59,
-  "test": 2,
-  "number": 29,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 5^{x + 5} = 25^y, 2x - y = -4. \\end{cases} $ sistemada $ x + y $ ni toping.",
-    "$ \\begin{cases} 5^{x + 5} = 25^y, \\\\ 2x - y = -4. \\end{cases} $ sistemada $ x + y $ ni toping."
-   ]
-  }
- },
- {
-  "topic": 59,
-  "test": 2,
-  "number": 30,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 3^x \\cdot 5^y = 1125, 3^y \\cdot 5^x = 675. \\end{cases} $ sistemada $ x + y $ ni toping.",
-    "$ \\begin{cases} 3^x \\cdot 5^y = 1125, \\\\ 3^y \\cdot 5^x = 675. \\end{cases} $ sistemada $ x + y $ ni toping."
-   ]
-  }
- },
- {
-  "topic": 59,
-  "test": 3,
-  "number": 29,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 2^{x + 1} = 4^y, 4x - y = 10. \\end{cases} $ sistemada $ x + y $ ni toping.",
-    "$ \\begin{cases} 2^{x + 1} = 4^y, \\\\ 4x - y = 10. \\end{cases} $ sistemada $ x + y $ ni toping."
-   ]
-  }
- },
- {
-  "topic": 59,
-  "test": 3,
-  "number": 30,
-  "fields": {
-   "question_text": [
-    "$ \\begin{cases} 2^x \\cdot 7^y = 686, 2^y \\cdot 7^x = 56. \\end{cases} $ sistemada $ x + y $ ni toping.",
-    "$ \\begin{cases} 2^x \\cdot 7^y = 686, \\\\ 2^y \\cdot 7^x = 56. \\end{cases} $ sistemada $ x + y $ ni toping."
-   ]
-  }
- },
- {
-  "topic": 61,
-  "test": 3,
-  "number": 22,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{aligned}[t] &\\log_5 6 \\cdot \\log_6 7 \\cdot \\log_7 8 \\cdot{} &\\cdot \\log_8 9 \\cdot \\log_9 10 \\cdot \\log_{10} 125 \\end{aligned} $",
-    "Hisoblang: $ \\begin{aligned}[t] &\\log_5 6 \\cdot \\log_6 7 \\cdot \\log_7 8 \\cdot{} \\\\ &\\cdot \\log_8 9 \\cdot \\log_9 10 \\cdot \\log_{10} 125 \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 61,
-  "test": 3,
-  "number": 26,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{aligned}[t] &\\dfrac{1}{\\log_3 1260} + \\dfrac{1}{\\log_5 1260} +{} &+ \\dfrac{1}{\\log_7 1260} + \\dfrac{1}{\\log_{12} 1260} \\end{aligned} $",
-    "Hisoblang: $ \\begin{aligned}[t] &\\dfrac{1}{\\log_3 1260} + \\dfrac{1}{\\log_5 1260} +{} \\\\ &+ \\dfrac{1}{\\log_7 1260} + \\dfrac{1}{\\log_{12} 1260} \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 62,
-  "test": 1,
-  "number": 15,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{aligned}[t] &(\\lg 4 + \\log_4 10 + 2) \\cdot{} &\\cdot (\\lg 4 - \\log_{40} 4)\\log_4 10 - \\lg 4. \\end{aligned} $",
-    "Hisoblang: $ \\begin{aligned}[t] &(\\lg 4 + \\log_4 10 + 2) \\cdot{} \\\\ &\\cdot (\\lg 4 - \\log_{40} 4)\\log_4 10 - \\lg 4. \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 62,
-  "test": 2,
-  "number": 15,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{aligned}[t] &(\\lg 5 + \\log_5 10 + 2) \\cdot{} &\\cdot (\\lg 5 - \\log_{50} 5)\\log_5 10 - \\lg 5. \\end{aligned} $",
-    "Hisoblang: $ \\begin{aligned}[t] &(\\lg 5 + \\log_5 10 + 2) \\cdot{} \\\\ &\\cdot (\\lg 5 - \\log_{50} 5)\\log_5 10 - \\lg 5. \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 62,
-  "test": 3,
-  "number": 15,
-  "fields": {
-   "question_text": [
-    "Hisoblang: $ \\begin{aligned}[t] &(\\lg 8 + \\log_8 10 + 2) \\cdot{} &\\cdot (\\lg 8 - \\log_{80} 8)\\log_8 10 - \\lg 8. \\end{aligned} $",
-    "Hisoblang: $ \\begin{aligned}[t] &(\\lg 8 + \\log_8 10 + 2) \\cdot{} \\\\ &\\cdot (\\lg 8 - \\log_{80} 8)\\log_8 10 - \\lg 8. \\end{aligned} $"
-   ]
-  }
- },
- {
-  "topic": 64,
-  "test": 1,
-  "number": 18,
-  "fields": {
-   "question_text": [
-    "$ \\begin{aligned}[t] &\\log_{3}(x^2 - 7x + 19) +{} &+ \\log_{9}(x^2 - 7x + 19) +{} &+ \\log_{81}(x^2 - 7x + 19) = \\dfrac{7}{2} \\end{aligned} $ tenglamani yeçing.",
-    "$ \\begin{aligned}[t] &\\log_{3}(x^2 - 7x + 19) +{} \\\\ &+ \\log_{9}(x^2 - 7x + 19) +{} \\\\ &+ \\log_{81}(x^2 - 7x + 19) = \\dfrac{7}{2} \\end{aligned} $ tenglamani yeçing."
-   ]
-  }
- },
- {
-  "topic": 64,
-  "test": 1,
-  "number": 23,
-  "fields": {
-   "question_text": [
-    "Quyidagi sistemani yeçing: $ \\begin{cases} \\log_3 x + \\log_3 y = 2, x^2y = 27. \\end{cases} $",
-    "Quyidagi sistemani yeçing: $ \\begin{cases} \\log_3 x + \\log_3 y = 2, \\\\ x^2y = 27. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 64,
-  "test": 1,
-  "number": 24,
-  "fields": {
-   "question_text": [
-    "Quyidagi sistemani yeçing: $ \\begin{cases} 2^{x^2 - xy} = 1, 2\\log_2(y + 3) = \\log_2(13x - 1). \\end{cases} $",
-    "Quyidagi sistemani yeçing: $ \\begin{cases} 2^{x^2 - xy} = 1, \\\\ 2\\log_2(y + 3) = \\log_2(13x - 1). \\end{cases} $"
+    "Sistemaning eng katta va eng kiçik butun yeçimlari ayirmasini toping: $ \\begin{cases} \\dfrac{x - 1}{x^2 - 9x + 8} < 0, \\\\ [6pt] \\dfrac{1}{x^2 - 13x + 22} \\leq 0 \\end{cases} $",
+    "Sistemaning eng katta va eng kiçik butun yeçimlari ayirmasini toping: $ \\begin{cases} \\dfrac{x - 1}{x^2 - 9x + 8} < 0, \\\\[6pt] \\dfrac{1}{x^2 - 13x + 22} \\leq 0 \\end{cases} $"
    ]
   }
  },
@@ -2191,52 +434,8 @@
   "number": 33,
   "fields": {
    "question_text": [
-    "Sistema $ (x_1; y_1),..., (x_n; y_n) $ ildizlarga ega bölsa, $ x_1x_2\\cdots x_n $ ni toping: $ \\begin{cases} \\log_2 x + \\log_2 y = \\log_2 15, \\log_{64}(x + y) = \\dfrac{1}{2}. \\end{cases} $",
-    "Sistema $ (x_1; y_1),..., (x_n; y_n) $ ildizlarga ega bölsa, $ x_1x_2\\cdots x_n $ ni toping: $ \\begin{cases} \\log_2 x + \\log_2 y = \\log_2 15, \\\\ [6pt] \\log_{64}(x + y) = \\dfrac{1}{2}. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 64,
-  "test": 2,
-  "number": 15,
-  "fields": {
-   "question_text": [
-    "$ \\log_5 x + \\log_5 x = 2 $ tenglamani yeçing.",
-    "$ \\log_5 x + \\log_5(x + 20) = 3 $ tenglamani yeçing."
-   ]
-  }
- },
- {
-  "topic": 64,
-  "test": 2,
-  "number": 18,
-  "fields": {
-   "question_text": [
-    "$ \\begin{aligned}[t] &\\log_{2}(x^2 - 3x + 4) +{} &+ \\log_{4}(x^2 - 3x + 4) +{} &+ \\log_{16}(x^2 - 3x + 4) = \\dfrac{7}{2} \\end{aligned} $ tenglamani yeçing.",
-    "$ \\begin{aligned}[t] &\\log_{2}(x^2 - 3x + 4) +{} \\\\ &+ \\log_{4}(x^2 - 3x + 4) +{} \\\\ &+ \\log_{16}(x^2 - 3x + 4) = \\dfrac{7}{2} \\end{aligned} $ tenglamani yeçing."
-   ]
-  }
- },
- {
-  "topic": 64,
-  "test": 2,
-  "number": 23,
-  "fields": {
-   "question_text": [
-    "Quyidagi sistemani yeçing: $ \\begin{cases} \\log_5 x + \\log_5 y = 1, x^2y = 50. \\end{cases} $",
-    "Quyidagi sistemani yeçing: $ \\begin{cases} \\log_5 x + \\log_5 y = 1, \\\\ x^2y = 50. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 64,
-  "test": 2,
-  "number": 24,
-  "fields": {
-   "question_text": [
-    "Quyidagi sistemani yeçing: $ \\begin{cases} 5^{x^2 - xy} = 1, 2\\log_5(y + 1) = \\log_5(5x - 1). \\end{cases} $",
-    "Quyidagi sistemani yeçing: $ \\begin{cases} 5^{x^2 - xy} = 1, \\\\ 2\\log_5(y + 1) = \\log_5(5x - 1). \\end{cases} $"
+    "Sistema $ (x_1; y_1),..., (x_n; y_n) $ ildizlarga ega bölsa, $ x_1x_2\\cdots x_n $ ni toping: $ \\begin{cases} \\log_2 x + \\log_2 y = \\log_2 15, \\\\ [6pt] \\log_{64}(x + y) = \\dfrac{1}{2}. \\end{cases} $",
+    "Sistema $ (x_1; y_1),..., (x_n; y_n) $ ildizlarga ega bölsa, $ x_1x_2\\cdots x_n $ ni toping: $ \\begin{cases} \\log_2 x + \\log_2 y = \\log_2 15, \\\\[6pt] \\log_{64}(x + y) = \\dfrac{1}{2}. \\end{cases} $"
    ]
   }
  },
@@ -2246,41 +445,8 @@
   "number": 33,
   "fields": {
    "question_text": [
-    "Sistema $ (x_1; y_1),..., (x_n; y_n) $ ildizlarga ega bölsa, $ x_1x_2\\cdots x_n $ ni toping: $ \\begin{cases} \\log_5 x + \\log_5 y = \\log_5 14, \\log_{81}(x + y) = \\dfrac{1}{2}. \\end{cases} $",
-    "Sistema $ (x_1; y_1),..., (x_n; y_n) $ ildizlarga ega bölsa, $ x_1x_2\\cdots x_n $ ni toping: $ \\begin{cases} \\log_5 x + \\log_5 y = \\log_5 14, \\\\ [6pt] \\log_{81}(x + y) = \\dfrac{1}{2}. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 64,
-  "test": 3,
-  "number": 18,
-  "fields": {
-   "question_text": [
-    "$ \\begin{aligned}[t] &\\log_{5}(x^2 - 3x + 27) +{} &+ \\log_{25}(x^2 - 3x + 27) +{} &+ \\log_{625}(x^2 - 3x + 27) = \\dfrac{7}{2} \\end{aligned} $ tenglamani yeçing.",
-    "$ \\begin{aligned}[t] &\\log_{5}(x^2 - 3x + 27) +{} \\\\ &+ \\log_{25}(x^2 - 3x + 27) +{} \\\\ &+ \\log_{625}(x^2 - 3x + 27) = \\dfrac{7}{2} \\end{aligned} $ tenglamani yeçing."
-   ]
-  }
- },
- {
-  "topic": 64,
-  "test": 3,
-  "number": 23,
-  "fields": {
-   "question_text": [
-    "Quyidagi sistemani yeçing: $ \\begin{cases} \\log_2 x + \\log_2 y = 4, x^2y = 64. \\end{cases} $",
-    "Quyidagi sistemani yeçing: $ \\begin{cases} \\log_2 x + \\log_2 y = 4, \\\\ x^2y = 64. \\end{cases} $"
-   ]
-  }
- },
- {
-  "topic": 64,
-  "test": 3,
-  "number": 24,
-  "fields": {
-   "question_text": [
-    "Quyidagi sistemani yeçing: $ \\begin{cases} 3^{x^2 - 2xy} = 1, 2\\log_3(y + 4) = \\log_3(13x - 1). \\end{cases} $",
-    "Quyidagi sistemani yeçing: $ \\begin{cases} 3^{x^2 - 2xy} = 1, \\\\ 2\\log_3(y + 4) = \\log_3(13x - 1). \\end{cases} $"
+    "Sistema $ (x_1; y_1),..., (x_n; y_n) $ ildizlarga ega bölsa, $ x_1x_2\\cdots x_n $ ni toping: $ \\begin{cases} \\log_5 x + \\log_5 y = \\log_5 14, \\\\ [6pt] \\log_{81}(x + y) = \\dfrac{1}{2}. \\end{cases} $",
+    "Sistema $ (x_1; y_1),..., (x_n; y_n) $ ildizlarga ega bölsa, $ x_1x_2\\cdots x_n $ ni toping: $ \\begin{cases} \\log_5 x + \\log_5 y = \\log_5 14, \\\\[6pt] \\log_{81}(x + y) = \\dfrac{1}{2}. \\end{cases} $"
    ]
   }
  },
@@ -2290,8 +456,8 @@
   "number": 33,
   "fields": {
    "question_text": [
-    "Sistema $ (x_1; y_1),..., (x_n; y_n) $ ildizlarga ega bölsa, $ x_1x_2\\cdots x_n $ ni toping: $ \\begin{cases} \\log_4 x + \\log_4 y = \\log_4 24, \\log_{121}(x + y) = \\dfrac{1}{2}. \\end{cases} $",
-    "Sistema $ (x_1; y_1),..., (x_n; y_n) $ ildizlarga ega bölsa, $ x_1x_2\\cdots x_n $ ni toping: $ \\begin{cases} \\log_4 x + \\log_4 y = \\log_4 24, \\\\ [6pt] \\log_{121}(x + y) = \\dfrac{1}{2}. \\end{cases} $"
+    "Sistema $ (x_1; y_1),..., (x_n; y_n) $ ildizlarga ega bölsa, $ x_1x_2\\cdots x_n $ ni toping: $ \\begin{cases} \\log_4 x + \\log_4 y = \\log_4 24, \\\\ [6pt] \\log_{121}(x + y) = \\dfrac{1}{2}. \\end{cases} $",
+    "Sistema $ (x_1; y_1),..., (x_n; y_n) $ ildizlarga ega bölsa, $ x_1x_2\\cdots x_n $ ni toping: $ \\begin{cases} \\log_4 x + \\log_4 y = \\log_4 24, \\\\[6pt] \\log_{121}(x + y) = \\dfrac{1}{2}. \\end{cases} $"
    ]
   }
  },
@@ -2301,8 +467,8 @@
   "number": 9,
   "fields": {
    "question_text": [
-    "$\\begin{cases}\\sin x>-\\dfrac{\\sqrt3}{2} \\sin x\\le\\dfrac12\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$).",
-    "$\\begin{cases}\\sin x>-\\dfrac{\\sqrt3}{2}\\\\ \\sin x\\le\\dfrac12\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$)."
+    "$\\begin{cases}\\sin x>-\\dfrac{\\sqrt3}{2}\\\\ \\sin x\\le\\dfrac12\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$).",
+    "$\\begin{cases}\\sin x>-\\dfrac{\\sqrt3}{2}\\\\\\sin x\\le\\dfrac12\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$)."
    ]
   }
  },
@@ -2312,8 +478,8 @@
   "number": 10,
   "fields": {
    "question_text": [
-    "$\\begin{cases}\\cos x>-\\dfrac{\\sqrt3}{2} \\cos x\\le\\dfrac12\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$).",
-    "$\\begin{cases}\\cos x>-\\dfrac{\\sqrt3}{2}\\\\ \\cos x\\le\\dfrac12\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$)."
+    "$\\begin{cases}\\cos x>-\\dfrac{\\sqrt3}{2}\\\\ \\cos x\\le\\dfrac12\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$).",
+    "$\\begin{cases}\\cos x>-\\dfrac{\\sqrt3}{2}\\\\\\cos x\\le\\dfrac12\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$)."
    ]
   }
  },
@@ -2323,8 +489,8 @@
   "number": 9,
   "fields": {
    "question_text": [
-    "$\\begin{cases}\\sin x<\\dfrac12 \\sin x\\ge-\\dfrac{\\sqrt2}{2}\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$).",
-    "$\\begin{cases}\\sin x<\\dfrac12\\\\ \\sin x\\ge-\\dfrac{\\sqrt2}{2}\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$)."
+    "$\\begin{cases}\\sin x<\\dfrac12\\\\ \\sin x\\ge-\\dfrac{\\sqrt2}{2}\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$).",
+    "$\\begin{cases}\\sin x<\\dfrac12\\\\\\sin x\\ge-\\dfrac{\\sqrt2}{2}\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$)."
    ]
   }
  },
@@ -2334,8 +500,8 @@
   "number": 10,
   "fields": {
    "question_text": [
-    "$\\begin{cases}\\cos x\\ge-\\dfrac{\\sqrt2}{2} \\cos x<\\dfrac{\\sqrt2}{2}\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$).",
-    "$\\begin{cases}\\cos x\\ge-\\dfrac{\\sqrt2}{2}\\\\ \\cos x<\\dfrac{\\sqrt2}{2}\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$)."
+    "$\\begin{cases}\\cos x\\ge-\\dfrac{\\sqrt2}{2}\\\\ \\cos x<\\dfrac{\\sqrt2}{2}\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$).",
+    "$\\begin{cases}\\cos x\\ge-\\dfrac{\\sqrt2}{2}\\\\\\cos x<\\dfrac{\\sqrt2}{2}\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$)."
    ]
   }
  },
@@ -2345,8 +511,8 @@
   "number": 9,
   "fields": {
    "question_text": [
-    "$\\begin{cases}\\sin x<-\\dfrac{\\sqrt2}{2} \\sin x\\ge-\\dfrac{\\sqrt3}{2}\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$).",
-    "$\\begin{cases}\\sin x<-\\dfrac{\\sqrt2}{2}\\\\ \\sin x\\ge-\\dfrac{\\sqrt3}{2}\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$)."
+    "$\\begin{cases}\\sin x<-\\dfrac{\\sqrt2}{2}\\\\ \\sin x\\ge-\\dfrac{\\sqrt3}{2}\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$).",
+    "$\\begin{cases}\\sin x<-\\dfrac{\\sqrt2}{2}\\\\\\sin x\\ge-\\dfrac{\\sqrt3}{2}\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$)."
    ]
   }
  },
@@ -2356,41 +522,8 @@
   "number": 10,
   "fields": {
    "question_text": [
-    "$\\begin{cases}\\cos x\\ge-\\dfrac{\\sqrt3}{2} \\cos x<0\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$).",
-    "$\\begin{cases}\\cos x\\ge-\\dfrac{\\sqrt3}{2}\\\\ \\cos x<0\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$)."
-   ]
-  }
- },
- {
-  "topic": 86,
-  "test": 1,
-  "number": 30,
-  "fields": {
-   "question_text": [
-    "$f(x)=\\begin{cases} 3x^2, & x<0 x-2, & x\\ge 0\\end{cases}$ bölsa, $\\displaystyle\\int_{-1}^{3} x f(x) dx$ ni hisoblang.",
-    "$f(x)=\\begin{cases} 3x^2, & x<0\\\\ x-2, & x\\ge 0\\end{cases}$ bölsa, $\\displaystyle\\int_{-1}^{3} x f(x) dx$ ni hisoblang."
-   ]
-  }
- },
- {
-  "topic": 86,
-  "test": 2,
-  "number": 30,
-  "fields": {
-   "question_text": [
-    "$f(x)=\\begin{cases} x^2, & x<0 3-x, & x\\ge 0\\end{cases}$ bölsa, $\\displaystyle\\int_{-1}^{2} x f(x) dx$ ni hisoblang.",
-    "$f(x)=\\begin{cases} x^2, & x<0\\\\ 3-x, & x\\ge 0\\end{cases}$ bölsa, $\\displaystyle\\int_{-1}^{2} x f(x) dx$ ni hisoblang."
-   ]
-  }
- },
- {
-  "topic": 86,
-  "test": 3,
-  "number": 30,
-  "fields": {
-   "question_text": [
-    "$f(x)=\\begin{cases} 2x^2, & x<0 x+1, & x\\ge 0\\end{cases}$ bölsa, $\\displaystyle\\int_{-2}^{1} x f(x) dx$ ni hisoblang.",
-    "$f(x)=\\begin{cases} 2x^2, & x<0\\\\ x+1, & x\\ge 0\\end{cases}$ bölsa, $\\displaystyle\\int_{-2}^{1} x f(x) dx$ ni hisoblang."
+    "$\\begin{cases}\\cos x\\ge-\\dfrac{\\sqrt3}{2}\\\\ \\cos x<0\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$).",
+    "$\\begin{cases}\\cos x\\ge-\\dfrac{\\sqrt3}{2}\\\\\\cos x<0\\end{cases}$ tengsizliklar sistemasini yeçing ($n\\in\\mathbb{Z}$)."
    ]
   }
  }

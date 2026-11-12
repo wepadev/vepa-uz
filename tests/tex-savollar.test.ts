@@ -357,4 +357,8 @@ test("formula muhiti içidagi qator bölinişi va \\text saqlanadi", () => {
     String.raw`$\begin{array}{rl} \text{ösadi:} & (3; +\infty) \end{array}$`,
   );
   assert.equal(cleanTex(String.raw`\text{sm} va $x$`), "sm va $x$");
+  assert.equal(
+    cleanTex(String.raw`$\begin{cases} x = 1, \\[6pt] y = 2 \end{cases}$`),
+    String.raw`$\begin{cases} x = 1, \\[6pt] y = 2 \end{cases}$`,
+  );
 });
