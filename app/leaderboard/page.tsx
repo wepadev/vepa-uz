@@ -567,7 +567,7 @@ export default async function LeaderboardPage({ searchParams }: PageProps) {
                 <h2 className="text-lg font-bold text-mb-ink">Umumiy reyting</h2>
 
                 <p className="mt-0.5 text-sm text-mb-muted">
-                  Hamma reyting testlaridagi foizlar yiğindisi
+                  Hamma reyting testlaridagi oxirgi uriniş foizlari yiğindisi
                 </p>
               </div>
 
