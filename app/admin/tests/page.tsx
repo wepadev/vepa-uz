@@ -186,9 +186,14 @@ export default async function AdminTestsPage() {
         subtitle="Yönaliş → bölim → mavzu → test. Oçiş uçun bosing."
         width="7xl"
         action={
-          <Link href="/tests" className={headerButton}>
-            Öquvçi körinişi
-          </Link>
+          <div className="flex flex-wrap gap-2">
+            <Link href="/admin/tests/yechimlar" className={headerButton}>
+              Yozma yeçimlar
+            </Link>
+            <Link href="/tests" className={headerButton}>
+              Öquvçi körinişi
+            </Link>
+          </div>
         }
       >
         <Link href="/admin/tests/import" className={headerPrimaryButton}>
