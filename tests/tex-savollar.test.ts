@@ -346,3 +346,15 @@ test("oxirgi variantlardan keyingi va oldingi savol variantlari aralashmaydi", (
     [[3, "Grafigini yasang."]],
   );
 });
+
+test("formula muhiti içidagi qator bölinişi va \\text saqlanadi", () => {
+  assert.equal(
+    cleanTex(String.raw`$f(x)=\begin{cases} x^2, & x<0\\ 3-x, & x\ge 0\end{cases}$ bölsa\\ hisoblang`),
+    String.raw`$f(x)=\begin{cases} x^2, & x<0\\ 3-x, & x\ge 0\end{cases}$ bölsa hisoblang`,
+  );
+  assert.equal(
+    cleanTex(String.raw`$\begin{array}[t]{@{}r@{ }l@{}} \text{ösadi:} & (3; +\infty) \end{array}$`),
+    String.raw`$\begin{array}{rl} \text{ösadi:} & (3; +\infty) \end{array}$`,
+  );
+  assert.equal(cleanTex(String.raw`\text{sm} va $x$`), "sm va $x$");
+});
