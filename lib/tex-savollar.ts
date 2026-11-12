@@ -182,7 +182,8 @@ export function cleanTex(text: string): string {
 
   for (const pattern of DROP) out = out.replace(pattern, " ");
 
-  out = out.split(ROW_BREAK).join("\\\\ ");
+  /* `\\[6pt]` dagi oraliq `\\` ga yopişib turişi şart — orasiga böşliq qöyilmaydi */
+  out = out.split(ROW_BREAK).join("\\\\");
 
   return out
     /*
