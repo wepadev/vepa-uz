@@ -155,13 +155,13 @@ export default function MathAnswerField({
         if (cancelled || !holderRef.current) return;
 
         field = new MathfieldElement() as unknown as MathfieldLike;
-        field.mathVirtualKeyboardPolicy = "manual";
-        field.smartFence = true;
-        field.popoverPolicy = "off";
-        field.menuItems = [];
+        /* Joylanmagan maydonning xossalari özgarmaydi — atribut bilan */
+        field.setAttribute("math-virtual-keyboard-policy", "manual");
+        field.setAttribute("smart-fence", "");
+        field.setAttribute("popover-policy", "off");
         field.setAttribute("aria-label", label);
         field.className = "math-answer-field__input";
-        field.value = toLatex(value);
+        field.textContent = toLatex(value);
 
         field.addEventListener("input", () => {
           const latex = (field?.value ?? "").trim();
@@ -179,10 +179,12 @@ export default function MathAnswerField({
         });
 
         holderRef.current.appendChild(field);
+        field.menuItems = [];
         fieldRef.current = field;
         setReady(true);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error("MathLive yuklanmadi:", error);
         if (!cancelled) setFailed(true);
       });
 
@@ -229,15 +231,6 @@ export default function MathAnswerField({
           </span>
         )}
       </div>
-
-      <button
-        type="button"
-        onClick={() => fieldRef.current?.focus()}
-        disabled={!ready}
-        className="mt-2 text-sm font-semibold text-mb-brand disabled:opacity-50"
-      >
-        Klaviaturani oçiş
-      </button>
     </div>
   );
 }

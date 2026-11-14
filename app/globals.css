@@ -680,3 +680,23 @@ button.bg-mb-brand:disabled {
   background-position: center;
 }
 /* VEPA TIZIMI END */
+
+/* Mock testdagi matematik javob maydoni (components/math-answer-field.tsx) */
+.math-answer-field math-field {
+  display: block;
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: 1.5rem;
+  padding: 0.25rem 0;
+  color: inherit;
+}
+
+.math-answer-field math-field::part(menu-toggle) {
+  display: none;
+}
+
+.math-answer-field math-field::part(content) {
+  padding: 0.25rem 0;
+}

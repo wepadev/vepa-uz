@@ -190,7 +190,16 @@ export function takeFigures(
 
 /** KaTeX bilmaydigan operatorlar */
 function katexMath(text: string): string {
-  return text
+  /*
+   * Formula içidagi `\text{..}` ni `cleanTex` oçib taşlaydi
+   * (`\cdot\text{EKUB}` -> `\cdotEKUB`). KaTeX `\hbox` ni ham
+   * matn deb çizadi, `cleanTex` esa unga tegmaydi.
+   */
+  const protectedText = text.replace(
+    /\$\$[\s\S]*?\$\$|\$[^$]*\$|\\\[[\s\S]*?\\\]/g,
+    (math) => math.replace(/\\(text|textrm|mbox)\{/g, "\\hbox{"),
+  );
+  return protectedText
     .replace(/\\arcctg(?![A-Za-z])/g, "\\operatorname{arcctg}")
     .replace(/\\arctg(?![A-Za-z])/g, "\\operatorname{arctg}")
     .replace(/\\ctg(?![A-Za-z])/g, "\\operatorname{ctg}")
@@ -211,7 +220,8 @@ function cleanLine(text: string): string {
     katexMath(text)
       .replace(/\\renewcommand\\?[A-Za-z]+(\{[^{}]*\})?\{[^{}]*\}/g, " ")
       .replace(/\\(scriptsize|footnotesize|small|normalsize|large|Large)(?![A-Za-z])/g, " ")
-      .replace(/\\(textcolor|color)\{[^{}]*\}/g, " ")
+      .replace(/\\textcolor\{[^{}]*\}/g, "")
+      .replace(/\\color\{[^{}]*\}/g, " ")
       .replace(/\\Izoh\{/g, "Izoh: {"),
   )
     .replace(/(^|[^\\])\{\s*\}/g, "$1")
@@ -219,7 +229,11 @@ function cleanLine(text: string): string {
     .trim();
 
   return outsideMath(cleaned, (plain) =>
-    plain.replace(/\\q?quad(?![A-Za-z])/g, " ").replace(/ {2,}/g, " "),
+    plain
+      .replace(/\\q?quad(?![A-Za-z])/g, " ")
+      // Formuladan taşqaridagi guruh qavslari (`{\color{aux} ...}` qoldiği)
+      .replace(/(^|[^\\])[{}]+/g, "$1")
+      .replace(/ {2,}/g, " "),
   ).trim();
 }
 
@@ -227,7 +241,18 @@ function cleanLine(text: string): string {
  * Köp qatorli matn: `\\`, `\par` va böş qator — yangi qator.
  * Formula muhitlari içidagi `\\` saqlanadi (`cleanTex` qoidasi).
  */
-export function cleanBlock(source: string): string {
+export function cleanBlock(raw: string): string {
+  const source = raw
+    // `10\,\$` — dollar belgisi; saytda `$` formula boşlaydi
+    .replace(/\\\$/g, "dollar")
+    .replace(/\\ShowJavoblar(?![A-Za-z])/g, "")
+    .replace(/\\phantom\{[^{}]*\}/g, "")
+    // Röyxatlar: har band yangi qatordan "• " bilan
+    .replace(/\\begin\{(itemize|enumerate)\}(\[[^\]]*\])?/g, "")
+    .replace(/\\end\{(itemize|enumerate)\}/g, "\\par ")
+    .replace(/\\setlength\{[^{}]*\}\{[^{}]*\}/g, "")
+    .replace(/\\itemsep\s*-?[\d.]+[a-z]*/g, "")
+    .replace(/\\item(?![A-Za-z])\s*/g, "\\par • ");
   const MATH = /\\\[[\s\S]*?\\\]|\$\$[\s\S]*?\$\$|\\begin\{(cases|aligned|gathered|array|align\*?|gather\*?)\}[\s\S]*?\\end\{\1\}/g;
   const BREAK = "\u0000YQ\u0000";
 
@@ -369,7 +394,8 @@ function variantMeta(fileKey: string, dateArg: string | null) {
   const date =
     dateArg?.trim() || (match ? `${match[3]}.${match[2]}.${match[1]}` : fileKey);
   const shift = match?.[4] ? Number(match[4]) : null;
-  const title = shift ? `${date} (${shift}-smena)` : date;
+  /* Ba'zi fayllarda smena sananing özida yozilgan */
+  const title = shift && !/smena/i.test(date) ? `${date} (${shift}-smena)` : date;
   return { year, date, shift, title };
 }
 

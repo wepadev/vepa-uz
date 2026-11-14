@@ -287,7 +287,7 @@ async function writeVariant(
           })
           .select("id")
           .single();
-        if (error) throw new Error(`${item.number}-blok qismi: ${error.message}`);
+        if (error) throw new Error(`${item.number}-blok qismi: ${error.message ?? JSON.stringify(error)}`);
         // Yeçim bloknin birinçi qismida — u hamma qismni tuşuntiradi
         await insertKey(row.id, part.correct, index === 0 ? solution : null);
       }
