@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { LogoutButton } from "@/components/logout-button";
 import ProfileForm from "@/components/profile-form";
+import TelegramLinkCard from "@/components/telegram/telegram-link-card";
 import {
   buildLastScoreMap,
   buildLessonTestMap,
@@ -181,7 +182,10 @@ export default async function ProfilePage() {
   const provider =
     profile.auth_provider === "google"
       ? "google"
-      : "email";
+      : profile.auth_provider === "telegram" ||
+          user.email?.endsWith("@telegram.vepa.uz")
+        ? "telegram"
+        : "email";
 
   const fullName =
     profile.full_name?.trim() ||
@@ -881,6 +885,8 @@ const latestPlan =
               tests: profile.can_access_tests,
             }}
           />
+
+          <TelegramLinkCard userId={user.id} />
         </div>
       </section>
     </main>

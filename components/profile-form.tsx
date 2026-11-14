@@ -13,7 +13,7 @@ import { LoadingLabel } from "@/components/ui/spinner";
 type ProfileFormProps = {
   initialFullName: string;
   email: string;
-  provider: "email" | "google";
+  provider: "email" | "google" | "telegram";
   role: string;
   access: {
     textbooks: boolean;
@@ -487,7 +487,9 @@ export default function ProfileForm({
               <p className="mt-1 font-semibold text-slate-800">
                 {provider === "google"
                   ? "Google hisobi"
-                  : "Email va parol"}
+                  : provider === "telegram"
+                    ? "Telegram (parol qöysangiz, şu email bilan saytga ham kirasiz)"
+                    : "Email va parol"}
               </p>
             </div>
 

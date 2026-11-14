@@ -50,6 +50,7 @@ Tartib bilan yuring — keyingi fayl oldingisiga tayanishi mumkin.
 | `40-guruh-testi-tuzatish.sql` | 26-fayldan beri Testlar bölimidagi birorta test oçilmasdi ("faqat uy vazifasi" deb qaytarardi) va bazada hamma katalog testi bepul hisoblanardi. `is_group_only_test()` asl ma'nosiga qaytdi, `is_assignable_test()` va `is_assigned_to_me()` qöşildi |
 | `41-nashr-testlar-korinsin.sql` | Naşr qilingan test mavzusi, bölimi yoki yönalişi qoralama bölgani uçun Testlar bölimida körinmasdi. Mavzusiz testlar "Umumiy" mavzuga solinadi, naşr qilingan testi bor mavzu/bölim/yönaliş oçiladi (guruh-testlari bundan mustasno). Bundan keyin admin panel buni özi qiladi |
 | `42-oxirgi-urinish.sql` | Har testning natijasi endi eng yaxşi emas, OXIRGI uriniş. Statistika, profil, natijalar va reyting şu urinişdan hisoblanadi |
+| `44-telegram.sql` | Telegram Mini App: Telegram hisobi sayt hisobiga bog'lanadi (`telegram_accounts`). Faqat server yozadi |
 
 ## Alohida: tozalash
 

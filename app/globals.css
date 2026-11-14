@@ -700,3 +700,20 @@ button.bg-mb-brand:disabled {
 .math-answer-field math-field::part(content) {
   padding: 0.25rem 0;
 }
+
+/*
+ * Telegram Mini App (components/telegram/telegram-bridge.tsx <html> ga
+ * `tg-app` qöyadi). `tg-hide` — Telegram içida keraksiz (Google bilan
+ * kiriş), `tg-only` — faqat Telegram içida körinadi.
+ */
+.tg-only {
+  display: none;
+}
+
+html.tg-app .tg-only {
+  display: block;
+}
+
+html.tg-app .tg-hide {
+  display: none !important;
+}

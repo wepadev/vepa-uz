@@ -35,12 +35,22 @@ export const PROTECTED_SECTIONS = [
 ] as const;
 
 /** Mehmon ham ochadigan bo'limlar */
-export const PUBLIC_SECTIONS = ["auth", "katalog", "ota-ona", "pricing"] as const;
+export const PUBLIC_SECTIONS = [
+  "auth",
+  "katalog",
+  "ota-ona",
+  "pricing",
+  // Telegram Mini App eşigi: kirişni özi qiladi
+  "tg",
+] as const;
 
 /** Yopiq bo'lim ichidagi, lekin mehmonga ochiq yo'llar */
 const PUBLIC_EXCEPTIONS = new Set([
   /* Brauzer xatolari mehmonda ham yuz beradi (ichida o'z cheklovi bor) */
   "/api/report-error",
+  /* Telegram: kiriş initData imzosi bilan, webhook maxfiy so'z bilan */
+  "/api/telegram/auth",
+  "/api/telegram/webhook",
 ]);
 
 export function requiresLogin(pathname: string) {

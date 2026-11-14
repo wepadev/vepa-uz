@@ -549,7 +549,7 @@ export default async function HomePage() {
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </Link>
 
-                  <div className="sm:w-60">
+                  <div className="tg-hide sm:w-60">
                     <GoogleSignInButton compact className="min-h-12 w-full rounded-xl" />
                   </div>
                 </div>

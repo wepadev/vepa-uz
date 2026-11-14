@@ -394,6 +394,16 @@ export function LoginForm({
         </button>
       </form>
 
+      {/*
+       * Google Telegram içidagi oynada kirişga ruxsat bermaydi
+       * (disallowed_useragent), şuning uçun u yerda tugma yaşirin.
+       */}
+      <p className="tg-only mt-5 text-center text-xs leading-5 text-slate-500">
+        Google bilan kirgan bölsangiz: saytni brauzerda oçib, Profil
+        sahifasidagi «Telegram’ga ulaş» tugmasini bosing.
+      </p>
+
+      <div className="tg-hide">
       <div className="my-6 flex items-center gap-3">
         <div className="h-px flex-1 bg-slate-200" />
         <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
@@ -407,6 +417,7 @@ export function LoginForm({
         fullWidth
         label="Google orqali davom etiş"
       />
+      </div>
 
       <p className="mt-5 text-center text-xs leading-5 text-slate-400">
         Davom etiş orqali platformadan foydalaniş

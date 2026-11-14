@@ -5,6 +5,7 @@ import localFont from "next/font/local";
 
 import SiteNav from "@/components/site-nav";
 import SiteJsonLd from "@/components/site-json-ld";
+import TelegramBridge from "@/components/telegram/telegram-bridge";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
@@ -170,6 +171,8 @@ export default function RootLayout({
         <SiteJsonLd siteUrl={defaultUrl} />
 
         <ThemeProvider>
+          {/* Telegram Mini App içida moslaş; brauzerda hech narsa qilmaydi */}
+          <TelegramBridge />
           <SiteNav>{children}</SiteNav>
         </ThemeProvider>
       </body>
