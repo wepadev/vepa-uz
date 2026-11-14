@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formatClock } from "@/lib/clock";
 import { isGroupOnlyTest as checkGroupOnlyTest } from "@/lib/group-tests";
 import { isMockTest } from "@/lib/mock";
 import {
@@ -214,21 +215,7 @@ function formatDuration(
     milliseconds / 1000,
   );
 
-  const hours = Math.floor(
-    totalSeconds / 3600,
-  );
-
-  const minutes = Math.floor(
-    (totalSeconds % 3600) / 60,
-  );
-
-  const seconds = totalSeconds % 60;
-
-  return [hours, minutes, seconds]
-    .map((value) =>
-      String(value).padStart(2, "0"),
-    )
-    .join(":");
+  return formatClock(totalSeconds);
 }
 
 
@@ -264,21 +251,7 @@ function formatDurationSeconds(
     return "—";
   }
 
-  const hours = Math.floor(
-    totalSeconds / 3600,
-  );
-
-  const minutes = Math.floor(
-    (totalSeconds % 3600) / 60,
-  );
-
-  const seconds = totalSeconds % 60;
-
-  return [hours, minutes, seconds]
-    .map((value) =>
-      String(value).padStart(2, "0"),
-    )
-    .join(":");
+  return formatClock(totalSeconds);
 }
 
 function enrichAttempt(
