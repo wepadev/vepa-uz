@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import EmptyState from "@/components/ui/empty-state";
+import { isMockExamCode } from "@/lib/mock";
 import PageHeader, { headerButton } from "@/components/ui/page-header";
 import PremiumNote from "@/components/ui/premium-note";
 import { RowIndex, RowLink, RowList, RowLock, Tag } from "@/components/ui/row";
@@ -89,6 +90,9 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
   if (!examTypeData) notFound();
 
   const examType = examTypeData as ExamTypeRow;
+  /* Mock yönalişida mavzu — yil, test — variant (db/43) */
+  const isMock = isMockExamCode(examType.code);
+  const unit = isMock ? "variant" : "test";
 
   const [topicsResult, firstSectionResult, testsResult] =
     await Promise.all([
@@ -174,7 +178,7 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
         title={section.title}
         subtitle={
           topics.length
-            ? `${topics.length} mavzu · ${totalTests} test`
+            ? `${topics.length} ${isMock ? "yil" : "mavzu"} · ${totalTests} ${unit}`
             : section.description || "Mavzuni tanlang"
         }
         action={
@@ -195,12 +199,17 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
 
       <section className="mx-auto max-w-3xl px-4 py-5 sm:px-6 sm:py-8">
         {!topics.length ? (
-          <EmptyState glyph="tests" title="Hozirça mavzu qöşilmagan">
-            Mavzular naşr qilinganda şu yerda körinadi.
+          <EmptyState
+            glyph={isMock ? "mock" : "tests"}
+            title={isMock ? "Tez orada" : "Hozirça mavzu qöşilmagan"}
+          >
+            {isMock
+              ? "Bu bölimga variantlar tayyorlanmoqda."
+              : "Mavzular naşr qilinganda şu yerda körinadi."}
           </EmptyState>
         ) : (
           <>
-            <p className="eyebrow">Mavzuni tanlang</p>
+            <p className="eyebrow">{isMock ? "Yilni tanlang" : "Mavzuni tanlang"}</p>
 
             <RowList className="mt-3">
               {topics.map((topic, index) => {
@@ -214,7 +223,7 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
                     lead={<RowIndex value={index + 1} />}
                     title={topic.title}
                     meta={
-                      testCount > 0 ? `${testCount} test` : "Test qöşilmagan"
+                      testCount > 0 ? `${testCount} ${unit}` : `${isMock ? "Variant" : "Test"} qöşilmagan`
                     }
                     muted={testCount === 0}
                     trail={
@@ -227,7 +236,7 @@ export default async function TestTopicsPage({ searchParams }: PageProps) {
 
             {hasLockedTopic && (
               <PremiumNote className="mt-4">
-                Qulfli mavzular{" "}
+                Qulfli {isMock ? "variantlar" : "mavzular"}{" "}
                 <b className="font-semibold text-vp-ink">Premium</b> bilan
                 oçiladi.
               </PremiumNote>

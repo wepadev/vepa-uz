@@ -25,6 +25,7 @@ export const PROTECTED_SECTIONS = [
   "homework",
   "leaderboard",
   "lessons",
+  "mock",
   "payment",
   "profile",
   "results",

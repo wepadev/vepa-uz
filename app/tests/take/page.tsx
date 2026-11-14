@@ -10,6 +10,8 @@ import { requireSectionAccess } from "@/lib/require-section-access";
 import { isCatalogTestFree, isGroupOnlyTest } from "@/lib/group-tests";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
+import { isMockTest } from "@/lib/mock";
+import { regradeWrittenAnswers } from "@/lib/yozma-qayta-baholash";
 import { TEST_TOPIC_SELECT, testLabel } from "@/lib/test-label";
 
 export const metadata = {
@@ -249,6 +251,12 @@ async function submitTimedTest(
   if (typeof attemptId !== "string") {
     throw new Error("Natija raqami olinmadi.");
   }
+
+  /*
+   * Yozma javoblar ma'nosi böyiça qayta tekşiriladi: "-17/4" va
+   * kalitdagi "-4,25" bir xil javob (lib/yozma-qayta-baholash.ts).
+   */
+  await regradeWrittenAnswers(attemptId);
 
   // Uy vazifasi bo'lsa — urinishni vazifaga bog'laymiz.
   // Bog'lanmasa ham natija saqlanadi, shuning uchun xato tashlamaymiz.
@@ -621,6 +629,9 @@ export default async function TakeTestPage({
         ? {
             attemptId: last.id,
             percentage: Number(last.percentage ?? 0),
+            summary: (await isMockTest(supabase, testId))
+              ? `${Math.round((Number(last.percentage ?? 0) / 100) * (countResult.count ?? 0))}/${countResult.count ?? 0} töğri`
+              : undefined,
           }
         : null;
 
@@ -912,8 +923,15 @@ export default async function TakeTestPage({
 
   const shuffleSeedBase = `${answeringUser?.id ?? "anon"}:${testId}`;
 
+  /*
+   * Mock test haqiqiy imtihon tartibida: variantlar aralaştirilmaydi
+   * (yeçimlardagi "Javob: C" ham şu tartibga tayanadi). Yozma
+   * javoblar matematik klaviatura bilan kiritiladi.
+   */
+  const mockTest = await isMockTest(supabase, testId);
+
   for (const item of items) {
-    if (item.kind !== "choice") {
+    if (item.kind !== "choice" || mockTest) {
       continue;
     }
 
@@ -942,6 +960,7 @@ export default async function TakeTestPage({
       items={items}
       savedAnswers={savedAnswers}
       submitAction={submitAction}
+      mathInput={mockTest}
     />
   );
 }

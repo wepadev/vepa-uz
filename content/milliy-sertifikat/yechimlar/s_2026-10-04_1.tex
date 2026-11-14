@@ -1,0 +1,538 @@
+\input{sol_pre.tex}
+\input{q_2026-10-04_1.tex}
+\begin{document}
+\input{sol_head.tex}
+
+%================= 1
+\Savol{1}
+Önlar raqami uçun sonning 100 ga bölgandagi qoldiği kerak. $7^2=49$, \ $7^4=2401\equiv1\pmod{100}$.
+\[2025=4\cdot506+1\ \Rightarrow\ 7^{2025}=\left(7^4\right)^{506}\cdot7\equiv1\cdot7=07\pmod{100}.\]
+Oxirgi ikki raqam $07$, önlar raqami $0$.
+\Javob{C) 0}
+
+%================= 2
+\Savol{2}
+Davriy kasrlarni oddiy kasrga aylantiramiz:
+\[8{,}0(7)=8+\frac{7}{90},\qquad 3{,}1(3)=3+\frac{13-1}{90}=3+\frac{12}{90},\qquad 2{,}0(4)=2+\frac{4}{90}.\]
+\[(8-3+2)+\frac{7-12+4}{90}=7-\frac1{90}=6+\frac{89}{90}=6{,}9(8).\]
+\Javob{D) 6,9(8)}
+
+%================= 3
+\Savol{3}
+Masofa $S$ km. Rejadagi vaqt $\dfrac S5$. Haqiqatda: $\dfrac{S/3}{5}+\dfrac13+\dfrac{2S/3}{6}=\dfrac S{15}+\dfrac13+\dfrac S9$ (20 min $=\frac13$ soat).
+\[\frac S5-\frac S{15}-\frac S9=\frac13\ \Rightarrow\ \frac{9S-3S-5S}{45}=\frac13\ \Rightarrow\ \frac S{45}=\frac13\ \Rightarrow\ S=15.\]
+\Javob{D) 15}
+
+%================= 4
+\Savol{4}
+$A$ ning unumdorligi $a$ (iş/kun), $B$ niki $66\frac23\%\cdot a=\frac23a$.
+\[a+\tfrac23a=\tfrac1{12}\ \Rightarrow\ a=\tfrac1{20},\qquad B:\ \tfrac1{30}.\]
+2 kunda $\frac2{12}=\frac16$ qism bajarildi, qolgan $\frac56$ ni $B$: \ $\frac56:\frac1{30}=25$ kun. Jami $2+25=27$ kun.
+\Javob{C) 27}
+
+%================= 5
+\Savol{5}
+Taşqi daraja: $\left(\frac13\right)^2-\frac19=\frac19-\frac19=0$. Qavs içidagi ifoda musbat, uning nolinçi darajasi 1:
+\[1\cdot\sqrt{9^3}=\sqrt{729}=27.\]
+\Javob{C) 27}
+
+%================= 6
+\Savol{6}
+\[\sqrt[3]{\sqrt{4096}}=\sqrt[6]{4^6}=4,\qquad \sqrt{\sqrt[5]{\tfrac1{1024}}}=\sqrt[10]{\tfrac1{2^{10}}}=\tfrac12.\qquad 4-\tfrac12=\tfrac72.\]
+\Javob{C) $\frac72$}
+
+%================= 7
+\Savol{7}
+$[\sqrt k]=n$ böladigan $k$ lar: $n^2\le k\le(n+1)^2-1$, ular soni $2n+1$ ta. Har birida qöşiluvçi $\frac1{2n+1}$, demak har bir guruh yiğindisi 1.\\
+$n=1,2,\dots,10$ ($k=1,\dots,120$) — 10 ta guruh, yiğindi 10. Oxirgi had $k=121$: $[\sqrt{121}]=11$, \ $\frac1{23}$.
+\[10+\frac1{23}=10\frac1{23}.\]
+\Javob{D) $10\frac1{23}$}
+
+%================= 8
+\Savol{8}
+$a_8$ — $a_1,\dots,a_{15}$ ning örta hadi: $a_1+a_{15}=2a_8$.
+\[S_{15}=\frac{a_1+a_{15}}2\cdot15=15a_8=15\cdot12=180.\]
+\Javob{D) 180}
+
+%================= 9
+\Savol{9}
+Arifmetik progressiyada $a_1+a_3=2a_2$, demak $b_3=2a_2=2b_2$ \ $\Rightarrow$ \ $q=2$.\\
+$b_2=2b_1\Rightarrow a_2=2a_1\Rightarrow d=a_1$. \ $b_5=b_1q^4=16b_1=48\Rightarrow b_1=a_1=3$, \ $d=3$.
+\[a_1+\dots+a_{10}=\frac{2\cdot3+9\cdot3}2\cdot10=165.\]
+\Javob{A) 165}
+
+%================= 10
+\Savol{10}
+$9x-4y=(3\sqrt x)^2-(2\sqrt y)^2=(3\sqrt x-2\sqrt y)(3\sqrt x+2\sqrt y)$:
+\[3\sqrt x+2\sqrt y-\sqrt x=2(\sqrt x+\sqrt y)=2\cdot2=4.\]
+\Javob{A) 4}
+
+%================= 11
+\Savol{11}
+Köp qavatli kasrni pastdan soddalaştiramiz:
+\[y+\frac1z=\frac{yz+1}z,\qquad x+\frac z{yz+1}=\frac{x+z+xyz}{yz+1},\qquad \frac1{x+\dots}=\frac{yz+1}{x+z+xyz}.\]
+\[\frac{yz+1}{x+z+xyz}:\frac y{xy+1}=\frac{(yz+1)(xy+1)}{y(x+z+xyz)}.\]
+\[\frac{1-(yz+1)(xy+1)}{y(x+z+xyz)}=\frac{-(xy^2z+yz+xy)}{y(x+z+xyz)}=\frac{-y(xyz+z+x)}{y(x+z+xyz)}=-1.\]
+\Javob{D) $-1$}
+
+%================= 12
+\Savol{12}
+\[\cos405^\circ=\cos45^\circ=\tfrac{\sqrt2}2,\quad \sin315^\circ=-\tfrac{\sqrt2}2,\quad \ctg1845^\circ=\ctg(10\cdot180^\circ+45^\circ)=1,\]\[\ctg585^\circ=\ctg45^\circ=1,\quad\cos720^\circ=1,\quad \sin810^\circ=\sin90^\circ=1.\qquad -\tfrac12+1\cdot1+1\cdot1=\tfrac32.\]
+\Javob{B) $\frac32$}
+
+%================= 13
+\Savol{13}
+$\cos(3x-\pi)=-\cos3x$, \ $\sin6x=2\sin3x\cos3x$:
+\[-\cos3x=-2\sin3x\cos3x\ \Rightarrow\ \cos3x\,(1-2\sin3x)=0.\]
+$\cos3x=0$: eng kiçik musbat $3x=\frac\pi2$, $x=\frac\pi6$. \quad $\sin3x=\frac12$: $3x=\frac\pi6$, $x=\frac\pi{18}$.\\
+Eng kiçigi $\frac\pi{18}$.
+\Javob{B) $\frac\pi{18}$}
+
+%================= 14
+\Savol{14}
+$u=2^x$, $v=\dfrac2{2^x}$ ($uv=2$). Unda $\dfrac1{2^{x-1}}=v$, \ $\dfrac8{8^x}=v^3$. \ $t=u-v$ desak,
+\[u^3-v^3=(u-v)\bigl((u-v)^2+3uv\bigr)=t(t^2+6)=t^3+6t.\]
+Tenglama: $t^3+6t-6t=1\Rightarrow t=1$. \ $2^x-\dfrac2{2^x}=1\Rightarrow (2^x)^2-2^x-2=0\Rightarrow 2^x=2$, \ $x=1$.
+\Javob{D) 1}
+
+%================= 15
+\Savol{15}
+$(2x+1)^2-8x=4x^2-4x+1=(2x-1)^2$, \ $\sqrt{(2x-1)^2}=|2x-1|$. Aniqlaniş sohasi $x\le\frac14$, unda $|2x-1|=1-2x$:
+\[1-2x-2=\sqrt{1-4x}\ \Rightarrow\ -1-2x=\sqrt{1-4x}\qquad(-1-2x\ge0\Rightarrow x\le-\tfrac12).\]
+Kvadratga: $1+4x+4x^2=1-4x\Rightarrow 4x(x+2)=0\Rightarrow x=0$ (şartga zid) yoki $x=-2$.\\
+Yagona ildiz $x=-2$. Tekşiriş: $\sqrt{(-3)^2+16}-2=5-2=3$, \ $\sqrt{1+8}=3$ — töğri
+\Javob{A) $-2$}
+
+%================= 16
+\Savol{16}
+3 ga köpaytiramiz: $3x-3x^2-6x^3=1\Rightarrow 6x^3+3x^2-3x+1=0$. Uni şunday yozamiz:
+\[7x^3+\bigl(-x^3+3x^2-3x+1\bigr)=0\ \Rightarrow\ 7x^3-(x-1)^3=0\ \Rightarrow\ (\sqrt[3]7\,x)^3=(x-1)^3.\]
+Kub funksiya ösuvçi: $\sqrt[3]7\,x=x-1\Rightarrow x=\dfrac1{1-\sqrt[3]7}$ — yagona haqiqiy yeçim.
+\Javob{C) 1 ta}
+
+%================= 17
+\Savol{17}
+$x>0$, $y>0$, $x\ne1$, $y\ne1$. \ $t=\log_xy$: \ $\log_x\sqrt y=\frac t2$, \ $\log_yx^2=\frac2t$:
+\[\frac t2+\frac2t=2\ \Rightarrow\ t^2-4t+4=0\ \Rightarrow\ t=2\ \Rightarrow\ y=x^2,\ \sqrt y=x.\]
+$x-5\sqrt x+4=0\Rightarrow\sqrt x=1$ yoki $\sqrt x=4$. \ $x=1$ — asos böla olmaydi; \ $x=16$, $y=256$.\\
+Yagona yeçim $(16;256)$.
+\Javob{C) 1 ta}
+
+%================= 18
+\Savol{18}
+$x>-6$, $x\ne3$. \ $x>3$ da $\frac1{3-x}<0$, çap tomon musbat — yeçim yöq.\\
+$-6<x<3$ da ikkala maxraj musbat: $\dfrac1{\sqrt{x+6}}\le\dfrac1{3-x}\iff 3-x\le\sqrt{x+6}$.\\
+$s=\sqrt{x+6}>0$, $x=s^2-6$: \ $9-s^2\le s\Rightarrow s^2+s-9\ge0\Rightarrow s\ge\dfrac{-1+\sqrt{37}}2\approx2{,}54\Rightarrow x\ge s^2-6\approx0{,}46$.\\
+$x\in[0{,}46\ldots;\,3)$: butun yeçimlar $1;\,2$ — 2 ta.
+\Javob{B) 2 ta}
+
+%================= 19
+\Savol{19}
+Aniqlaniş sohasi: $(x-2)(x-8)\ge0\Rightarrow x\le2$ yoki $x\ge8$. Öng tomon musbat bölişi kerak: $x>2$. Demak $x\ge8$.\\
+Kvadratga: $x^2-10x+16<4x^2-16x+16\Rightarrow 3x(x-2)>0$ — $x\ge8$ da doim bajariladi.\\
+$x\in[8;20]$: butun sonlar $20-8+1=13$ ta.
+\Javob{A) 13 ta}
+
+%================= 20
+\Savol{20}
+Koordinatalar boşidan ötgani uçun $y=kx$; \ $3=k\cdot(-2)\Rightarrow k=-\frac32<0$.\\
+$k<0$ da grafik II va IV çoraklardan ötadi.
+\Javob{A) II, IV}
+
+%================= 21
+\Savol{21}
+$t=2x-2\Rightarrow x=\frac{t+2}2$: \ $f(t)=3(t+2)-5=3t+1$.
+\[f(g(x))=3g(x)+1=x^2\ \Rightarrow\ g(x)=\frac{x^2-1}3,\qquad g(2)=\frac{3}3=1.\]
+\Javob{A) 1}
+
+%================= 22
+\Savol{22}
+Lokal maksimum — $f'(x)$ işorasi «$+$» dan «$-$» ga almaşadigan nuqta, ya'ni $f'$ grafigi $Ox$ ni \emph{yuqoridan pastga} kesib ötgan joy. Grafikdan $f'$ işoralari:
+\fig{\begin{tikzpicture}[xscale=1.25]
+\draw[->] (0,0)--(8.2,0) node[right]{$x$};
+\foreach \x/\l in {0/a,8/b} {\fill (\x,0) circle (1.3pt); \node[below] at (\x,-0.05){$\l$};}
+\foreach \x/\l in {1.2/x_1,2.4/x_2,3.6/x_3,4.8/x_4,6.0/x_5,7.0/x_6} \draw (\x,0.12)--(\x,-0.12) node[below]{\small$\l$};
+\foreach \x/\s in {0.6/-,1.8/+,3.0/-,4.2/+,5.4/-,6.5/+,7.5/-} \node[above] at (\x,0.05){$\s$};
+\foreach \x in {2.4,4.8,7.0} \node[aux,above] at (\x,0.35){\small max};
+\foreach \x in {1.2,3.6,6.0} \node[below] at (\x,-0.5){\scriptsize min};
+\end{tikzpicture}}
+$f'$ ning işorasi «$+$» dan «$-$» ga $x_2,\ x_4,\ x_6$ nuqtalarda almaşadi — 3 ta lokal maksimum.
+\Javob{B) 3 ta}
+
+%================= 23
+\Savol{23}
+$\cos^2x+15=16-\sin^2x$. \ $u=\sin x$, $du=\cos x\,dx$; \ $u:0\to1$:
+\[\int_0^1\frac{du}{16-u^2}=\frac1{8}\ln\frac{4+u}{4-u}\Big|_0^1=\frac18\ln\frac53=\ln\sqrt[8]{\frac53}.\]
+\Javob{D) $\ln\sqrt[8]{\frac53}$}
+
+%================= 24
+\Savol{24}
+\fig{\begin{tikzpicture}[scale=0.42]
+\coordinate (A) at (0,0); \coordinate (B) at (6.325,0); \coordinate (O1) at (0,2); \coordinate (O2) at (6.325,5); \coordinate (K) at (6.325,2);
+\draw[thick] (O1) circle (2); \draw[thick] (O2) circle (5); \draw[thick] (-1.5,0)--(8,0);
+\draw[thick] (O1)--(A); \draw[thick] (O2)--(B);
+\draw[axs] (O1)--(O2); \draw[ax] (O1)--(K);
+\draw[aux] (6.325,2.4)--(5.925,2.4)--(5.925,2);
+\foreach \p in {A,B,O1,O2,K} \fill (\p) circle (3pt);
+\node[below] at (A){$A$}; \node[below] at (B){$B$}; \node[left] at (O1){$O_1$}; \node[right] at (O2){$O_2$}; \node[right] at (K){$K$};
+\node[left] at (0,1){\small$2$}; \node[right] at (6.325,1){\small$2$}; \node[right] at (6.325,3.5){\small$3$};
+\node[aux,above left] at (3.2,3.5){\small$7$};
+\end{tikzpicture}}
+$O_1K\parallel AB$ ötkazamiz (\textcolor{aux}{qizil}). $O_1O_2=2+5=7$, \ $O_2K=5-2=3$, \ $O_1K=AB$:
+\[AB=\sqrt{7^2-3^2}=\sqrt{40}=2\sqrt{10}.\]
+\Javob{B) $2\sqrt{10}$}
+
+%================= 25
+\Savol{25}
+Taşqi burçaklar: $(180^\circ-B)+(180^\circ-C)=360^\circ-(B+C)=360^\circ-(180^\circ-A)=180^\circ+A$.
+\[180^\circ+A=3A\ \Rightarrow\ A=90^\circ,\qquad S=\frac12\cdot AB\cdot AC=\frac12\cdot5\cdot4=10.\]
+\Javob{B) 10}
+
+%================= 26
+\Savol{26}
+\fig{\begin{tikzpicture}[scale=0.33]
+\coordinate (A) at (-8,0); \coordinate (C) at (8,0); \coordinate (B) at (0,10.667); \coordinate (H) at (0,0);
+\coordinate (O) at (0,4); \coordinate (Q) at (0,9);
+\coordinate (T) at ($(B)!(O)!(C)$); \coordinate (S) at ($(B)!(Q)!(C)$);
+\draw[thick] (A)--(B)--(C)--cycle; \draw[thick] (O) circle (4); \draw[thick] (Q) circle (1);
+\draw[ax] (B)--(H); \draw[axs] (O)--(T); \draw[axs] (Q)--(S);
+\foreach \p in {O,Q,T,S,H} \fill (\p) circle (4pt);
+\node[left] at (A){$A$}; \node[right] at (C){$C$}; \node[above] at (B){$B$}; \node[below] at (H){$H$};
+\node[left] at (O){$O$}; \node[left] at (-0.2,9){$O_1$};
+\node[aux,below left] at ($(O)!0.5!(T)$){\small$4$}; \node[aux] at (1.6,9.4){\scriptsize$1$};
+\node[right] at (T){$T$}; \node[right] at (S){$T_1$};
+\node[aux,left] at (0,6.5){\small$5$};
+\end{tikzpicture}}
+Ikkala aylana markazi ham $B$ burçak bissektrisasi $BH$ da (\textcolor{aux}{qizil}). $\angle OBC=\varphi$ desak, uriniş radiuslari $OT\perp BC$, $O_1T_1\perp BC$:
+\[BO=\frac4{\sin\varphi},\qquad BO_1=\frac1{\sin\varphi},\qquad OO_1=4+1=5=\frac{3}{\sin\varphi}\ \Rightarrow\ \sin\varphi=\frac35,\ \ \tg\varphi=\frac34.\]
+$BO=\frac{20}3$, \ $BH=\frac{20}3+4=\frac{32}3$. \ $\triangle BHC$: \ $HC=BH\cdot\tg\varphi=\frac{32}3\cdot\frac34=8$, \ $AC=2\cdot8=16$.
+\Javob{C) 16}
+
+%================= 27
+\Savol{27}
+\fig{\begin{tikzpicture}[scale=0.8]
+\coordinate (A) at (0,0); \coordinate (B) at (6,0); \coordinate (C) at (8,3.4); \coordinate (D) at (2,3.4); \coordinate (E) at (2.973,1.7);
+\coordinate (K) at (2.973,0);
+\fill[msblue!25] (A)--(B)--(E)--cycle;
+\draw[thick] (A)--(B)--(C)--(D)--cycle; \draw[thick] (A)--(E)--(D); \draw[thick] (E)--(B);
+\draw[ax] (1,1.7)--(7,1.7); \draw[axs] (E)--(K); \draw[ax] (D)--(2,0);
+\draw[aux] (2.973,0.22)--(3.193,0.22)--(3.193,0);
+\foreach \p in {A,B,C,D,E,K} \fill (\p) circle (1.3pt);
+\node[below left] at (A){$A$}; \node[below right] at (B){$B$}; \node[above right] at (C){$C$}; \node[above left] at (D){$D$};
+\node[above] at ($(E)+(0.05,0.05)$){$E$}; \node[below] at (K){$K$};
+\node[aux,right] at (3.0,0.9){\small$\frac h2$};
+\end{tikzpicture}}
+Qöşni burçaklar yiğindisi $\angle A+\angle D=180^\circ$, bissektrisalar orasidagi burçak $\angle AED=90^\circ$. $\angle A=\alpha$ bölsin:
+\[AE=AD\cos\tfrac\alpha2,\qquad EK=AE\sin\tfrac\alpha2=AD\sin\tfrac\alpha2\cos\tfrac\alpha2=\frac{AD\sin\alpha}2=\frac h2,\]
+bu yerda $h=AD\sin\alpha$ — parallelogrammning $AB$ ga tuşirilgan balandligi. Ya'ni $E$ örta çiziqda yotadi (\textcolor{aux}{qizil}).
+\[S_{ABE}=\frac12\cdot AB\cdot\frac h2=\frac{AB\cdot h}4=\frac{48}4=12.\]
+\Javob{B) 12}
+
+%================= 28
+\Savol{28}
+\fig{\begin{tikzpicture}[scale=0.42]
+\coordinate (O) at (0,0);
+\fill[okgreen!30,even odd rule] (O) circle (6) (O) circle (5.196);
+\draw[thick] (O) circle (6); \draw[thick] (O) circle (5.196);
+\draw[thick] (0:6)--(60:6)--(120:6)--(180:6)--(240:6)--(300:6)--cycle;
+\coordinate (P) at (300:6); \coordinate (Q) at (0:6); \coordinate (M) at ($(P)!0.5!(Q)$);
+\draw[axs] (O)--(Q); \draw[axs] (O)--(M);
+\fill (O) circle (3pt); \fill (M) circle (3pt);
+\node[left] at (O){$O$}; \node[below right] at (M){$M$};
+\node[aux,above] at (3,0){\small$R$}; \node[aux] at (2.0,-1.8){\small$r$};
+\end{tikzpicture}}
+$S=\dfrac{3\sqrt3}2a^2=54\sqrt3\Rightarrow a^2=36$, $a=6$. \ $R=a=6$, \ $r=\dfrac{a\sqrt3}2=3\sqrt3$ (\textcolor{aux}{qizil}).
+\[S_{\text{halqa}}=\pi(R^2-r^2)=\pi(36-27)=9\pi.\]
+\Javob{C) $9\pi$}
+
+%================= 29
+\Savol{29}
+\fig{\begin{tikzpicture}[scale=0.13]
+\coordinate (A) at (-15,0); \coordinate (D) at (15,0); \coordinate (B) at (-8,21.91); \coordinate (C) at (8,21.91);
+\coordinate (O) at (0,10.954);
+\draw[thick] (A)--(B)--(C)--(D)--cycle; \draw[thick] (O) circle (10.954);
+\draw[axs] (O)--(0,0); \draw[ax] (B)--(-8,0);
+\fill (O) circle (8pt);
+\node[below left] at (A){$A$}; \node[below right] at (D){$D$}; \node[above left] at (B){$B$}; \node[above right] at (C){$C$};
+\node[right] at (O){$O$}; \node[aux,right] at (0,4.5){\small$r$}; \node[aux,left] at (-8,9){\small$h$};
+\node[below] at (0,0){\small$30$}; \node[above] at (0,21.91){\small$16$}; \node[below] at (-11.5,0){\small$7$};
+\end{tikzpicture}}
+Nuqta $P$, uning tekislikdagi proyeksiyasi $O$. $P$ dan barça tomonlargaça masofalar teng $\Rightarrow$ $O$ dan ham tomonlargaça masofalar teng (uç perpendikulyar haqidagi teorema), ya'ni $O$ — içki çizilgan aylana markazi.\\
+Içki aylana çizilgani uçun $AB+CD=16+30\Rightarrow AB=23$. Balandlik: $h=\sqrt{23^2-7^2}=\sqrt{480}$, \ $r=\dfrac h2$, \ $r^2=\dfrac{480}4=120$.
+\[PO=\sqrt{11^2-r^2}=\sqrt{121-120}=1.\]
+\Javob{A) 1}
+
+%================= 30
+\Savol{30}
+Nuqtadan töğri çiziqqaça masofa: $7x+24y-168=0$, $O(0;0)$:
+\[d=\frac{|7\cdot0+24\cdot0-168|}{\sqrt{7^2+24^2}}=\frac{168}{25}=6\frac{18}{25}.\]
+\Javob{A) $6\frac{18}{25}$}
+
+%================= 31
+\Savol{31}
+$A\cap B=\{a;b;f;g\}$, \quad $(A\cap B)\cup C=\{a;b;f;g;n;p\}$ — 6 ta element.
+\Javob{C) 6}
+
+%================= 32
+\Savol{32}
+Barça natijalar $6^3=216$. Uçalasida bir xil son: $(1,1,1),\dots,(6,6,6)$ — 6 ta.
+\[P=\frac6{216}=\frac1{36}.\]
+\Javob{A) $\frac1{36}$}
+
+%================= 33-35
+\newpage
+\Savol{33}
+\fig{\begin{tikzpicture}[scale=0.45]
+\coordinate (O) at (0,0); \coordinate (B) at (6,0); \coordinate (A) at (3,5.196); \coordinate (C) at (5.196,3);
+\coordinate (D) at (3,0); \coordinate (F) at (5.196,0);
+\fill[msblue!20] (D)--(A) arc (60:30:6)--(F)--cycle;
+\draw[thick] (O)--(B) arc (0:60:6)--cycle; \draw[thick] (O)--(C); \draw[thick] (A)--(D); \draw[thick] (C)--(F);
+\draw[axs,pattern=north east lines,pattern color=aux!60] (O)--(C)--(F)--cycle;
+\draw[ax] (O)--(A);
+\foreach \p in {O,A,B,C,D,F} \fill (\p) circle (1.5pt);
+\node[left] at (O){$O$}; \node[above] at (A){$A$}; \node[above right] at (C){$C$}; \node[right] at (B){$B$};
+\node[below] at (D){$D$}; \node[below] at (F){$F$};
+\node[above left] at (1.5,2.6){\small$6$};
+\node[aux,right] at (5.2,1.5){\small$3$};
+\begin{scope}[xshift=8.3cm,scale=0.75]
+\coordinate (P) at (-1,0); \coordinate (Q) at (1,0); \coordinate (V) at (0,5.916); \coordinate (I) at (0,0.845);
+\draw[thick] (P)--(V)--(Q)--cycle; \draw[thick] (I) circle (0.845);
+\draw[ax] (V)--(0,0); \draw[axs] (I)--($(V)!(I)!(Q)$);
+\node[above] at (V){$S$}; \node[below left] at (0,0){\small$H$};
+\node[below right] at (0.9,-0.05){\scriptsize$r{=}1$}; \node[right] at (0.6,3.2){\small$l{=}6$};
+\node[aux,left] at (-0.05,3.6){\small$h$};
+\end{scope}
+\end{tikzpicture}}
+\textbf{33.} Böyalgan soha $=S_{\text{sektor }AOC}+S_{\triangle OCF}-S_{\triangle OAD}$.\\
+$\angle AOC=30^\circ$: \ $S_{AOC}=\dfrac{30}{360}\pi\cdot6^2=3\pi$.\\
+$\triangle OCF$ ($\angle COF=30^\circ$): $CF=3$, $OF=3\sqrt3$, \ $S=\frac{9\sqrt3}2$. \ $\triangle OAD$ ($\angle AOD=60^\circ$): $OD=3$, $AD=3\sqrt3$, \ $S=\frac{9\sqrt3}2$.\\
+Uçburçaklar yuzlari teng, şuning uçun böyalgan soha $=3\pi$.
+
+\textbf{34.} Sektor yoyi uzunligi konus asosi aylanasiga teng: $\dfrac{60}{360}\cdot2\pi\cdot6=2\pi=2\pi r\Rightarrow r=1$; yasovçi $l=6$.
+\[S_{\text{töla}}=\pi rl+\pi r^2=6\pi+\pi=7\pi.\]
+\textbf{35.} $h=\sqrt{l^2-r^2}=\sqrt{35}$. Öq kesimi — asosi 2, yon tomonlari 6 bölgan uçburçak; içki çizilgan şar radiusi şu uçburçakka içki çizilgan aylana radiusi:
+\[\rho=\frac{S}{p}=\frac{\frac12\cdot2\cdot\sqrt{35}}{(6+6+2)/2}=\frac{\sqrt{35}}7,\qquad S_{\text{şar}}=4\pi\rho^2=4\pi\cdot\frac{35}{49}=\frac{20\pi}7.\]
+\Javob{33 – A; \ 34 – E; \ 35 – F}
+
+%================= 36
+\newpage
+\Savol{36}
+Aniqlaniş sohasi $x\ne\pm2$. Suratlarni köpaytuvçilarga ajratamiz:
+\[\frac{x^3(x-2)}{x-2}-\frac{9x(x+2)}{x+2}=x^3-9x\quad(x\ne\pm2).\]
+Demak $g(x)=x^3-9x$ grafigining ($x=\pm2$ nuqtalarsiz) $y=a$ töğri çiziq bilan kesişişlari sonini sanaymiz.\\
+$g'(x)=3x^2-9=0\Rightarrow x=\pm\sqrt3$: \ $g(-\sqrt3)=6\sqrt3$ (max), \ $g(\sqrt3)=-6\sqrt3$ (min). Teşik nuqtalar: $g(-2)=10$, \ $g(2)=-10$.
+\fig{\begin{tikzpicture}[xscale=0.75,yscale=0.13]
+\draw[->] (-4.2,0)--(4.4,0) node[right]{$x$}; \draw[->] (0,-17)--(0,18) node[above]{$y$};
+\draw[thick,domain=-3.75:3.75,samples=100] plot (\x,{\x*\x*\x-9*\x});
+\draw[axs] (-4,10.392)--(4,10.392) node[right]{\small$y=6\sqrt3$};
+\draw[axs] (-4,-10.392)--(4,-10.392) node[right]{\small$y=-6\sqrt3$};
+\draw[ax] (-4,10)--(4,10); \draw[ax] (-4,-10)--(4,-10);
+\node[aux,left] at (-4,8.8){\small$y=10$}; \node[aux,left] at (-4,-8.8){\small$y=-10$};
+\draw[fill=white] (-2,10) circle (3pt and 18pt); \draw[fill=white] (2,-10) circle (3pt and 18pt);
+\node[below right] at (-2.05,9.3){\scriptsize$(-2;10)$}; \node[above left] at (2.05,-9.3){\scriptsize$(2;-10)$};
+\end{tikzpicture}}
+Tenglama \textbf{ikkita} yeçimga ega böladi:
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item $a=\pm6\sqrt3$ — töğri çiziq ekstremumda urinadi: masalan $a=6\sqrt3$ da $x=-\sqrt3$ (ikki karrali) va $x=2\sqrt3$ ($\pm2$ emas);
+\item $a=\pm10$ — kubik tenglamaning 3 ildizidan biri teşik nuqtaga tuşadi:
+\[x^3-9x-10=(x+2)(x^2-2x-5):\ x=-2\ \text{(çiqarilgan)},\ x=1\pm\sqrt6;\]\[x^3-9x+10=(x-2)(x^2+2x-5):\ x=-1\pm\sqrt6.\]
+\end{itemize}
+Boşqa $a$ larda yeçimlar soni 1 yoki 3 ta ($|a|<6\sqrt3$, $a\ne\pm10$ da 3 ta; $|a|>6\sqrt3$ da 1 ta).
+
+a) $a\in\{-6\sqrt3;\,-10;\,10;\,6\sqrt3\}$ — 4 ta qiymat.
+
+b) $6\sqrt3\approx10{,}39>10$, eng kattasi $a=6\sqrt3$.
+\Javob{a) 4; \quad b) $6\sqrt3$}
+
+%================= 37
+\newpage
+\Savol{37}
+$\sin x\ne0$, $\cos x\ne0$. \ $s=\sin^2x$, $c=\cos^2x$ ($s+c=1$):
+\[\frac1{2\tg^2x+1}=\frac{c}{2s+c}=\frac c{1+s},\qquad \frac1{2\ctg^2x+1}=\frac s{2c+s}=\frac s{1+c}.\]
+\[\frac c{1+s}+\frac s{1+c}=\frac{c+c^2+s+s^2}{1+s+c+sc}=\frac{1+(1-2sc)}{2+sc}=\frac{2-2p}{2+p},\qquad p=sc=\frac{\sin^22x}4.\]
+Öng tomon: $8+\sin^22x=8+4p=4(2+p)$, \ $\cos4x=1-2\sin^22x=1-8p$:
+\[\frac{2-2p}{2+p}=\frac{30(1-8p)}{4(2+p)}\ \Rightarrow\ 4-4p=15-120p\ \Rightarrow\ p=\frac{11}{116}.\]
+Unda $\sin^22x=4p=\dfrac{11}{29}$, \ $\cos4x=1-\dfrac{22}{29}=\dfrac7{29}$. Bu qiymat $\pm1$ emas, şuning uçun $\sin x\ne0$, $\cos x\ne0$ şartlari buzilmaydi.
+\[\cos4x=\frac7{29}\ \Rightarrow\ 4x=\pm\theta+2\pi k,\qquad \theta=\arccos\frac7{29}\in\left(0;\frac\pi2\right).\]
+a) $x\in\left[-\frac\pi2;\frac{3\pi}2\right]\Rightarrow 4x\in[-2\pi;6\pi]$ — uzunligi $8\pi$, ya'ni 4 ta töla davr. Har davrda $\cos4x=\frac7{29}$ ning 2 ta yeçimi bor, çegaralarda $\cos4x=1$ — yeçim emas. Jami $4\cdot2=8$ ta.
+
+b) $x\in(0;2\pi)\Rightarrow 4x\in(0;8\pi)$, yeçimlar: $4x=\theta+2\pi k$ va $4x=2\pi-\theta+2\pi k$, \ $k=0,1,2,3$. Har bir juftlik yiğindisi:
+\[\frac{\theta+2\pi k}4+\frac{2\pi-\theta+2\pi k}4=\frac\pi2+\pi k.\]
+\[\sum_{k=0}^{3}\left(\frac\pi2+\pi k\right)=4\cdot\frac\pi2+\pi(0+1+2+3)=2\pi+6\pi=8\pi.\]
+\Javob{a) 8; \quad b) $8\pi$}
+
+%================= 38
+\newpage
+\Savol{38}
+\textbf{Parabola.} Uçi $x=2$ da, simmetriya öqi $x=2$: ildizlar $m$ va $5$ unga nisbatan simmetrik, $m=2\cdot2-5=-1$.
+\[f(x)=a(x+1)(x-5),\qquad f(2)=a\cdot3\cdot(-3)=-9a=-4{,}5\ \Rightarrow\ a=\frac12.\]
+\[f(x)=\frac12(x^2-4x-5)=\frac12x^2-2x-\frac52:\qquad a=\frac12,\ b=-2,\ c=-\frac52.\]
+a) \[f(-2)=\frac12\cdot4+4-\frac52=2+4-2{,}5=3{,}5.\]
+b) $(0;n)$ — parabolaning $Oy$ bilan kesişişi: $n=f(0)=c=-\frac52$.\\
+\textbf{$g$ funksiya} $(m;0)=(-1;0)$ dan ötadi: $k\sqrt{-1+l}=0\Rightarrow l=1$. \ $(0;n)$ dan: $g(0)=k\sqrt1=k=-\frac52$.
+\[\frac{a-b-l-c}{k-m-n}=\frac{\frac12+2-1+\frac52}{-\frac52+1+\frac52}=\frac{4}{1}=4.\]
+\Javob{a) 3,5; \quad b) 4}
+
+%================= 39
+\newpage
+\Savol{39}
+a) Murakkab funksiya hosilasi: $h'(x)=f'(g(x))\cdot g'(x)$.
+\[h'(3)=f'(g(3))\cdot g'(3)=f'(7)\cdot6=2\cdot6=12.\]
+b) Bölinma hosilasi:
+\[k'(x)=\frac{f'(x)g(x)-f(x)g'(x)}{g^2(x)},\qquad k'(7)=\frac{f'(7)\cdot g(7)-f(7)\cdot g'(7)}{g^2(7)}=\frac{2\cdot3-f(7)\cdot0}{3^2}=\frac69=\frac23.\]
+($f(7)$ berilmagan, lekin $g'(7)=0$ bölgani uçun u kerak emas.)
+\Javob{a) 12; \quad b) $\frac23$}
+
+%================= 40
+\newpage
+\Savol{40}
+\fig{\begin{tikzpicture}[xscale=0.8,yscale=0.15]
+\fill[msblue!20,domain=-1:0,samples=40] (-1,0)--plot (\x,{-2*\x*\x+6*\x+8})--(0,0)--cycle;
+\fill[msblue!20,domain=3:4,samples=40] plot (\x,{-2*\x*\x+6*\x+8})--(4,0)--(4.333,0)--(3,8)--cycle;
+\draw[->] (-2,0)--(5.4,0) node[right]{$x$}; \draw[->] (0,-3.5)--(0,14.5) node[above]{$y$};
+\draw[thick,domain=-1.4:4.3,samples=80] plot (\x,{-2*\x*\x+6*\x+8});
+\draw[thick,domain=2:4.75] plot (\x,{-6*\x+26});
+\draw[ax] (3,0)--(3,8);
+\foreach \p in {(-1,0),(4,0),(3,8),(4.333,0),(0,8)} \fill \p circle (1.6pt);
+\node[below left] at (-1,0){$-1$}; \node[below left] at (4,0){$4$}; \node[aux,below] at (3,0){$3$};
+\node[aux,above right] at (4.333,0){\scriptsize$\frac{13}3$};
+\node[right] at (3.1,8.4){$M(3;8)$}; \node[left] at (0,8.6){\small$8$};
+\node[right] at (4.7,-2){\small$y=-6x+26$};
+\end{tikzpicture}}
+\textbf{Parabola:} $y=a(x+1)(x-4)$; \ $M(3;8)$: $a\cdot4\cdot(-1)=8\Rightarrow a=-2$:
+\[y=-2x^2+6x+8,\qquad a=-2,\ b=6,\ c=8.\]
+\textbf{Urinma:} $y'=-4x+6$, \ $k=y'(3)=-6$; \ $y=-6(x-3)+8=-6x+26$, \ $l=26$.
+
+a) $\dfrac{a+b+c}{k-l}=\dfrac{-2+6+8}{-6-26}=\dfrac{12}{-32}=-\dfrac38.$
+b) Çap bölak ($[-1;0]$, parabola ostida):
+\[S_1=\int_{-1}^0(-2x^2+6x+8)\,dx=\left(-\frac{2x^3}3+3x^2+8x\right)\Big|_{-1}^0=-\left(\frac23+3-8\right)=\frac{13}3.\]
+Öng bölak — urinma, parabola va $Ox$ orasida. Urinma $Ox$ ni $x=\frac{13}3$ da kesadi:
+\[S_2=\int_3^4\bigl(-6x+26-(-2x^2+6x+8)\bigr)dx+\frac12\cdot\left(\frac{13}3-4\right)\cdot2=\int_3^4 2(x-3)^2dx+\frac13=\frac23+\frac13=1.\]
+\[S=S_1+S_2=\frac{13}3+1=\frac{16}3.\]
+\Javob{a) $-\frac38$; \quad b) $\frac{16}3$}
+
+%================= 41
+\newpage
+\Savol{41}
+\fig{\begin{tikzpicture}[scale=0.38]
+\coordinate (A) at (0,0); \coordinate (B) at (0,8); \coordinate (C) at (10.667,0); \coordinate (D) at (4,0); \coordinate (E) at (8,2);
+\fill[msblue!20] (B)--(D)--(E)--cycle;
+\draw[thick] (A)--(B)--(C)--cycle; \draw[thick] (B)--(D)--(E);
+\draw (0,0.35)--(0.35,0.35)--(0.35,0);
+\draw[aux] ($(D)!0.45cm!(B)$)--($($(D)!0.45cm!(B)$)!1!-90:(D)$)--($(D)!0.45cm!(E)$);
+\pic[draw=aux,thick,angle radius=0.9cm,"\scriptsize\color{aux}$\beta$",angle eccentricity=1.35] {angle=A--B--D};
+\pic[draw=aux,thick,angle radius=1.2cm,"\scriptsize\color{aux}$\beta$",angle eccentricity=1.3] {angle=D--B--E};
+\foreach \p in {A,B,C,D,E} \fill (\p) circle (2pt);
+\node[below left] at (A){$A$}; \node[above left] at (B){$B$}; \node[below right] at (C){$C$}; \node[below] at (D){$D$}; \node[above right] at (E){$E$};
+\node[below] at (2,0){\small$4$}; \node[aux,left] at (0,4){\small$8$};
+\node[aux,above right] at ($(B)!0.5!(E)+(0.05,0.05)$){\small$3x$}; \node[aux,above right] at ($(E)!0.5!(C)+(0.05,0.05)$){\small$x$};
+\end{tikzpicture}}
+$\angle ABD=\angle DBE=\beta$, \ $\angle ABC=2\beta$.\\
+$\triangle ABD$: \ $AB=\dfrac4{\tg\beta}$, \ $BD=\dfrac4{\sin\beta}$. \quad $\triangle BDE$ ($\angle D=90^\circ$): \ $BE=\dfrac{BD}{\cos\beta}=\dfrac4{\sin\beta\cos\beta}$.\\
+$\triangle ABC$: \ $BC=\dfrac{AB}{\cos2\beta}$, \ $BE=\dfrac34BC$:
+\[\frac4{\sin\beta\cos\beta}=\frac34\cdot\frac{4\cos\beta}{\sin\beta\cos2\beta}\ \Rightarrow\ 4\cos2\beta=3\cos^2\beta\ \Rightarrow\ 4(2\cos^2\beta-1)=3\cos^2\beta\ \Rightarrow\ \cos^2\beta=\frac45.\]
+$\cos\beta=\frac2{\sqrt5}$, \ $\sin\beta=\frac1{\sqrt5}$, \ $\tg\beta=\frac12$. \ $AB=8$, \ $BD=4\sqrt5$.
+
+a) \[DE=BD\cdot\tg\beta=4\sqrt5\cdot\frac12=2\sqrt5.\]
+b) \[S_{BED}=\frac12\cdot BD\cdot DE=\frac12\cdot4\sqrt5\cdot2\sqrt5=20.\]
+(Tekşiriş: $BC=\frac{AB}{\cos2\beta}=\frac{8}{3/5}=\frac{40}3$, \ $BE=\frac{BD}{\cos\beta}=10=\frac34\cdot\frac{40}3$ — töğri)
+\Javob{a) $2\sqrt5$; \quad b) 20}
+
+%================= 42
+\newpage
+\Savol{42}
+\fig{\begin{tikzpicture}[scale=0.24]
+\coordinate (A) at (0,0); \coordinate (O) at (5,0); \coordinate (C) at (14,0); \coordinate (B) at (5,12); \coordinate (D) at (5,-12);
+\coordinate (I) at (6.5,0); \coordinate (T) at ($(A)!(I)!(B)$);
+\draw[thick] (A)--(B)--(C)--(D)--cycle; \draw[thick] (A)--(C); \draw[thick] (B)--(D);
+\draw[axs] (I) circle (6); \draw[axs] (I)--(T);
+\draw (5,0.8)--(5.8,0.8)--(5.8,0);
+\foreach \p in {A,B,C,D,O,I,T} \fill (\p) circle (6pt);
+\node[left] at (A){$A$}; \node[above] at (B){$B$}; \node[right] at (C){$C$}; \node[below] at (D){$D$};
+\node[below left] at (O){$O$}; \node[below right] at (I){$I$}; \node[above left] at (T){$T$};
+\node[left] at (2.3,6.6){\small$13$}; \node[right] at (9.7,6.6){\small$15$};
+\node[above] at (2.6,0){\small$5$}; \node[above] at (10.6,0){\small$9$}; \node[left] at (5,-6){\small$12$};
+\node[aux] at (7.4,3.4){\scriptsize$r$};
+\end{tikzpicture}}
+$AB=AD$, $CB=CD$ bölgani uçun $A$ va $C$ — $BD$ ning örta perpendikulyarida: $AC\perp BD$ va $BO=OD$. Demak $BD$ diagonal $O$ da teng ikkiga bölinadi, $5:9$ nisbatda $AC$ bölinadi: $AO=5t$, $OC=9t$, \ $BO=x$.
+\[x^2=13^2-25t^2=15^2-81t^2\ \Rightarrow\ 56t^2=56\ \Rightarrow\ t=1,\ \ x=12.\]
+$AC=14$, \ $BD=24$ (haqiqatan $AC<BD$, ya'ni $AC$ — kiçik diagonal).
+
+a) \[S_{ABCD}=\frac12\cdot AC\cdot BD=\frac12\cdot14\cdot24=168.\]
+b) Içki çizilgan aylana markazi $I$ simmetriya öqi $AC$ da yotadi. Radiusi: $p=\frac{2\cdot13+2\cdot15}2=28$,
+\[r=\frac Sp=\frac{168}{28}=6.\]
+$\triangle ABO$ dan $\sin\angle BAO=\frac{BO}{AB}=\frac{12}{13}$. $\triangle AIT$ ($IT\perp AB$, \textcolor{aux}{qizil}): \ $AI=\dfrac{IT}{\sin\angle BAO}=\dfrac{6\cdot13}{12}=6{,}5$.
+\[OI=AI-AO=6{,}5-5=1{,}5.\]
+\Javob{a) 168; \quad b) 1,5}
+
+%================= 43
+\newpage
+\Savol{43}
+\fig{\begin{tikzpicture}[scale=0.24]
+\coordinate (A) at (0,0); \coordinate (B) at (4,0); \coordinate (C) at (7,5.196); \coordinate (D) at (2,13.856); \coordinate (E) at (-6,13.856); \coordinate (F) at (-7,12.124);
+\coordinate (P) at (10,0); \coordinate (Q) at (-14,0); \coordinate (R) at (-2,20.785);
+\fill[aux!10] (B)--(P)--(C)--cycle; \fill[aux!10] (D)--(R)--(E)--cycle; \fill[aux!10] (F)--(Q)--(A)--cycle;
+\draw[ax] (B)--(P)--(C); \draw[ax] (D)--(R)--(E); \draw[ax] (F)--(Q)--(A);
+\draw[thick] (A)--(B)--(C)--(D)--(E)--(F)--cycle;
+\foreach \p in {A,B,C,D,E,F} \fill (\p) circle (6pt);
+\node[below] at (A){$A$}; \node[below] at (B){$B$}; \node[right] at (C){$C$}; \node[right] at (D){$D$}; \node[left] at (E){$E$}; \node[left] at (F){$F$};
+\node[aux,below] at (P){$P$}; \node[aux,below] at (Q){$Q$}; \node[aux,above] at (R){$R$};
+\node[below] at (2,0){\small$4$}; \node[left] at (5.6,3.3){\small$6$}; \node[left] at (4.4,9.5){\small$10$}; \node[below] at (-2,13.856){\small$8$}; \node[right] at (-6.3,12.6){\small$2$}; \node[right] at (-3.3,6){\small$14$};
+\end{tikzpicture}}
+Barça burçaklar $\frac{(6-2)\cdot180^\circ}6=120^\circ$. $AB$, $CD$, $EF$ tomonlarni davom ettirsak, burçaklari $180^\circ-120^\circ=60^\circ$ bölgan uçburçaklar hosil böladi — teng tomonli $\triangle BPC$, $\triangle DRE$, $\triangle FQA$ va katta teng tomonli $\triangle PQR$ (\textcolor{aux}{qizil}).
+
+a) $DE=x$, $FA=y$. Katta uçburçak tomonlari teng:
+\[QP=FA+AB+BC=y+4+6,\qquad PR=BC+CD+DE=6+10+x,\]\[RQ=DE+EF+FA=x+2+y.\]
+$y+10=x+2+y\Rightarrow x=8$; \ $y+10=16+8\Rightarrow y=14$. \ Demak $DE=8$, \ tomon $PQ=24$.
+
+b) Kiçik uçburçaklar tomonlari $BC=6$, $DE=8$, $FA=14$:
+\[S=\frac{\sqrt3}4\left(24^2-6^2-8^2-14^2\right)=\frac{\sqrt3}4(576-36-64-196)=\frac{\sqrt3}4\cdot280=70\sqrt3.\]
+\Javob{a) 8; \quad b) $70\sqrt3$}
+
+%================= 44
+\newpage
+\Savol{44}
+\fig{\begin{tikzpicture}[scale=0.7]
+\coordinate (P) at (-3,0); \coordinate (Q) at (3,0); \coordinate (V) at (0,4); \coordinate (I) at (-2,3);
+\coordinate (T) at ($(P)!(I)!(V)$);
+\draw[thick] (-3,0) rectangle (3,4); \draw[thick] (P)--(V)--(Q);
+\draw[thick] (I) circle (1);
+\draw[ax] (0,0)--(V);
+\draw[axs] (I)--(T); \draw[axs] (I)--(-3,3); \draw[axs] (I)--(-2,4);
+\fill (I) circle (1.6pt); \fill (T) circle (1.6pt);
+\node[below left] at (P){$A$}; \node[below right] at (Q){$B$}; \node[above] at (V){$S$}; \node[above left] at (-3,4){$K$}; \node[below] at (0,0){$O$};
+\node[aux] at (-1.7,2.55){\scriptsize$\rho$};
+\node[below] at (1.8,-0.05){\small$R=3$}; \node[right] at (3,2){\small$H=4$}; \node[right] at (-0.95,1.6){\small$5$};
+\end{tikzpicture}}
+Öq kesimini olamiz: töğri törtburçak $2R\times H$, konus — $\triangle ASB$, şar — doira (\textcolor{aux}{qizil} radiuslar uriniş nuqtalariga).\\
+$2R:H=3:2\Rightarrow H=\frac43R$. Hisoblaş uçun $R=3$, $H=4$ olamiz (öxşaşlik saqlanadi).\\
+Doira çap devor, ustki asos va $AS$ yasovçiga urinadi, ya'ni u $\triangle AKS$ ga içki çizilgan ($K$ — törtburçakning yuqori çap uçi). Bu uçburçak töğri burçakli: $AK=H=4$, $KS=R=3$, $AS=\sqrt{3^2+4^2}=5$.
+\[\rho=\frac{AK+KS-AS}2=\frac{4+3-5}2=1.\]
+Demak $\rho=\dfrac R3$.
+
+a) \[\frac{V_{\text{konus}}}{V_{\text{şar}}}=\frac{\frac13\pi R^2H}{\frac43\pi\rho^3}=\frac{\frac13\pi\cdot9\cdot4}{\frac43\pi\cdot1}=\frac{12\pi}{\frac43\pi}=9.\]
+b) $4\pi\rho^2=4\pi\Rightarrow\rho=1\Rightarrow R=3$, $H=4$:
+\[V_{\text{silindr}}=\pi R^2H=\pi\cdot9\cdot4=36\pi.\]
+\Javob{a) 9; \quad b) $36\pi$}
+
+%================= 45
+\newpage
+\Savol{45}
+\fig{\begin{tikzpicture}[scale=0.55]
+\draw[thick] (-2,3) ellipse (2 and 0.45); \draw[thick] (-4,3)--(-4,0); \draw[thick] (0,3)--(0,0);
+\draw[thick] (-4,0) arc (180:360:2 and 0.45); \draw[dashed] (0,0) arc (0:180:2 and 0.45);
+\draw[axs] (-2,0)--(0,0); \draw[ax] (0.4,0)--(0.4,3);
+\node[aux,below] at (-1,0.05){\small$r$}; \node[aux,right] at (0.4,1.5){\small$h$};
+\end{tikzpicture}}
+Hajm $V=8\pi$ l $=8\pi$ dm$^3$. Asos radiusi $r$, balandligi $h$ (dm). Qopqoqsiz idiş sirti — bitta asos va yon sirt:
+\[\pi r^2h=8\pi\ \Rightarrow\ h=\frac8{r^2},\qquad S(r)=\pi r^2+2\pi rh=\pi r^2+\frac{16\pi}r.\]
+\[S'(r)=2\pi r-\frac{16\pi}{r^2}=0\ \Rightarrow\ r^3=8\ \Rightarrow\ r=2.\]
+$r<2$ da $S'<0$, $r>2$ da $S'>0$ — minimum.
+
+a) \[h=\frac8{2^2}=2\ \text{dm}=20\ \text{sm}.\]
+b) $S=\pi\cdot4+\dfrac{16\pi}2=12\pi$ dm$^2=12\cdot3=36$ dm$^2=0{,}36$ m$^2$.
+\[0{,}36\cdot150\,000=54\,000\ \text{söm}.\]
+\Javob{a) 20 sm; \quad b) 54\,000 söm}
+
+\ShowJavoblar
+\end{document}

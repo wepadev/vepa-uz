@@ -12,6 +12,7 @@ import {
   House,
   Menu,
   MonitorPlay,
+  Timer,
   type IconComponent,
 } from "@/components/ui/icons";
 
@@ -37,6 +38,7 @@ const ICONS: Record<string, IconComponent> = {
   "/tests": ClipboardCheck,
   "/lessons": MonitorPlay,
   "/textbooks": BookOpen,
+  "/mock": Timer,
 };
 
 /* Pastki qatorga Bosh va Menyudan tashqari nechta bo'lim sig'adi */

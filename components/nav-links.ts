@@ -74,6 +74,12 @@ export function primaryLinks(user: NavUser): NavLink[] {
       label: "Yeçimlar",
       hint: "5–11-sinf va TOP kitoblar",
     },
+    {
+      href: authHref(user, "/mock"),
+      match: "/mock",
+      label: "Mock",
+      hint: "Vaqtli töliq imtihon: Milliy sertifikat, Attestatsiya, SAT",
+    },
   ];
 }
 

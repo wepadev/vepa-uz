@@ -225,6 +225,12 @@ export default async function HomePage() {
           ]
         : []),
       {
+        href: isAuthenticated ? "/mock" : "/auth/login?next=%2Fmock",
+        glyph: "mock",
+        title: "Mock testlar",
+        text: "Milliy sertifikat formatida töliq imtihon",
+      },
+      {
         href: "/results",
         glyph: "results",
         title: "Natijalarim",

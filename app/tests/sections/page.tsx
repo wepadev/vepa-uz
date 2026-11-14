@@ -6,6 +6,7 @@ import PageHeader, { headerButton } from "@/components/ui/page-header";
 import PremiumNote from "@/components/ui/premium-note";
 import { RowIndex, RowLink, RowList, RowLock, Tag } from "@/components/ui/row";
 import { examGlyph } from "@/lib/exam-visuals";
+import { isMockExamCode } from "@/lib/mock";
 import { requireSectionAccess } from "@/lib/require-section-access";
 
 export const dynamic = "force-dynamic";
@@ -79,6 +80,8 @@ export default async function TestSectionsPage({ searchParams }: PageProps) {
   }
 
   const examType = examTypeData as ExamTypeRow;
+  /* Mock yönalişi (db/43): orqaga /mock ga, mavzular örnida yillar */
+  const isMock = isMockExamCode(examType.code);
 
   const [sectionsResult, topicsResult, testsResult] =
     await Promise.all([
@@ -185,8 +188,8 @@ export default async function TestSectionsPage({ searchParams }: PageProps) {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <PageHeader
-        backHref="/tests"
-        backLabel="Testlar"
+        backHref={isMock ? "/mock" : "/tests"}
+        backLabel={isMock ? "Mock testlar" : "Testlar"}
         glyph={examGlyph(examType.code)}
         title={examType.title}
         subtitle={
@@ -232,10 +235,18 @@ export default async function TestSectionsPage({ searchParams }: PageProps) {
                     href={`/tests/topics?sectionId=${section.id}`}
                     lead={<RowIndex value={index + 1} />}
                     title={section.title}
-                    meta={`${topicCount} mavzu · ${testCount} test`}
+                    meta={
+                      isMock
+                        ? testCount > 0
+                          ? `${testCount} variant`
+                          : "Tez orada"
+                        : `${topicCount} mavzu · ${testCount} test`
+                    }
                     trail={
                       isFirstSection ? (
-                        <Tag tone="free">1-mavzu bepul</Tag>
+                        <Tag tone="free">
+                          {isMock ? "Bepul variant bor" : "1-mavzu bepul"}
+                        </Tag>
                       ) : hasFreeTopic ? (
                         <Tag tone="free">Bepul mavzu bor</Tag>
                       ) : (

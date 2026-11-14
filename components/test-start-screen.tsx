@@ -38,6 +38,8 @@ type TestStartScreenProps = {
   recentAttempt?: {
     attemptId: string;
     percentage: number;
+    /** Mock testda foiz örniga, masalan "40/55 töğri" */
+    summary?: string;
   } | null;
   /** Boshlashga urinilganda chiqqan xato */
   errorMessage?: string | null;
@@ -130,7 +132,8 @@ export default function TestStartScreen({
                 </p>
 
                 <p className="num mt-1 text-sm leading-6 text-vp-ink">
-                  Natijangiz: {Math.round(recentAttempt.percentage)}%
+                  Natijangiz:{" "}
+                  {recentAttempt.summary ?? `${Math.round(recentAttempt.percentage)}%`}
                 </p>
 
                 <Link

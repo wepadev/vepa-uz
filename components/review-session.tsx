@@ -121,7 +121,9 @@ export default function ReviewSession({
       setFeedback({
         isCorrect: row.is_correct,
         correctAnswer: row.correct_answer,
-        solutionText: row.solution_text,
+        // Mock yeçimidagi çizma belgisi bu yerda körsatilmaydi (faqat natijalar sahifasida)
+        solutionText:
+          row.solution_text?.replace(/\[\[rasm:[^\]]+\]\]\n?/g, "").trim() || null,
         solutionVideoUrl: row.solution_video_url,
         isMastered: row.is_mastered,
         nextDueAt: row.next_due_at,

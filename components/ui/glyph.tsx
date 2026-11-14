@@ -38,7 +38,8 @@ export type GlyphName =
   | "school"
   | "top"
   | "locked"
-  | "empty";
+  | "empty"
+  | "mock";
 
 const INK = "var(--vp-brand-strong)";
 const SOFT = "var(--vp-tint)";
@@ -58,6 +59,17 @@ const paper = { ...line, fill: PAPER } as const;
 const sun = { ...line, fill: SUN } as const;
 
 const glyphs: Record<GlyphName, ReactNode> = {
+  /* Mock: javoblar varağı va sekundomer — vaqtli töliq imtihon */
+  mock: (
+    <>
+      <rect x="6" y="6" width="25" height="34" rx="5" {...soft} />
+      <path d="M12 15h13M12 22h9M12 29h6" {...line} />
+      <circle cx="33" cy="32" r="9.5" {...paper} />
+      <path d="M33 27v5l3.500 2.500" {...line} />
+      <path d="M30.5 19.5h5" {...line} stroke={SUN} strokeWidth={3} />
+    </>
+  ),
+
   /* Javoblar varağı: uçta qator, bittasi belgilangan */
   tests: (
     <>

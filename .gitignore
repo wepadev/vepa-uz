@@ -76,3 +76,4 @@ next-env.d.ts
 # pdf.js worker — `scripts/copy-pdf-worker.mjs` har build oldidan
 # node_modules dan ko'chiradi, paket versiyasiga mos bo'lsin.
 /public/pdfjs/
+/public/mathlive/

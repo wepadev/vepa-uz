@@ -8,6 +8,7 @@ import ProgressRing from "@/components/ui/progress-ring";
 import { RowIndex, Tag } from "@/components/ui/row";
 import { btnGhost, btnPrimary } from "@/lib/ui";
 
+import { isMockExamCode } from "@/lib/mock";
 import { requireSectionAccess } from "@/lib/require-section-access";
 import PageHeader, { headerButton } from "@/components/ui/page-header";
 
@@ -344,8 +345,10 @@ export default async function TestListPage({ searchParams }: PageProps) {
   const blockMap = new Map(blocks.map((block) => [block.id, block]));
   const metricsByTest = new Map<
     number,
-    { displayQuestionCount: number; maxScore: number }
+    { displayQuestionCount: number; maxScore: number; answerCount: number }
   >();
+  /* Mock testda ball/foiz örniga "nechtadan nechta töğri" */
+  const mockExam = isMockExamCode(examType.code);
 
   for (const test of tests) {
     const testQuestions = questions.filter(
@@ -367,6 +370,7 @@ export default async function TestListPage({ searchParams }: PageProps) {
       displayQuestionCount:
         standaloneCount + sharedQuestionCount + writtenBlockCount,
       maxScore: testQuestions.length * 2,
+      answerCount: testQuestions.length,
     });
   }
 
@@ -464,10 +468,14 @@ export default async function TestListPage({ searchParams }: PageProps) {
                 const metrics = metricsByTest.get(test.id) ?? {
                   displayQuestionCount: 0,
                   maxScore: 0,
+                  answerCount: 0,
                 };
                 const stats = statisticsByTest.get(test.id);
                 const bestAttemptId = stats?.best_attempt_id ?? null;
                 const bestPercentage = toNumber(stats?.best_percentage);
+                const bestCorrect = Math.round(
+                  (bestPercentage / 100) * metrics.answerCount,
+                );
                 const passed = bestPercentage >= PASS_PERCENTAGE;
                 const isFree = test.is_free || isFreeTopic;
                 const canStart = isAdmin || isPremium || isFree;
@@ -487,7 +495,7 @@ export default async function TestListPage({ searchParams }: PageProps) {
                           tone={passed ? "success" : "brand"}
                         >
                           <span className="num text-[11px] font-bold text-mb-ink">
-                            {Math.round(bestPercentage)}
+                            {mockExam ? bestCorrect : Math.round(bestPercentage)}
                           </span>
                         </ProgressRing>
                       ) : (
@@ -516,7 +524,7 @@ export default async function TestListPage({ searchParams }: PageProps) {
 
                         <p className="num mt-0.5 text-[13px] text-mb-muted">
                           {metrics.displayQuestionCount} savol ·{" "}
-                          {metrics.maxScore} ball ·{" "}
+                          {!mockExam && `${metrics.maxScore} ball · `}
                           {formatTimeLimit(test.time_limit_minutes)}
                         </p>
 
@@ -528,7 +536,9 @@ export default async function TestListPage({ searchParams }: PageProps) {
                                 passed ? "text-vp-success" : "text-mb-brandDark"
                               }
                             >
-                              {formatPercentage(bestPercentage)}%
+                              {mockExam
+                                ? `${bestCorrect}/${metrics.answerCount} töğri`
+                                : `${formatPercentage(bestPercentage)}%`}
                             </span>
                             <span className="font-normal text-mb-muted">
                               {" "}
