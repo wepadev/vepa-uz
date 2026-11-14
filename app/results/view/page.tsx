@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { isGroupOnlyTest as checkGroupOnlyTest } from "@/lib/group-tests";
+import { isMockTest } from "@/lib/mock";
 import {
   notFound,
   redirect,
@@ -310,6 +311,13 @@ function compareLatestFirst(
         first.started_at,
     ).getTime()
   );
+}
+
+function formatCountDifference(difference: number | null) {
+  if (difference === null) return "Birinçi tugallangan uriniş";
+  if (difference > 0) return `Oldingi urinişdan +${difference} ta töğri javob`;
+  if (difference < 0) return `Oldingi urinişdan ${Math.abs(difference)} ta kam`;
+  return "Oldingi uriniş bilan bir xil";
 }
 
 function formatDifference(
@@ -956,6 +964,12 @@ export default async function ResultViewPage({
         !answer.selected_answer?.trim(),
     ).length;
 
+  /* Mock testda ball va foiz yöq — faqat "nechtadan nechta töğri" */
+  const mockTest = await isMockTest(supabase, Number(attempt.test_id));
+
+  const correctOf = (value: number | string) =>
+    Math.round(((Number(value) || 0) / 100) * totalAnswerCount);
+
   const elapsedTime = formatDuration(
     attempt.started_at,
     attempt.completed_at,
@@ -1142,11 +1156,17 @@ const lessonRetryLabel =
       : "Darslarga qaytiş";
 
 const differenceLabel =
-  attempt.completed_at
-    ? formatDifference(
-        differenceFromPrevious,
-      )
-    : "Uriniş tugallanmagan";
+  !attempt.completed_at
+    ? "Uriniş tugallanmagan"
+    : mockTest
+      ? formatCountDifference(
+          differenceFromPrevious === null
+            ? null
+            : correctCount - correctOf(percentage - differenceFromPrevious),
+        )
+      : formatDifference(
+          differenceFromPrevious,
+        );
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
@@ -1185,7 +1205,9 @@ const differenceLabel =
               }
             >
               <span className="num text-2xl font-extrabold text-mb-ink">
-                {formatPercentage(attempt.percentage)}%
+                {mockTest
+                  ? `${correctCount}/${totalAnswerCount}`
+                  : `${formatPercentage(attempt.percentage)}%`}
               </span>
             </ProgressRing>
 
@@ -1232,15 +1254,24 @@ const differenceLabel =
               </dd>
             </div>
 
-            <div className="rounded-xl bg-slate-50 px-2 py-2.5">
-              <dt className="text-xs font-semibold text-mb-muted">Ball</dt>
-              <dd className="mt-0.5 text-xl font-extrabold text-mb-ink">
-                {attempt.score}
-                <span className="text-sm font-semibold text-mb-muted">
-                  /{attempt.total_questions}
-                </span>
-              </dd>
-            </div>
+            {mockTest ? (
+              <div className="rounded-xl bg-slate-50 px-2 py-2.5">
+                <dt className="text-xs font-semibold text-mb-muted">Javobsiz</dt>
+                <dd className="mt-0.5 text-xl font-extrabold text-mb-ink">
+                  {unansweredCount}
+                </dd>
+              </div>
+            ) : (
+              <div className="rounded-xl bg-slate-50 px-2 py-2.5">
+                <dt className="text-xs font-semibold text-mb-muted">Ball</dt>
+                <dd className="mt-0.5 text-xl font-extrabold text-mb-ink">
+                  {attempt.score}
+                  <span className="text-sm font-semibold text-mb-muted">
+                    /{attempt.total_questions}
+                  </span>
+                </dd>
+              </div>
+            )}
 
             <div className="rounded-xl bg-slate-50 px-2 py-2.5">
               <dt className="text-xs font-semibold text-mb-muted">Vaqt</dt>
@@ -1285,7 +1316,9 @@ const differenceLabel =
                   </dt>
                   <dd className="mt-0.5 text-lg font-extrabold">
                     {countedAttempt
-                      ? `${formatPercentage(countedAttempt.percentage)}%`
+                      ? mockTest
+                        ? `${correctOf(countedAttempt.percentage)}/${totalAnswerCount}`
+                        : `${formatPercentage(countedAttempt.percentage)}%`
                       : "—"}
                   </dd>
                 </div>

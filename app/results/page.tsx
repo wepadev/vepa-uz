@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
+import { isMockExamCode } from "@/lib/mock";
 import { ChevronRight } from "@/components/ui/icons";
 import EmptyState from "@/components/ui/empty-state";
 import Pagination from "@/components/ui/pagination";
@@ -81,6 +82,7 @@ type UserAnswerRow = {
 type ResultView = AttemptRow & {
   testTitle: string;
   percentageNumber: number;
+  isMock: boolean;
   correctCount: number;
   totalAnswerCount: number;
   answeredCount: number;
@@ -548,7 +550,7 @@ export default async function MyResultsPage({
     currentTestIds.length > 0
       ? supabase
           .from("tests")
-          .select("id, title")
+          .select("id, title, test_sections(test_exam_types(code))")
           .in("id", currentTestIds)
       : Promise.resolve({
           data: [],
@@ -570,6 +572,25 @@ export default async function MyResultsPage({
 
   const testMap =
     new Map<number, string>();
+
+  /* Mock testlarda ball/foiz örniga "nechtadan nechta töğri" */
+  const mockTestIds = new Set(
+    tests
+      .filter((test) => {
+        const section = (test as { test_sections?: unknown }).test_sections;
+        const sectionRow = (Array.isArray(section) ? section[0] : section) as
+          | { test_exam_types?: unknown }
+          | null
+          | undefined;
+        const exam = sectionRow?.test_exam_types;
+        const examRow = (Array.isArray(exam) ? exam[0] : exam) as
+          | { code?: string }
+          | null
+          | undefined;
+        return isMockExamCode(examRow?.code);
+      })
+      .map((test) => test.id),
+  );
 
   for (const test of rankingTests) {
     testMap.set(
@@ -679,6 +700,9 @@ export default async function MyResultsPage({
             getNumber(
               attempt.percentage,
             ),
+          isMock: mockTestIds.has(
+            attempt.test_id,
+          ),
           correctCount,
           totalAnswerCount:
             answers.length,
@@ -1008,7 +1032,9 @@ export default async function MyResultsPage({
                     >
                       <span className="num text-xs font-extrabold text-mb-ink">
                         {isCompleted
-                          ? `${Math.round(percentage)}%`
+                          ? result.isMock
+                            ? `${result.correctCount}/${result.totalAnswerCount}`
+                            : `${Math.round(percentage)}%`
                           : "…"}
                       </span>
                     </ProgressRing>
@@ -1028,7 +1054,8 @@ export default async function MyResultsPage({
                         Töğri {result.correctCount}/{result.totalAnswerCount}
                         <span className="font-normal text-mb-muted">
                           {" · "}
-                          {result.score}/{result.total_questions} ball ·{" "}
+                          {!result.isMock &&
+                            `${result.score}/${result.total_questions} ball · `}
                           {result.elapsedTime}
                         </span>
                       </span>

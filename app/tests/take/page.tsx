@@ -629,6 +629,9 @@ export default async function TakeTestPage({
         ? {
             attemptId: last.id,
             percentage: Number(last.percentage ?? 0),
+            summary: (await isMockTest(supabase, testId))
+              ? `${Math.round((Number(last.percentage ?? 0) / 100) * (countResult.count ?? 0))}/${countResult.count ?? 0} töğri`
+              : undefined,
           }
         : null;
 
