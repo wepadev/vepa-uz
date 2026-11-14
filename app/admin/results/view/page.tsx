@@ -1,3 +1,4 @@
+import { formatClock } from "@/lib/clock";
 import { revalidatePath } from "next/cache";
 import { notFound } from "next/navigation";
 
@@ -190,21 +191,7 @@ function formatDuration(
     milliseconds / 1000,
   );
 
-  const hours = Math.floor(
-    totalSeconds / 3600,
-  );
-
-  const minutes = Math.floor(
-    (totalSeconds % 3600) / 60,
-  );
-
-  const seconds = totalSeconds % 60;
-
-  return [hours, minutes, seconds]
-    .map((value) =>
-      String(value).padStart(2, "0"),
-    )
-    .join(":");
+  return formatClock(totalSeconds);
 }
 
 function MathValue({

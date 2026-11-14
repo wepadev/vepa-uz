@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formatClock } from "@/lib/clock";
 import { redirect } from "next/navigation";
 
 import { getCurrentUser } from "@/lib/supabase/current-user";
@@ -174,26 +175,7 @@ function formatDurationFromSeconds(
     return "—";
   }
 
-  const hours = Math.floor(
-    totalSeconds / 3600,
-  );
-
-  const minutes = Math.floor(
-    (totalSeconds % 3600) / 60,
-  );
-
-  const seconds =
-    totalSeconds % 60;
-
-  return [
-    hours,
-    minutes,
-    seconds,
-  ]
-    .map((part) =>
-      String(part).padStart(2, "0"),
-    )
-    .join(":");
+  return formatClock(totalSeconds);
 }
 
 function formatAttemptDuration(
