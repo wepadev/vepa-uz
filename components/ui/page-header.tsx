@@ -89,12 +89,16 @@ export default function PageHeader({
           />
         )}
 
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex min-w-0 items-center gap-3">
+        {/*
+          Tor ekranda tugmalar sarlavhani siqib, sözni harfma-harf
+          bölmasin ("Prof/il"): joy yetmasa tugmalar pastki qatorga tuşadi.
+        */}
+        <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+          <div className="flex min-w-[9rem] flex-1 items-center gap-3">
             {glyph && <GlyphTile name={glyph} size="sm" />}
 
             <div className="min-w-0">
-              <h1 className="line-clamp-2 text-xl font-extrabold leading-tight text-mb-ink sm:text-2xl">
+              <h1 className="line-clamp-2 break-normal text-xl font-extrabold leading-tight text-mb-ink sm:text-2xl">
                 {title}
               </h1>
 
@@ -105,7 +109,7 @@ export default function PageHeader({
           </div>
 
           {action && (
-            <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
+            <div className="flex max-w-full shrink-0 flex-wrap items-center justify-end gap-2">
               {action}
             </div>
           )}
