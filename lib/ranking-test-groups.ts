@@ -54,6 +54,7 @@ type SectionRow = {
 
 type ExamRow = {
   id: number;
+  code?: string | null;
   title: string;
   order_number: number | null;
 };
@@ -83,7 +84,7 @@ export async function loadRankingTestGroups(
       supabase
         .from("test_sections")
         .select("id, exam_type_id, title, order_number"),
-      supabase.from("test_exam_types").select("id, title, order_number"),
+      supabase.from("test_exam_types").select("id, code, title, order_number"),
     ]);
 
   /*
@@ -137,7 +138,7 @@ export async function loadRankingTestGroups(
     if (!group) {
       const sectionTitle = section
         ? showExam && exam
-          ? `${exam.title} · ${section.title}`
+          ? `${exam.code?.startsWith("mock-") ? "Mock · " : ""}${exam.title} · ${section.title}`
           : section.title
         : "Boşqa testlar";
 

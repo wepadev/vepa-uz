@@ -6,6 +6,7 @@ import {
 } from "next/navigation";
 
 import MathText from "@/components/math-text";
+import SolutionText from "@/components/solution-text";
 import YouTubeEmbed from "@/components/youtube-embed";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
@@ -769,6 +770,47 @@ export default async function ResultViewPage({
     answerKeys =
       (answerKeysData ??
         []) as AnswerKeyRow[];
+  }
+
+  /*
+   * Yeçim çizmalari (mock testlar): `[[rasm:<yöl>]]` -> vaqtinçalik
+   * havola `[[img:<url>]]` (components/solution-text.tsx).
+   */
+  const solutionImagePaths = [
+    ...new Set(
+      answerKeys.flatMap((key) =>
+        [...(key.solution_text ?? "").matchAll(/\[\[rasm:([^\]\s]+)\]\]/g)].map(
+          (match) => match[1],
+        ),
+      ),
+    ),
+  ];
+
+  if (solutionImagePaths.length > 0) {
+    const { data: signed } = await supabase.storage
+      .from(QUESTION_IMAGE_BUCKET)
+      .createSignedUrls(solutionImagePaths, SIGNED_URL_SECONDS);
+
+    const urlByPath = new Map(
+      (signed ?? [])
+        .filter((row) => row.path && row.signedUrl)
+        .map((row) => [row.path as string, row.signedUrl as string]),
+    );
+
+    answerKeys = answerKeys.map((key) =>
+      key.solution_text?.includes("[[rasm:")
+        ? {
+            ...key,
+            solution_text: key.solution_text.replace(
+              /\[\[rasm:([^\]\s]+)\]\]/g,
+              (_token, path: string) => {
+                const url = urlByPath.get(path);
+                return url ? `[[img:${url}]]` : "";
+              },
+            ),
+          }
+        : key,
+    );
   }
 
   const userAnswerMap = new Map(
@@ -1572,7 +1614,7 @@ const differenceLabel =
                         Yeçim
                       </p>
 
-                      <MathValue
+                      <SolutionText
                         value={
                           answerKey.solution_text
                         }
@@ -1872,7 +1914,7 @@ const differenceLabel =
                                 Yeçim
                               </p>
 
-                              <MathValue
+                              <SolutionText
                                 value={
                                   answerKey.solution_text
                                 }

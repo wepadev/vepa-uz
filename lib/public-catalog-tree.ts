@@ -79,6 +79,8 @@ export const getCatalogTree = unstable_cache(
             .from("test_exam_types")
             .select("id, code, title, description, order_number")
             .eq("is_published", true)
+            /* Mock testlar /mock da, katalogda emas (lib/mock.ts) */
+            .not("code", "like", "mock-%")
             .order("order_number", { ascending: true })
             .order("id", { ascending: true }),
           admin

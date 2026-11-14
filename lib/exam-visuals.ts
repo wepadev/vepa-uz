@@ -58,6 +58,9 @@ export function examAccent(code: string): Accent {
 export function examGlyph(
   code: string,
 ): "attestation" | "certificate" | "sat" | "homework" | "tests" {
+  /* Mock yönalişi asl yönaliş belgisini oladi: mock-sat -> sat */
+  if (code.startsWith("mock-")) code = code.slice(5);
+
   switch (code) {
     case "attestatsiya":
       return "attestation";

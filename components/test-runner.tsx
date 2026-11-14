@@ -9,6 +9,7 @@ import {
 } from "react";
 import { useFormStatus } from "react-dom";
 
+import MathAnswerField from "@/components/math-answer-field";
 import MathText from "@/components/math-text";
 import ConfirmDialog from "@/components/ui/confirm-dialog";
 import { Spinner } from "@/components/ui/spinner";
@@ -75,6 +76,11 @@ type TestRunnerProps = {
   submitAction: (
     formData: FormData,
   ) => void | Promise<void>;
+  /**
+   * Yozma javoblar matematik klaviatura bilan kiritiladi (mock testlar).
+   * Javob `$...$` içida saqlanadi.
+   */
+  mathInput?: boolean;
 };
 
 /**
@@ -188,6 +194,7 @@ export default function TestRunner({
   items,
   savedAnswers,
   submitAction,
+  mathInput = false,
 }: TestRunnerProps) {
   const formRef =
     useRef<HTMLFormElement>(null);
@@ -992,34 +999,49 @@ export default function TestRunner({
                           Javobingiz
                         </label>
 
-                        <input
-                          type="text"
-                          aria-label={`Javobingiz — ${part.label}`}
-                          value={
-                            answers[
-                              String(
+                        {mathInput ? (
+                          <MathAnswerField
+                            label={`Javobingiz — ${part.label}`}
+                            value={
+                              answers[
+                                String(part.questionId)
+                              ] ?? ""
+                            }
+                            onChange={(value) =>
+                              setAnswer(part.questionId, value)
+                            }
+                            onFocusChange={setInputFocused}
+                          />
+                        ) : (
+                          <input
+                            type="text"
+                            aria-label={`Javobingiz — ${part.label}`}
+                            value={
+                              answers[
+                                String(
+                                  part.questionId,
+                                )
+                              ] ?? ""
+                            }
+                            onChange={(event) =>
+                              setAnswer(
                                 part.questionId,
+                                event.target.value,
                               )
-                            ] ?? ""
-                          }
-                          onChange={(event) =>
-                            setAnswer(
-                              part.questionId,
-                              event.target.value,
-                            )
-                          }
-                          autoComplete="off"
-                          inputMode="text"
-                          enterKeyHint="done"
-                          onFocus={() =>
-                            setInputFocused(true)
-                          }
-                          onBlur={() =>
-                            setInputFocused(false)
-                          }
-                          placeholder={`${part.label}) javobni kiriting`}
-                          className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text-base outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:bg-blue-50/40 focus:ring-2 focus:ring-blue-100 sm:text-lg"
-                        />
+                            }
+                            autoComplete="off"
+                            inputMode="text"
+                            enterKeyHint="done"
+                            onFocus={() =>
+                              setInputFocused(true)
+                            }
+                            onBlur={() =>
+                              setInputFocused(false)
+                            }
+                            placeholder={`${part.label}) javobni kiriting`}
+                            className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-4 text-base outline-none transition placeholder:text-slate-400 focus:border-mb-brand focus:bg-blue-50/40 focus:ring-2 focus:ring-blue-100 sm:text-lg"
+                          />
+                        )}
                       </section>
                     ),
                   )}
