@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ChevronRight, EyeOff, FileUp, Settings2 } from "@/components/ui/icons";
+import { ChevronRight, EyeOff, FileUp, Settings2, Timer } from "@/components/ui/icons";
 
 import { examIcon } from "@/lib/exam-visuals";
 import { GROUP_EXAM_CODE } from "@/lib/group-tests";
+import { isMockExamCode } from "@/lib/mock";
 import { getCurrentUser } from "@/lib/supabase/current-user";
 import { createClient } from "@/lib/supabase/server";
 import PageHeader, { headerButton, headerPrimaryButton } from "@/components/ui/page-header";
@@ -12,7 +13,7 @@ export const dynamic = "force-dynamic";
 
 type ExamTypeRow = {
   id: number;
-  code: "attestatsiya" | "milliy-sertifikat" | "sat" | "guruh-testlari";
+  code: string;
   title: string;
   description: string | null;
   order_number: number;
@@ -176,45 +177,11 @@ export default async function AdminTestsPage() {
   /* db/34 ishga tushirilmagan bo'lsa mavzular bo'sh — testlar "Mavzusiz"da */
   const topics = (topicsResult.data ?? []) as TopicRow[];
 
-  return (
-    <main className="min-h-screen bg-slate-50 text-slate-900">
-      <PageHeader
-        sticky={false}
-        backHref="/admin"
-        backLabel="Admin panel"
-        title="Testlar"
-        subtitle="Yönaliş → bölim → mavzu → test. Oçiş uçun bosing."
-        width="7xl"
-        action={
-          <div className="flex flex-wrap gap-2">
-            <Link href="/admin/tests/yechimlar" className={headerButton}>
-              Yozma yeçimlar
-            </Link>
-            <Link href="/tests" className={headerButton}>
-              Öquvçi körinişi
-            </Link>
-          </div>
-        }
-      >
-        <Link href="/admin/tests/import" className={headerPrimaryButton}>
-          <FileUp className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-          PDF’dan test yaratiş
-        </Link>
-      </PageHeader>
+  /* Mock yönalişlari (db/43) alohida "Mock testlar" içida */
+  const regularExams = examTypes.filter((exam) => !isMockExamCode(exam.code));
+  const mockExams = examTypes.filter((exam) => isMockExamCode(exam.code));
 
-      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
-        {!examTypes.length ? (
-          <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
-            <p className="text-lg font-bold text-slate-700">
-              Katalog migratsiyasi hali işlatilmagan
-            </p>
-            <p className="mt-2 text-sm text-slate-500">
-              Avval 25_test_catalog_hierarchy.sql faylini Supabase’da Run qiling.
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {examTypes.map((examType) => {
+  const renderExam = (examType: ExamTypeRow) => {
               const ExamIcon = examIcon(examType.code);
               const isGroupExam = examType.code === GROUP_EXAM_CODE;
               const examSections = sections.filter(
@@ -363,7 +330,71 @@ export default async function AdminTestsPage() {
                   </div>
                 </details>
               );
-            })}
+  };
+
+  return (
+    <main className="min-h-screen bg-slate-50 text-slate-900">
+      <PageHeader
+        sticky={false}
+        backHref="/admin"
+        backLabel="Admin panel"
+        title="Testlar"
+        subtitle="Yönaliş → bölim → mavzu → test. Oçiş uçun bosing."
+        width="7xl"
+        action={
+          <div className="flex flex-wrap gap-2">
+            <Link href="/admin/tests/yechimlar" className={headerButton}>
+              Yozma yeçimlar
+            </Link>
+            <Link href="/tests" className={headerButton}>
+              Öquvçi körinişi
+            </Link>
+          </div>
+        }
+      >
+        <Link href="/admin/tests/import" className={headerPrimaryButton}>
+          <FileUp className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
+          PDF’dan test yaratiş
+        </Link>
+      </PageHeader>
+
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12">
+        {!examTypes.length ? (
+          <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
+            <p className="text-lg font-bold text-slate-700">
+              Katalog migratsiyasi hali işlatilmagan
+            </p>
+            <p className="mt-2 text-sm text-slate-500">
+              Avval 25_test_catalog_hierarchy.sql faylini Supabase’da Run qiling.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {regularExams.map(renderExam)}
+
+            {mockExams.length > 0 && (
+              <details className="group/mock overflow-hidden rounded-2xl border border-mb-line bg-white">
+                <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-4 sm:px-5">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-mb-tint text-mb-brand">
+                    <Timer className="h-6 w-6" strokeWidth={1.9} aria-hidden="true" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-lg font-bold">Mock testlar</span>
+                    <span className="block text-xs text-mb-muted">
+                      {mockExams.map((exam) => exam.title).join(", ")}
+                    </span>
+                  </span>
+                  <ChevronRight
+                    className="h-5 w-5 shrink-0 text-mb-muted transition group-open/mock:rotate-90"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
+                </summary>
+                <div className="space-y-3 border-t border-mb-line bg-slate-50/60 p-3">
+                  {mockExams.map(renderExam)}
+                </div>
+              </details>
+            )}
           </div>
         )}
       </section>

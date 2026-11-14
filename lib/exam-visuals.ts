@@ -44,7 +44,7 @@ export const EXAM_ACCENTS: Record<ExamCode, Accent> = {
 
 /** Noma'lum kod kelsa ham sahifa buzilmasin */
 export function examIcon(code: string): IconComponent {
-  return EXAM_ICONS[code as ExamCode] ?? Award;
+  return EXAM_ICONS[code.replace(/^mock-/, "") as ExamCode] ?? Award;
 }
 
 export function examAccent(code: string): Accent {
