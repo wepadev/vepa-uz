@@ -155,7 +155,33 @@ export default async function TestsPage() {
       />
 
       <section className="mx-auto max-w-5xl px-4 py-5 sm:px-6 sm:py-8">
-        <p className="eyebrow">Yönalişni tanlang</p>
+        {/* Mock testlar (db/43) — katalogning eng tepasida */}
+        <Link
+          href="/mock"
+          className="edge group flex items-center gap-4 rounded-2xl border border-mb-line bg-white p-4 sm:p-5"
+        >
+          <GlyphTile name="mock" size="lg" />
+
+          <span className="min-w-0 flex-1">
+            <span className="flex items-center justify-between gap-2">
+              <span className="text-lg font-bold leading-6 text-mb-ink">
+                Mock testlar
+              </span>
+
+              <ChevronRight
+                className="h-5 w-5 shrink-0 text-slate-400 transition-transform group-hover:translate-x-0.5"
+                aria-hidden="true"
+              />
+            </span>
+
+            <span className="mt-0.5 block text-sm leading-5 text-mb-muted">
+              Haqiqiy imtihon formatida vaqtli töliq variantlar: Milliy
+              sertifikat, Attestatsiya, SAT
+            </span>
+          </span>
+        </Link>
+
+        <p className="eyebrow mt-8">Yönalişni tanlang</p>
 
         {!examTypes.length ? (
           <EmptyState glyph="tests" title="Hozirça test yöq" className="mt-3">
