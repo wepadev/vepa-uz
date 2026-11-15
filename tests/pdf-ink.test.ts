@@ -12,8 +12,9 @@ import {
   parsePageRange,
   invertMatrix,
   looksLikePdf,
-  outlinePath,
-  penOutline,
+  InkTrace,
+  StrokeInput,
+  inkSamples,
   simplifyPoints,
   simplifyStroke,
   strokeHit,
@@ -75,29 +76,91 @@ test("bosim nuqtalari bilan birga soddalashtiriladi", () => {
   assert.equal(simplifyStroke([1, 2, 3, 4], undefined).pressures, undefined);
 });
 
-test("qalam konturi: pero bosimga sezgir, flomaster bir xil", () => {
+test("qalam izi: pero bosimga sezgir, flomaster bir xil", () => {
   const points: number[] = [];
   for (let i = 0; i <= 40; i += 1) points.push(i * 2, 0);
 
+  /* Chizgi o'rtasidagi qalinlik */
   const width = (pressures: number[], kind: "felt" | "fountain") => {
-    const outline = penOutline({ ...pen(points, 4), pen: kind, pressures })!;
-    const ys = outline.map((p) => p[1]);
-    return Math.max(...ys) - Math.min(...ys);
+    const samples = inkSamples({ ...pen(points, 4), pen: kind, pressures })!;
+    const middle = Math.floor(samples.length / 6) * 3;
+    return samples[middle + 2] * 2;
   };
 
   const light = points.map(() => 0.15);
   const hard = points.map(() => 0.95);
 
   assert.ok(width(hard, "fountain") > width(light, "fountain") * 1.3);
-  assert.ok(Math.abs(width(hard, "felt") - width(light, "felt")) < 0.5);
+  assert.equal(width(hard, "felt"), 4);
+  assert.equal(width(light, "felt"), 4);
 
   /* Marker va eski chizgilar oddiy chiziq bo'lib qoladi */
-  assert.equal(penOutline(pen(points)), null);
-  assert.equal(penOutline({ ...pen(points), tool: "marker", pen: "felt" }), null);
+  assert.equal(inkSamples(pen(points)), null);
+  assert.equal(inkSamples({ ...pen(points), tool: "marker", pen: "felt" }), null);
+});
 
-  const path = outlinePath(penOutline({ ...pen(points, 3), pen: "brush" })!);
-  assert.equal(path[0].kind, "move");
-  assert.ok(path.slice(1).every((segment) => segment.kind === "quad"));
+test("qalam izi: yozish paytidagi shakl tugagandagi bilan bir xil", () => {
+  /* Egri-bugri chizgi, bosimi o'zgarib turadi */
+  const points: number[] = [];
+  const pressures: number[] = [];
+  for (let i = 0; i <= 60; i += 1) {
+    points.push(i * 3, Math.sin(i / 3) * 20 + (i % 2));
+    pressures.push(0.3 + 0.5 * Math.abs(Math.sin(i / 7)));
+  }
+
+  for (const kind of ["felt", "fountain", "brush"] as const) {
+    const trace = new InkTrace(kind, 2);
+    /* Yozish: har nuqtadan keyin `done` faqat o'sadi, oldingisi o'zgarmaydi */
+    let before: number[] = [];
+    for (let i = 0; i < points.length / 2; i += 1) {
+      trace.add(points[i * 2], points[i * 2 + 1], pressures[i]);
+      assert.deepEqual(trace.done.slice(0, before.length), before, kind);
+      before = trace.done.slice();
+    }
+    const live = trace.done.concat(trace.tip(true).slice(3));
+    assert.deepEqual(live, inkSamples({ ...pen(points, 2), pen: kind, pressures }), kind);
+  }
+});
+
+test("qalam izi: siyrak nuqtalar orasi silliq to'ldiriladi", () => {
+  /* Tez yozilgan yoy: nuqtalar orasi 15 punktdan */
+  const points: number[] = [];
+  for (let i = 0; i <= 8; i += 1) {
+    const angle = (i / 8) * Math.PI;
+    points.push(50 - 40 * Math.cos(angle), 50 - 40 * Math.sin(angle));
+  }
+  const samples = inkSamples({ ...pen(points, 2), pen: "felt" })!;
+
+  let longest = 0;
+  let farthest = 0;
+  for (let i = 3; i < samples.length; i += 3) {
+    longest = Math.max(longest, Math.hypot(samples[i] - samples[i - 3], samples[i + 1] - samples[i - 2]));
+    /* Yoy radiusi 40 — egri undan deyarli chetlamaydi (siniq chiziq 0.77 gacha chetlardi) */
+    farthest = Math.max(farthest, Math.abs(Math.hypot(samples[i] - 50, samples[i + 1] - 50) - 40));
+  }
+  assert.ok(longest <= 1.05, `qadam ${longest}`);
+  assert.ok(farthest < 0.5, `chetlash ${farthest}`);
+});
+
+test("nuqta qabul qilish: yaqinlari tashlanadi, bosim tezlikdan olinadi", () => {
+  const input = new StrokeInput(1, false);
+  input.add(0, 0, 0, 0);
+  assert.equal(input.add(0.1, 0, 0, 1), null);
+  /* Oxirgi nuqta yaqin bo'lsa ham olinadi */
+  assert.notEqual(input.add(0.2, 0, 0, 2, true), null);
+  assert.equal(input.points.length, 4);
+
+  const slow = new StrokeInput(1, false);
+  slow.add(0, 0, 0, 0);
+  const fast = new StrokeInput(1, false);
+  fast.add(0, 0, 0, 0);
+  assert.ok(slow.add(2, 0, 0, 16)! > fast.add(30, 0, 0, 16)!);
+
+  /* Stilus: o'z bosimi; ko'tarilishdagi 0 oldingisini saqlaydi */
+  const stylus = new StrokeInput(1, true);
+  assert.equal(stylus.add(0, 0, 0.42, 0), 0.42);
+  assert.equal(stylus.add(5, 0, 0.8, 8), 0.8);
+  assert.equal(stylus.add(9, 0, 0, 16), 0.8);
 });
 
 test("fayl nomi va PDF belgisi", () => {
@@ -166,14 +229,14 @@ test("bet oralig'i o'qiladi va yoziladi", () => {
 });
 
 test("yozish paytida chiziq uchi qalamdan orqada qolmaydi", () => {
-  const points: number[] = [];
-  for (let i = 0; i <= 30; i += 1) points.push(i * 3, 0);
-
   for (const kind of ["felt", "fountain", "brush"] as const) {
-    const outline = penOutline({ ...pen(points, 3), pen: kind }, false)!;
-    const reach = Math.max(...outline.map((p) => p[0]));
-    /* Oxirgi nuqta x = 90; uchi unga qalam yarim eni ichida yetadi */
-    assert.ok(reach >= 90 - 0.5, `${kind}: ${reach}`);
+    const trace = new InkTrace(kind, 3);
+    for (let i = 0; i <= 30; i += 1) {
+      trace.add(i * 3, 0);
+      /* Har nuqtadan keyin uchi aynan qalam turgan joyda */
+      const tip = trace.tip();
+      assert.equal(tip[tip.length - 3], i * 3, kind);
+    }
   }
 });
 
@@ -183,10 +246,15 @@ test("stabilizatsiya yo'q: chiziq qalam yurgan yerdan o'tadi", () => {
   for (let i = 0; i <= 20; i += 1) points.push(i * 4, i % 2 === 0 ? 6 : -6);
 
   for (const kind of ["felt", "fountain", "brush"] as const) {
-    const outline = penOutline({ ...pen(points, 1), pen: kind })!;
-    const ys = outline.filter((p) => p[0] > 8 && p[0] < 72).map((p) => p[1]);
-    /* Tepalar kesilmaydi — chiziq qalam turgan joydan o'tgan */
-    assert.ok(Math.max(...ys) > 5.5 && Math.min(...ys) < -5.5, kind);
+    const samples = inkSamples({ ...pen(points, 1), pen: kind })!;
+    /* Har bir asl nuqta namunalar ichida aynan o'zi bo'lib turadi */
+    for (let i = 0; i < points.length; i += 2) {
+      let found = false;
+      for (let k = 0; k < samples.length; k += 3) {
+        if (samples[k] === points[i] && samples[k + 1] === points[i + 1]) found = true;
+      }
+      assert.ok(found, `${kind}: ${points[i]}, ${points[i + 1]}`);
+    }
   }
 });
 
