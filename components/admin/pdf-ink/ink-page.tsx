@@ -8,9 +8,9 @@ import {
   MARKER_OPACITY,
   TEXT_FONT,
   TEXT_LINE_HEIGHT,
-  outlinePath,
-  penOutline,
-  simplifyStroke,
+  InkTrace,
+  StrokeInput,
+  inkSamples,
   strokePath,
   type InkPage,
   type InkTool,
@@ -78,6 +78,49 @@ function pixelRatio() {
  */
 const PDF_PIXEL_BUDGET = 8_000_000;
 
+/*
+ * Yozuv qatlami uchun ham chegara bor. Kattalashtirilgan sahifa
+ * kanvasi o'nlab megabayt xotira oladi; iPad Safari'da hamma
+ * kanvaslar uchun umumiy chegara bor — undan oshsa brauzer
+ * sekinlashadi yoki kanvas bo'shab qoladi.
+ */
+function inkPixelBudget() {
+  const apple =
+    /iPad|iPhone/.test(navigator.userAgent) ||
+    (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+  return apple ? 8_000_000 : 16_000_000;
+}
+
+/** Yozuv kanvasida bir punkt necha piksel */
+function inkScale(page: { width: number; height: number }, zoom: number) {
+  const limit = Math.sqrt(inkPixelBudget() / (page.width * page.height));
+  return Math.min(zoom * pixelRatio(), limit);
+}
+
+/*
+ * Jonli qatlam (qalam uchi, marker, to'g'ri chiziq) faqat hozir
+ * yozilayotgan bitta sahifada bo'ladi — qolgan sahifalarniki
+ * xotira olmaydi.
+ */
+let activeLive: HTMLCanvasElement | null = null;
+
+function claimLive(canvas: HTMLCanvasElement, width: number, height: number) {
+  if (activeLive && activeLive !== canvas) releaseCanvas(activeLive);
+  activeLive = canvas;
+  sizeCanvas(canvas, width, height);
+}
+
+/*
+ * Kaft himoyasi: qalam ekranda turganda yoki endigina ko'tarilganda
+ * tekkan barmoq/kaft sahifani surmaydi.
+ */
+const pensDown = new Set<number>();
+let lastPenTime = -Infinity;
+
+function palmLikely() {
+  return pensDown.size > 0 || performance.now() - lastPenTime < 350;
+}
+
 /** Chizgi egallagan to'rtburchak (sahifa koordinatasida) */
 function strokeBounds(points: number[], pad: number) {
   let minX = Infinity;
@@ -94,6 +137,23 @@ function strokeBounds(points: number[], pad: number) {
 }
 
 type Box = ReturnType<typeof strokeBounds>;
+
+/** Qalam izi namunalari ([x, y, r, ...]) egallagan to'rtburchak */
+function inkBounds(samples: number[]): Box | null {
+  if (samples.length === 0) return null;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  for (let i = 0; i + 2 < samples.length; i += 3) {
+    const r = samples[i + 2] + 1;
+    if (samples[i] - r < minX) minX = samples[i] - r;
+    if (samples[i] + r > maxX) maxX = samples[i] + r;
+    if (samples[i + 1] - r < minY) minY = samples[i + 1] - r;
+    if (samples[i + 1] + r > maxY) maxY = samples[i + 1] + r;
+  }
+  return { x: minX, y: minY, w: maxX - minX, h: maxY - minY };
+}
 
 /** Kanvasning bir qismini tozalash; `box` yo'q bo'lsa — hammasini */
 function clearArea(canvas: HTMLCanvasElement, box: Box | null, scale: number) {
@@ -120,61 +180,93 @@ function tracePath(ctx: CanvasRenderingContext2D, segments: PathSegment[]) {
   }
 }
 
+/**
+ * Qalam izining [from, to) namunalarini yo'lga qo'shish: har namunada
+ * doira, qo'shnilar orasida trapetsiya. Hammasi bir yo'nalishda
+ * aylanadi — ustma-ust tushgan joylar ham to'liq bo'yaladi.
+ */
+function addInk(path: Path2D, samples: number[], from: number, to: number) {
+  for (let i = from; i < to; i += 1) {
+    const x = samples[i * 3];
+    const y = samples[i * 3 + 1];
+    const r = samples[i * 3 + 2];
+    path.moveTo(x + r, y);
+    path.arc(x, y, r, 0, Math.PI * 2);
+
+    if (i + 1 >= to) continue;
+    const x2 = samples[i * 3 + 3];
+    const y2 = samples[i * 3 + 4];
+    const r2 = samples[i * 3 + 5];
+    const dx = x2 - x;
+    const dy = y2 - y;
+    const d = Math.hypot(dx, dy);
+    if (d === 0) continue;
+    const nx = -dy / d;
+    const ny = dx / d;
+    path.moveTo(x - nx * r, y - ny * r);
+    path.lineTo(x2 - nx * r2, y2 - ny * r2);
+    path.lineTo(x2 + nx * r2, y2 + ny * r2);
+    path.lineTo(x + nx * r, y + ny * r);
+    path.closePath();
+  }
+}
+
+function fillInk(
+  ctx: CanvasRenderingContext2D,
+  samples: number[],
+  from: number,
+  to: number,
+  color: string,
+  scale: number,
+) {
+  if (to <= from) return;
+  const path = new Path2D();
+  addInk(path, samples, from, to);
+  ctx.save();
+  ctx.scale(scale, scale);
+  ctx.fillStyle = color;
+  ctx.fill(path);
+  ctx.restore();
+}
+
 /*
- * Tugagan qalam chizgisining konturi bir marta hisoblanadi.
+ * Tugagan qalam chizgisining shakli bir marta hisoblanadi.
  * Chizgi obyektlari o'zgarmaydi (yangisi yaratiladi), shuning uchun
  * kalit sifatida obyektning o'zi yetarli; o'chirilgan chizgi
  * keshdan o'zi tushib ketadi.
  */
-const outlineCache = new WeakMap<Stroke, Path2D | null>();
+const inkCache = new WeakMap<Stroke, Path2D | null>();
 
-function cachedOutline(stroke: Stroke): Path2D | null {
-  let path = outlineCache.get(stroke);
+function inkPath(stroke: Stroke, cache: boolean): Path2D | null {
+  let path = cache ? inkCache.get(stroke) : undefined;
   if (path === undefined) {
-    const outline = penOutline(stroke);
+    const samples = inkSamples(stroke);
     path = null;
-    if (outline) {
+    if (samples) {
       path = new Path2D();
-      for (const segment of outlinePath(outline)) {
-        if (segment.kind === "move") path.moveTo(segment.x, segment.y);
-        else if (segment.kind === "line") path.lineTo(segment.x, segment.y);
-        else path.quadraticCurveTo(segment.cx, segment.cy, segment.x, segment.y);
-      }
-      path.closePath();
+      addInk(path, samples, 0, samples.length / 3);
     }
-    outlineCache.set(stroke, path);
+    if (cache) inkCache.set(stroke, path);
   }
   return path;
 }
 
-/** `complete: false` — chizgi hali yozilmoqda (jonli qatlam) */
+/** `cache: false` — chizgi hali yozilmoqda, har safar o'zgaradi */
 export function paintStroke(
   ctx: CanvasRenderingContext2D,
   stroke: Stroke,
   scale: number,
-  complete = true,
+  cache = true,
 ) {
   ctx.save();
   ctx.scale(scale, scale);
 
-  if (complete) {
-    const path = cachedOutline(stroke);
-    if (path) {
-      ctx.fillStyle = stroke.color;
-      ctx.fill(path);
-      ctx.restore();
-      return;
-    }
-  } else {
-    const outline = penOutline(stroke, false);
-    if (outline) {
-      ctx.fillStyle = stroke.color;
-      tracePath(ctx, outlinePath(outline));
-      ctx.closePath();
-      ctx.fill();
-      ctx.restore();
-      return;
-    }
+  const path = inkPath(stroke, cache);
+  if (path) {
+    ctx.fillStyle = stroke.color;
+    ctx.fill(path);
+    ctx.restore();
+    return;
   }
 
   ctx.lineCap = "round";
@@ -185,12 +277,6 @@ export function paintStroke(
   tracePath(ctx, strokePath(stroke.points));
   ctx.stroke();
   ctx.restore();
-}
-
-/** Stilus bosimi; ba'zi qurilmalar birinchi nuqtada 0 beradi */
-function pressureOf(event: { pressure: number }) {
-  const value = event.pressure > 0 ? event.pressure : 0.5;
-  return Math.round(value * 100) / 100;
 }
 
 function sizeCanvas(canvas: HTMLCanvasElement, width: number, height: number) {
@@ -215,9 +301,16 @@ type Gesture =
       /** Kanvas joyi — har nuqtada qayta o'lchash sekin */
       rect: DOMRect;
       tool: InkTool;
-      points: number[];
-      /** Faqat stilusda */
-      pressures: number[] | null;
+      input: StrokeInput;
+      /** Faqat qalam asbobida: iz quruvchi va undan nechta namuna chizilgani */
+      trace: InkTrace | null;
+      drawn: number;
+      /** Faqat to'g'ri chiziqda: ikkinchi uchi */
+      lineEnd: number[] | null;
+      color: string;
+      width: number;
+      pen: PenKind;
+      scale: number;
     }
   | { kind: "erase"; pointerId: number; pointerType: string; rect: DOMRect }
   | {
@@ -228,6 +321,8 @@ type Gesture =
       y: number;
       left: number;
       top: number;
+      /** Barmoq biroz qo'zg'almaguncha sahifa surilmaydi */
+      moving: boolean;
       /** "T" asbobi: qo'zg'almay qo'yib yuborilsa — shu nuqtaga matn */
       tap?: { x: number; y: number };
     };
@@ -236,12 +331,14 @@ type Gesture =
  * Bitta sahifa: uch qatlamli kanvas.
  *
  *   1. PDF — pdf.js chizgan asl sahifa (faqat ko'rinib turganda).
- *   2. Yozuv — saqlangan chizgilar.
- *   3. Jonli — hozir chizilayotgan chizgi; qalam shu qatlamni bosadi.
+ *   2. Yozuv — chizgilar. Qalam yozayotganda ham to'g'ridan-to'g'ri
+ *      shu qatlamga chizadi: har nuqtada faqat yangi bo'lak qo'shiladi.
+ *   3. Jonli — qalam uchidagi oxirgi bo'lak, marker va to'g'ri chiziq.
+ *      Hodisalarni ham shu qatlam qabul qiladi.
  *
- * Jonli chizgi alohida qatlamda, chunki marker shaffof: uni bo'lak-
+ * Marker butunicha jonli qatlamda chiziladi, chunki u shaffof: bo'lak-
  * bo'lak chizsak, bo'laklar ustma-ust tushib, chiziq yo'l-yo'l bo'lib
- * qolardi. Har kadrda butun chizgi qaytadan chiziladi.
+ * qolardi.
  */
 function InkPageView({
   page,
@@ -341,22 +438,24 @@ function InkPageView({
     if (!visible) {
       releaseCanvas(ink);
       releaseCanvas(live);
+      if (activeLive === live) activeLive = null;
       paintedRef.current = null;
       liveBoxRef.current = null;
       return;
     }
 
-    const ratio = pixelRatio();
-    const scale = zoom * ratio;
-    sizeCanvas(ink, cssWidth * ratio, cssHeight * ratio);
-    sizeCanvas(live, cssWidth * ratio, cssHeight * ratio);
+    const scale = inkScale(page, zoom);
+    sizeCanvas(ink, page.width * scale, page.height * scale);
+    /* Jonli qatlam faqat yozilayotgan sahifada bor; kattalik o'zgarsa moslaymiz */
+    if (live.width > 1) sizeCanvas(live, page.width * scale, page.height * scale);
 
     const ctx = ink.getContext("2d");
     if (!ctx) return;
 
     /*
      * Odatda yangi chizgi oxiriga qo'shiladi: oldingilari joyida,
-     * faqat yangisini ustidan chizamiz. O'chirish, orqaga qaytarish
+     * faqat yangisini ustidan chizamiz (qalam chizgisi esa yozish
+     * paytidayoq chizib bo'lingan). O'chirish, orqaga qaytarish
      * yoki kattalashtirishda hammasi qaytadan chiziladi.
      */
     const painted = paintedRef.current;
@@ -385,9 +484,36 @@ function InkPageView({
       clearArea(live, liveBoxRef.current, scale);
       liveBoxRef.current = null;
     }
-  }, [visible, page.strokes, zoom, cssWidth, cssHeight]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- sahifaning faqat shu qismlari kerak
+  }, [visible, page.strokes, zoom, page.width, page.height]);
 
   useEffect(() => () => cancelAnimationFrame(frameRef.current), []);
+
+  /*
+   * iPad: Apple Pencil tegishini Safari o'z ishlariga (surish, matn
+   * belgilash, lupa) ishlatmasin — qalam faqat yozadi. Barmoqlarga
+   * tegilmaydi.
+   */
+  useEffect(() => {
+    const live = liveCanvasRef.current;
+    if (!live) return;
+
+    function block(event: TouchEvent) {
+      for (const touch of Array.from(event.changedTouches)) {
+        if ((touch as Touch & { touchType?: string }).touchType === "stylus") {
+          event.preventDefault();
+          return;
+        }
+      }
+    }
+
+    live.addEventListener("touchstart", block, { passive: false });
+    live.addEventListener("touchmove", block, { passive: false });
+    return () => {
+      live.removeEventListener("touchstart", block);
+      live.removeEventListener("touchmove", block);
+    };
+  }, []);
 
   function pointFrom(event: { clientX: number; clientY: number }, rect: DOMRect) {
     const x = ((event.clientX - rect.left) / rect.width) * page.width;
@@ -395,18 +521,55 @@ function InkPageView({
     return [Math.round(x * 100) / 100, Math.round(y * 100) / 100] as const;
   }
 
-  /** Jonli qatlamni tozalash — faqat oxirgi chizgi turgan joyni */
+  /** Jonli qatlamni tozalash — faqat oxirgi chizilgan joyni */
   function clearLive() {
     const live = liveCanvasRef.current;
-    if (live) clearArea(live, liveBoxRef.current, zoom * pixelRatio());
+    if (live) clearArea(live, liveBoxRef.current, inkScale(page, zoom));
     liveBoxRef.current = null;
   }
 
+  type DrawGesture = Extract<Gesture, { kind: "draw" }>;
+
+  /**
+   * Qalam: yangi kelgan nuqtalarni darhol chizish. Tayyor bo'laklar
+   * yozuv qatlamiga qo'shiladi (eskilari qayta chizilmaydi), qalam
+   * uchidagi bitta bo'lak — jonli qatlamga. Kadrni kutmaymiz:
+   * hodisa kelgan zahoti chizilsa, chiziq shu kadrning o'zida ko'rinadi.
+   */
+  function drawPen(gesture: DrawGesture, complete = false) {
+    const trace = gesture.trace;
+    const ink = inkCanvasRef.current?.getContext("2d");
+    const live = liveCanvasRef.current;
+    const liveCtx = live?.getContext("2d");
+    if (!trace || !ink || !live || !liveCtx) return;
+
+    const { scale, color: inkColor } = gesture;
+    const total = trace.done.length / 3;
+    if (total > gesture.drawn) {
+      /* Oldingi oxirgi namunadan boshlaymiz — bo'laklar ulanib tursin */
+      fillInk(ink, trace.done, Math.max(0, gesture.drawn - 1), total, inkColor, scale);
+      gesture.drawn = total;
+    }
+
+    clearArea(live, liveBoxRef.current, scale);
+    liveBoxRef.current = null;
+
+    const tip = trace.tip(complete);
+    const count = tip.length / 3;
+    if (complete) {
+      fillInk(ink, tip, 0, count, inkColor, scale);
+      return;
+    }
+    fillInk(liveCtx, tip, 0, count, inkColor, scale);
+    liveBoxRef.current = inkBounds(tip);
+  }
+
+  /** Marker va to'g'ri chiziq: jonli qatlamda butun chizgi qayta chiziladi */
   function drawLive() {
     frameRef.current = 0;
     const gesture = gestureRef.current;
     const live = liveCanvasRef.current;
-    if (!live || !gesture || gesture.kind !== "draw") return;
+    if (!live || !gesture || gesture.kind !== "draw" || gesture.trace) return;
 
     const ctx = live.getContext("2d");
     if (!ctx) return;
@@ -415,7 +578,8 @@ function InkPageView({
      * Har kadrda butun sahifa kanvasini (millionlab piksel) tozalash
      * sekin. Faqat chizgi turgan to'rtburchakni tozalaymiz.
      */
-    const box = strokeBounds(gesture.points, width * 2 + 2);
+    const stroke = buildStroke(gesture);
+    const box = strokeBounds(stroke.points, gesture.width * 2 + 2);
     const previous = liveBoxRef.current;
     liveBoxRef.current = previous
       ? {
@@ -425,21 +589,23 @@ function InkPageView({
           h: Math.max(previous.y + previous.h, box.y + box.h) - Math.min(previous.y, box.y),
         }
       : box;
-    const scale = zoom * pixelRatio();
-    clearArea(live, liveBoxRef.current, scale);
-    paintStroke(ctx, buildStroke(gesture), scale, false);
+    clearArea(live, liveBoxRef.current, gesture.scale);
+    paintStroke(ctx, stroke, gesture.scale, false);
   }
 
-  function buildStroke(gesture: Extract<Gesture, { kind: "draw" }>): Stroke {
+  function buildStroke(gesture: DrawGesture): Stroke {
     const stroke: Stroke = {
       tool: gesture.tool,
-      color,
-      width,
-      points: gesture.points,
+      color: gesture.color,
+      width: gesture.width,
+      points:
+        gesture.tool === "line"
+          ? [gesture.input.points[0], gesture.input.points[1], ...(gesture.lineEnd ?? [])]
+          : gesture.input.points,
     };
     if (gesture.tool === "pen") {
-      stroke.pen = pen;
-      if (gesture.pressures) stroke.pressures = gesture.pressures;
+      stroke.pen = gesture.pen;
+      stroke.pressures = gesture.input.pressures;
     }
     return stroke;
   }
@@ -459,7 +625,17 @@ function InkPageView({
     gestureRef.current = null;
     cancelAnimationFrame(frameRef.current);
     frameRef.current = 0;
-    if (gesture?.kind === "draw") clearLive();
+    if (gesture?.kind === "draw") {
+      clearLive();
+      /* Qalam yozuv qatlamiga chizib ulgurgan — qatlamni asl holiga qaytaramiz */
+      const ink = inkCanvasRef.current;
+      const ctx = gesture.trace ? ink?.getContext("2d") : null;
+      if (ink && ctx) {
+        ctx.clearRect(0, 0, ink.width, ink.height);
+        for (const stroke of page.strokes) paintStroke(ctx, stroke, gesture.scale);
+        paintedRef.current = { strokes: page.strokes, scale: gesture.scale };
+      }
+    }
     /* O'chirilgani qaytmaydi, lekin "orqaga" bilan qaytarish mumkin bo'lsin */
     if (gesture?.kind === "erase") handlers.current.onEraseEnd();
   }
@@ -470,10 +646,13 @@ function InkPageView({
       abort();
       return;
     }
+    if (isPen) pensDown.add(event.pointerId);
     /* Kaft ekranga qalamdan oldin tegsa ham qalam yozaversin */
     if (gestureRef.current && isPen && gestureRef.current.pointerType === "touch") abort();
     if (gestureRef.current) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
+    /* Qalam bilan yozayotgan qo'lning kafti — e'tiborsiz */
+    if (event.pointerType === "touch" && penOnly && palmLikely()) return;
 
     if (isPen) handlers.current.onPenDetected();
 
@@ -497,6 +676,7 @@ function InkPageView({
         y: event.clientY,
         left: scroller?.scrollLeft ?? 0,
         top: scroller?.scrollTop ?? 0,
+        moving: event.pointerType !== "touch",
         tap:
           tool === "text"
             ? (() => {
@@ -520,16 +700,33 @@ function InkPageView({
       return;
     }
 
-    gestureRef.current = {
+    const scale = inkScale(page, zoom);
+    if (canvas.width <= 1) liveBoxRef.current = null;
+    claimLive(canvas, page.width * scale, page.height * scale);
+
+    const input = new StrokeInput(rect.width / page.width, isPen);
+    const pressure = input.add(x, y, event.pressure, event.timeStamp) ?? 0.5;
+    const trace = tool === "pen" ? new InkTrace(pen, width) : null;
+    trace?.add(x, y, pressure);
+
+    const gesture: DrawGesture = {
       kind: "draw",
       pointerId: event.pointerId,
       pointerType: event.pointerType,
       rect,
       tool,
-      points: [x, y],
-      pressures: isPen ? [pressureOf(event)] : null,
+      input,
+      trace,
+      drawn: 0,
+      lineEnd: null,
+      color,
+      width,
+      pen,
+      scale,
     };
-    scheduleLive();
+    gestureRef.current = gesture;
+    if (trace) drawPen(gesture);
+    else scheduleLive();
   }
 
   function onPointerMove(event: React.PointerEvent<HTMLCanvasElement>) {
@@ -541,10 +738,16 @@ function InkPageView({
     }
 
     if (gesture.kind === "pan") {
-      scrollRef.current?.scrollTo({
-        left: gesture.left - (event.clientX - gesture.x),
-        top: gesture.top - (event.clientY - gesture.y),
-      });
+      const dx = event.clientX - gesture.x;
+      const dy = event.clientY - gesture.y;
+      if (!gesture.moving) {
+        /* Tekkan kaft yoki barmoqning mayda titrashi sahifani qimirlatmasin */
+        if (Math.hypot(dx, dy) < 6) return;
+        gesture.moving = true;
+        gesture.left += dx;
+        gesture.top += dy;
+      }
+      scrollRef.current?.scrollTo({ left: gesture.left - dx, top: gesture.top - dy });
       return;
     }
 
@@ -561,20 +764,27 @@ function InkPageView({
     }
 
     if (gesture.tool === "line") {
-      const [x, y] = pointFrom(event, gesture.rect);
-      gesture.points = [gesture.points[0], gesture.points[1], x, y];
-    } else {
-      for (const sample of samples) {
-        const [x, y] = pointFrom(sample, gesture.rect);
-        gesture.points.push(x, y);
-        gesture.pressures?.push(pressureOf(sample));
-      }
+      gesture.lineEnd = [...pointFrom(event, gesture.rect)];
+      scheduleLive();
+      return;
     }
 
-    scheduleLive();
+    for (const sample of samples) {
+      const [x, y] = pointFrom(sample, gesture.rect);
+      const pressure = gesture.input.add(x, y, sample.pressure, sample.timeStamp);
+      if (pressure !== null) gesture.trace?.add(x, y, pressure);
+    }
+
+    if (gesture.trace) drawPen(gesture);
+    else scheduleLive();
   }
 
   function finish(event: React.PointerEvent<HTMLCanvasElement>) {
+    if (event.pointerType === "pen") {
+      pensDown.delete(event.pointerId);
+      lastPenTime = performance.now();
+    }
+
     const gesture = gestureRef.current;
     if (!gesture || gesture.pointerId !== event.pointerId) return;
     if (handlers.current.isPinching() && gesture.pointerType !== "pen") {
@@ -601,18 +811,36 @@ function InkPageView({
     cancelAnimationFrame(frameRef.current);
     frameRef.current = 0;
 
-    if (gesture.tool === "line" && gesture.points.length < 4) {
-      clearLive();
-      return;
+    if (gesture.tool === "line") {
+      if (!gesture.lineEnd) {
+        clearLive();
+        return;
+      }
+    } else if (event.type === "pointerup") {
+      /* Qalam ko'tarilgan aniq nuqta — oraliq saralashdan o'tmasa ham olinadi */
+      const [x, y] = pointFrom(event, gesture.rect);
+      const pressure = gesture.input.add(x, y, event.pressure, event.timeStamp, true);
+      if (pressure !== null) gesture.trace?.add(x, y, pressure);
     }
 
-    if (gesture.tool !== "line") {
-      const simple = simplifyStroke(gesture.points, gesture.pressures ?? undefined, 0.3);
-      gesture.points = simple.points;
-      gesture.pressures = simple.pressures ?? null;
+    const stroke = buildStroke(gesture);
+
+    if (gesture.trace) {
+      /*
+       * Chizgi yozuv qatlamida tayyor turibdi — faqat uchini qo'shamiz.
+       * Qayta chizilmaydi, shuning uchun qalam ko'tarilganda yozuv
+       * qimirlamaydi.
+       */
+      drawPen(gesture, true);
+      const painted = paintedRef.current;
+      if (painted && painted.scale === gesture.scale) {
+        paintedRef.current = { strokes: [...painted.strokes, stroke], scale: painted.scale };
+      } else {
+        paintedRef.current = null;
+      }
     }
 
-    handlers.current.onStroke(page.id, buildStroke(gesture));
+    handlers.current.onStroke(page.id, stroke);
   }
 
   const cursor =

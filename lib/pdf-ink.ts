@@ -19,7 +19,6 @@
  * Bu fayl React'ga ham, brauzerga ham bog'liq emas — testlar
  * Node'da ishlatadi.
  */
-import { getStroke, type StrokeOptions } from "perfect-freehand";
 import {
   LineCapStyle,
   LineJoinStyle,
@@ -69,9 +68,9 @@ export type Stroke = {
   /** Faqat qalam uchun. Yo'q bo'lsa — eski oddiy chiziq */
   pen?: PenKind;
   /**
-   * Har nuqtadagi qalam bosimi (0..1). Faqat haqiqiy stilusda
-   * yoziladi; sichqoncha va barmoqda bosim yo'q — u holda bosim
-   * tezlikdan taxmin qilinadi.
+   * Har nuqtadagi qalam bosimi (0..1). Stilusda — haqiqiy bosim;
+   * sichqoncha va barmoqda yozish tezligidan hisoblanadi
+   * (`StrokeInput`). Yo'q bo'lsa — 0.5.
    */
   pressures?: number[];
 };
@@ -353,95 +352,262 @@ export function hexToRgb(hex: string): [number, number, number] {
 }
 
 /* ------------------------------------------------------------------ */
-/* Qalam konturi                                                       */
+/* Qalam izi                                                           */
 /* ------------------------------------------------------------------ */
 
 /*
- * Qalam chizgisi chiziq (stroke) emas, to'ldirilgan shakl (fill):
- * har nuqtada qalinlik boshqacha bo'lishi uchun chizgining ikki
- * cheti hisoblanib, ichi bo'yaladi. Hisobni `perfect-freehand`
- * qiladi — tldraw va Excalidraw ham shuni ishlatadi.
+ * Qalam chizgisi — o'rta chiziq bo'ylab zich qo'yilgan namunalar:
+ * har birida joy (x, y) va shu joydagi yarim qalinlik (r). Ekranda
+ * har ikki qo'shni namuna orasi doira + trapetsiya bilan to'ldiriladi,
+ * PDF'da — dumaloq uchli kesmalar bilan.
  *
- * Shakl ekranda ham, PDF'da ham aynan bir xil nuqtalardan quriladi,
- * shuning uchun saqlangan PDF ekrandagidek chiqadi va vektor
- * bo'lgani uchun har qancha kattalashtirilsa ham tiniq qoladi.
+ * Nega shunday:
  *
- * Stabilizatsiya (`streamline`) yo'q: chiziq aynan qalam yurgan
- * yerdan o'tadi, yozish paytida ham, keyin ham joyidan siljimaydi.
+ *   • Tez. Yangi nuqta kelganda faqat yangi bo'lak hisoblanadi va
+ *     chiziladi — chizgi qancha uzun bo'lmasin, har kadrdagi ish
+ *     bir xil. (Oldin butun chizgi konturi har kadrda qayta
+ *     hisoblanardi.)
+ *   • Silliq. Nuqtalar orasidan Catmull–Rom egri chizig'i o'tadi:
+ *     tez yozganda nuqtalar siyrak kelsa ham chiziq siniq bo'lmaydi.
+ *     Egri aynan qalam yurgan nuqtalardan o'tadi — stabilizatsiya
+ *     yo'q, chiziq qalamdan orqada qolmaydi va joyidan siljimaydi.
+ *   • Bir xil. Yozish paytidagi va tugagandagi shakl aynan bitta
+ *     hisobdan chiqadi — qalam ko'tarilganda yozuv "sakramaydi".
+ *
+ * Qalinlik (bosim) faqat o'tgan nuqtalarga qarab tekislanadi — bu
+ * chiziq joyiga ta'sir qilmaydi, faqat eni titramasligi uchun.
  */
-const PEN_OPTIONS: Record<PenKind, (size: number) => StrokeOptions> = {
-  felt: () => ({
-    thinning: 0,
-    smoothing: 0.6,
-    streamline: 0,
-    simulatePressure: false,
-  }),
-  fountain: (size) => ({
-    thinning: 0.6,
-    smoothing: 0.65,
-    streamline: 0,
-    /* Yumshoq egri: yengil bosimda ham chiziq uzilmasin */
-    easing: (t) => Math.sin((t * Math.PI) / 2),
-    start: { taper: size * 2.5, cap: true },
-    end: { taper: size * 3, cap: true },
-  }),
-  brush: (size) => ({
-    thinning: 0.85,
-    smoothing: 0.7,
-    streamline: 0,
-    easing: (t) => t * t * (3 - 2 * t),
-    start: { taper: size * 6, cap: true },
-    end: { taper: size * 8, cap: true },
-  }),
+const PEN_SHAPE: Record<
+  PenKind,
+  { thinning: number; easing: (t: number) => number; taper: number }
+> = {
+  felt: { thinning: 0, easing: (t) => t, taper: 0 },
+  /* Yumshoq egri: yengil bosimda ham chiziq uzilmasin */
+  fountain: { thinning: 0.6, easing: (t) => Math.sin((t * Math.PI) / 2), taper: 2.5 },
+  brush: { thinning: 0.85, easing: (t) => t * t * (3 - 2 * t), taper: 6 },
 };
 
+/** Berilgan bosimdagi yarim qalinlik, punktda */
+export function penRadius(pen: PenKind, width: number, pressure: number) {
+  const shape = PEN_SHAPE[pen];
+  if (!shape.thinning) return width / 2;
+  const p = Math.max(0, Math.min(1, pressure));
+  return Math.max(0.05, width * shape.easing(0.5 - shape.thinning * (0.5 - p)));
+}
+
 /**
- * Qalam chizgisining konturi: [[x, y], ...]. Oddiy chiziq bilan
- * chiziladigan chizgi (marker, to'g'ri chiziq, eski chizgilar)
- * uchun `null`.
- *
- * `complete` — chizgi tugaganmi. Yozish paytida uchi ingichkalashmaydi
- * (aks holda har kadrda "sakrab" turardi), lekin aynan qalam turgan
- * nuqtaga yetadi — chiziq qalamdan orqada qolmaydi.
+ * Qalam izini nuqtama-nuqta quruvchi. `add` har yangi nuqtada
+ * chaqiriladi; `done` — endi o'zgarmaydigan namunalar ([x, y, r, ...]),
+ * `tip()` — qalam uchigacha bo'lgan oxirgi bo'lak (keyingi nuqta
+ * kelganda biroz aniqlashadi, shuning uchun alohida).
  */
-export function penOutline(stroke: Stroke, complete = true): number[][] | null {
+export class InkTrace {
+  /** Tayyor namunalar: [x0, y0, r0, x1, y1, r1, ...] */
+  readonly done: number[] = [];
+
+  private readonly xs: number[] = [];
+  private readonly ys: number[] = [];
+  private readonly rs: number[] = [];
+  private pressure = 0.5;
+  private length = 0;
+  private readonly pen: PenKind;
+  private readonly width: number;
+
+  constructor(pen: PenKind, width: number) {
+    this.pen = pen;
+    this.width = width;
+  }
+
+  get count() {
+    return this.xs.length;
+  }
+
+  add(x: number, y: number, pressure = 0.5) {
+    const n = this.xs.length;
+
+    if (n === 0) {
+      this.pressure = pressure;
+    } else {
+      const d = Math.hypot(x - this.xs[n - 1], y - this.ys[n - 1]);
+      if (d === 0) return;
+      this.length += d;
+      /* Bosim sakramasin: masofaga qarab asta ergashadi */
+      const follow = 1 - Math.exp(-d / Math.max(1.2, this.width * 1.2));
+      this.pressure += (pressure - this.pressure) * follow;
+    }
+
+    let r = penRadius(this.pen, this.width, this.pressure);
+    /* Chizgi boshi ingichka kirib keladi (pero va mo'yqalamda) */
+    const taper = PEN_SHAPE[this.pen].taper * this.width;
+    if (taper > 0 && this.length < taper) {
+      const t = this.length / taper;
+      r *= 0.3 + 0.7 * t * (2 - t);
+    }
+
+    this.xs.push(x);
+    this.ys.push(y);
+    this.rs.push(r);
+
+    /* Yangi nuqta bilan undan oldingi bo'lakning egriligi aniq bo'ldi */
+    if (n >= 2) this.segment(n - 2, this.done);
+  }
+
+  /**
+   * Qalam uchidagi bo'lak. Birinchi namuna — `done` dagi oxirgisi
+   * bilan bir xil nuqta (ulanish uchun).
+   */
+  tip(complete = false): number[] {
+    const n = this.xs.length;
+    if (n === 0) return [];
+    if (n === 1) {
+      /* Bitta nuqta bilan tugagan chizgi — to'liq qalinlikdagi dog' */
+      const r = complete ? penRadius(this.pen, this.width, this.pressure) : this.rs[0];
+      return [this.xs[0], this.ys[0], r];
+    }
+    const out: number[] = [];
+    this.segment(n - 2, out, true);
+    return out;
+  }
+
+  /** i → i+1 bo'lagi (markazga intiluvchi Catmull–Rom) */
+  private segment(i: number, out: number[], withStart = false) {
+    const { xs, ys, rs } = this;
+    const last = xs.length - 1;
+    const x1 = xs[i];
+    const y1 = ys[i];
+    const x2 = xs[i + 1];
+    const y2 = ys[i + 1];
+    /* Chekkada qo'shni yo'q — aks ettirilgan nuqta olinadi */
+    const x0 = i > 0 ? xs[i - 1] : 2 * x1 - x2;
+    const y0 = i > 0 ? ys[i - 1] : 2 * y1 - y2;
+    const x3 = i + 2 <= last ? xs[i + 2] : 2 * x2 - x1;
+    const y3 = i + 2 <= last ? ys[i + 2] : 2 * y2 - y1;
+    const r1 = rs[i];
+    const r2 = rs[i + 1];
+
+    if (withStart || (i === 0 && out.length === 0)) out.push(x1, y1, r1);
+
+    const chord = Math.hypot(x2 - x1, y2 - y1);
+    const step = Math.max(0.3, Math.min(1, Math.min(r1, r2) * 0.6));
+    const steps = Math.max(1, Math.ceil(chord / step));
+
+    if (steps > 1) {
+      const t1 = Math.sqrt(Math.hypot(x1 - x0, y1 - y0)) || 1e-3;
+      const t2 = t1 + (Math.sqrt(chord) || 1e-3);
+      const t3 = t2 + (Math.sqrt(Math.hypot(x3 - x2, y3 - y2)) || 1e-3);
+
+      for (let k = 1; k < steps; k += 1) {
+        const u = k / steps;
+        const t = t1 + (t2 - t1) * u;
+        const a1 = t / t1;
+        const a2 = (t - t1) / (t2 - t1);
+        const a3 = (t - t2) / (t3 - t2);
+        const ax = x0 + (x1 - x0) * a1;
+        const ay = y0 + (y1 - y0) * a1;
+        const bx = x1 + (x2 - x1) * a2;
+        const by = y1 + (y2 - y1) * a2;
+        const cx = x2 + (x3 - x2) * a3;
+        const cy = y2 + (y3 - y2) * a3;
+        const b1 = t / t2;
+        const b2 = (t - t1) / (t3 - t1);
+        const dx = ax + (bx - ax) * b1;
+        const dy = ay + (by - ay) * b1;
+        const ex = bx + (cx - bx) * b2;
+        const ey = by + (cy - by) * b2;
+        out.push(dx + (ex - dx) * a2, dy + (ey - dy) * a2, r1 + (r2 - r1) * u);
+      }
+    }
+
+    out.push(x2, y2, r2);
+  }
+}
+
+/**
+ * Qalam chizgisining namunalari: [x, y, r, ...]. Oddiy chiziq bilan
+ * chiziladigan chizgi (marker, to'g'ri chiziq) uchun `null`.
+ */
+export function inkSamples(stroke: Stroke): number[] | null {
   if (stroke.tool !== "pen" || !stroke.pen) return null;
 
   const { points, pressures } = stroke;
-  const input: number[][] = [];
+  const trace = new InkTrace(stroke.pen, stroke.width);
   for (let i = 0; i + 1 < points.length; i += 2) {
-    input.push(
-      pressures ? [points[i], points[i + 1], pressures[i / 2] ?? 0.5] : [points[i], points[i + 1]],
-    );
+    trace.add(points[i], points[i + 1], pressures?.[i / 2] ?? 0.5);
   }
-  if (input.length === 0) return [];
 
-  const base = PEN_OPTIONS[stroke.pen](stroke.width);
-  return getStroke(input, {
-    size: stroke.width,
-    ...base,
-    simulatePressure: base.simulatePressure ?? !pressures,
-    ...(complete ? {} : { end: { taper: 0, cap: true } }),
-    last: true,
-  });
+  const tip = trace.tip(true);
+  if (trace.done.length === 0) return tip;
+  /* `tip` ning birinchi namunasi `done` ning oxirgisi bilan bir xil */
+  return trace.done.concat(tip.slice(3));
 }
 
-/** Yopiq silliq kontur: har ikki nuqta o'rtasidan o'tuvchi kvadrat egrilar */
-export function outlinePath(outline: number[][]): PathSegment[] {
-  const n = outline.length;
-  if (n < 3) return [];
+/**
+ * Yozish paytida nuqtalarni qabul qiluvchi.
+ *
+ * Qalam sekundiga 240 tagacha nuqta beradi; bir-biriga juda yaqinlari
+ * (ekranda yarim pikseldan kam) tashlab yuboriladi — ko'rinishga
+ * ta'sir qilmaydi, PDF esa yengil chiqadi. Saralash yozish paytida
+ * qilinadi, shuning uchun tugagan chizgi ekrandagidan farq qilmaydi.
+ *
+ * Sichqoncha va barmoqda bosim yo'q — yozish tezligidan olinadi:
+ * sekin yozilsa qalinroq, tez yozilsa ingichkaroq.
+ */
+export class StrokeInput {
+  readonly points: number[] = [];
+  readonly pressures: number[] = [];
 
-  const mid = (a: number[], b: number[]) => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
-  const [sx, sy] = mid(outline[0], outline[1]);
-  const segments: PathSegment[] = [{ kind: "move", x: sx, y: sy }];
+  private time = 0;
+  private readonly minSq: number;
+  private readonly realPressure: boolean;
+  private readonly pxPerUnit: number;
 
-  for (let i = 1; i <= n; i += 1) {
-    const p = outline[i % n];
-    const [x, y] = mid(p, outline[(i + 1) % n]);
-    segments.push({ kind: "quad", cx: p[0], cy: p[1], x, y });
+  /**
+   * `pxPerUnit` — bir punkt ekranda necha piksel (kattalik);
+   * `realPressure` — qurilma bosimni o'zi beradi (stilus).
+   */
+  constructor(pxPerUnit: number, realPressure: boolean) {
+    this.pxPerUnit = pxPerUnit;
+    this.realPressure = realPressure;
+    const min = 0.35 / pxPerUnit;
+    this.minSq = min * min;
   }
 
-  return segments;
+  /** Nuqta qabul qilingan bo'lsa — uning bosimi, aks holda `null` */
+  add(x: number, y: number, pressure: number, time: number, force = false): number | null {
+    const n = this.points.length;
+    const last = this.pressures[this.pressures.length - 1] ?? 0.5;
+
+    if (n === 0) {
+      const p = this.realPressure && pressure > 0 ? pressure : 0.5;
+      this.points.push(x, y);
+      this.pressures.push(p);
+      this.time = time;
+      return p;
+    }
+
+    const dx = x - this.points[n - 2];
+    const dy = y - this.points[n - 1];
+    const dSq = dx * dx + dy * dy;
+    if (dSq === 0 || (!force && dSq < this.minSq)) return null;
+
+    let p = last;
+    if (this.realPressure) {
+      /* Qalam ko'tarilayotganda ba'zi qurilmalar 0 beradi */
+      if (pressure > 0) p = pressure;
+    } else {
+      const dt = time - this.time;
+      if (dt > 0) {
+        const speed = (Math.sqrt(dSq) * this.pxPerUnit) / dt; /* piksel/ms */
+        p = 0.78 - 0.5 * Math.min(1, speed / 1.8);
+      }
+    }
+    p = Math.round(p * 100) / 100;
+
+    this.points.push(x, y);
+    this.pressures.push(p);
+    this.time = time;
+    return p;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -483,6 +649,40 @@ function pathOperators(segments: PathSegment[]): PDFOperator[] {
     lastX = segment.x;
     lastY = segment.y;
   }
+
+  return ops;
+}
+
+/**
+ * Qalam izi PDF'da: dumaloq uchli kesmalar. Qalinligi (0.04 pt
+ * aniqlikda) bir xil bo'lgan ketma-ket bo'laklar bitta yo'lga
+ * birlashadi — flomaster chizgisi bitta yo'l bo'lib chiqadi.
+ */
+function inkOperators(samples: number[]): PDFOperator[] {
+  const ops: PDFOperator[] = [];
+  const count = samples.length / 3;
+
+  if (count === 1) {
+    ops.push(
+      setLineWidth(round(samples[2] * 2)),
+      moveTo(round(samples[0]), round(samples[1])),
+      lineTo(round(samples[0] + 0.01), round(samples[1])),
+      stroke(),
+    );
+    return ops;
+  }
+
+  let current = -1;
+  for (let i = 0; i + 1 < count; i += 1) {
+    const width = Math.max(0.04, Math.round((samples[i * 3 + 2] + samples[i * 3 + 5]) * 25) / 25);
+    if (width !== current) {
+      if (current >= 0) ops.push(stroke());
+      current = width;
+      ops.push(setLineWidth(round(width)), moveTo(round(samples[i * 3]), round(samples[i * 3 + 1])));
+    }
+    ops.push(lineTo(round(samples[i * 3 + 3]), round(samples[i * 3 + 4])));
+  }
+  ops.push(stroke());
 
   return ops;
 }
@@ -532,15 +732,9 @@ function drawStrokes(doc: PDFDocument, page: PDFPage, item: InkPage) {
     const [r, g, b] = hexToRgb(s.color);
     ops.push(pushGraphicsState());
 
-    const outline = penOutline(s);
-    if (outline) {
-      ops.push(
-        setFillingRgbColor(r, g, b),
-        ...pathOperators(outlinePath(outline)),
-        closePath(),
-        fill(),
-        popGraphicsState(),
-      );
+    const samples = inkSamples(s);
+    if (samples) {
+      ops.push(setStrokingRgbColor(r, g, b), ...inkOperators(samples), popGraphicsState());
       continue;
     }
 

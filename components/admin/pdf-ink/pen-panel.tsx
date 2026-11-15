@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Brush, Pen, PenTool, RotateCcw, type IconComponent } from "@/components/ui/icons";
 
-import { simplifyStroke, type PenKind, type Stroke } from "@/lib/pdf-ink";
+import { StrokeInput, type PenKind, type Stroke } from "@/lib/pdf-ink";
 import { cn } from "@/lib/utils";
 
 import { paintStroke } from "./ink-page";
@@ -37,9 +37,7 @@ const PREVIEW_SCALE = 1.6;
  */
 export default function PenPanel({ pen, size, color, onPen, onSize, onClose }: PenPanelProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const drawingRef = useRef<{ id: number; points: number[]; pressures: number[] | null } | null>(
-    null,
-  );
+  const drawingRef = useRef<{ id: number; input: StrokeInput } | null>(null);
   const [strokes, setStrokes] = useState<Stroke[]>([]);
 
   useEffect(() => {
@@ -50,18 +48,18 @@ export default function PenPanel({ pen, size, color, onPen, onSize, onClose }: P
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  function makeStroke(points: number[], pressures: number[] | null): Stroke {
+  function makeStroke(points: number[], pressures: number[]): Stroke {
     return {
       tool: "pen",
       pen,
       color: color.toUpperCase() === "#FFFFFF" ? "#151A23" : color,
       width: size,
       points,
-      ...(pressures ? { pressures } : {}),
+      pressures,
     };
   }
 
-  function redraw(extra?: Stroke, complete = true) {
+  function redraw(extra?: Stroke) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -77,7 +75,7 @@ export default function PenPanel({ pen, size, color, onPen, onSize, onClose }: P
     for (const stroke of strokes) {
       paintStroke(ctx, { ...stroke, pen, width: size }, PREVIEW_SCALE * ratio);
     }
-    if (extra) paintStroke(ctx, extra, PREVIEW_SCALE * ratio, complete);
+    if (extra) paintStroke(ctx, extra, PREVIEW_SCALE * ratio, false);
   }
 
   /* Qalam turi yoki o'lchami o'zgarsa, sinov yozuvi ham yangi qalamda ko'rinadi */
@@ -89,10 +87,6 @@ export default function PenPanel({ pen, size, color, onPen, onSize, onClose }: P
       (event.clientX - rect.left) / PREVIEW_SCALE,
       (event.clientY - rect.top) / PREVIEW_SCALE,
     ];
-  }
-
-  function pressure(event: { pressure: number }) {
-    return event.pressure > 0 ? Math.round(event.pressure * 100) / 100 : 0.5;
   }
 
   return (
@@ -154,12 +148,10 @@ export default function PenPanel({ pen, size, color, onPen, onSize, onClose }: P
               if (event.pointerType === "mouse" && event.button !== 0) return;
               event.currentTarget.setPointerCapture(event.pointerId);
               const [x, y] = point(event);
-              drawingRef.current = {
-                id: event.pointerId,
-                points: [x, y],
-                pressures: event.pointerType === "pen" ? [pressure(event)] : null,
-              };
-              redraw(makeStroke([x, y], drawingRef.current.pressures), false);
+              const input = new StrokeInput(PREVIEW_SCALE, event.pointerType === "pen");
+              input.add(x, y, event.pressure, event.timeStamp);
+              drawingRef.current = { id: event.pointerId, input };
+              redraw(makeStroke(input.points, input.pressures));
             }}
             onPointerMove={(event) => {
               const drawing = drawingRef.current;
@@ -167,20 +159,16 @@ export default function PenPanel({ pen, size, color, onPen, onSize, onClose }: P
               const samples = event.nativeEvent.getCoalescedEvents?.() ?? [];
               for (const sample of samples.length > 0 ? samples : [event.nativeEvent]) {
                 const [x, y] = point(sample);
-                drawing.points.push(x, y);
-                drawing.pressures?.push(pressure(sample));
+                drawing.input.add(x, y, sample.pressure, sample.timeStamp);
               }
-              redraw(makeStroke(drawing.points, drawing.pressures), false);
+              redraw(makeStroke(drawing.input.points, drawing.input.pressures));
             }}
             onPointerUp={() => {
               const drawing = drawingRef.current;
               drawingRef.current = null;
               if (!drawing) return;
-              const simple = simplifyStroke(drawing.points, drawing.pressures ?? undefined, 0.3);
-              setStrokes((list) => [
-                ...list.slice(-20),
-                makeStroke(simple.points, simple.pressures ?? null),
-              ]);
+              const { points, pressures } = drawing.input;
+              setStrokes((list) => [...list.slice(-20), makeStroke(points, pressures)]);
             }}
             onPointerCancel={() => {
               drawingRef.current = null;
